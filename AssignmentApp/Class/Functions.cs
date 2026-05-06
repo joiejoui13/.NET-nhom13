@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+
 namespace AssignmentApp.Class
 {
     public static class Functions
@@ -15,14 +16,22 @@ namespace AssignmentApp.Class
         public static SqlConnection? Conn;
         public static string connstring = ""; // Gán giá trị mặc định (Hết lỗi CS8618)
 
-        public static void Ketnoi()
+        public static bool Ketnoi()
         {
-            connstring = @"Data Source=LAPTOP-TEEPQA0B\SQLEXPRESS;Initial Catalog=TempleKtr2net;Integrated Security=True;TrustServerCertificate=True";
-            Conn = new SqlConnection(connstring);
-            
-            if (Conn.State != ConnectionState.Open)
+            try
             {
-                Conn.Open();
+                connstring = @"Data Source=LAPTOP-TEEPQA0B\SQLEXPRESS;Initial Catalog=TestChamnetCK;Integrated Security=True;TrustServerCertificate=True";
+                Conn = new SqlConnection(connstring);
+                
+                if (Conn.State != ConnectionState.Open)
+                {
+                    Conn.Open();
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
@@ -113,15 +122,29 @@ namespace AssignmentApp.Class
         public static string GetFieldValues(string sql)
         {
             string ma = "";
-            using (SqlCommand cmd = new SqlCommand(sql, Conn))
+            
+            // Đảm bảo kết nối luôn mở trước khi truy vấn
+            if (Conn == null || Conn.State == ConnectionState.Closed)
             {
-                using (SqlDataReader reader = cmd.ExecuteReader())
+                Ketnoi();
+            }
+
+            try
+            {
+                using (SqlCommand cmd = new SqlCommand(sql, Conn))
                 {
-                    if (reader.Read())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        ma = reader.GetValue(0)?.ToString() ?? ""; // Hết lỗi CS8603
+                        if (reader.Read())
+                        {
+                            ma = reader.GetValue(0)?.ToString() ?? "";
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi lấy dữ liệu: " + ex.Message, "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return ma;
         }

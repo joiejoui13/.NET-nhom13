@@ -2,7 +2,7 @@ using System.Drawing;
 
 namespace AssignmentApp.Page
 {
-    partial class AuthForm
+    partial class frmAuth
     {
         /// <summary>
         /// Required designer variable.
@@ -31,14 +31,14 @@ namespace AssignmentApp.Page
         private void InitializeComponent()
         {
             uiGroupBox1 = new Sunny.UI.UIGroupBox();
-            textBox2 = new TextBox();
-            textBox1 = new TextBox();
+            txtPass = new TextBox();
+            txtUser = new TextBox();
             label2 = new Label();
             label1 = new Label();
-            materialButton2 = new MaterialSkin.Controls.MaterialButton();
-            materialButton1 = new MaterialSkin.Controls.MaterialButton();
+            btnCancel = new MaterialSkin.Controls.MaterialButton();
+            btnLogin = new MaterialSkin.Controls.MaterialButton();
             hopeGroupBox1 = new ReaLTaiizor.Controls.HopeGroupBox();
-            uiSymbolLabel2 = new Sunny.UI.UISymbolLabel();
+            lblConnect = new Sunny.UI.UISymbolLabel();
             materialLabel1 = new MaterialSkin.Controls.MaterialLabel();
             uiGroupBox1.SuspendLayout();
             hopeGroupBox1.SuspendLayout();
@@ -47,8 +47,8 @@ namespace AssignmentApp.Page
             // uiGroupBox1
             // 
             uiGroupBox1.BackColor = Color.FromArgb(248, 243, 230);
-            uiGroupBox1.Controls.Add(textBox2);
-            uiGroupBox1.Controls.Add(textBox1);
+            uiGroupBox1.Controls.Add(txtPass);
+            uiGroupBox1.Controls.Add(txtUser);
             uiGroupBox1.Controls.Add(label2);
             uiGroupBox1.Controls.Add(label1);
             uiGroupBox1.FillColor = Color.FromArgb(248, 243, 230);
@@ -69,24 +69,24 @@ namespace AssignmentApp.Page
             uiGroupBox1.Text = "LOGIN";
             uiGroupBox1.TextAlignment = ContentAlignment.BottomLeft;
             // 
-            // textBox2
+            // txtPass
             // 
-            textBox2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            textBox2.Font = new Font("Microsoft Tai Le", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            textBox2.Location = new Point(174, 133);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(312, 46);
-            textBox2.TabIndex = 9;
+            txtPass.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtPass.Font = new Font("Microsoft Tai Le", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtPass.Location = new Point(174, 133);
+            txtPass.Name = "txtPass";
+            txtPass.Size = new Size(312, 46);
+            txtPass.TabIndex = 9;
             // 
-            // textBox1
+            // txtUser
             // 
-            textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            textBox1.Font = new Font("Microsoft Tai Le", 18F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            textBox1.Location = new Point(174, 59);
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(312, 46);
-            textBox1.TabIndex = 8;
-            textBox1.TextChanged += textBox1_TextChanged;
+            txtUser.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtUser.Font = new Font("Microsoft Tai Le", 18F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            txtUser.Location = new Point(174, 59);
+            txtUser.Name = "txtUser";
+            txtUser.Size = new Size(312, 46);
+            txtUser.TabIndex = 8;
+            txtUser.TextChanged += textBox1_TextChanged;
             // 
             // label2
             // 
@@ -111,56 +111,58 @@ namespace AssignmentApp.Page
             label1.Text = "Username:";
             label1.Click += label1_Click;
             // 
-            // materialButton2
+            // btnCancel
             // 
-            materialButton2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            materialButton2.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            materialButton2.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            materialButton2.Depth = 0;
-            materialButton2.Font = new Font("Microsoft New Tai Lue", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            materialButton2.HighEmphasis = true;
-            materialButton2.Icon = null;
-            materialButton2.Location = new Point(483, 268);
-            materialButton2.Margin = new Padding(4, 6, 4, 6);
-            materialButton2.MouseState = MaterialSkin.MouseState.HOVER;
-            materialButton2.Name = "materialButton2";
-            materialButton2.NoAccentTextColor = Color.Empty;
-            materialButton2.Size = new Size(77, 36);
-            materialButton2.TabIndex = 1;
-            materialButton2.Text = "CANCEL";
-            materialButton2.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            materialButton2.UseAccentColor = true;
-            materialButton2.UseVisualStyleBackColor = true;
+            btnCancel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnCancel.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnCancel.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnCancel.Depth = 0;
+            btnCancel.Font = new Font("Microsoft New Tai Lue", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCancel.HighEmphasis = true;
+            btnCancel.Icon = null;
+            btnCancel.Location = new Point(483, 268);
+            btnCancel.Margin = new Padding(4, 6, 4, 6);
+            btnCancel.MouseState = MaterialSkin.MouseState.HOVER;
+            btnCancel.Name = "btnCancel";
+            btnCancel.NoAccentTextColor = Color.Empty;
+            btnCancel.Size = new Size(77, 36);
+            btnCancel.TabIndex = 1;
+            btnCancel.Text = "CANCEL";
+            btnCancel.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnCancel.UseAccentColor = true;
+            btnCancel.UseVisualStyleBackColor = true;
+            btnCancel.Click += btnCancel_Click;
             // 
-            // materialButton1
+            // btnLogin
             // 
-            materialButton1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            materialButton1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-            materialButton1.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
-            materialButton1.Depth = 0;
-            materialButton1.Font = new Font("Microsoft New Tai Lue", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            materialButton1.HighEmphasis = true;
-            materialButton1.Icon = null;
-            materialButton1.Location = new Point(395, 268);
-            materialButton1.Margin = new Padding(4, 6, 4, 6);
-            materialButton1.MouseState = MaterialSkin.MouseState.HOVER;
-            materialButton1.Name = "materialButton1";
-            materialButton1.NoAccentTextColor = Color.Empty;
-            materialButton1.Size = new Size(64, 36);
-            materialButton1.TabIndex = 0;
-            materialButton1.Text = "LOGIN";
-            materialButton1.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
-            materialButton1.UseAccentColor = false;
-            materialButton1.UseVisualStyleBackColor = true;
+            btnLogin.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnLogin.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            btnLogin.Density = MaterialSkin.Controls.MaterialButton.MaterialButtonDensity.Default;
+            btnLogin.Depth = 0;
+            btnLogin.Font = new Font("Microsoft New Tai Lue", 12F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnLogin.HighEmphasis = true;
+            btnLogin.Icon = null;
+            btnLogin.Location = new Point(395, 268);
+            btnLogin.Margin = new Padding(4, 6, 4, 6);
+            btnLogin.MouseState = MaterialSkin.MouseState.HOVER;
+            btnLogin.Name = "btnLogin";
+            btnLogin.NoAccentTextColor = Color.Empty;
+            btnLogin.Size = new Size(64, 36);
+            btnLogin.TabIndex = 0;
+            btnLogin.Text = "LOGIN";
+            btnLogin.Type = MaterialSkin.Controls.MaterialButton.MaterialButtonType.Contained;
+            btnLogin.UseAccentColor = false;
+            btnLogin.UseVisualStyleBackColor = true;
+            btnLogin.Click += btnLogin_Click;
             // 
             // hopeGroupBox1
             // 
             hopeGroupBox1.BackColor = Color.FromArgb(254, 249, 238);
             hopeGroupBox1.BorderColor = Color.FromArgb(220, 223, 230);
-            hopeGroupBox1.Controls.Add(uiSymbolLabel2);
+            hopeGroupBox1.Controls.Add(lblConnect);
             hopeGroupBox1.Controls.Add(uiGroupBox1);
-            hopeGroupBox1.Controls.Add(materialButton1);
-            hopeGroupBox1.Controls.Add(materialButton2);
+            hopeGroupBox1.Controls.Add(btnLogin);
+            hopeGroupBox1.Controls.Add(btnCancel);
             hopeGroupBox1.Font = new Font("Segoe UI", 12F);
             hopeGroupBox1.ForeColor = Color.FromArgb(48, 48, 48);
             hopeGroupBox1.LineColor = Color.FromArgb(220, 223, 230);
@@ -173,22 +175,22 @@ namespace AssignmentApp.Page
             hopeGroupBox1.Text = "hopeGroupBox1";
             hopeGroupBox1.ThemeColor = Color.FromArgb(254, 249, 238);
             // 
-            // uiSymbolLabel2
+            // lblConnect
             // 
-            uiSymbolLabel2.Anchor = AnchorStyles.Left | AnchorStyles.Right;
-            uiSymbolLabel2.BackColor = Color.FromArgb(254, 249, 238);
-            uiSymbolLabel2.Font = new Font("Microsoft Tai Le", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            uiSymbolLabel2.ForeColor = Color.FromArgb(103, 101, 86);
-            uiSymbolLabel2.Location = new Point(32, 268);
-            uiSymbolLabel2.MinimumSize = new Size(1, 1);
-            uiSymbolLabel2.Name = "uiSymbolLabel2";
-            uiSymbolLabel2.Size = new Size(242, 37);
-            uiSymbolLabel2.Symbol = 61713;
-            uiSymbolLabel2.SymbolColor = Color.FromArgb(0, 112, 112);
-            uiSymbolLabel2.TabIndex = 6;
-            uiSymbolLabel2.Text = "SERVER CONNECTION: SECURE";
-            uiSymbolLabel2.TextAlign = ContentAlignment.MiddleLeft;
-            uiSymbolLabel2.Click += uiSymbolLabel2_Click;
+            lblConnect.Anchor = AnchorStyles.Left | AnchorStyles.Right;
+            lblConnect.BackColor = Color.FromArgb(254, 249, 238);
+            lblConnect.Font = new Font("Microsoft Tai Le", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblConnect.ForeColor = Color.FromArgb(103, 101, 86);
+            lblConnect.Location = new Point(32, 268);
+            lblConnect.MinimumSize = new Size(1, 1);
+            lblConnect.Name = "lblConnect";
+            lblConnect.Size = new Size(242, 37);
+            lblConnect.Symbol = 61713;
+            lblConnect.SymbolColor = Color.FromArgb(0, 112, 112);
+            lblConnect.TabIndex = 6;
+            lblConnect.Text = "SERVER CONNECTION: SECURE";
+            lblConnect.TextAlign = ContentAlignment.MiddleLeft;
+            lblConnect.Click += uiSymbolLabel2_Click;
             // 
             // materialLabel1
             // 
@@ -201,7 +203,7 @@ namespace AssignmentApp.Page
             materialLabel1.Size = new Size(1, 0);
             materialLabel1.TabIndex = 3;
             // 
-            // AuthForm
+            // frmAuth
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -209,7 +211,7 @@ namespace AssignmentApp.Page
             ClientSize = new Size(1054, 656);
             Controls.Add(materialLabel1);
             Controls.Add(hopeGroupBox1);
-            Name = "AuthForm";
+            Name = "frmAuth";
             Text = "USER AUTHENTICATION";
             Load += AuthForm_Load;
             uiGroupBox1.ResumeLayout(false);
@@ -223,14 +225,14 @@ namespace AssignmentApp.Page
         #endregion
 
         private Sunny.UI.UIGroupBox uiGroupBox1;
-        private MaterialSkin.Controls.MaterialButton materialButton2;
-        private MaterialSkin.Controls.MaterialButton materialButton1;
+        private MaterialSkin.Controls.MaterialButton btnCancel;
+        private MaterialSkin.Controls.MaterialButton btnLogin;
         private ReaLTaiizor.Controls.HopeGroupBox hopeGroupBox1;
         private Label label2;
         private Label label1;
         private MaterialSkin.Controls.MaterialLabel materialLabel1;
-        private Sunny.UI.UISymbolLabel uiSymbolLabel2;
-        private TextBox textBox1;
-        private TextBox textBox2;
+        private Sunny.UI.UISymbolLabel lblConnect;
+        private TextBox txtUser;
+        private TextBox txtPass;
     }
 }

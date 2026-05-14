@@ -1,0 +1,1 @@
+Nhớ tạo folde rồi mới nhét ảnh hãy video vào nhé

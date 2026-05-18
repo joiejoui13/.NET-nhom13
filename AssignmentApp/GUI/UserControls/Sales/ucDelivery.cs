@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
 namespace AssignmentApp.GUI.UserControls.Sales { 
     public partial class ucDelivery : Base.ucBase
     { 

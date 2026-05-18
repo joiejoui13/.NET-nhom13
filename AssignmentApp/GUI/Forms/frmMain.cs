@@ -23,8 +23,11 @@ namespace AssignmentApp.GUI.Forms
                 this.Close();
                 return;
             }
-
-            ApplyAuthorization(user.Vaitro);
+            picLogo.ImageLocation = System.IO.Path.Combine(Application.StartupPath, @"..\..\..\GUI\Resources\Anhlogo.png");
+            picLogo.SizeMode = PictureBoxSizeMode.StretchImage;
+            picLogo.Padding = new Padding(0); // Đảm bảo không bị lề thụt vào
+           
+            ApplyAuthorization(user.VaiTro);
         }
 
         private void ApplyAuthorization(string role)
@@ -33,7 +36,7 @@ namespace AssignmentApp.GUI.Forms
             pnlMenuSales.Visible = false;
             pnlMenuWarehouse.Visible = false;
 
-            switch (role.ToUpper())
+            switch (role?.Trim().ToUpper())
             {
                 case "ADMIN":
                     pnlMenuAdmin.Visible = true;
@@ -62,7 +65,6 @@ namespace AssignmentApp.GUI.Forms
             uc.Dock = DockStyle.Fill;
             pnlContainer.Controls.Add(uc);
         }
-
         // ==========================================
         // EVENTS CHO MENU ADMIN
         // ==========================================
@@ -136,8 +138,13 @@ namespace AssignmentApp.GUI.Forms
         {
             UserSession.ClearSession();
             frmAuth login = new frmAuth();
-            login.Show();
-            this.Close();
+            DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn đăng xuất không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                // Khởi động lại ứng dụng, tự động quay về Form chạy đầu tiên (Login)
+                Application.Restart();
+            }
         }
     }
 }

@@ -14,15 +14,15 @@ namespace AssignmentApp.BLL.Services.Security
             _authRepository = new AuthRepository();
         }
 
-        public async Task<User> LoginAsync(string cccd, string password)
+        public async Task<User> LoginAsync(string manguoidung, string matkhau)
         {
-            // Gọi DAL để lấy user theo CCCD
-            var user = await _authRepository.GetUserForLoginAsync(cccd);
+            // Gọi DAL để lấy user theo MaNguoiDung
+            var user = await _authRepository.GetUserForLoginAsync(manguoidung);
             
             if (user != null)
             {
                 // Kiểm tra mật khẩu (Sử dụng PasswordHasher)
-                if (PasswordHasher.VerifyPassword(password, user.Matkhau))
+                if (PasswordHasher.VerifyPassword(matkhau, user.MatKhau))
                 {
                     return user;
                 }

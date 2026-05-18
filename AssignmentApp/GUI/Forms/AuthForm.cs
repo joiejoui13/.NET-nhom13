@@ -23,12 +23,12 @@ namespace AssignmentApp.GUI
             if (DbContext.Ketnoi())
             {
                 lblConnect.Text = "SERVER CONNECTION: SECURE";
-                lblConnect.ForeColor = System.Drawing.Color.FromArgb(0, 112, 112);
+                lblConnect.FillColor = System.Drawing.Color.FromArgb(192, 255, 192);
             }
             else
             {
                 lblConnect.Text = "SERVER CONNECTION: FAILED";
-                lblConnect.ForeColor = System.Drawing.Color.FromArgb(255, 0, 0);
+                lblConnect.FillColor = System.Drawing.Color.FromArgb(255, 192, 192);
             }
         }
         private void label1_Click(object sender, EventArgs e)
@@ -50,7 +50,7 @@ namespace AssignmentApp.GUI
         {
             string user = txtUser.Text.Trim();
             string pass = txtPass.Text.Trim();
-            
+
             if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
             {
                 MessageBox.Show("Vui lòng nhập đầy đủ tài khoản và mật khẩu!");
@@ -71,13 +71,14 @@ namespace AssignmentApp.GUI
                     UserSession.CurrentUser = userDto;
                     UserSession.LoginTime = DateTime.Now;
 
-                    if (userDto.Vaitro == "SALES" || userDto.Vaitro == "ADMIN" || userDto.Vaitro == "WAREHOUSE")
+                    string role = userDto.VaiTro?.Trim().ToUpper();
+                    if (role == "SALES" || role == "ADMIN" || role == "WAREHOUSE")
                     {
-                        MessageBox.Show($"Đăng nhập thành công với quyền {userDto.Vaitro}!");
-                        this.Hide(); 
-                        frmMain main = new frmMain(); 
+                        MessageBox.Show($"Đăng nhập thành công với quyền {role}!");
+                        this.Hide();
+                        frmMain main = new frmMain();
                         main.ShowDialog();
-                        this.Close(); 
+                        this.Close();
                     }
                     else
                     {
@@ -104,6 +105,13 @@ namespace AssignmentApp.GUI
         {
             txtUser.Text = "";
             txtPass.Text = "";
+        }
+
+        private void btnCancel_DoubleClick(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Ban co muon thoat khong?", "Thong bao", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+              == System.Windows.Forms.DialogResult.Yes)
+                Application.Exit();
         }
     }
 }

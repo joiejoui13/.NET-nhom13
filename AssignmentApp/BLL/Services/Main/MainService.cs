@@ -5,13 +5,13 @@ using AssignmentApp.DTO;
 
 namespace AssignmentApp.BLL.Services.Main
 {
-    public class MainService
+    public class MainService : IMainService
     {
-        private readonly MainRepository _mainRepository;
+        private readonly IMainRepository _mainRepository;
 
-        public MainService()
+        public MainService(IMainRepository mainRepository)
         {
-            _mainRepository = new MainRepository();
+            _mainRepository = mainRepository;
         }
 
         // Nghiệp vụ đăng xuất (xóa Session)

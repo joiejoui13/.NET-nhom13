@@ -5,13 +5,13 @@ using AssignmentApp.BLL.Utils;
 
 namespace AssignmentApp.BLL.Services.Main
 {
-    public class AuthService
+    public class AuthService : IAuthService
     {
-        private readonly AuthRepository _authRepository;
+        private readonly IAuthRepository _authRepository;
 
-        public AuthService()
+        public AuthService(IAuthRepository authRepository)
         {
-            _authRepository = new AuthRepository();
+            _authRepository = authRepository;
         }
 
         public async Task<User> LoginAsync(string manguoidung, string matkhau)

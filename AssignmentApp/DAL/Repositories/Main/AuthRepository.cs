@@ -5,7 +5,7 @@ using Dapper;
 
 namespace AssignmentApp.DAL.Repositories.Main
 {
-    public class AuthRepository
+    public class AuthRepository : IAuthRepository
     {
         public async Task<User> GetUserForLoginAsync(string manguoidung)
         {

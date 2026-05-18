@@ -6,7 +6,7 @@ using Dapper;
 
 namespace AssignmentApp.DAL.Repositories.Main
 {
-    public class MainRepository
+    public class MainRepository : IMainRepository
     {
         // Tầng DAL của Main: Chuẩn bị sẵn cấu trúc 3 lớp.
         // Hiện tại các nghiệp vụ của Main (Logout, Phân quyền Menu) chưa cần gọi xuống Database.

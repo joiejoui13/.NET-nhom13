@@ -4,18 +4,19 @@ using Guna.UI2.WinForms;
 using AssignmentApp.BLL.Services.Main;
 using AssignmentApp.BLL.Session;
 using AssignmentApp.DAL.Core;
+using Microsoft.Extensions.DependencyInjection;
 using AssignmentApp.GUI.Forms;
 
 namespace AssignmentApp.GUI
 {
     public partial class frmAuth : Base.frmBase
     {
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
-        public frmAuth()
+        public frmAuth(IAuthService authService)
         {
             InitializeComponent();
-            _authService = new AuthService();
+            _authService = authService;
             this.AcceptButton = btnLogin; // Khi ấn Enter sẽ tự động kích hoạt nút Login
         }
 
@@ -77,7 +78,7 @@ namespace AssignmentApp.GUI
                     {
                         AssignmentApp.GUI.Utils.MsgBox.Show(this, $"Đăng nhập thành công với quyền {role}!", "Thành công", Guna.UI2.WinForms.MessageDialogButtons.OK, Guna.UI2.WinForms.MessageDialogIcon.Information);
                         this.Hide();
-                        frmMain main = new frmMain();
+                        frmMain main = Program.ServiceProvider.GetRequiredService<frmMain>();
                         main.ShowDialog();
                         this.Close();
                     }

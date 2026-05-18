@@ -2,6 +2,8 @@ using System;
 using System.Windows.Forms;
 using AssignmentApp.BLL.Session;
 using AssignmentApp.DTO;
+using Microsoft.Extensions.DependencyInjection;
+using AssignmentApp.BLL.Services.Main;
 using AssignmentApp.GUI.UserControls.Sales;
 using AssignmentApp.GUI.UserControls.Admin;
 using AssignmentApp.GUI.UserControls.Warehouse;
@@ -10,9 +12,12 @@ namespace AssignmentApp.GUI.Forms
 {
     public partial class frmMain : Base.frmBase
     {
-        public frmMain()
+        private readonly IMainService _mainService;
+
+        public frmMain(IMainService mainService)
         {
             InitializeComponent();
+            _mainService = mainService;
             this.FormClosing += frmMain_FormClosing;
         }
 
@@ -161,7 +166,6 @@ namespace AssignmentApp.GUI.Forms
             LoadUserControl(new ucInventory());
         }
 
-        private readonly AssignmentApp.BLL.Services.Main.MainService _mainService = new AssignmentApp.BLL.Services.Main.MainService();
         private bool _isLoggingOut = false;
 
         private void btnDangXuat_Click(object sender, EventArgs e)
@@ -180,12 +184,12 @@ namespace AssignmentApp.GUI.Forms
                 // Gọi xuống BLL (MainService) để xử lý nghiệp vụ đăng xuất
                 _mainService.Logout(); 
                 
-                // Mở lại trang Login theo đúng code gốc của bạn
-                this.Hide();
-                frmAuth login = new frmAuth();
-                login.ShowDialog();
-                this.Close();
-            }
+                 // Mở lại trang Login sử dụng DI Container
+                 this.Hide();
+                 frmAuth login = Program.ServiceProvider.GetRequiredService<frmAuth>();
+                 login.ShowDialog();
+                 this.Close();
+             }
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)

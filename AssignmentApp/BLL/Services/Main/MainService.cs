@@ -1,6 +1,7 @@
 using System;
 using AssignmentApp.DAL.Repositories.Main;
 using AssignmentApp.BLL.Session;
+using AssignmentApp.DTO;
 
 namespace AssignmentApp.BLL.Services.Main
 {
@@ -39,13 +40,5 @@ namespace AssignmentApp.BLL.Services.Main
             }
             return permissions;
         }
-    }
-
-    // DTO siêu nhỏ dùng để chứa kết quả trả về cho GUI
-    public class MenuPermissions
-    {
-        public bool ShowAdmin { get; set; } = false;
-        public bool ShowSales { get; set; } = false;
-        public bool ShowWarehouse { get; set; } = false;
     }
 }

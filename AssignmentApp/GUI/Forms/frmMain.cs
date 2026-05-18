@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using AssignmentApp.BLL.Session;
+using AssignmentApp.DTO;
 using AssignmentApp.GUI.UserControls.Sales;
 using AssignmentApp.GUI.UserControls.Admin;
 using AssignmentApp.GUI.UserControls.Warehouse;

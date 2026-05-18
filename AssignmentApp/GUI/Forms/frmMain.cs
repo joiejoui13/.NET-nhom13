@@ -13,6 +13,7 @@ namespace AssignmentApp.GUI.Forms
         public frmMain()
         {
             InitializeComponent();
+            this.FormClosing += frmMain_FormClosing;
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -161,6 +162,7 @@ namespace AssignmentApp.GUI.Forms
         }
 
         private readonly AssignmentApp.BLL.Services.Main.MainService _mainService = new AssignmentApp.BLL.Services.Main.MainService();
+        private bool _isLoggingOut = false;
 
         private void btnDangXuat_Click(object sender, EventArgs e)
         {
@@ -168,6 +170,9 @@ namespace AssignmentApp.GUI.Forms
 
             if (result == DialogResult.Yes)
             {
+                // Bật cờ hiệu đăng xuất để bỏ qua hộp thoại xác nhận đóng ứng dụng
+                _isLoggingOut = true;
+
                 // Gọi xuống BLL (MainService) để xử lý nghiệp vụ đăng xuất
                 _mainService.Logout(); 
                 
@@ -176,6 +181,18 @@ namespace AssignmentApp.GUI.Forms
                 frmAuth login = new frmAuth();
                 login.ShowDialog();
                 this.Close();
+            }
+        }
+
+        private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Nếu đang trong quá trình đăng xuất, bỏ qua xác nhận đóng
+            if (_isLoggingOut) return;
+
+            DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn đóng ứng dụng không?", "Xác nhận đóng", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.No)
+            {
+                e.Cancel = true; // Hủy lệnh đóng Form
             }
         }
     }

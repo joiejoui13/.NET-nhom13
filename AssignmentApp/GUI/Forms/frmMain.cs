@@ -166,7 +166,11 @@ namespace AssignmentApp.GUI.Forms
 
         private void btnDangXuat_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn đăng xuất không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = AssignmentApp.GUI.Utils.MsgBox.Show(this, 
+                "Bạn có chắc chắn muốn đăng xuất không?", 
+                "Xác nhận", 
+                Guna.UI2.WinForms.MessageDialogButtons.YesNo, 
+                Guna.UI2.WinForms.MessageDialogIcon.Question);
 
             if (result == DialogResult.Yes)
             {
@@ -189,7 +193,11 @@ namespace AssignmentApp.GUI.Forms
             // Nếu đang trong quá trình đăng xuất, bỏ qua xác nhận đóng
             if (_isLoggingOut) return;
 
-            DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn đóng ứng dụng không?", "Xác nhận đóng", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DialogResult result = AssignmentApp.GUI.Utils.MsgBox.Show(this, 
+                "Bạn có chắc chắn muốn đóng ứng dụng không?", 
+                "Xác nhận đóng", 
+                Guna.UI2.WinForms.MessageDialogButtons.YesNo, 
+                Guna.UI2.WinForms.MessageDialogIcon.Question);
             if (result == DialogResult.No)
             {
                 e.Cancel = true; // Hủy lệnh đóng Form

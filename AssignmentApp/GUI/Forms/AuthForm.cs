@@ -16,6 +16,7 @@ namespace AssignmentApp.GUI
         {
             InitializeComponent();
             _authService = new AuthService();
+            this.AcceptButton = btnLogin; // Khi ấn Enter sẽ tự động kích hoạt nút Login
         }
 
         private void AuthForm_Load(object sender, EventArgs e)
@@ -53,7 +54,7 @@ namespace AssignmentApp.GUI
 
             if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ tài khoản và mật khẩu!");
+                AssignmentApp.GUI.Utils.MsgBox.Show(this, "Vui lòng nhập đầy đủ tài khoản và mật khẩu!", "Yêu cầu", Guna.UI2.WinForms.MessageDialogButtons.OK, Guna.UI2.WinForms.MessageDialogIcon.Warning);
                 return;
             }
 
@@ -74,7 +75,7 @@ namespace AssignmentApp.GUI
                     string role = userDto.VaiTro?.Trim().ToUpper();
                     if (role == "SALES" || role == "ADMIN" || role == "WAREHOUSE")
                     {
-                        MessageBox.Show($"Đăng nhập thành công với quyền {role}!");
+                        AssignmentApp.GUI.Utils.MsgBox.Show(this, $"Đăng nhập thành công với quyền {role}!", "Thành công", Guna.UI2.WinForms.MessageDialogButtons.OK, Guna.UI2.WinForms.MessageDialogIcon.Information);
                         this.Hide();
                         frmMain main = new frmMain();
                         main.ShowDialog();
@@ -82,17 +83,17 @@ namespace AssignmentApp.GUI
                     }
                     else
                     {
-                        MessageBox.Show("Vai trò không hợp lệ!");
+                        AssignmentApp.GUI.Utils.MsgBox.Show(this, "Vai trò không hợp lệ!", "Lỗi", Guna.UI2.WinForms.MessageDialogButtons.OK, Guna.UI2.WinForms.MessageDialogIcon.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Sai tài khoản hoặc mật khẩu!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    AssignmentApp.GUI.Utils.MsgBox.Show(this, "Sai tài khoản hoặc mật khẩu!", "Lỗi", Guna.UI2.WinForms.MessageDialogButtons.OK, Guna.UI2.WinForms.MessageDialogIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi kết nối: " + ex.Message, "Lỗi hệ thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                AssignmentApp.GUI.Utils.MsgBox.Show(this, "Đã xảy ra lỗi kết nối: " + ex.Message, "Lỗi hệ thống", Guna.UI2.WinForms.MessageDialogButtons.OK, Guna.UI2.WinForms.MessageDialogIcon.Error);
             }
             finally
             {
@@ -109,9 +110,29 @@ namespace AssignmentApp.GUI
 
         private void btnCancel_DoubleClick(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Ban co muon thoat khong?", "Thong bao", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
-              == System.Windows.Forms.DialogResult.Yes)
+            var result = AssignmentApp.GUI.Utils.MsgBox.Show(this, "Bạn có muốn thoát không?", "Thông báo", Guna.UI2.WinForms.MessageDialogButtons.YesNo, Guna.UI2.WinForms.MessageDialogIcon.Question);
+            if (result == System.Windows.Forms.DialogResult.Yes)
                 Application.Exit();
+        }
+        //ProcessCmdKey là một phương thức ảo (Virtual Method) được định nghĩa sẵn bởi Microsoft sâu bên trong lớp cha System.Windows.Forms.Form (Form cơ bản của hệ thống).
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // Nhấn mũi tên Lên -> Nhảy lên ô Username
+            if (keyData == Keys.Up)
+            {
+                txtUser.Focus();
+                txtUser.SelectAll(); // Bôi đen để gõ đè nhanh
+                return true; // Đã xử lý xong phím này
+            }
+            // Nhấn mũi tên Xuống -> Nhảy xuống ô Password
+            else if (keyData == Keys.Down)
+            {
+                txtPass.Focus();
+                txtPass.SelectAll(); // Bôi đen để gõ đè nhanh
+                return true; // Đã xử lý xong phím này
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

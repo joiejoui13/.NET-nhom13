@@ -1,0 +1,51 @@
+using System;
+using AssignmentApp.DAL.Repositories.Main;
+using AssignmentApp.BLL.Session;
+
+namespace AssignmentApp.BLL.Services.Main
+{
+    public class MainService
+    {
+        private readonly MainRepository _mainRepository;
+
+        public MainService()
+        {
+            _mainRepository = new MainRepository();
+        }
+
+        // Nghiệp vụ đăng xuất (xóa Session)
+        public void Logout()
+        {
+            UserSession.ClearSession();
+        }
+
+        // BLL xử lý nghiệp vụ và quyết định Panel Menu nào được phép hiển thị
+        public MenuPermissions GetPermissions(string role)
+        {
+            var permissions = new MenuPermissions();
+            string roleName = role?.Trim().ToUpper() ?? "";
+
+            switch (roleName)
+            {
+                case "ADMIN":
+                    permissions.ShowAdmin = true;
+                    break;
+                case "SALES":
+                    permissions.ShowSales = true;
+                    break;
+                case "WAREHOUSE":
+                    permissions.ShowWarehouse = true;
+                    break;
+            }
+            return permissions;
+        }
+    }
+
+    // DTO siêu nhỏ dùng để chứa kết quả trả về cho GUI
+    public class MenuPermissions
+    {
+        public bool ShowAdmin { get; set; } = false;
+        public bool ShowSales { get; set; } = false;
+        public bool ShowWarehouse { get; set; } = false;
+    }
+}

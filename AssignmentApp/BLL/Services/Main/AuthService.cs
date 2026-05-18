@@ -1,9 +1,9 @@
 using System.Threading.Tasks;
-using AssignmentApp.DAL.Repositories.Security;
+using AssignmentApp.DAL.Repositories.Main;
 using AssignmentApp.DTO;
-using AssignmentApp.BLL.Security;
+using AssignmentApp.BLL.Utils;
 
-namespace AssignmentApp.BLL.Services.Security
+namespace AssignmentApp.BLL.Services.Main
 {
     public class AuthService
     {

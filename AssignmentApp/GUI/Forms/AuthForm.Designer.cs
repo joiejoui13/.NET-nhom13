@@ -88,7 +88,7 @@ namespace AssignmentApp.GUI
             uiGroupBox1.Controls.Add(txtUser);
             uiGroupBox1.Controls.Add(label2);
             uiGroupBox1.Controls.Add(label1);
-            uiGroupBox1.CustomBorderColor = Color.FromArgb(28, 30, 38);
+            uiGroupBox1.CustomBorderColor = Color.FromArgb(0, 126, 249);
             uiGroupBox1.CustomizableEdges = customizableEdges5;
             uiGroupBox1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             uiGroupBox1.ForeColor = Color.White;
@@ -106,7 +106,7 @@ namespace AssignmentApp.GUI
             txtPass.CustomizableEdges = customizableEdges1;
             txtPass.DefaultText = "";
             txtPass.Font = new Font("Segoe UI", 12F);
-            txtPass.HoverState.BorderColor = Color.FromArgb(28, 30, 38);
+            txtPass.HoverState.BorderColor = Color.FromArgb(0, 126, 249);
             txtPass.Location = new Point(174, 133);
             txtPass.Margin = new Padding(4, 6, 4, 6);
             txtPass.Name = "txtPass";
@@ -125,7 +125,7 @@ namespace AssignmentApp.GUI
             txtUser.CustomizableEdges = customizableEdges3;
             txtUser.DefaultText = "";
             txtUser.Font = new Font("Segoe UI", 12F);
-            txtUser.HoverState.BorderColor = Color.FromArgb(28, 30, 38);
+            txtUser.HoverState.BorderColor = Color.FromArgb(0, 126, 249);
             txtUser.Location = new Point(174, 59);
             txtUser.Margin = new Padding(4, 6, 4, 6);
             txtUser.Name = "txtUser";
@@ -165,7 +165,7 @@ namespace AssignmentApp.GUI
             btnLogin.DisabledState.CustomBorderColor = Color.DarkGray;
             btnLogin.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             btnLogin.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            btnLogin.FillColor = Color.FromArgb(28, 30, 38);
+            btnLogin.FillColor = Color.FromArgb(0, 126, 249);
             btnLogin.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnLogin.ForeColor = Color.White;
             btnLogin.Location = new Point(395, 285);

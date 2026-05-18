@@ -17,50 +17,63 @@ namespace AssignmentApp.GUI.Forms
         private void frmMain_Load(object sender, EventArgs e)
         {
             var user = UserSession.CurrentUser;
-            if (user == null)
-            {
-                MessageBox.Show("Vui lòng đăng nhập!");
-                this.Close();
-                return;
-            }
+            ApplyAuthorization(user.VaiTro);
+
             picLogo.ImageLocation = System.IO.Path.Combine(Application.StartupPath, @"..\..\..\GUI\Resources\Anhlogo.png");
             picLogo.SizeMode = PictureBoxSizeMode.StretchImage;
             picLogo.Padding = new Padding(0); // Đảm bảo không bị lề thụt vào
            
-            ApplyAuthorization(user.VaiTro);
+           
         }
 
         private void ApplyAuthorization(string role)
         {
-            pnlMenuAdmin.Visible = false;
-            pnlMenuSales.Visible = false;
-            pnlMenuWarehouse.Visible = false;
+            // Yêu cầu BLL (MainService) kiểm tra quyền hạn
+            var permissions = _mainService.GetPermissions(role);
 
-            switch (role?.Trim().ToUpper())
+            // GUI chỉ nhận kết quả (true/false) từ BLL và thay đổi UI tương ứng
+            pnlMenuAdmin.Visible = permissions.ShowAdmin;
+            pnlMenuSales.Visible = permissions.ShowSales;
+            pnlMenuWarehouse.Visible = permissions.ShowWarehouse;
+
+            // Đẩy menu tương ứng lên trên cùng
+            if (permissions.ShowAdmin) pnlMenuAdmin.BringToFront();
+            if (permissions.ShowSales) pnlMenuSales.BringToFront();
+            if (permissions.ShowWarehouse) pnlMenuWarehouse.BringToFront();
+
+            // Xóa trung tâm và hiển thị vai trò trên Header
+            pnlContainer.Controls.Clear();
+            lblTitle.Text = $"QUYỀN TRUY CẬP: {(role?.Trim().ToUpper() ?? "")}";
+        }
+
+        private void HighlightButton(object senderButton)
+        {
+            if (senderButton == null) return;
+            
+            // Reset màu cho tất cả các nút
+            Panel[] menus = { pnlMenuAdmin, pnlMenuSales, pnlMenuWarehouse };
+            foreach (var panel in menus)
             {
-                case "ADMIN":
-                    pnlMenuAdmin.Visible = true;
-                    pnlMenuAdmin.BringToFront();
-                    LoadUserControl(new ucReports(), "BÁO CÁO TỔNG HỢP");
-                    break;
+                foreach (Control ctrl in panel.Controls)
+                {
+                    if (ctrl is Guna.UI2.WinForms.Guna2Button btn)
+                    {
+                        btn.FillColor = System.Drawing.Color.Transparent;
+                        btn.ForeColor = System.Drawing.Color.FromArgb(160, 164, 177); // Màu chữ xám mặc định
+                    }
+                }
+            }
 
-                case "SALES":
-                    pnlMenuSales.Visible = true;
-                    pnlMenuSales.BringToFront();
-                    LoadUserControl(new ucPOS(), "HỆ THỐNG BÁN HÀNG (POS)");
-                    break;
-
-                case "WAREHOUSE":
-                    pnlMenuWarehouse.Visible = true;
-                    pnlMenuWarehouse.BringToFront();
-                    LoadUserControl(new ucStockIn(), "QUẢN LÝ NHẬP KHO");
-                    break;
+            // Đặt màu xanh cho nút được bấm
+            if (senderButton is Guna.UI2.WinForms.Guna2Button clickedBtn)
+            {
+                clickedBtn.FillColor = System.Drawing.Color.FromArgb(0, 126, 249); // Nền màu xanh
+                clickedBtn.ForeColor = System.Drawing.Color.White; // Chữ màu trắng cho nổi
             }
         }
 
-        private void LoadUserControl(UserControl uc, string title)
+        private void LoadUserControl(UserControl uc)
         {
-            lblTitle.Text = title;
             pnlContainer.Controls.Clear();
             uc.Dock = DockStyle.Fill;
             pnlContainer.Controls.Add(uc);
@@ -70,17 +83,20 @@ namespace AssignmentApp.GUI.Forms
         // ==========================================
         private void btnAdmin_Reports_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ucReports(), "BÁO CÁO TỔNG HỢP");
+            HighlightButton(sender);
+            LoadUserControl(new ucReports());
         }
 
         private void btnAdmin_Users_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ucUserManagement(), "QUẢN LÝ NHÂN VIÊN");
+            HighlightButton(sender);
+            LoadUserControl(new ucUserManagement());
         }
 
         private void btnAdmin_Promo_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ucPromotion(), "QUẢN LÝ KHUYẾN MÃI");
+            HighlightButton(sender);
+            LoadUserControl(new ucPromotion());
         }
 
         // ==========================================
@@ -88,27 +104,32 @@ namespace AssignmentApp.GUI.Forms
         // ==========================================
         private void btnSales_POS_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ucPOS(), "HỆ THỐNG BÁN HÀNG (POS)");
+            HighlightButton(sender);
+            LoadUserControl(new ucPOS());
         }
 
         private void btnSales_Orders_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ucOrderManagement(), "DANH SÁCH ĐƠN HÀNG");
+            HighlightButton(sender);
+            LoadUserControl(new ucOrderManagement());
         }
 
         private void btnSales_Delivery_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ucDelivery(), "QUẢN LÝ GIAO HÀNG");
+            HighlightButton(sender);
+            LoadUserControl(new ucDelivery());
         }
 
         private void btnSales_Returns_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ucReturns(), "TRẢ HÀNG / ĐỔI TRẢ");
+            HighlightButton(sender);
+            LoadUserControl(new ucReturns());
         }
 
         private void btnSales_Customers_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ucCustomer(), "DANH SÁCH KHÁCH HÀNG");
+            HighlightButton(sender);
+            LoadUserControl(new ucCustomer());
         }
 
         // ==========================================
@@ -116,34 +137,44 @@ namespace AssignmentApp.GUI.Forms
         // ==========================================
         private void btnWarehouse_Goods_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ucProductList(), "DANH MỤC HÀNG HÓA");
+            HighlightButton(sender);
+            LoadUserControl(new ucProductList());
         }
 
         private void btnWarehouse_Category_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ucCategory(), "PHÂN LOẠI SẢN PHẨM");
+            HighlightButton(sender);
+            LoadUserControl(new ucCategory());
         }
 
         private void btnWarehouse_StockIn_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ucStockIn(), "QUẢN LÝ NHẬP KHO");
+            HighlightButton(sender);
+            LoadUserControl(new ucStockIn());
         }
 
         private void btnWarehouse_Inventory_Click(object sender, EventArgs e)
         {
-            LoadUserControl(new ucInventory(), "KIỂM TRA TỒN KHO");
+            HighlightButton(sender);
+            LoadUserControl(new ucInventory());
         }
+
+        private readonly AssignmentApp.BLL.Services.Main.MainService _mainService = new AssignmentApp.BLL.Services.Main.MainService();
 
         private void btnDangXuat_Click(object sender, EventArgs e)
         {
-            UserSession.ClearSession();
-            frmAuth login = new frmAuth();
             DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn đăng xuất không?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
-                // Khởi động lại ứng dụng, tự động quay về Form chạy đầu tiên (Login)
-                Application.Restart();
+                // Gọi xuống BLL (MainService) để xử lý nghiệp vụ đăng xuất
+                _mainService.Logout(); 
+                
+                // Mở lại trang Login theo đúng code gốc của bạn
+                this.Hide();
+                frmAuth login = new frmAuth();
+                login.ShowDialog();
+                this.Close();
             }
         }
     }

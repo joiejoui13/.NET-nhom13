@@ -412,10 +412,10 @@ namespace AssignmentApp.GUI.Forms
             // 
             picLogo.CustomizableEdges = customizableEdges31;
             picLogo.ImageRotate = 0F;
-            picLogo.Location = new Point(3, 3);
+            picLogo.Location = new Point(0, 0);
             picLogo.Name = "picLogo";
             picLogo.ShadowDecoration.CustomizableEdges = customizableEdges32;
-            picLogo.Size = new Size(287, 129);
+            picLogo.Size = new Size(293, 137);
             picLogo.TabIndex = 0;
             picLogo.TabStop = false;
             // 
@@ -430,7 +430,7 @@ namespace AssignmentApp.GUI.Forms
             pnlHeader.Margin = new Padding(4, 5, 4, 5);
             pnlHeader.Name = "pnlHeader";
             pnlHeader.ShadowDecoration.CustomizableEdges = customizableEdges40;
-            pnlHeader.Size = new Size(1414, 92);
+            pnlHeader.Size = new Size(1414, 88);
             pnlHeader.TabIndex = 1;
             // 
             // btnDangXuat
@@ -453,24 +453,25 @@ namespace AssignmentApp.GUI.Forms
             // lblTitle
             // 
             lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblTitle.Font = new Font("Segoe UI", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblTitle.ForeColor = Color.FromArgb(28, 30, 38);
             lblTitle.Location = new Point(27, 25);
             lblTitle.Margin = new Padding(4, 0, 4, 0);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(164, 32);
+            lblTitle.Size = new Size(85, 38);
             lblTitle.TabIndex = 0;
-            lblTitle.Text = "DASHBOARD";
+            lblTitle.Text = "ROLE";
             // 
             // pnlContainer
             // 
+            pnlContainer.BackColor = Color.FromArgb(240, 242, 245);
             pnlContainer.CustomizableEdges = customizableEdges41;
             pnlContainer.Dock = DockStyle.Fill;
-            pnlContainer.Location = new Point(293, 92);
+            pnlContainer.Location = new Point(293, 88);
             pnlContainer.Margin = new Padding(4, 5, 4, 5);
             pnlContainer.Name = "pnlContainer";
             pnlContainer.ShadowDecoration.CustomizableEdges = customizableEdges42;
-            pnlContainer.Size = new Size(1414, 963);
+            pnlContainer.Size = new Size(1414, 967);
             pnlContainer.TabIndex = 2;
             // 
             // guna2DragControl1

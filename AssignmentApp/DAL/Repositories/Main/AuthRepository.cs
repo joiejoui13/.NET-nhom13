@@ -3,7 +3,7 @@ using AssignmentApp.DAL.Core;
 using AssignmentApp.DTO;
 using Dapper;
 
-namespace AssignmentApp.DAL.Repositories.Security
+namespace AssignmentApp.DAL.Repositories.Main
 {
     public class AuthRepository
     {

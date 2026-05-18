@@ -1,6 +1,6 @@
 using BCrypt.Net;
 
-namespace AssignmentApp.BLL.Security
+namespace AssignmentApp.BLL.Utils
 {
     public static class PasswordHasher
     {

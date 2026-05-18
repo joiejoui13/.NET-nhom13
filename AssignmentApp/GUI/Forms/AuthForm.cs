@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Forms;
 using Guna.UI2.WinForms;
-using AssignmentApp.BLL.Services.Security;
+using AssignmentApp.BLL.Services.Main;
 using AssignmentApp.BLL.Session;
 using AssignmentApp.DAL.Core;
 using AssignmentApp.GUI.Forms;

@@ -60,6 +60,7 @@ namespace AssignmentApp.GUI.Forms
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges38 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges41 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges42 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMain));
             pnlSidebar = new Guna.UI2.WinForms.Guna2Panel();
             pnlMenuAdmin = new Guna.UI2.WinForms.Guna2Panel();
             btnAdmin_Users = new Guna.UI2.WinForms.Guna2Button();
@@ -488,6 +489,7 @@ namespace AssignmentApp.GUI.Forms
             Controls.Add(pnlContainer);
             Controls.Add(pnlHeader);
             Controls.Add(pnlSidebar);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Margin = new Padding(5, 8, 5, 8);
             Name = "frmMain";
             Text = "Quản lý Văn phòng phẩm";

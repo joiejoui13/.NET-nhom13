@@ -47,6 +47,7 @@ namespace AssignmentApp.GUI
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAuth));
             guna2Elipse1 = new Guna2Elipse(components);
             guna2Panel1 = new Guna2Panel();
             uiGroupBox1 = new Guna2GroupBox();
@@ -224,6 +225,7 @@ namespace AssignmentApp.GUI
             ClientSize = new Size(984, 594);
             Controls.Add(guna2Panel1);
             FormBorderStyle = FormBorderStyle.None;
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "frmAuth";
             Text = "USER AUTHENTICATION";
             Load += AuthForm_Load;

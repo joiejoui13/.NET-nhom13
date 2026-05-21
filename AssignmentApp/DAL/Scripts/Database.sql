@@ -28,12 +28,13 @@ GO
 /****** Object:  Table [dbo].[tblHangHoa] (Mẫu cho Warehouse) ******/
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[tblHangHoa]') AND type in (N'U'))
 BEGIN
-CREATE TABLE [dbo].[tblHangHoa](
-	[MaHang] [nvarchar](10) NOT NULLPrimary Key,
-	[TenHang] [nvarchar](100) NULL,
-	[MaLoai] [nvarchar](10) NULL,
-	[SoLuong] [int] DEFAULT 0,
-	[DonGiaBan] [decimal](18, 2) DEFAULT 0
-)
+    CREATE TABLE [dbo].[tblHangHoa](
+        [MaHang] [nvarchar](10) NOT NULL PRIMARY KEY,
+        [TenHang] [nvarchar](100) NULL,
+        [MaLoai] [nvarchar](10) NULL,
+        [SoLuong] [int] DEFAULT 0,
+        [DonGiaBan] [decimal](18, 2) DEFAULT 0
+    )
 END
 GO
+

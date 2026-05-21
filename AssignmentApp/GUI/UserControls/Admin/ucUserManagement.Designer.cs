@@ -28,261 +28,290 @@ namespace AssignmentApp.GUI.UserControls.Admin
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
-            this.cboRole = new Guna.UI2.WinForms.Guna2ComboBox();
-            this.btnAddNewUser = new Guna.UI2.WinForms.Guna2Button();
-            this.btnExport = new Guna.UI2.WinForms.Guna2Button();
-            this.btnFilters = new Guna.UI2.WinForms.Guna2Button();
-            this.txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.dgvUsers = new Guna.UI2.WinForms.Guna2DataGridView();
-            this.pnlPagination = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnNext = new Guna.UI2.WinForms.Guna2Button();
-            this.btnPrev = new Guna.UI2.WinForms.Guna2Button();
-            this.lblPageInfo = new System.Windows.Forms.Label();
-            this.pnlHeader.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvUsers)).BeginInit();
-            this.pnlPagination.SuspendLayout();
-            this.SuspendLayout();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
+            DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
+            cboRole = new Guna.UI2.WinForms.Guna2ComboBox();
+            btnAddNewUser = new Guna.UI2.WinForms.Guna2Button();
+            btnExport = new Guna.UI2.WinForms.Guna2Button();
+            btnFilters = new Guna.UI2.WinForms.Guna2Button();
+            txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
+            dgvUsers = new Guna.UI2.WinForms.Guna2DataGridView();
+            pnlPagination = new Guna.UI2.WinForms.Guna2Panel();
+            btnNext = new Guna.UI2.WinForms.Guna2Button();
+            btnPrev = new Guna.UI2.WinForms.Guna2Button();
+            lblPageInfo = new Label();
+            pnlHeader.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgvUsers).BeginInit();
+            pnlPagination.SuspendLayout();
+            SuspendLayout();
             // 
             // pnlHeader
             // 
-            this.pnlHeader.Controls.Add(this.cboRole);
-            this.pnlHeader.Controls.Add(this.btnAddNewUser);
-            this.pnlHeader.Controls.Add(this.btnExport);
-            this.pnlHeader.Controls.Add(this.btnFilters);
-            this.pnlHeader.Controls.Add(this.txtSearch);
-            this.pnlHeader.Controls.Add(this.lblTitle);
-            this.pnlHeader.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlHeader.Location = new System.Drawing.Point(0, 0);
-            this.pnlHeader.Name = "pnlHeader";
-            this.pnlHeader.Size = new System.Drawing.Size(1000, 80);
-            this.pnlHeader.TabIndex = 0;
+            pnlHeader.Controls.Add(cboRole);
+            pnlHeader.Controls.Add(btnAddNewUser);
+            pnlHeader.Controls.Add(btnExport);
+            pnlHeader.Controls.Add(btnFilters);
+            pnlHeader.Controls.Add(txtSearch);
+            pnlHeader.CustomizableEdges = customizableEdges11;
+            pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Location = new Point(31, 41);
+            pnlHeader.Margin = new Padding(3, 4, 3, 4);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            pnlHeader.Size = new Size(1081, 107);
+            pnlHeader.TabIndex = 0;
             // 
             // cboRole
             // 
-            this.cboRole.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cboRole.BackColor = System.Drawing.Color.Transparent;
-            this.cboRole.BorderRadius = 5;
-            this.cboRole.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cboRole.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cboRole.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
-            this.cboRole.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
-            this.cboRole.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cboRole.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
-            this.cboRole.ItemHeight = 34;
-            this.cboRole.Items.AddRange(new object[] {
-            "Tất cả vai trò",
-            "Quản trị viên",
-            "Nhân viên",
-            "Khách hàng"});
-            this.cboRole.Location = new System.Drawing.Point(190, 20);
-            this.cboRole.Name = "cboRole";
-            this.cboRole.Size = new System.Drawing.Size(150, 40);
-            this.cboRole.StartIndex = 0;
-            this.cboRole.TabIndex = 5;
+            cboRole.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            cboRole.BackColor = Color.Transparent;
+            cboRole.BorderRadius = 5;
+            cboRole.CustomizableEdges = customizableEdges1;
+            cboRole.DrawMode = DrawMode.OwnerDrawFixed;
+            cboRole.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboRole.FocusedColor = Color.FromArgb(0, 126, 249);
+            cboRole.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            cboRole.Font = new Font("Segoe UI", 10F);
+            cboRole.ForeColor = Color.FromArgb(68, 88, 112);
+            cboRole.ItemHeight = 34;
+            cboRole.Items.AddRange(new object[] { "Tất cả vai trò", "Quản trị viên", "Nhân viên", "Khách hàng" });
+            cboRole.Location = new Point(155, 27);
+            cboRole.Margin = new Padding(3, 4, 3, 4);
+            cboRole.Name = "cboRole";
+            cboRole.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            cboRole.Size = new Size(171, 40);
+            cboRole.StartIndex = 0;
+            cboRole.TabIndex = 5;
             // 
             // btnAddNewUser
             // 
-            this.btnAddNewUser.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddNewUser.BorderRadius = 5;
-            this.btnAddNewUser.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnAddNewUser.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
-            this.btnAddNewUser.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnAddNewUser.ForeColor = System.Drawing.Color.White;
-            this.btnAddNewUser.Location = new System.Drawing.Point(780, 20);
-            this.btnAddNewUser.Name = "btnAddNewUser";
-            this.btnAddNewUser.Size = new System.Drawing.Size(200, 40);
-            this.btnAddNewUser.TabIndex = 2;
-            this.btnAddNewUser.Text = "+ Thêm Người dùng";
-            this.btnAddNewUser.Click += new System.EventHandler(this.btnAddNewUser_Click);
+            btnAddNewUser.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnAddNewUser.BorderRadius = 5;
+            btnAddNewUser.Cursor = Cursors.Hand;
+            btnAddNewUser.CustomizableEdges = customizableEdges3;
+            btnAddNewUser.FillColor = Color.FromArgb(0, 126, 249);
+            btnAddNewUser.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnAddNewUser.ForeColor = Color.White;
+            btnAddNewUser.Location = new Point(829, 27);
+            btnAddNewUser.Margin = new Padding(3, 4, 3, 4);
+            btnAddNewUser.Name = "btnAddNewUser";
+            btnAddNewUser.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            btnAddNewUser.Size = new Size(229, 53);
+            btnAddNewUser.TabIndex = 2;
+            btnAddNewUser.Text = "+ Thêm Người dùng";
+            btnAddNewUser.Click += btnAddNewUser_Click;
             // 
             // btnExport
             // 
-            this.btnExport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnExport.BorderColor = System.Drawing.Color.LightGray;
-            this.btnExport.BorderRadius = 5;
-            this.btnExport.BorderThickness = 1;
-            this.btnExport.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnExport.FillColor = System.Drawing.Color.White;
-            this.btnExport.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnExport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnExport.Location = new System.Drawing.Point(670, 20);
-            this.btnExport.Name = "btnExport";
-            this.btnExport.Size = new System.Drawing.Size(100, 40);
-            this.btnExport.TabIndex = 3;
-            this.btnExport.Text = "Xuất file";
+            btnExport.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnExport.BorderColor = Color.LightGray;
+            btnExport.BorderRadius = 5;
+            btnExport.BorderThickness = 1;
+            btnExport.Cursor = Cursors.Hand;
+            btnExport.CustomizableEdges = customizableEdges5;
+            btnExport.FillColor = Color.White;
+            btnExport.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnExport.ForeColor = Color.FromArgb(64, 64, 64);
+            btnExport.Location = new Point(704, 27);
+            btnExport.Margin = new Padding(3, 4, 3, 4);
+            btnExport.Name = "btnExport";
+            btnExport.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            btnExport.Size = new Size(114, 53);
+            btnExport.TabIndex = 3;
+            btnExport.Text = "Xuất file";
             // 
             // btnFilters
             // 
-            this.btnFilters.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnFilters.BorderColor = System.Drawing.Color.LightGray;
-            this.btnFilters.BorderRadius = 5;
-            this.btnFilters.BorderThickness = 1;
-            this.btnFilters.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnFilters.FillColor = System.Drawing.Color.White;
-            this.btnFilters.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.btnFilters.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnFilters.Location = new System.Drawing.Point(560, 20);
-            this.btnFilters.Name = "btnFilters";
-            this.btnFilters.Size = new System.Drawing.Size(100, 40);
-            this.btnFilters.TabIndex = 4;
-            this.btnFilters.Text = "Bộ lọc";
+            btnFilters.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnFilters.BorderColor = Color.LightGray;
+            btnFilters.BorderRadius = 5;
+            btnFilters.BorderThickness = 1;
+            btnFilters.Cursor = Cursors.Hand;
+            btnFilters.CustomizableEdges = customizableEdges7;
+            btnFilters.FillColor = Color.White;
+            btnFilters.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnFilters.ForeColor = Color.FromArgb(64, 64, 64);
+            btnFilters.Location = new Point(578, 27);
+            btnFilters.Margin = new Padding(3, 4, 3, 4);
+            btnFilters.Name = "btnFilters";
+            btnFilters.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            btnFilters.Size = new Size(114, 53);
+            btnFilters.TabIndex = 4;
+            btnFilters.Text = "Bộ lọc";
             // 
             // txtSearch
             // 
-            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearch.BorderRadius = 5;
-            this.txtSearch.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtSearch.DefaultText = "";
-            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtSearch.Location = new System.Drawing.Point(350, 20);
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.PasswordChar = '\0';
-            this.txtSearch.PlaceholderText = "Tìm kiếm tên, email...";
-            this.txtSearch.SelectedText = "";
-            this.txtSearch.Size = new System.Drawing.Size(200, 40);
-            this.txtSearch.TabIndex = 1;
-            // 
-            // lblTitle
-            // 
-            this.lblTitle.AutoSize = true;
-            this.lblTitle.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(33)))), ((int)(((byte)(37)))), ((int)(((byte)(41)))));
-            this.lblTitle.Location = new System.Drawing.Point(20, 25);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(225, 30);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "Quản lý Người dùng";
+            txtSearch.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            txtSearch.BorderRadius = 5;
+            txtSearch.Cursor = Cursors.IBeam;
+            txtSearch.CustomizableEdges = customizableEdges9;
+            txtSearch.DefaultText = "";
+            txtSearch.Font = new Font("Segoe UI", 9F);
+            txtSearch.Location = new Point(338, 27);
+            txtSearch.Margin = new Padding(3, 5, 3, 5);
+            txtSearch.Name = "txtSearch";
+            txtSearch.PlaceholderText = "Tìm kiếm tên, email...";
+            txtSearch.SelectedText = "";
+            txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            txtSearch.Size = new Size(229, 53);
+            txtSearch.TabIndex = 1;
             // 
             // dgvUsers
             // 
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            this.dgvUsers.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            this.dgvUsers.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvUsers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            this.dgvUsers.ColumnHeadersHeight = 45;
-            this.dgvUsers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvUsers.DefaultCellStyle = dataGridViewCellStyle3;
-            this.dgvUsers.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvUsers.Location = new System.Drawing.Point(20, 100);
-            this.dgvUsers.Name = "dgvUsers";
-            this.dgvUsers.RowHeadersVisible = false;
-            this.dgvUsers.Size = new System.Drawing.Size(956, 520);
-            this.dgvUsers.TabIndex = 1;
-            this.dgvUsers.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
-            this.dgvUsers.ThemeStyle.AlternatingRowsStyle.Font = null;
-            this.dgvUsers.ThemeStyle.AlternatingRowsStyle.ForeColor = System.Drawing.Color.Empty;
-            this.dgvUsers.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = System.Drawing.Color.Empty;
-            this.dgvUsers.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = System.Drawing.Color.Empty;
-            this.dgvUsers.ThemeStyle.BackColor = System.Drawing.Color.White;
-            this.dgvUsers.ThemeStyle.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvUsers.ThemeStyle.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(126)))), ((int)(((byte)(249)))));
-            this.dgvUsers.ThemeStyle.HeaderStyle.BorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.dgvUsers.ThemeStyle.HeaderStyle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.dgvUsers.ThemeStyle.HeaderStyle.ForeColor = System.Drawing.Color.White;
-            this.dgvUsers.ThemeStyle.HeaderStyle.HeaightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            this.dgvUsers.ThemeStyle.HeaderStyle.Height = 45;
-            this.dgvUsers.ThemeStyle.ReadOnly = false;
-            this.dgvUsers.ThemeStyle.RowsStyle.BackColor = System.Drawing.Color.White;
-            this.dgvUsers.ThemeStyle.RowsStyle.BorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.dgvUsers.ThemeStyle.RowsStyle.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.dgvUsers.ThemeStyle.RowsStyle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            this.dgvUsers.ThemeStyle.RowsStyle.Height = 35;
-            this.dgvUsers.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvUsers.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            this.dgvUsers.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvUsers_CellContentClick);
+            dataGridViewCellStyle1.BackColor = Color.White;
+            dgvUsers.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dgvUsers.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(0, 126, 249);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dataGridViewCellStyle2.ForeColor = Color.White;
+            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(0, 126, 249);
+            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
+            dgvUsers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dgvUsers.ColumnHeadersHeight = 45;
+            dgvUsers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = Color.White;
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 10F);
+            dataGridViewCellStyle3.ForeColor = Color.FromArgb(71, 69, 94);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(231, 229, 255);
+            dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
+            dgvUsers.DefaultCellStyle = dataGridViewCellStyle3;
+            dgvUsers.GridColor = Color.FromArgb(231, 229, 255);
+            dgvUsers.Location = new Point(23, 133);
+            dgvUsers.Margin = new Padding(3, 4, 3, 4);
+            dgvUsers.Name = "dgvUsers";
+            dgvUsers.RowHeadersVisible = false;
+            dgvUsers.RowHeadersWidth = 51;
+            dgvUsers.RowTemplate.Height = 35;
+            dgvUsers.Size = new Size(712, 693);
+            dgvUsers.TabIndex = 1;
+            dgvUsers.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
+            dgvUsers.ThemeStyle.AlternatingRowsStyle.Font = null;
+            dgvUsers.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
+            dgvUsers.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.Empty;
+            dgvUsers.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
+            dgvUsers.ThemeStyle.BackColor = Color.White;
+            dgvUsers.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
+            dgvUsers.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(0, 126, 249);
+            dgvUsers.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvUsers.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvUsers.ThemeStyle.HeaderStyle.ForeColor = Color.White;
+            dgvUsers.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dgvUsers.ThemeStyle.HeaderStyle.Height = 45;
+            dgvUsers.ThemeStyle.ReadOnly = false;
+            dgvUsers.ThemeStyle.RowsStyle.BackColor = Color.White;
+            dgvUsers.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvUsers.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 10F);
+            dgvUsers.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(71, 69, 94);
+            dgvUsers.ThemeStyle.RowsStyle.Height = 35;
+            dgvUsers.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
+            dgvUsers.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            dgvUsers.CellContentClick += dgvUsers_CellContentClick;
             // 
             // pnlPagination
             // 
-            this.pnlPagination.Controls.Add(this.btnNext);
-            this.pnlPagination.Controls.Add(this.btnPrev);
-            this.pnlPagination.Controls.Add(this.lblPageInfo);
-            this.pnlPagination.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlPagination.Location = new System.Drawing.Point(0, 640);
-            this.pnlPagination.Name = "pnlPagination";
-            this.pnlPagination.Size = new System.Drawing.Size(1000, 60);
-            this.pnlPagination.TabIndex = 2;
+            pnlPagination.Controls.Add(btnNext);
+            pnlPagination.Controls.Add(btnPrev);
+            pnlPagination.Controls.Add(lblPageInfo);
+            pnlPagination.CustomizableEdges = customizableEdges17;
+            pnlPagination.Dock = DockStyle.Bottom;
+            pnlPagination.Location = new Point(31, 812);
+            pnlPagination.Margin = new Padding(3, 4, 3, 4);
+            pnlPagination.Name = "pnlPagination";
+            pnlPagination.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            pnlPagination.Size = new Size(1081, 80);
+            pnlPagination.TabIndex = 2;
             // 
             // btnNext
             // 
-            this.btnNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnNext.BorderColor = System.Drawing.Color.LightGray;
-            this.btnNext.BorderRadius = 5;
-            this.btnNext.BorderThickness = 1;
-            this.btnNext.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnNext.FillColor = System.Drawing.Color.White;
-            this.btnNext.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnNext.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnNext.Location = new System.Drawing.Point(880, 10);
-            this.btnNext.Name = "btnNext";
-            this.btnNext.Size = new System.Drawing.Size(100, 40);
-            this.btnNext.TabIndex = 5;
-            this.btnNext.Text = "Trang sau";
+            btnNext.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnNext.BorderColor = Color.LightGray;
+            btnNext.BorderRadius = 5;
+            btnNext.BorderThickness = 1;
+            btnNext.Cursor = Cursors.Hand;
+            btnNext.CustomizableEdges = customizableEdges13;
+            btnNext.FillColor = Color.White;
+            btnNext.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnNext.ForeColor = Color.FromArgb(64, 64, 64);
+            btnNext.Location = new Point(944, 13);
+            btnNext.Margin = new Padding(3, 4, 3, 4);
+            btnNext.Name = "btnNext";
+            btnNext.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            btnNext.Size = new Size(114, 53);
+            btnNext.TabIndex = 5;
+            btnNext.Text = "Trang sau";
             // 
             // btnPrev
             // 
-            this.btnPrev.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPrev.BorderColor = System.Drawing.Color.LightGray;
-            this.btnPrev.BorderRadius = 5;
-            this.btnPrev.BorderThickness = 1;
-            this.btnPrev.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPrev.FillColor = System.Drawing.Color.White;
-            this.btnPrev.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnPrev.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnPrev.Location = new System.Drawing.Point(770, 10);
-            this.btnPrev.Name = "btnPrev";
-            this.btnPrev.Size = new System.Drawing.Size(100, 40);
-            this.btnPrev.TabIndex = 6;
-            this.btnPrev.Text = "Trang trước";
+            btnPrev.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnPrev.BorderColor = Color.LightGray;
+            btnPrev.BorderRadius = 5;
+            btnPrev.BorderThickness = 1;
+            btnPrev.Cursor = Cursors.Hand;
+            btnPrev.CustomizableEdges = customizableEdges15;
+            btnPrev.FillColor = Color.White;
+            btnPrev.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnPrev.ForeColor = Color.FromArgb(64, 64, 64);
+            btnPrev.Location = new Point(818, 13);
+            btnPrev.Margin = new Padding(3, 4, 3, 4);
+            btnPrev.Name = "btnPrev";
+            btnPrev.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            btnPrev.Size = new Size(114, 53);
+            btnPrev.TabIndex = 6;
+            btnPrev.Text = "Trang trước";
             // 
             // lblPageInfo
             // 
-            this.lblPageInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblPageInfo.AutoSize = true;
-            this.lblPageInfo.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPageInfo.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblPageInfo.Location = new System.Drawing.Point(670, 20);
-            this.lblPageInfo.Name = "lblPageInfo";
-            this.lblPageInfo.Size = new System.Drawing.Size(84, 19);
-            this.lblPageInfo.TabIndex = 7;
-            this.lblPageInfo.Text = "Trang 1 / 10";
+            lblPageInfo.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblPageInfo.AutoSize = true;
+            lblPageInfo.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblPageInfo.ForeColor = Color.FromArgb(64, 64, 64);
+            lblPageInfo.Location = new Point(704, 27);
+            lblPageInfo.Name = "lblPageInfo";
+            lblPageInfo.Size = new Size(102, 23);
+            lblPageInfo.TabIndex = 7;
+            lblPageInfo.Text = "Trang 1 / 10";
             // 
             // ucUserManagement
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
-            this.Controls.Add(this.pnlPagination);
-            this.Controls.Add(this.dgvUsers);
-            this.Controls.Add(this.pnlHeader);
-            this.Name = "ucUserManagement";
-            this.Size = new System.Drawing.Size(1000, 700);
-            this.pnlHeader.ResumeLayout(false);
-            this.pnlHeader.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvUsers)).EndInit();
-            this.pnlPagination.ResumeLayout(false);
-            this.pnlPagination.PerformLayout();
-            this.ResumeLayout(false);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(240, 242, 245);
+            Controls.Add(pnlPagination);
+            Controls.Add(dgvUsers);
+            Controls.Add(pnlHeader);
+            Margin = new Padding(5, 7, 5, 7);
+            Name = "ucUserManagement";
+            Padding = new Padding(31, 41, 31, 41);
+            Size = new Size(1143, 933);
+            pnlHeader.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgvUsers).EndInit();
+            pnlPagination.ResumeLayout(false);
+            pnlPagination.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion
@@ -293,7 +322,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
         private Guna.UI2.WinForms.Guna2Button btnExport;
         private Guna.UI2.WinForms.Guna2Button btnFilters;
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
-        private System.Windows.Forms.Label lblTitle;
         private Guna.UI2.WinForms.Guna2DataGridView dgvUsers;
         private Guna.UI2.WinForms.Guna2Panel pnlPagination;
         private Guna.UI2.WinForms.Guna2Button btnNext;

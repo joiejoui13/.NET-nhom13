@@ -48,7 +48,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
             btnExport = new Guna.UI2.WinForms.Guna2Button();
             btnFilters = new Guna.UI2.WinForms.Guna2Button();
             txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
-            lblTitle = new Label();
             dgvPromotion = new Guna.UI2.WinForms.Guna2DataGridView();
             pnlPagination = new Guna.UI2.WinForms.Guna2Panel();
             btnNext = new Guna.UI2.WinForms.Guna2Button();
@@ -65,7 +64,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
             pnlHeader.Controls.Add(btnExport);
             pnlHeader.Controls.Add(btnFilters);
             pnlHeader.Controls.Add(txtSearch);
-            pnlHeader.Controls.Add(lblTitle);
             pnlHeader.CustomizableEdges = customizableEdges9;
             pnlHeader.Dock = DockStyle.Top;
             pnlHeader.Location = new Point(31, 41);
@@ -147,17 +145,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges8;
             txtSearch.Size = new Size(309, 53);
             txtSearch.TabIndex = 1;
-            // 
-            // lblTitle
-            // 
-            lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 16F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblTitle.ForeColor = Color.FromArgb(33, 37, 41);
-            lblTitle.Location = new Point(23, 33);
-            lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(272, 37);
-            lblTitle.TabIndex = 0;
-            lblTitle.Text = "Quản lý Khuyến mãi";
             // 
             // dgvPromotion
             // 
@@ -291,7 +278,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
             Padding = new Padding(31, 41, 31, 41);
             Size = new Size(1143, 933);
             pnlHeader.ResumeLayout(false);
-            pnlHeader.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvPromotion).EndInit();
             pnlPagination.ResumeLayout(false);
             pnlPagination.PerformLayout();
@@ -306,7 +292,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
         private Guna.UI2.WinForms.Guna2Button btnExport;
         private Guna.UI2.WinForms.Guna2Button btnFilters;
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
-        private System.Windows.Forms.Label lblTitle;
         private Guna.UI2.WinForms.Guna2DataGridView dgvPromotion;
         private Guna.UI2.WinForms.Guna2Panel pnlPagination;
         private Guna.UI2.WinForms.Guna2Button btnNext;

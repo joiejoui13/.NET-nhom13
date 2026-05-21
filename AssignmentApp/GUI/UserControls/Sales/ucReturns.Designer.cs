@@ -28,482 +28,427 @@
         /// </summary>
         private void InitializeComponent()
         {
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            btnDangXuat = new Guna.UI2.WinForms.Guna2Button();
-            guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
-            guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
-            guna2GroupBox1 = new Guna.UI2.WinForms.Guna2GroupBox();
-            guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2Button1 = new Guna.UI2.WinForms.Guna2Button();
-            guna2HtmlLabel4 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2TextBox1 = new Guna.UI2.WinForms.Guna2TextBox();
-            guna2DataGridView1 = new Guna.UI2.WinForms.Guna2DataGridView();
-            guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
-            guna2GroupBox2 = new Guna.UI2.WinForms.Guna2GroupBox();
-            guna2HtmlLabel5 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2RadioButton1 = new Guna.UI2.WinForms.Guna2RadioButton();
-            guna2RadioButton2 = new Guna.UI2.WinForms.Guna2RadioButton();
-            guna2HtmlLabel6 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2HtmlLabel7 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2TextBox3 = new Guna.UI2.WinForms.Guna2TextBox();
-            guna2GroupBox3 = new Guna.UI2.WinForms.Guna2GroupBox();
-            guna2HtmlLabel8 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2HtmlLabel9 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2HtmlLabel10 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2Button3 = new Guna.UI2.WinForms.Guna2Button();
-            guna2Panel1.SuspendLayout();
-            guna2Panel2.SuspendLayout();
-            guna2GroupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)guna2DataGridView1).BeginInit();
-            guna2GroupBox2.SuspendLayout();
-            guna2GroupBox3.SuspendLayout();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            headerPanel = new Guna.UI2.WinForms.Guna2Panel();
+            lblTitle = new Label();
+            btnLogout = new Guna.UI2.WinForms.Guna2Button();
+            gbInvoice = new Guna.UI2.WinForms.Guna2GroupBox();
+            lblInvoice = new Label();
+            txtInvoice = new Guna.UI2.WinForms.Guna2TextBox();
+            btnSearch = new Guna.UI2.WinForms.Guna2Button();
+            gridPanel = new Guna.UI2.WinForms.Guna2Panel();
+            dgv = new Guna.UI2.WinForms.Guna2DataGridView();
+            gbReturn = new Guna.UI2.WinForms.Guna2GroupBox();
+            rdRefund = new Guna.UI2.WinForms.Guna2RadioButton();
+            rdExchange = new Guna.UI2.WinForms.Guna2RadioButton();
+            txtNote = new Guna.UI2.WinForms.Guna2TextBox();
+            summaryPanel = new Guna.UI2.WinForms.Guna2Panel();
+            lblMoney = new Label();
+            lblFee = new Label();
+            lblFinal = new Label();
+            btnReturn = new Guna.UI2.WinForms.Guna2Button();
+            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn3 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn4 = new DataGridViewTextBoxColumn();
+            headerPanel.SuspendLayout();
+            gbInvoice.SuspendLayout();
+            gridPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
+            gbReturn.SuspendLayout();
+            summaryPanel.SuspendLayout();
             SuspendLayout();
             // 
-            // btnDangXuat
+            // headerPanel
             // 
-            btnDangXuat.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnDangXuat.BorderRadius = 5;
-            btnDangXuat.CustomizableEdges = customizableEdges1;
-            btnDangXuat.FillColor = Color.FromArgb(244, 67, 54);
-            btnDangXuat.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnDangXuat.ForeColor = Color.White;
-            btnDangXuat.Location = new Point(1612, 0);
-            btnDangXuat.Margin = new Padding(5, 6, 5, 6);
-            btnDangXuat.Name = "btnDangXuat";
-            btnDangXuat.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnDangXuat.Size = new Size(167, 67);
-            btnDangXuat.TabIndex = 2;
-            btnDangXuat.Text = "ĐĂNG XUẤT";
+            headerPanel.Controls.Add(lblTitle);
+            headerPanel.Controls.Add(btnLogout);
+            headerPanel.CustomizableEdges = customizableEdges3;
+            headerPanel.Dock = DockStyle.Top;
+            headerPanel.FillColor = Color.White;
+            headerPanel.Location = new Point(33, 38);
+            headerPanel.Name = "headerPanel";
+            headerPanel.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            headerPanel.ShadowDecoration.Enabled = true;
+            headerPanel.Size = new Size(1134, 70);
+            headerPanel.TabIndex = 0;
             // 
-            // guna2Panel1
+            // lblTitle
             // 
-            guna2Panel1.Controls.Add(guna2GroupBox3);
-            guna2Panel1.Controls.Add(guna2HtmlLabel6);
-            guna2Panel1.Controls.Add(guna2GroupBox2);
-            guna2Panel1.Controls.Add(guna2DataGridView1);
-            guna2Panel1.Controls.Add(guna2GroupBox1);
-            guna2Panel1.CustomizableEdges = customizableEdges17;
-            guna2Panel1.Location = new Point(15, 97);
-            guna2Panel1.Name = "guna2Panel1";
-            guna2Panel1.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            guna2Panel1.Size = new Size(946, 802);
-            guna2Panel1.TabIndex = 3;
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
+            lblTitle.ForeColor = Color.FromArgb(75, 0, 130);
+            lblTitle.Location = new Point(17, 8);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(371, 48);
+            lblTitle.TabIndex = 0;
+            lblTitle.Text = "QUẢN LÝ TRẢ HÀNG";
             // 
-            // guna2Panel2
+            // btnLogout
             // 
-            guna2Panel2.Controls.Add(guna2Button2);
-            guna2Panel2.Controls.Add(btnDangXuat);
-            guna2Panel2.CustomizableEdges = customizableEdges21;
-            guna2Panel2.Location = new Point(15, 19);
-            guna2Panel2.Name = "guna2Panel2";
-            guna2Panel2.ShadowDecoration.CustomizableEdges = customizableEdges22;
-            guna2Panel2.Size = new Size(946, 72);
-            guna2Panel2.TabIndex = 5;
+            btnLogout.BorderRadius = 12;
+            btnLogout.CustomizableEdges = customizableEdges1;
+            btnLogout.FillColor = Color.FromArgb(220, 53, 69);
+            btnLogout.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnLogout.ForeColor = Color.White;
+            btnLogout.Location = new Point(987, 14);
+            btnLogout.Name = "btnLogout";
+            btnLogout.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            btnLogout.Size = new Size(130, 42);
+            btnLogout.TabIndex = 1;
+            btnLogout.Text = "Đăng xuất";
             // 
-            // guna2GroupBox1
+            // gbInvoice
             // 
-            guna2GroupBox1.Controls.Add(guna2HtmlLabel1);
-            guna2GroupBox1.Controls.Add(guna2HtmlLabel2);
-            guna2GroupBox1.Controls.Add(guna2HtmlLabel3);
-            guna2GroupBox1.Controls.Add(guna2Button1);
-            guna2GroupBox1.Controls.Add(guna2HtmlLabel4);
-            guna2GroupBox1.Controls.Add(guna2TextBox1);
-            guna2GroupBox1.CustomizableEdges = customizableEdges15;
-            guna2GroupBox1.FillColor = Color.LavenderBlush;
-            guna2GroupBox1.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            guna2GroupBox1.ForeColor = Color.FromArgb(125, 137, 149);
-            guna2GroupBox1.Location = new Point(21, 20);
-            guna2GroupBox1.Name = "guna2GroupBox1";
-            guna2GroupBox1.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            guna2GroupBox1.Size = new Size(909, 179);
-            guna2GroupBox1.TabIndex = 8;
-            guna2GroupBox1.Text = "Thông tin hóa đơn";
+            gbInvoice.BorderRadius = 18;
+            gbInvoice.Controls.Add(lblInvoice);
+            gbInvoice.Controls.Add(txtInvoice);
+            gbInvoice.Controls.Add(btnSearch);
+            gbInvoice.CustomizableEdges = customizableEdges9;
+            gbInvoice.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            gbInvoice.ForeColor = Color.FromArgb(125, 137, 149);
+            gbInvoice.Location = new Point(25, 114);
+            gbInvoice.Name = "gbInvoice";
+            gbInvoice.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            gbInvoice.Size = new Size(1140, 140);
+            gbInvoice.TabIndex = 1;
+            gbInvoice.Text = "Thông tin hóa đơn";
             // 
-            // guna2HtmlLabel1
+            // lblInvoice
             // 
-            guna2HtmlLabel1.BackColor = Color.Transparent;
-            guna2HtmlLabel1.Location = new Point(567, 66);
-            guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            guna2HtmlLabel1.Size = new Size(85, 27);
-            guna2HtmlLabel1.TabIndex = 6;
-            guna2HtmlLabel1.Text = "Ngày Mua";
+            lblInvoice.Font = new Font("Segoe UI", 10F);
+            lblInvoice.Location = new Point(25, 55);
+            lblInvoice.Name = "lblInvoice";
+            lblInvoice.Size = new Size(100, 23);
+            lblInvoice.TabIndex = 0;
+            lblInvoice.Text = "Mã hóa đơn";
             // 
-            // guna2HtmlLabel2
+            // txtInvoice
             // 
-            guna2HtmlLabel2.BackColor = Color.Transparent;
-            guna2HtmlLabel2.Location = new Point(388, 110);
-            guna2HtmlLabel2.Name = "guna2HtmlLabel2";
-            guna2HtmlLabel2.Size = new Size(108, 27);
-            guna2HtmlLabel2.TabIndex = 5;
-            guna2HtmlLabel2.Text = "Số điện thoại";
+            txtInvoice.BorderRadius = 12;
+            txtInvoice.CustomizableEdges = customizableEdges5;
+            txtInvoice.DefaultText = "";
+            txtInvoice.Font = new Font("Segoe UI", 9F);
+            txtInvoice.Location = new Point(25, 80);
+            txtInvoice.Margin = new Padding(4, 5, 4, 5);
+            txtInvoice.Name = "txtInvoice";
+            txtInvoice.PlaceholderText = "Nhập mã hóa đơn...";
+            txtInvoice.SelectedText = "";
+            txtInvoice.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            txtInvoice.Size = new Size(250, 42);
+            txtInvoice.TabIndex = 1;
             // 
-            // guna2HtmlLabel3
+            // btnSearch
             // 
-            guna2HtmlLabel3.BackColor = Color.Transparent;
-            guna2HtmlLabel3.Location = new Point(18, 110);
-            guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            guna2HtmlLabel3.Size = new Size(95, 27);
-            guna2HtmlLabel3.TabIndex = 4;
-            guna2HtmlLabel3.Text = "Khách hàng";
+            btnSearch.BorderRadius = 12;
+            btnSearch.CustomizableEdges = customizableEdges7;
+            btnSearch.FillColor = Color.FromArgb(111, 66, 193);
+            btnSearch.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnSearch.ForeColor = Color.White;
+            btnSearch.Location = new Point(300, 80);
+            btnSearch.Name = "btnSearch";
+            btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            btnSearch.Size = new Size(140, 42);
+            btnSearch.TabIndex = 2;
+            btnSearch.Text = "Tìm kiếm";
             // 
-            // guna2Button1
+            // gridPanel
             // 
-            guna2Button1.CustomizableEdges = customizableEdges11;
-            guna2Button1.DisabledState.BorderColor = Color.DarkGray;
-            guna2Button1.DisabledState.CustomBorderColor = Color.DarkGray;
-            guna2Button1.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            guna2Button1.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            guna2Button1.Font = new Font("Segoe UI", 9F);
-            guna2Button1.ForeColor = Color.White;
-            guna2Button1.Location = new Point(388, 62);
-            guna2Button1.Name = "guna2Button1";
-            guna2Button1.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            guna2Button1.Size = new Size(135, 31);
-            guna2Button1.TabIndex = 3;
-            guna2Button1.Text = "Tìm kiếm";
+            gridPanel.BorderRadius = 20;
+            gridPanel.Controls.Add(dgv);
+            gridPanel.CustomizableEdges = customizableEdges11;
+            gridPanel.FillColor = Color.White;
+            gridPanel.Location = new Point(27, 260);
+            gridPanel.Name = "gridPanel";
+            gridPanel.Padding = new Padding(15);
+            gridPanel.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            gridPanel.Size = new Size(1140, 260);
+            gridPanel.TabIndex = 2;
             // 
-            // guna2HtmlLabel4
+            // dgv
             // 
-            guna2HtmlLabel4.BackColor = Color.Transparent;
-            guna2HtmlLabel4.Location = new Point(18, 62);
-            guna2HtmlLabel4.Name = "guna2HtmlLabel4";
-            guna2HtmlLabel4.Size = new Size(100, 27);
-            guna2HtmlLabel4.TabIndex = 2;
-            guna2HtmlLabel4.Text = "Mã hóa đơn";
-            // 
-            // guna2TextBox1
-            // 
-            guna2TextBox1.CustomizableEdges = customizableEdges13;
-            guna2TextBox1.DefaultText = "";
-            guna2TextBox1.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
-            guna2TextBox1.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
-            guna2TextBox1.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
-            guna2TextBox1.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
-            guna2TextBox1.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            guna2TextBox1.Font = new Font("Segoe UI", 9F);
-            guna2TextBox1.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            guna2TextBox1.Location = new Point(125, 62);
-            guna2TextBox1.Margin = new Padding(4, 5, 4, 5);
-            guna2TextBox1.Name = "guna2TextBox1";
-            guna2TextBox1.PlaceholderText = "";
-            guna2TextBox1.SelectedText = "";
-            guna2TextBox1.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            guna2TextBox1.Size = new Size(233, 31);
-            guna2TextBox1.TabIndex = 1;
-            // 
-            // guna2DataGridView1
-            // 
-            guna2DataGridView1.AllowUserToOrderColumns = true;
-            dataGridViewCellStyle1.BackColor = Color.White;
-            guna2DataGridView1.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dgv.AllowUserToAddRows = false;
+            dataGridViewCellStyle1.BackColor = Color.FromArgb(248, 249, 252);
+            dgv.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(100, 88, 255);
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle2.BackColor = Color.FromArgb(111, 66, 193);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             dataGridViewCellStyle2.ForeColor = Color.White;
             dataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            guna2DataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            guna2DataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgv.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dgv.ColumnHeadersHeight = 45;
+            dgv.Columns.AddRange(new DataGridViewColumn[] { dataGridViewTextBoxColumn1, dataGridViewTextBoxColumn2, dataGridViewTextBoxColumn3, dataGridViewTextBoxColumn4 });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 10F);
             dataGridViewCellStyle3.ForeColor = Color.FromArgb(71, 69, 94);
-            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(231, 229, 255);
-            dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(230, 230, 250);
+            dataGridViewCellStyle3.SelectionForeColor = Color.Black;
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            guna2DataGridView1.DefaultCellStyle = dataGridViewCellStyle3;
-            guna2DataGridView1.GridColor = Color.FromArgb(231, 229, 255);
-            guna2DataGridView1.Location = new Point(21, 222);
-            guna2DataGridView1.Name = "guna2DataGridView1";
-            guna2DataGridView1.RowHeadersVisible = false;
-            guna2DataGridView1.RowHeadersWidth = 62;
-            guna2DataGridView1.Size = new Size(909, 225);
-            guna2DataGridView1.TabIndex = 6;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.Font = null;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.Empty;
-            guna2DataGridView1.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
-            guna2DataGridView1.ThemeStyle.BackColor = Color.White;
-            guna2DataGridView1.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
-            guna2DataGridView1.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(100, 88, 255);
-            guna2DataGridView1.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
-            guna2DataGridView1.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            guna2DataGridView1.ThemeStyle.HeaderStyle.ForeColor = Color.White;
-            guna2DataGridView1.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            guna2DataGridView1.ThemeStyle.HeaderStyle.Height = 4;
-            guna2DataGridView1.ThemeStyle.ReadOnly = false;
-            guna2DataGridView1.ThemeStyle.RowsStyle.BackColor = Color.White;
-            guna2DataGridView1.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            guna2DataGridView1.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            guna2DataGridView1.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(71, 69, 94);
-            guna2DataGridView1.ThemeStyle.RowsStyle.Height = 33;
-            guna2DataGridView1.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
-            guna2DataGridView1.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
-            guna2DataGridView1.CellContentClick += guna2DataGridView1_CellContentClick;
+            dgv.DefaultCellStyle = dataGridViewCellStyle3;
+            dgv.Dock = DockStyle.Fill;
+            dgv.GridColor = Color.FromArgb(230, 230, 230);
+            dgv.Location = new Point(15, 15);
+            dgv.Name = "dgv";
+            dgv.RowHeadersVisible = false;
+            dgv.RowHeadersWidth = 62;
+            dgv.Size = new Size(1110, 230);
+            dgv.TabIndex = 0;
+            dgv.ThemeStyle.AlternatingRowsStyle.BackColor = Color.FromArgb(248, 249, 252);
+            dgv.ThemeStyle.AlternatingRowsStyle.Font = null;
+            dgv.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
+            dgv.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.Empty;
+            dgv.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
+            dgv.ThemeStyle.BackColor = Color.White;
+            dgv.ThemeStyle.GridColor = Color.FromArgb(230, 230, 230);
+            dgv.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(111, 66, 193);
+            dgv.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgv.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgv.ThemeStyle.HeaderStyle.ForeColor = Color.White;
+            dgv.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgv.ThemeStyle.HeaderStyle.Height = 45;
+            dgv.ThemeStyle.ReadOnly = false;
+            dgv.ThemeStyle.RowsStyle.BackColor = Color.White;
+            dgv.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgv.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 10F);
+            dgv.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(71, 69, 94);
+            dgv.ThemeStyle.RowsStyle.Height = 33;
+            dgv.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(230, 230, 250);
+            dgv.ThemeStyle.RowsStyle.SelectionForeColor = Color.Black;
             // 
-            // guna2Button2
+            // gbReturn
             // 
-            guna2Button2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            guna2Button2.BorderRadius = 5;
-            guna2Button2.CustomizableEdges = customizableEdges19;
-            guna2Button2.FillColor = Color.FromArgb(244, 67, 54);
-            guna2Button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            guna2Button2.ForeColor = Color.White;
-            guna2Button2.Location = new Point(763, 2);
-            guna2Button2.Margin = new Padding(5, 6, 5, 6);
-            guna2Button2.Name = "guna2Button2";
-            guna2Button2.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            guna2Button2.Size = new Size(167, 67);
-            guna2Button2.TabIndex = 3;
-            guna2Button2.Text = "ĐĂNG XUẤT";
+            gbReturn.BorderRadius = 18;
+            gbReturn.Controls.Add(rdRefund);
+            gbReturn.Controls.Add(rdExchange);
+            gbReturn.Controls.Add(txtNote);
+            gbReturn.CustomizableEdges = customizableEdges15;
+            gbReturn.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            gbReturn.ForeColor = Color.FromArgb(125, 137, 149);
+            gbReturn.Location = new Point(25, 530);
+            gbReturn.Name = "gbReturn";
+            gbReturn.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            gbReturn.Size = new Size(550, 203);
+            gbReturn.TabIndex = 3;
+            gbReturn.Text = "Thông tin xử lý";
             // 
-            // guna2GroupBox2
+            // rdRefund
             // 
-            guna2GroupBox2.Controls.Add(guna2TextBox3);
-            guna2GroupBox2.Controls.Add(guna2HtmlLabel7);
-            guna2GroupBox2.Controls.Add(guna2RadioButton2);
-            guna2GroupBox2.Controls.Add(guna2RadioButton1);
-            guna2GroupBox2.Controls.Add(guna2HtmlLabel5);
-            guna2GroupBox2.CustomizableEdges = customizableEdges9;
-            guna2GroupBox2.FillColor = Color.LemonChiffon;
-            guna2GroupBox2.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 163);
-            guna2GroupBox2.ForeColor = Color.FromArgb(125, 137, 149);
-            guna2GroupBox2.Location = new Point(21, 466);
-            guna2GroupBox2.Name = "guna2GroupBox2";
-            guna2GroupBox2.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            guna2GroupBox2.Size = new Size(464, 303);
-            guna2GroupBox2.TabIndex = 9;
-            guna2GroupBox2.Text = "Thông tin xử lý trả hàng";
+            rdRefund.CheckedState.BorderThickness = 0;
+            rdRefund.Font = new Font("Segoe UI", 11F);
+            rdRefund.Location = new Point(25, 60);
+            rdRefund.Name = "rdRefund";
+            rdRefund.Size = new Size(170, 42);
+            rdRefund.TabIndex = 0;
+            rdRefund.Text = "Hoàn tiền";
+            rdRefund.UncheckedState.BorderThickness = 0;
             // 
-            // guna2HtmlLabel5
+            // rdExchange
             // 
-            guna2HtmlLabel5.BackColor = Color.Transparent;
-            guna2HtmlLabel5.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            guna2HtmlLabel5.Location = new Point(18, 65);
-            guna2HtmlLabel5.Name = "guna2HtmlLabel5";
-            guna2HtmlLabel5.Size = new Size(192, 34);
-            guna2HtmlLabel5.TabIndex = 0;
-            guna2HtmlLabel5.Text = "Hình thức xử lý :";
+            rdExchange.CheckedState.BorderThickness = 0;
+            rdExchange.Font = new Font("Segoe UI", 11F);
+            rdExchange.Location = new Point(255, 60);
+            rdExchange.Name = "rdExchange";
+            rdExchange.Size = new Size(185, 42);
+            rdExchange.TabIndex = 1;
+            rdExchange.Text = "Đổi sản phẩm";
+            rdExchange.UncheckedState.BorderThickness = 0;
             // 
-            // guna2RadioButton1
+            // txtNote
             // 
-            guna2RadioButton1.AutoSize = true;
-            guna2RadioButton1.BackColor = Color.Turquoise;
-            guna2RadioButton1.CheckedState.BorderColor = Color.FromArgb(94, 148, 255);
-            guna2RadioButton1.CheckedState.BorderThickness = 0;
-            guna2RadioButton1.CheckedState.FillColor = Color.FromArgb(94, 148, 255);
-            guna2RadioButton1.CheckedState.InnerColor = Color.White;
-            guna2RadioButton1.CheckedState.InnerOffset = -4;
-            guna2RadioButton1.ForeColor = Color.FromArgb(128, 255, 128);
-            guna2RadioButton1.Location = new Point(18, 117);
-            guna2RadioButton1.Name = "guna2RadioButton1";
-            guna2RadioButton1.Size = new Size(144, 36);
-            guna2RadioButton1.TabIndex = 1;
-            guna2RadioButton1.Text = "Hoàn tiền";
-            guna2RadioButton1.UncheckedState.BorderColor = Color.FromArgb(125, 137, 149);
-            guna2RadioButton1.UncheckedState.BorderThickness = 2;
-            guna2RadioButton1.UncheckedState.FillColor = Color.Transparent;
-            guna2RadioButton1.UncheckedState.InnerColor = Color.Transparent;
-            guna2RadioButton1.UseVisualStyleBackColor = false;
+            txtNote.BorderRadius = 12;
+            txtNote.CustomizableEdges = customizableEdges13;
+            txtNote.DefaultText = "";
+            txtNote.Font = new Font("Segoe UI", 9F);
+            txtNote.Location = new Point(25, 110);
+            txtNote.Margin = new Padding(4, 5, 4, 5);
+            txtNote.Multiline = true;
+            txtNote.Name = "txtNote";
+            txtNote.PlaceholderText = "Ghi chú...";
+            txtNote.SelectedText = "";
+            txtNote.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            txtNote.Size = new Size(490, 70);
+            txtNote.TabIndex = 2;
             // 
-            // guna2RadioButton2
+            // summaryPanel
             // 
-            guna2RadioButton2.AutoSize = true;
-            guna2RadioButton2.BackColor = Color.PaleGreen;
-            guna2RadioButton2.CheckedState.BorderColor = Color.FromArgb(94, 148, 255);
-            guna2RadioButton2.CheckedState.BorderThickness = 0;
-            guna2RadioButton2.CheckedState.FillColor = Color.FromArgb(94, 148, 255);
-            guna2RadioButton2.CheckedState.InnerColor = Color.White;
-            guna2RadioButton2.CheckedState.InnerOffset = -4;
-            guna2RadioButton2.Location = new Point(249, 117);
-            guna2RadioButton2.Name = "guna2RadioButton2";
-            guna2RadioButton2.Size = new Size(187, 36);
-            guna2RadioButton2.TabIndex = 2;
-            guna2RadioButton2.Text = "Đổi sản phẩm";
-            guna2RadioButton2.UncheckedState.BorderColor = Color.FromArgb(125, 137, 149);
-            guna2RadioButton2.UncheckedState.BorderThickness = 2;
-            guna2RadioButton2.UncheckedState.FillColor = Color.Transparent;
-            guna2RadioButton2.UncheckedState.InnerColor = Color.Transparent;
-            guna2RadioButton2.UseVisualStyleBackColor = false;
+            summaryPanel.BorderRadius = 20;
+            summaryPanel.Controls.Add(lblMoney);
+            summaryPanel.Controls.Add(lblFee);
+            summaryPanel.Controls.Add(lblFinal);
+            summaryPanel.Controls.Add(btnReturn);
+            summaryPanel.CustomizableEdges = customizableEdges19;
+            summaryPanel.FillColor = Color.White;
+            summaryPanel.Location = new Point(595, 530);
+            summaryPanel.Name = "summaryPanel";
+            summaryPanel.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            summaryPanel.Size = new Size(570, 203);
+            summaryPanel.TabIndex = 4;
             // 
-            // guna2HtmlLabel6
+            // lblMoney
             // 
-            guna2HtmlLabel6.BackColor = Color.Transparent;
-            guna2HtmlLabel6.Location = new Point(0, 0);
-            guna2HtmlLabel6.Name = "guna2HtmlLabel6";
-            guna2HtmlLabel6.Size = new Size(3, 2);
-            guna2HtmlLabel6.TabIndex = 10;
+            lblMoney.AutoSize = true;
+            lblMoney.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblMoney.Location = new Point(30, 22);
+            lblMoney.Name = "lblMoney";
+            lblMoney.Size = new Size(374, 32);
+            lblMoney.TabIndex = 0;
+            lblMoney.Text = "Tổng tiền hoàn: 1.500.000 VNĐ";
             // 
-            // guna2HtmlLabel7
+            // lblFee
             // 
-            guna2HtmlLabel7.BackColor = Color.Transparent;
-            guna2HtmlLabel7.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            guna2HtmlLabel7.Location = new Point(18, 166);
-            guna2HtmlLabel7.Name = "guna2HtmlLabel7";
-            guna2HtmlLabel7.Size = new Size(89, 34);
-            guna2HtmlLabel7.TabIndex = 3;
-            guna2HtmlLabel7.Text = "Ghi chú";
+            lblFee.AutoSize = true;
+            lblFee.Font = new Font("Segoe UI", 11F);
+            lblFee.Location = new Point(30, 60);
+            lblFee.Name = "lblFee";
+            lblFee.Size = new Size(220, 30);
+            lblFee.TabIndex = 1;
+            lblFee.Text = "Phí xử lý: 50.000 VNĐ";
             // 
-            // guna2TextBox3
+            // lblFinal
             // 
-            guna2TextBox3.CustomizableEdges = customizableEdges7;
-            guna2TextBox3.DefaultText = "";
-            guna2TextBox3.DisabledState.BorderColor = Color.FromArgb(208, 208, 208);
-            guna2TextBox3.DisabledState.FillColor = Color.FromArgb(226, 226, 226);
-            guna2TextBox3.DisabledState.ForeColor = Color.FromArgb(138, 138, 138);
-            guna2TextBox3.DisabledState.PlaceholderForeColor = Color.FromArgb(138, 138, 138);
-            guna2TextBox3.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
-            guna2TextBox3.Font = new Font("Segoe UI", 9F);
-            guna2TextBox3.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            guna2TextBox3.Location = new Point(18, 208);
-            guna2TextBox3.Margin = new Padding(4, 5, 4, 5);
-            guna2TextBox3.Name = "guna2TextBox3";
-            guna2TextBox3.PlaceholderText = "";
-            guna2TextBox3.SelectedText = "";
-            guna2TextBox3.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            guna2TextBox3.Size = new Size(429, 74);
-            guna2TextBox3.TabIndex = 4;
+            lblFinal.AutoSize = true;
+            lblFinal.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            lblFinal.ForeColor = Color.FromArgb(40, 167, 69);
+            lblFinal.Location = new Point(30, 99);
+            lblFinal.Name = "lblFinal";
+            lblFinal.Size = new Size(356, 36);
+            lblFinal.TabIndex = 2;
+            lblFinal.Text = "Khách nhận: 1.450.000 VNĐ";
             // 
-            // guna2GroupBox3
+            // btnReturn
             // 
-            guna2GroupBox3.Controls.Add(guna2Button3);
-            guna2GroupBox3.Controls.Add(guna2HtmlLabel10);
-            guna2GroupBox3.Controls.Add(guna2HtmlLabel9);
-            guna2GroupBox3.Controls.Add(guna2HtmlLabel8);
-            guna2GroupBox3.CustomizableEdges = customizableEdges5;
-            guna2GroupBox3.Font = new Font("Segoe UI", 9F);
-            guna2GroupBox3.ForeColor = Color.FromArgb(125, 137, 149);
-            guna2GroupBox3.Location = new Point(491, 469);
-            guna2GroupBox3.Name = "guna2GroupBox3";
-            guna2GroupBox3.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            guna2GroupBox3.Size = new Size(439, 300);
-            guna2GroupBox3.TabIndex = 6;
-            guna2GroupBox3.Text = "guna2GroupBox3";
+            btnReturn.BorderRadius = 14;
+            btnReturn.CustomizableEdges = customizableEdges17;
+            btnReturn.FillColor = Color.FromArgb(111, 66, 193);
+            btnReturn.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnReturn.ForeColor = Color.White;
+            btnReturn.Location = new Point(361, 149);
+            btnReturn.Name = "btnReturn";
+            btnReturn.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            btnReturn.Size = new Size(206, 40);
+            btnReturn.TabIndex = 3;
+            btnReturn.Text = "XÁC NHẬN TRẢ HÀNG";
             // 
-            // guna2HtmlLabel8
+            // dataGridViewTextBoxColumn1
             // 
-            guna2HtmlLabel8.BackColor = Color.Transparent;
-            guna2HtmlLabel8.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            guna2HtmlLabel8.Location = new Point(29, 62);
-            guna2HtmlLabel8.Name = "guna2HtmlLabel8";
-            guna2HtmlLabel8.Size = new Size(191, 34);
-            guna2HtmlLabel8.TabIndex = 5;
-            guna2HtmlLabel8.Text = "Tổng tiền hoàn :";
-            guna2HtmlLabel8.Click += guna2HtmlLabel8_Click;
+            dataGridViewTextBoxColumn1.HeaderText = "Sản phẩm";
+            dataGridViewTextBoxColumn1.MinimumWidth = 8;
+            dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             // 
-            // guna2HtmlLabel9
+            // dataGridViewTextBoxColumn2
             // 
-            guna2HtmlLabel9.BackColor = Color.Transparent;
-            guna2HtmlLabel9.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            guna2HtmlLabel9.Location = new Point(29, 114);
-            guna2HtmlLabel9.Name = "guna2HtmlLabel9";
-            guna2HtmlLabel9.Size = new Size(117, 34);
-            guna2HtmlLabel9.TabIndex = 6;
-            guna2HtmlLabel9.Text = "Phí hoàn :";
+            dataGridViewTextBoxColumn2.HeaderText = "Số lượng";
+            dataGridViewTextBoxColumn2.MinimumWidth = 8;
+            dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
             // 
-            // guna2HtmlLabel10
+            // dataGridViewTextBoxColumn3
             // 
-            guna2HtmlLabel10.BackColor = Color.Transparent;
-            guna2HtmlLabel10.Font = new Font("Segoe UI", 12F, FontStyle.Bold, GraphicsUnit.Point, 163);
-            guna2HtmlLabel10.Location = new Point(29, 190);
-            guna2HtmlLabel10.Name = "guna2HtmlLabel10";
-            guna2HtmlLabel10.Size = new Size(191, 34);
-            guna2HtmlLabel10.TabIndex = 7;
-            guna2HtmlLabel10.Text = "Số tiền phải trả :";
-            guna2HtmlLabel10.Click += guna2HtmlLabel10_Click;
+            dataGridViewTextBoxColumn3.HeaderText = "Đơn giá";
+            dataGridViewTextBoxColumn3.MinimumWidth = 8;
+            dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
             // 
-            // guna2Button3
+            // dataGridViewTextBoxColumn4
             // 
-            guna2Button3.CustomizableEdges = customizableEdges3;
-            guna2Button3.DisabledState.BorderColor = Color.DarkGray;
-            guna2Button3.DisabledState.CustomBorderColor = Color.DarkGray;
-            guna2Button3.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            guna2Button3.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            guna2Button3.Font = new Font("Segoe UI", 9F);
-            guna2Button3.ForeColor = Color.White;
-            guna2Button3.Location = new Point(97, 230);
-            guna2Button3.Name = "guna2Button3";
-            guna2Button3.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            guna2Button3.Size = new Size(247, 49);
-            guna2Button3.TabIndex = 7;
-            guna2Button3.Text = "Trả hàng";
+            dataGridViewTextBoxColumn4.HeaderText = "Tổng";
+            dataGridViewTextBoxColumn4.MinimumWidth = 8;
+            dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             // 
             // ucReturns
             // 
             AutoScaleDimensions = new SizeF(10F, 25F);
-            AutoScaleMode = AutoScaleMode.Font;
-            BackColor = Color.FromArgb(240, 242, 245);
-            Controls.Add(guna2Panel1);
-            Controls.Add(guna2Panel2);
+            BackColor = Color.FromArgb(245, 247, 250);
+            Controls.Add(headerPanel);
+            Controls.Add(gbInvoice);
+            Controls.Add(gridPanel);
+            Controls.Add(gbReturn);
+            Controls.Add(summaryPanel);
             Name = "ucReturns";
-            Size = new Size(982, 927);
-            guna2Panel1.ResumeLayout(false);
-            guna2Panel1.PerformLayout();
-            guna2Panel2.ResumeLayout(false);
-            guna2GroupBox1.ResumeLayout(false);
-            guna2GroupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)guna2DataGridView1).EndInit();
-            guna2GroupBox2.ResumeLayout(false);
-            guna2GroupBox2.PerformLayout();
-            guna2GroupBox3.ResumeLayout(false);
-            guna2GroupBox3.PerformLayout();
+            Size = new Size(1200, 760);
+            headerPanel.ResumeLayout(false);
+            headerPanel.PerformLayout();
+            gbInvoice.ResumeLayout(false);
+            gridPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dgv).EndInit();
+            gbReturn.ResumeLayout(false);
+            summaryPanel.ResumeLayout(false);
+            summaryPanel.PerformLayout();
             ResumeLayout(false);
         }
 
         #endregion
 
+        private Guna.UI2.WinForms.Guna2Panel pnlTop;
         private Guna.UI2.WinForms.Guna2Button btnDangXuat;
-        private Guna.UI2.WinForms.Guna2Panel guna2Panel1;
-        private Guna.UI2.WinForms.Guna2Panel guna2Panel2;
-        private Guna.UI2.WinForms.Guna2GroupBox guna2GroupBox1;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel1;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel2;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel3;
-        private Guna.UI2.WinForms.Guna2Button guna2Button1;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel4;
-        private Guna.UI2.WinForms.Guna2TextBox guna2TextBox1;
-        private Guna.UI2.WinForms.Guna2DataGridView guna2DataGridView1;
-        private Guna.UI2.WinForms.Guna2Button guna2Button2;
-        private Guna.UI2.WinForms.Guna2GroupBox guna2GroupBox2;
-        private Guna.UI2.WinForms.Guna2RadioButton guna2RadioButton2;
-        private Guna.UI2.WinForms.Guna2RadioButton guna2RadioButton1;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel5;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel6;
-        private Guna.UI2.WinForms.Guna2TextBox guna2TextBox3;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel7;
-        private Guna.UI2.WinForms.Guna2GroupBox guna2GroupBox3;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel8;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel10;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel9;
-        private Guna.UI2.WinForms.Guna2Button guna2Button3;
+
+        private Guna.UI2.WinForms.Guna2Panel pnlInvoice;
+        private Guna.UI2.WinForms.Guna2TextBox txtMaHoaDon;
+        private Guna.UI2.WinForms.Guna2Button btnTimKiem;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblMaHD;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblKhachHang;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblSDT;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblNgayMua;
+
+        private Guna.UI2.WinForms.Guna2DataGridView dgvSanPham;
+
+        private Guna.UI2.WinForms.Guna2Panel pnlXuLy;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblXuLy;
+        private Guna.UI2.WinForms.Guna2RadioButton rdoHoanTien;
+        private Guna.UI2.WinForms.Guna2RadioButton rdoDoiHang;
+        private Guna.UI2.WinForms.Guna2TextBox txtGhiChu;
+
+        private Guna.UI2.WinForms.Guna2Panel pnlTongKet;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblTongTien;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblPhiHoan;
+        private Guna.UI2.WinForms.Guna2HtmlLabel lblTienTra;
+
+        private Guna.UI2.WinForms.Guna2Button btnTraHang;
+        private Guna.UI2.WinForms.Guna2Panel headerPanel;
+        private Guna.UI2.WinForms.Guna2Button btnLogout;
+        private Guna.UI2.WinForms.Guna2GroupBox gbInvoice;
+        private Label lblInvoice;
+        private Guna.UI2.WinForms.Guna2TextBox txtInvoice;
+        private Guna.UI2.WinForms.Guna2Button btnSearch;
+        private Guna.UI2.WinForms.Guna2Panel gridPanel;
+        private Guna.UI2.WinForms.Guna2DataGridView dgv;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
+        private Guna.UI2.WinForms.Guna2GroupBox gbReturn;
+        private Guna.UI2.WinForms.Guna2RadioButton rdRefund;
+        private Guna.UI2.WinForms.Guna2RadioButton rdExchange;
+        private Guna.UI2.WinForms.Guna2TextBox txtNote;
+        private Guna.UI2.WinForms.Guna2Panel summaryPanel;
+        private Label lblMoney;
+        private Label lblFee;
+        private Label lblFinal;
+        private Guna.UI2.WinForms.Guna2Button btnReturn;
+        private Label lblTitle;
     }
 }
 

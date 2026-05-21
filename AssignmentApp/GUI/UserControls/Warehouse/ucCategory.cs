@@ -22,5 +22,10 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         {
 
         }
+
+        private void gridPanel_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

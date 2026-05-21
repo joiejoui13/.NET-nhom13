@@ -8,7 +8,7 @@ Dự án này được xây dựng theo mô hình **N-Tier (3 Lớp)** chuyên n
 
 Dự án được tổ chức theo nguyên tắc **Module hóa (Feature-based)**. Mỗi chức năng được tách biệt hoàn toàn ở cả 3 tầng (12-12-12).
 
-```
+```jgj
 AssignmentApp/
 ├── 📂 GUI (Presentation Layer)
 │   ├── 📂 Base/                --> ucBase, frmBase (Ép chuẩn 1000x700, màu nền F0F2F5)

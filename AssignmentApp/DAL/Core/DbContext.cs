@@ -14,7 +14,7 @@ namespace AssignmentApp.DAL.Core
         {
             try
             {
-                connstring = @"Data Source=LAPTOP-TEEPQA0B\SQLEXPRESS;Initial Catalog=TestChamnetCK;Integrated Security=True;TrustServerCertificate=True";
+                connstring = @"Data Source=localhost;Initial Catalog=TestChamnetCK;Integrated Security=True;Encrypt=False";
                 Conn = new SqlConnection(connstring);
                 
                 if (Conn.State != ConnectionState.Open)

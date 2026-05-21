@@ -7,7 +7,7 @@ namespace AssignmentApp.DAL.Repositories.Security
 {
     public class AuthRepository
     {
-        public async Task<User> GetUserForLoginAsync(string cccd)
+        public async Task<User> GetUserForLoginAsync(string username)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed)
             {
@@ -15,8 +15,8 @@ namespace AssignmentApp.DAL.Repositories.Security
             }
 
             // Fetch user info specifically for authentication
-            string sql = "SELECT MaNV, TenNV, CCCD, Matkhau, Vaitro FROM tblNhanvien WHERE CCCD = @CCCD";
-            return await DbContext.Conn.QuerySingleOrDefaultAsync<User>(sql, new { CCCD = cccd });
+            string sql = "SELECT MaNguoiDung, TenNguoiDung, SoDienThoai, Email, MatKhau, VaiTro, TrangThai, NgayTao FROM NguoiDung WHERE MaNguoiDung = @Username OR Email = @Username";
+            return await DbContext.Conn.QuerySingleOrDefaultAsync<User>(sql, new { Username = username });
         }
     }
 }

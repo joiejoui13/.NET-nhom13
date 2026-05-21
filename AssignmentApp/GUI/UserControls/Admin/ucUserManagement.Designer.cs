@@ -28,10 +28,17 @@ namespace AssignmentApp.GUI.UserControls.Admin
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Size = new System.Drawing.Size(1000, 700);
-            this.BackColor = System.Drawing.Color.FromArgb(240, 242, 245);
+            SuspendLayout();
+            // 
+            // ucUserManagement
+            // 
+            AutoScaleDimensions = new SizeF(15F, 37F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(240, 242, 245);
+            Name = "ucUserManagement";
+            Size = new Size(1000, 700);
+            Load += ucUserManagement_Load;
+            ResumeLayout(false);
         }
 
         #endregion

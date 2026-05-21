@@ -22,7 +22,7 @@ namespace AssignmentApp.BLL.Services.Security
             if (user != null)
             {
                 // Kiểm tra mật khẩu (Sử dụng PasswordHasher)
-                if (PasswordHasher.VerifyPassword(password, user.Matkhau))
+                if (PasswordHasher.VerifyPassword(password, user.MatKhau))
                 {
                     return user;
                 }

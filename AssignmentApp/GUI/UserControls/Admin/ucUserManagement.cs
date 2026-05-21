@@ -16,5 +16,10 @@ namespace AssignmentApp.GUI.UserControls.Admin
         {
             InitializeComponent();
         }
+
+        private void ucUserManagement_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

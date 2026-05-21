@@ -71,9 +71,9 @@ namespace AssignmentApp.GUI
                     UserSession.CurrentUser = userDto;
                     UserSession.LoginTime = DateTime.Now;
 
-                    if (userDto.Vaitro == "SALES" || userDto.Vaitro == "ADMIN" || userDto.Vaitro == "WAREHOUSE")
+                    if (userDto.VaiTro == "SALES" || userDto.VaiTro == "ADMIN" || userDto.VaiTro == "WAREHOUSE")
                     {
-                        MessageBox.Show($"Đăng nhập thành công với quyền {userDto.Vaitro}!");
+                        MessageBox.Show($"Đăng nhập thành công với quyền {userDto.VaiTro}!");
                         this.Hide(); 
                         frmMain main = new frmMain(); 
                         main.ShowDialog();

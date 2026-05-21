@@ -24,7 +24,7 @@ namespace AssignmentApp.GUI.Forms
                 return;
             }
 
-            ApplyAuthorization(user.Vaitro);
+            ApplyAuthorization(user.VaiTro);
         }
 
         private void ApplyAuthorization(string role)

@@ -2,9 +2,10 @@ namespace AssignmentApp.DTO
 {
     public class Customer
     {
-        public string MaKH { get; set; }
-        public string TenKH { get; set; }
-        public string DiaChi { get; set; }
-        public string DienThoai { get; set; }
+        public string MaKhachHang { get; set; }
+        public string TenKhachHang { get; set; }
+        public string SoDienThoai { get; set; }
+        public int DiemTichLuy { get; set; }
+        public System.DateTime NgayTao { get; set; }
     }
 }

@@ -67,7 +67,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 txtGiamGia.Text = row.Cells["GiamGia"].Value?.ToString();
                 txtMaGiaoHang.Text = row.Cells["MaGiaoHang"].Value?.ToString();
                 txtTongTien.Text = row.Cells["TongTien"].Value?.ToString();
-                
+
                 string hinhThuc = row.Cells["HinhThucThanhToan"].Value?.ToString();
                 if (!string.IsNullOrEmpty(hinhThuc))
                 {
@@ -166,7 +166,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // Open Order Detail form and pass the MaHoaDon
             frmOrderDetail detailForm = new frmOrderDetail(txtMaHD.Text);
             detailForm.ShowDialog();
-            
+
             // Refresh grid in case total amount was updated
             _ = LoadData();
         }
@@ -182,6 +182,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtTongTien.Clear();
             cbHinhThucThanhToan.SelectedIndex = 0;
             _ = LoadData();
+        }
+
+        private void guna2HtmlLabel4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtMaGiaoHang_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

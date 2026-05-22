@@ -379,7 +379,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvDanhMuc.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dgvDanhMuc.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
             dgvDanhMuc.CellClick += dgvDanhMuc_CellClick;
-            dgvDanhMuc.CellContentClick += dgvDanhMuc_CellContentClick;
             // 
             // colMaDanhMuc
             // 

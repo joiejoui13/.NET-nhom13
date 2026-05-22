@@ -1,11 +1,15 @@
+using System;
+
 namespace AssignmentApp.DTO
 {
     public class Promotion
     {
-        public string MaKM { get; set; }
-        public string TenKM { get; set; }
-        public decimal MucGiam { get; set; }
-        public System.DateTime NgayBD { get; set; }
-        public System.DateTime NgayKT { get; set; }
+        public string MaKhuyenMai { get; set; } = string.Empty;
+        public string TenKhuyenMai { get; set; } = string.Empty;
+        public int PhanTramGiamGia { get; set; }
+        public DateTime NgayBatDau { get; set; }
+        public DateTime NgayHetHan { get; set; }
+        public string? MoTaKhuyenMai { get; set; }
+        public string? TrangThai { get; set; }
     }
 }

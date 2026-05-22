@@ -2,15 +2,8 @@ namespace AssignmentApp.GUI.UserControls.Admin
 {
     partial class ucReports
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -20,16 +13,12 @@ namespace AssignmentApp.GUI.UserControls.Admin
             base.Dispose(disposing);
         }
 
-        #region Windows Form Designer generated code
+        #region Component Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -38,208 +27,161 @@ namespace AssignmentApp.GUI.UserControls.Admin
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges27 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges28 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges25 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges26 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
-            lblEndDate = new Label();
+            pnlInputCard = new Guna.UI2.WinForms.Guna2Panel();
+            lblInputTitle = new Label();
             lblStartDate = new Label();
-            btnExport = new Guna.UI2.WinForms.Guna2Button();
-            btnFilter = new Guna.UI2.WinForms.Guna2Button();
-            dtpEndDate = new Guna.UI2.WinForms.Guna2DateTimePicker();
             dtpStartDate = new Guna.UI2.WinForms.Guna2DateTimePicker();
-            pnlCards = new Guna.UI2.WinForms.Guna2Panel();
-            cardOrders = new Guna.UI2.WinForms.Guna2Panel();
-            lblOrdersValue = new Label();
-            lblOrdersTitle = new Label();
+            lblEndDate = new Label();
+            dtpEndDate = new Guna.UI2.WinForms.Guna2DateTimePicker();
             cardRevenue = new Guna.UI2.WinForms.Guna2Panel();
             lblRevenueValue = new Label();
             lblRevenueTitle = new Label();
-            pnlGrid = new Guna.UI2.WinForms.Guna2Panel();
+            cardOrders = new Guna.UI2.WinForms.Guna2Panel();
+            lblOrdersValue = new Label();
+            lblOrdersTitle = new Label();
+            btnAdd = new Guna.UI2.WinForms.Guna2Button();
+            btnEdit = new Guna.UI2.WinForms.Guna2Button();
+            btnDelete = new Guna.UI2.WinForms.Guna2Button();
+            btnSave = new Guna.UI2.WinForms.Guna2Button();
+            btnCancel = new Guna.UI2.WinForms.Guna2Button();
+            pnlGridCard = new Guna.UI2.WinForms.Guna2Panel();
+            lblGridTitle = new Label();
+            txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
+            btnSearch = new Guna.UI2.WinForms.Guna2Button();
+            btnRefresh = new Guna.UI2.WinForms.Guna2Button();
             dgvReports = new Guna.UI2.WinForms.Guna2DataGridView();
-            pnlHeader.SuspendLayout();
-            pnlCards.SuspendLayout();
-            cardOrders.SuspendLayout();
+            pnlInputCard.SuspendLayout();
             cardRevenue.SuspendLayout();
-            pnlGrid.SuspendLayout();
+            cardOrders.SuspendLayout();
+            pnlGridCard.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvReports).BeginInit();
             SuspendLayout();
             // 
-            // pnlHeader
+            // pnlInputCard
             // 
-            pnlHeader.Controls.Add(lblEndDate);
-            pnlHeader.Controls.Add(lblStartDate);
-            pnlHeader.Controls.Add(btnExport);
-            pnlHeader.Controls.Add(btnFilter);
-            pnlHeader.Controls.Add(dtpEndDate);
-            pnlHeader.Controls.Add(dtpStartDate);
-            pnlHeader.CustomizableEdges = customizableEdges9;
-            pnlHeader.Dock = DockStyle.Top;
-            pnlHeader.Location = new Point(20, 20);
-            pnlHeader.Name = "pnlHeader";
-            pnlHeader.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            pnlHeader.Size = new Size(950, 70);
-            pnlHeader.TabIndex = 0;
+            pnlInputCard.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            pnlInputCard.BackColor = Color.Transparent;
+            pnlInputCard.BorderRadius = 10;
+            pnlInputCard.Controls.Add(lblInputTitle);
+            pnlInputCard.Controls.Add(lblStartDate);
+            pnlInputCard.Controls.Add(dtpStartDate);
+            pnlInputCard.Controls.Add(lblEndDate);
+            pnlInputCard.Controls.Add(dtpEndDate);
+            pnlInputCard.Controls.Add(cardRevenue);
+            pnlInputCard.Controls.Add(cardOrders);
+            pnlInputCard.Controls.Add(btnAdd);
+            pnlInputCard.Controls.Add(btnEdit);
+            pnlInputCard.Controls.Add(btnDelete);
+            pnlInputCard.Controls.Add(btnSave);
+            pnlInputCard.Controls.Add(btnCancel);
+            pnlInputCard.CustomizableEdges = customizableEdges19;
+            pnlInputCard.FillColor = Color.White;
+            pnlInputCard.Location = new Point(20, 20);
+            pnlInputCard.Name = "pnlInputCard";
+            pnlInputCard.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            pnlInputCard.Size = new Size(320, 660);
+            pnlInputCard.TabIndex = 0;
             // 
-            // lblEndDate
+            // lblInputTitle
             // 
-            lblEndDate.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            lblEndDate.AutoSize = true;
-            lblEndDate.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblEndDate.Location = new Point(430, 23);
-            lblEndDate.Name = "lblEndDate";
-            lblEndDate.Size = new Size(71, 19);
-            lblEndDate.TabIndex = 6;
-            lblEndDate.Text = "Đến ngày:";
+            lblInputTitle.AutoSize = true;
+            lblInputTitle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblInputTitle.ForeColor = Color.FromArgb(0, 126, 249);
+            lblInputTitle.Location = new Point(15, 10);
+            lblInputTitle.Name = "lblInputTitle";
+            lblInputTitle.Size = new Size(172, 21);
+            lblInputTitle.TabIndex = 0;
+            lblInputTitle.Text = "THÔNG TIN BÁO CÁO";
             // 
             // lblStartDate
             // 
-            lblStartDate.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblStartDate.AutoSize = true;
-            lblStartDate.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblStartDate.Location = new Point(200, 23);
+            lblStartDate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblStartDate.ForeColor = Color.FromArgb(64, 64, 64);
+            lblStartDate.Location = new Point(15, 45);
             lblStartDate.Name = "lblStartDate";
-            lblStartDate.Size = new Size(61, 19);
-            lblStartDate.TabIndex = 5;
+            lblStartDate.Size = new Size(54, 15);
+            lblStartDate.TabIndex = 1;
             lblStartDate.Text = "Từ ngày:";
-            // 
-            // btnExport
-            // 
-            btnExport.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnExport.BorderColor = Color.FromArgb(0, 126, 249);
-            btnExport.BorderRadius = 5;
-            btnExport.BorderThickness = 1;
-            btnExport.Cursor = Cursors.Hand;
-            btnExport.CustomizableEdges = customizableEdges1;
-            btnExport.FillColor = Color.White;
-            btnExport.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnExport.ForeColor = Color.FromArgb(0, 126, 249);
-            btnExport.Location = new Point(800, 15);
-            btnExport.Name = "btnExport";
-            btnExport.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnExport.Size = new Size(130, 40);
-            btnExport.TabIndex = 4;
-            btnExport.Text = "Xuất báo cáo";
-            // 
-            // btnFilter
-            // 
-            btnFilter.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnFilter.BorderRadius = 5;
-            btnFilter.Cursor = Cursors.Hand;
-            btnFilter.CustomizableEdges = customizableEdges3;
-            btnFilter.FillColor = Color.FromArgb(0, 126, 249);
-            btnFilter.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnFilter.ForeColor = Color.White;
-            btnFilter.Location = new Point(670, 15);
-            btnFilter.Name = "btnFilter";
-            btnFilter.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            btnFilter.Size = new Size(120, 40);
-            btnFilter.TabIndex = 3;
-            btnFilter.Text = "Lọc dữ liệu";
-            // 
-            // dtpEndDate
-            // 
-            dtpEndDate.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            dtpEndDate.BorderRadius = 5;
-            dtpEndDate.Checked = true;
-            dtpEndDate.CustomizableEdges = customizableEdges5;
-            dtpEndDate.FillColor = Color.White;
-            dtpEndDate.Font = new Font("Segoe UI", 9F);
-            dtpEndDate.Format = DateTimePickerFormat.Short;
-            dtpEndDate.Location = new Point(520, 15);
-            dtpEndDate.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
-            dtpEndDate.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
-            dtpEndDate.Name = "dtpEndDate";
-            dtpEndDate.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            dtpEndDate.Size = new Size(140, 40);
-            dtpEndDate.TabIndex = 2;
-            dtpEndDate.Value = new DateTime(2026, 5, 20, 0, 0, 0, 0);
             // 
             // dtpStartDate
             // 
-            dtpStartDate.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             dtpStartDate.BorderRadius = 5;
             dtpStartDate.Checked = true;
-            dtpStartDate.CustomizableEdges = customizableEdges7;
-            dtpStartDate.FillColor = Color.White;
+            dtpStartDate.CustomizableEdges = customizableEdges1;
+            dtpStartDate.FillColor = Color.FromArgb(240, 242, 245);
             dtpStartDate.Font = new Font("Segoe UI", 9F);
             dtpStartDate.Format = DateTimePickerFormat.Short;
-            dtpStartDate.Location = new Point(280, 15);
+            dtpStartDate.Location = new Point(15, 65);
             dtpStartDate.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtpStartDate.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtpStartDate.Name = "dtpStartDate";
-            dtpStartDate.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            dtpStartDate.Size = new Size(140, 40);
+            dtpStartDate.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            dtpStartDate.Size = new Size(290, 36);
             dtpStartDate.TabIndex = 1;
-            dtpStartDate.Value = new DateTime(2026, 5, 20, 0, 0, 0, 0);
+            dtpStartDate.Value = new DateTime(2026, 5, 22, 0, 0, 0, 0);
             // 
-            // pnlCards
+            // lblEndDate
             // 
-            pnlCards.Controls.Add(cardOrders);
-            pnlCards.Controls.Add(cardRevenue);
-            pnlCards.CustomizableEdges = customizableEdges13;
-            pnlCards.Dock = DockStyle.Top;
-            pnlCards.Location = new Point(20, 90);
-            pnlCards.Name = "pnlCards";
-            pnlCards.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            pnlCards.Size = new Size(950, 120);
-            pnlCards.TabIndex = 1;
+            lblEndDate.AutoSize = true;
+            lblEndDate.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblEndDate.ForeColor = Color.FromArgb(64, 64, 64);
+            lblEndDate.Location = new Point(15, 115);
+            lblEndDate.Name = "lblEndDate";
+            lblEndDate.Size = new Size(62, 15);
+            lblEndDate.TabIndex = 2;
+            lblEndDate.Text = "Đến ngày:";
             // 
-            // cardOrders
+            // dtpEndDate
             // 
-            cardOrders.BorderRadius = 10;
-            cardOrders.Controls.Add(lblOrdersValue);
-            cardOrders.Controls.Add(lblOrdersTitle);
-            cardOrders.CustomizableEdges = customizableEdges11;
-            cardOrders.FillColor = Color.FromArgb(0, 126, 249);
-            cardOrders.Location = new Point(320, 10);
-            cardOrders.Name = "cardOrders";
-            cardOrders.ShadowDecoration.CustomizableEdges = customizableEdges11;
-            cardOrders.Size = new Size(300, 100);
-            cardOrders.TabIndex = 1;
-            // 
-            // lblOrdersValue
-            // 
-            lblOrdersValue.AutoSize = true;
-            lblOrdersValue.BackColor = Color.Transparent;
-            lblOrdersValue.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblOrdersValue.ForeColor = Color.White;
-            lblOrdersValue.Location = new Point(15, 45);
-            lblOrdersValue.Name = "lblOrdersValue";
-            lblOrdersValue.Size = new Size(33, 37);
-            lblOrdersValue.TabIndex = 1;
-            lblOrdersValue.Text = "0";
-            // 
-            // lblOrdersTitle
-            // 
-            lblOrdersTitle.AutoSize = true;
-            lblOrdersTitle.BackColor = Color.Transparent;
-            lblOrdersTitle.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblOrdersTitle.ForeColor = Color.White;
-            lblOrdersTitle.Location = new Point(15, 15);
-            lblOrdersTitle.Name = "lblOrdersTitle";
-            lblOrdersTitle.Size = new Size(116, 21);
-            lblOrdersTitle.TabIndex = 0;
-            lblOrdersTitle.Text = "Tổng đơn hàng";
+            dtpEndDate.BorderRadius = 5;
+            dtpEndDate.Checked = true;
+            dtpEndDate.CustomizableEdges = customizableEdges3;
+            dtpEndDate.FillColor = Color.FromArgb(240, 242, 245);
+            dtpEndDate.Font = new Font("Segoe UI", 9F);
+            dtpEndDate.Format = DateTimePickerFormat.Short;
+            dtpEndDate.Location = new Point(15, 135);
+            dtpEndDate.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
+            dtpEndDate.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
+            dtpEndDate.Name = "dtpEndDate";
+            dtpEndDate.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            dtpEndDate.Size = new Size(290, 36);
+            dtpEndDate.TabIndex = 2;
+            dtpEndDate.Value = new DateTime(2026, 5, 22, 0, 0, 0, 0);
             // 
             // cardRevenue
             // 
             cardRevenue.BorderRadius = 10;
             cardRevenue.Controls.Add(lblRevenueValue);
             cardRevenue.Controls.Add(lblRevenueTitle);
-            cardRevenue.CustomizableEdges = customizableEdges12;
+            cardRevenue.CustomizableEdges = customizableEdges5;
             cardRevenue.FillColor = Color.FromArgb(0, 126, 249);
-            cardRevenue.Location = new Point(0, 10);
+            cardRevenue.Location = new Point(10, 190);
             cardRevenue.Name = "cardRevenue";
-            cardRevenue.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            cardRevenue.ShadowDecoration.CustomizableEdges = customizableEdges6;
             cardRevenue.Size = new Size(300, 100);
-            cardRevenue.TabIndex = 0;
+            cardRevenue.TabIndex = 3;
             // 
             // lblRevenueValue
             // 
@@ -250,7 +192,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblRevenueValue.Location = new Point(15, 45);
             lblRevenueValue.Name = "lblRevenueValue";
             lblRevenueValue.Size = new Size(57, 37);
-            lblRevenueValue.TabIndex = 1;
+            lblRevenueValue.TabIndex = 0;
             lblRevenueValue.Text = "0 ₫";
             // 
             // lblRevenueTitle
@@ -262,25 +204,204 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblRevenueTitle.Location = new Point(15, 15);
             lblRevenueTitle.Name = "lblRevenueTitle";
             lblRevenueTitle.Size = new Size(120, 21);
-            lblRevenueTitle.TabIndex = 0;
+            lblRevenueTitle.TabIndex = 1;
             lblRevenueTitle.Text = "Tổng doanh thu";
             // 
-            // pnlGrid
+            // cardOrders
             // 
-            pnlGrid.Controls.Add(dgvReports);
-            pnlGrid.CustomizableEdges = customizableEdges15;
-            pnlGrid.Dock = DockStyle.Fill;
-            pnlGrid.Location = new Point(20, 210);
-            pnlGrid.Name = "pnlGrid";
-            pnlGrid.Padding = new Padding(0, 10, 0, 0);
-            pnlGrid.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            pnlGrid.Size = new Size(950, 453);
-            pnlGrid.TabIndex = 2;
+            cardOrders.BorderRadius = 10;
+            cardOrders.Controls.Add(lblOrdersValue);
+            cardOrders.Controls.Add(lblOrdersTitle);
+            cardOrders.CustomizableEdges = customizableEdges7;
+            cardOrders.FillColor = Color.FromArgb(0, 126, 249);
+            cardOrders.Location = new Point(10, 310);
+            cardOrders.Name = "cardOrders";
+            cardOrders.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            cardOrders.Size = new Size(300, 100);
+            cardOrders.TabIndex = 4;
+            // 
+            // lblOrdersValue
+            // 
+            lblOrdersValue.AutoSize = true;
+            lblOrdersValue.BackColor = Color.Transparent;
+            lblOrdersValue.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblOrdersValue.ForeColor = Color.White;
+            lblOrdersValue.Location = new Point(15, 45);
+            lblOrdersValue.Name = "lblOrdersValue";
+            lblOrdersValue.Size = new Size(33, 37);
+            lblOrdersValue.TabIndex = 0;
+            lblOrdersValue.Text = "0";
+            // 
+            // lblOrdersTitle
+            // 
+            lblOrdersTitle.AutoSize = true;
+            lblOrdersTitle.BackColor = Color.Transparent;
+            lblOrdersTitle.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblOrdersTitle.ForeColor = Color.White;
+            lblOrdersTitle.Location = new Point(15, 15);
+            lblOrdersTitle.Name = "lblOrdersTitle";
+            lblOrdersTitle.Size = new Size(116, 21);
+            lblOrdersTitle.TabIndex = 1;
+            lblOrdersTitle.Text = "Tổng đơn hàng";
+            // 
+            // btnAdd
+            // 
+            btnAdd.BorderRadius = 5;
+            btnAdd.CustomizableEdges = customizableEdges9;
+            btnAdd.FillColor = Color.FromArgb(0, 126, 249);
+            btnAdd.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnAdd.ForeColor = Color.White;
+            btnAdd.Location = new Point(15, 510);
+            btnAdd.Name = "btnAdd";
+            btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            btnAdd.Size = new Size(90, 36);
+            btnAdd.TabIndex = 8;
+            btnAdd.Text = "THÊM";
+            btnAdd.Click += btnAdd_Click;
+            // 
+            // btnEdit
+            // 
+            btnEdit.BorderRadius = 5;
+            btnEdit.CustomizableEdges = customizableEdges11;
+            btnEdit.FillColor = Color.FromArgb(0, 126, 249);
+            btnEdit.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnEdit.ForeColor = Color.White;
+            btnEdit.Location = new Point(115, 510);
+            btnEdit.Name = "btnEdit";
+            btnEdit.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            btnEdit.Size = new Size(90, 36);
+            btnEdit.TabIndex = 9;
+            btnEdit.Text = "SỬA";
+            btnEdit.Click += btnEdit_Click;
+            // 
+            // btnDelete
+            // 
+            btnDelete.BorderRadius = 5;
+            btnDelete.CustomizableEdges = customizableEdges13;
+            btnDelete.FillColor = Color.FromArgb(244, 67, 54);
+            btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnDelete.ForeColor = Color.White;
+            btnDelete.Location = new Point(215, 510);
+            btnDelete.Name = "btnDelete";
+            btnDelete.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            btnDelete.Size = new Size(90, 36);
+            btnDelete.TabIndex = 10;
+            btnDelete.Text = "XÓA";
+            btnDelete.Click += btnDelete_Click;
+            // 
+            // btnSave
+            // 
+            btnSave.BorderRadius = 5;
+            btnSave.CustomizableEdges = customizableEdges15;
+            btnSave.FillColor = Color.FromArgb(0, 126, 249);
+            btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnSave.ForeColor = Color.White;
+            btnSave.Location = new Point(15, 560);
+            btnSave.Name = "btnSave";
+            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            btnSave.Size = new Size(290, 40);
+            btnSave.TabIndex = 11;
+            btnSave.Text = "XUẤT BÁO CÁO";
+            btnSave.Click += btnSave_Click;
+            // 
+            // btnCancel
+            // 
+            btnCancel.BorderRadius = 5;
+            btnCancel.CustomizableEdges = customizableEdges17;
+            btnCancel.FillColor = Color.FromArgb(108, 117, 125);
+            btnCancel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnCancel.ForeColor = Color.White;
+            btnCancel.Location = new Point(15, 610);
+            btnCancel.Name = "btnCancel";
+            btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            btnCancel.Size = new Size(290, 35);
+            btnCancel.TabIndex = 12;
+            btnCancel.Text = "BỎ QUA";
+            btnCancel.Click += btnCancel_Click;
+            // 
+            // pnlGridCard
+            // 
+            pnlGridCard.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pnlGridCard.BackColor = Color.Transparent;
+            pnlGridCard.BorderRadius = 10;
+            pnlGridCard.Controls.Add(lblGridTitle);
+            pnlGridCard.Controls.Add(txtSearch);
+            pnlGridCard.Controls.Add(btnSearch);
+            pnlGridCard.Controls.Add(btnRefresh);
+            pnlGridCard.Controls.Add(dgvReports);
+            pnlGridCard.CustomizableEdges = customizableEdges27;
+            pnlGridCard.FillColor = Color.White;
+            pnlGridCard.Location = new Point(360, 20);
+            pnlGridCard.Name = "pnlGridCard";
+            pnlGridCard.Padding = new Padding(15);
+            pnlGridCard.ShadowDecoration.CustomizableEdges = customizableEdges28;
+            pnlGridCard.Size = new Size(620, 660);
+            pnlGridCard.TabIndex = 13;
+            // 
+            // lblGridTitle
+            // 
+            lblGridTitle.AutoSize = true;
+            lblGridTitle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblGridTitle.ForeColor = Color.FromArgb(0, 126, 249);
+            lblGridTitle.Location = new Point(15, 10);
+            lblGridTitle.Name = "lblGridTitle";
+            lblGridTitle.Size = new Size(174, 21);
+            lblGridTitle.TabIndex = 0;
+            lblGridTitle.Text = "CHI TIẾT DOANH THU";
+            // 
+            // txtSearch
+            // 
+            txtSearch.BorderRadius = 5;
+            txtSearch.CustomizableEdges = customizableEdges21;
+            txtSearch.DefaultText = "";
+            txtSearch.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            txtSearch.Font = new Font("Segoe UI", 9F);
+            txtSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtSearch.Location = new Point(15, 45);
+            txtSearch.Name = "txtSearch";
+            txtSearch.PlaceholderText = "Tìm kiếm báo cáo...";
+            txtSearch.SelectedText = "";
+            txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges22;
+            txtSearch.Size = new Size(250, 36);
+            txtSearch.TabIndex = 14;
+            // 
+            // btnSearch
+            // 
+            btnSearch.BorderRadius = 5;
+            btnSearch.CustomizableEdges = customizableEdges23;
+            btnSearch.FillColor = Color.FromArgb(0, 126, 249);
+            btnSearch.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnSearch.ForeColor = Color.White;
+            btnSearch.Location = new Point(275, 45);
+            btnSearch.Name = "btnSearch";
+            btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges24;
+            btnSearch.Size = new Size(100, 36);
+            btnSearch.TabIndex = 15;
+            btnSearch.Text = "TÌM KIẾM";
+            btnSearch.Click += btnSearch_Click;
+            // 
+            // btnRefresh
+            // 
+            btnRefresh.BorderRadius = 5;
+            btnRefresh.CustomizableEdges = customizableEdges25;
+            btnRefresh.FillColor = Color.FromArgb(108, 117, 125);
+            btnRefresh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnRefresh.ForeColor = Color.White;
+            btnRefresh.Location = new Point(385, 45);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.ShadowDecoration.CustomizableEdges = customizableEdges26;
+            btnRefresh.Size = new Size(100, 36);
+            btnRefresh.TabIndex = 16;
+            btnRefresh.Text = "LÀM MỚI";
+            btnRefresh.Click += btnRefresh_Click;
             // 
             // dgvReports
             // 
+            dgvReports.AllowUserToAddRows = false;
+            dgvReports.AllowUserToDeleteRows = false;
             dataGridViewCellStyle1.BackColor = Color.White;
             dgvReports.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dgvReports.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = Color.FromArgb(0, 126, 249);
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
@@ -299,15 +420,14 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(71, 69, 94);
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dgvReports.DefaultCellStyle = dataGridViewCellStyle3;
-            dgvReports.Dock = DockStyle.Fill;
             dgvReports.GridColor = Color.FromArgb(231, 229, 255);
-            dgvReports.Location = new Point(0, 10);
+            dgvReports.Location = new Point(15, 95);
             dgvReports.Name = "dgvReports";
             dgvReports.RowHeadersVisible = false;
             dgvReports.RowHeadersWidth = 51;
             dgvReports.RowTemplate.Height = 35;
-            dgvReports.Size = new Size(950, 443);
-            dgvReports.TabIndex = 0;
+            dgvReports.Size = new Size(590, 550);
+            dgvReports.TabIndex = 17;
             dgvReports.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvReports.ThemeStyle.AlternatingRowsStyle.Font = null;
             dgvReports.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
@@ -335,43 +455,50 @@ namespace AssignmentApp.GUI.UserControls.Admin
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 242, 245);
-            Controls.Add(pnlGrid);
-            Controls.Add(pnlCards);
-            Controls.Add(pnlHeader);
+            Controls.Add(pnlInputCard);
+            Controls.Add(pnlGridCard);
             Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "ucReports";
             Padding = new Padding(20);
-            Size = new Size(990, 683);
-            pnlHeader.ResumeLayout(false);
-            pnlHeader.PerformLayout();
-            pnlCards.ResumeLayout(false);
-            cardOrders.ResumeLayout(false);
-            cardOrders.PerformLayout();
+            Size = new Size(1000, 700);
+            pnlInputCard.ResumeLayout(false);
+            pnlInputCard.PerformLayout();
             cardRevenue.ResumeLayout(false);
             cardRevenue.PerformLayout();
-            pnlGrid.ResumeLayout(false);
+            cardOrders.ResumeLayout(false);
+            cardOrders.PerformLayout();
+            pnlGridCard.ResumeLayout(false);
+            pnlGridCard.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvReports).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
 
-        private Guna.UI2.WinForms.Guna2Panel pnlHeader;
-        private Guna.UI2.WinForms.Guna2Button btnExport;
-        private Guna.UI2.WinForms.Guna2Button btnFilter;
-        private Guna.UI2.WinForms.Guna2DateTimePicker dtpEndDate;
-        private Guna.UI2.WinForms.Guna2DateTimePicker dtpStartDate;
+        private Guna.UI2.WinForms.Guna2Panel pnlInputCard;
+        private System.Windows.Forms.Label lblInputTitle;
         private System.Windows.Forms.Label lblStartDate;
+        private Guna.UI2.WinForms.Guna2DateTimePicker dtpStartDate;
         private System.Windows.Forms.Label lblEndDate;
-        private Guna.UI2.WinForms.Guna2Panel pnlCards;
+        private Guna.UI2.WinForms.Guna2DateTimePicker dtpEndDate;
         private Guna.UI2.WinForms.Guna2Panel cardRevenue;
         private System.Windows.Forms.Label lblRevenueValue;
         private System.Windows.Forms.Label lblRevenueTitle;
         private Guna.UI2.WinForms.Guna2Panel cardOrders;
         private System.Windows.Forms.Label lblOrdersValue;
         private System.Windows.Forms.Label lblOrdersTitle;
-        private Guna.UI2.WinForms.Guna2Panel pnlGrid;
+        
+        private Guna.UI2.WinForms.Guna2Button btnAdd;
+        private Guna.UI2.WinForms.Guna2Button btnEdit;
+        private Guna.UI2.WinForms.Guna2Button btnDelete;
+        private Guna.UI2.WinForms.Guna2Button btnSave;
+        private Guna.UI2.WinForms.Guna2Button btnCancel;
+
+        private Guna.UI2.WinForms.Guna2Panel pnlGridCard;
+        private System.Windows.Forms.Label lblGridTitle;
+        private Guna.UI2.WinForms.Guna2TextBox txtSearch;
+        private Guna.UI2.WinForms.Guna2Button btnSearch;
+        private Guna.UI2.WinForms.Guna2Button btnRefresh;
         private Guna.UI2.WinForms.Guna2DataGridView dgvReports;
     }
 }
-

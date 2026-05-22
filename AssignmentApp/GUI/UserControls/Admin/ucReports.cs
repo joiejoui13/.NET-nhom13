@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace AssignmentApp.GUI.UserControls.Admin
 {
-    public partial class ucReports : Base.ucBase
+    public partial class ucReports : UserControl
     {
         public ucReports()
         {

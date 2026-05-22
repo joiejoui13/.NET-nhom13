@@ -1,4 +1,4 @@
-﻿namespace AssignmentApp.GUI.UserControls.Sales
+namespace AssignmentApp.GUI.UserControls.Sales
 {
     partial class ucReturns
     {
@@ -28,38 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            headerPanel = new Guna.UI2.WinForms.Guna2Panel();
-            lblTitle = new Label();
-            btnLogout = new Guna.UI2.WinForms.Guna2Button();
             gbInvoice = new Guna.UI2.WinForms.Guna2GroupBox();
             lblInvoice = new Label();
             txtInvoice = new Guna.UI2.WinForms.Guna2TextBox();
             btnSearch = new Guna.UI2.WinForms.Guna2Button();
             gridPanel = new Guna.UI2.WinForms.Guna2Panel();
             dgv = new Guna.UI2.WinForms.Guna2DataGridView();
+            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn3 = new DataGridViewTextBoxColumn();
+            dataGridViewTextBoxColumn4 = new DataGridViewTextBoxColumn();
             gbReturn = new Guna.UI2.WinForms.Guna2GroupBox();
             rdRefund = new Guna.UI2.WinForms.Guna2RadioButton();
             rdExchange = new Guna.UI2.WinForms.Guna2RadioButton();
@@ -69,11 +66,6 @@
             lblFee = new Label();
             lblFinal = new Label();
             btnReturn = new Guna.UI2.WinForms.Guna2Button();
-            dataGridViewTextBoxColumn1 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn2 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn3 = new DataGridViewTextBoxColumn();
-            dataGridViewTextBoxColumn4 = new DataGridViewTextBoxColumn();
-            headerPanel.SuspendLayout();
             gbInvoice.SuspendLayout();
             gridPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgv).BeginInit();
@@ -81,58 +73,20 @@
             summaryPanel.SuspendLayout();
             SuspendLayout();
             // 
-            // headerPanel
-            // 
-            headerPanel.Controls.Add(lblTitle);
-            headerPanel.Controls.Add(btnLogout);
-            headerPanel.CustomizableEdges = customizableEdges3;
-            headerPanel.Dock = DockStyle.Top;
-            headerPanel.FillColor = Color.White;
-            headerPanel.Location = new Point(33, 38);
-            headerPanel.Name = "headerPanel";
-            headerPanel.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            headerPanel.ShadowDecoration.Enabled = true;
-            headerPanel.Size = new Size(1134, 70);
-            headerPanel.TabIndex = 0;
-            // 
-            // lblTitle
-            // 
-            lblTitle.AutoSize = true;
-            lblTitle.Font = new Font("Segoe UI", 18F, FontStyle.Bold);
-            lblTitle.ForeColor = Color.FromArgb(75, 0, 130);
-            lblTitle.Location = new Point(17, 8);
-            lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(371, 48);
-            lblTitle.TabIndex = 0;
-            lblTitle.Text = "QUẢN LÝ TRẢ HÀNG";
-            // 
-            // btnLogout
-            // 
-            btnLogout.BorderRadius = 12;
-            btnLogout.CustomizableEdges = customizableEdges1;
-            btnLogout.FillColor = Color.FromArgb(220, 53, 69);
-            btnLogout.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnLogout.ForeColor = Color.White;
-            btnLogout.Location = new Point(987, 14);
-            btnLogout.Name = "btnLogout";
-            btnLogout.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnLogout.Size = new Size(130, 42);
-            btnLogout.TabIndex = 1;
-            btnLogout.Text = "Đăng xuất";
-            // 
             // gbInvoice
             // 
+            gbInvoice.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             gbInvoice.BorderRadius = 18;
             gbInvoice.Controls.Add(lblInvoice);
             gbInvoice.Controls.Add(txtInvoice);
             gbInvoice.Controls.Add(btnSearch);
-            gbInvoice.CustomizableEdges = customizableEdges9;
+            gbInvoice.CustomizableEdges = customizableEdges5;
             gbInvoice.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             gbInvoice.ForeColor = Color.FromArgb(125, 137, 149);
-            gbInvoice.Location = new Point(25, 114);
+            gbInvoice.Location = new Point(20, 23);
             gbInvoice.Name = "gbInvoice";
-            gbInvoice.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            gbInvoice.Size = new Size(1140, 140);
+            gbInvoice.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            gbInvoice.Size = new Size(974, 140);
             gbInvoice.TabIndex = 1;
             gbInvoice.Text = "Thông tin hóa đơn";
             // 
@@ -148,7 +102,7 @@
             // txtInvoice
             // 
             txtInvoice.BorderRadius = 12;
-            txtInvoice.CustomizableEdges = customizableEdges5;
+            txtInvoice.CustomizableEdges = customizableEdges1;
             txtInvoice.DefaultText = "";
             txtInvoice.Font = new Font("Segoe UI", 9F);
             txtInvoice.Location = new Point(25, 80);
@@ -156,35 +110,36 @@
             txtInvoice.Name = "txtInvoice";
             txtInvoice.PlaceholderText = "Nhập mã hóa đơn...";
             txtInvoice.SelectedText = "";
-            txtInvoice.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            txtInvoice.ShadowDecoration.CustomizableEdges = customizableEdges2;
             txtInvoice.Size = new Size(250, 42);
             txtInvoice.TabIndex = 1;
             // 
             // btnSearch
             // 
             btnSearch.BorderRadius = 12;
-            btnSearch.CustomizableEdges = customizableEdges7;
+            btnSearch.CustomizableEdges = customizableEdges3;
             btnSearch.FillColor = Color.FromArgb(111, 66, 193);
             btnSearch.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnSearch.ForeColor = Color.White;
             btnSearch.Location = new Point(300, 80);
             btnSearch.Name = "btnSearch";
-            btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges4;
             btnSearch.Size = new Size(140, 42);
             btnSearch.TabIndex = 2;
             btnSearch.Text = "Tìm kiếm";
             // 
             // gridPanel
             // 
+            gridPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gridPanel.BorderRadius = 20;
             gridPanel.Controls.Add(dgv);
-            gridPanel.CustomizableEdges = customizableEdges11;
+            gridPanel.CustomizableEdges = customizableEdges7;
             gridPanel.FillColor = Color.White;
-            gridPanel.Location = new Point(27, 260);
+            gridPanel.Location = new Point(20, 169);
             gridPanel.Name = "gridPanel";
             gridPanel.Padding = new Padding(15);
-            gridPanel.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            gridPanel.Size = new Size(1140, 260);
+            gridPanel.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            gridPanel.Size = new Size(974, 212);
             gridPanel.TabIndex = 2;
             // 
             // dgv
@@ -216,7 +171,8 @@
             dgv.Name = "dgv";
             dgv.RowHeadersVisible = false;
             dgv.RowHeadersWidth = 62;
-            dgv.Size = new Size(1110, 230);
+            dgv.RowTemplate.Height = 33;
+            dgv.Size = new Size(944, 182);
             dgv.TabIndex = 0;
             dgv.ThemeStyle.AlternatingRowsStyle.BackColor = Color.FromArgb(248, 249, 252);
             dgv.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -239,120 +195,6 @@
             dgv.ThemeStyle.RowsStyle.Height = 33;
             dgv.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(230, 230, 250);
             dgv.ThemeStyle.RowsStyle.SelectionForeColor = Color.Black;
-            // 
-            // gbReturn
-            // 
-            gbReturn.BorderRadius = 18;
-            gbReturn.Controls.Add(rdRefund);
-            gbReturn.Controls.Add(rdExchange);
-            gbReturn.Controls.Add(txtNote);
-            gbReturn.CustomizableEdges = customizableEdges15;
-            gbReturn.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            gbReturn.ForeColor = Color.FromArgb(125, 137, 149);
-            gbReturn.Location = new Point(25, 530);
-            gbReturn.Name = "gbReturn";
-            gbReturn.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            gbReturn.Size = new Size(550, 203);
-            gbReturn.TabIndex = 3;
-            gbReturn.Text = "Thông tin xử lý";
-            // 
-            // rdRefund
-            // 
-            rdRefund.CheckedState.BorderThickness = 0;
-            rdRefund.Font = new Font("Segoe UI", 11F);
-            rdRefund.Location = new Point(25, 60);
-            rdRefund.Name = "rdRefund";
-            rdRefund.Size = new Size(170, 42);
-            rdRefund.TabIndex = 0;
-            rdRefund.Text = "Hoàn tiền";
-            rdRefund.UncheckedState.BorderThickness = 0;
-            // 
-            // rdExchange
-            // 
-            rdExchange.CheckedState.BorderThickness = 0;
-            rdExchange.Font = new Font("Segoe UI", 11F);
-            rdExchange.Location = new Point(255, 60);
-            rdExchange.Name = "rdExchange";
-            rdExchange.Size = new Size(185, 42);
-            rdExchange.TabIndex = 1;
-            rdExchange.Text = "Đổi sản phẩm";
-            rdExchange.UncheckedState.BorderThickness = 0;
-            // 
-            // txtNote
-            // 
-            txtNote.BorderRadius = 12;
-            txtNote.CustomizableEdges = customizableEdges13;
-            txtNote.DefaultText = "";
-            txtNote.Font = new Font("Segoe UI", 9F);
-            txtNote.Location = new Point(25, 110);
-            txtNote.Margin = new Padding(4, 5, 4, 5);
-            txtNote.Multiline = true;
-            txtNote.Name = "txtNote";
-            txtNote.PlaceholderText = "Ghi chú...";
-            txtNote.SelectedText = "";
-            txtNote.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            txtNote.Size = new Size(490, 70);
-            txtNote.TabIndex = 2;
-            // 
-            // summaryPanel
-            // 
-            summaryPanel.BorderRadius = 20;
-            summaryPanel.Controls.Add(lblMoney);
-            summaryPanel.Controls.Add(lblFee);
-            summaryPanel.Controls.Add(lblFinal);
-            summaryPanel.Controls.Add(btnReturn);
-            summaryPanel.CustomizableEdges = customizableEdges19;
-            summaryPanel.FillColor = Color.White;
-            summaryPanel.Location = new Point(595, 530);
-            summaryPanel.Name = "summaryPanel";
-            summaryPanel.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            summaryPanel.Size = new Size(570, 203);
-            summaryPanel.TabIndex = 4;
-            // 
-            // lblMoney
-            // 
-            lblMoney.AutoSize = true;
-            lblMoney.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblMoney.Location = new Point(30, 22);
-            lblMoney.Name = "lblMoney";
-            lblMoney.Size = new Size(374, 32);
-            lblMoney.TabIndex = 0;
-            lblMoney.Text = "Tổng tiền hoàn: 1.500.000 VNĐ";
-            // 
-            // lblFee
-            // 
-            lblFee.AutoSize = true;
-            lblFee.Font = new Font("Segoe UI", 11F);
-            lblFee.Location = new Point(30, 60);
-            lblFee.Name = "lblFee";
-            lblFee.Size = new Size(220, 30);
-            lblFee.TabIndex = 1;
-            lblFee.Text = "Phí xử lý: 50.000 VNĐ";
-            // 
-            // lblFinal
-            // 
-            lblFinal.AutoSize = true;
-            lblFinal.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
-            lblFinal.ForeColor = Color.FromArgb(40, 167, 69);
-            lblFinal.Location = new Point(30, 99);
-            lblFinal.Name = "lblFinal";
-            lblFinal.Size = new Size(356, 36);
-            lblFinal.TabIndex = 2;
-            lblFinal.Text = "Khách nhận: 1.450.000 VNĐ";
-            // 
-            // btnReturn
-            // 
-            btnReturn.BorderRadius = 14;
-            btnReturn.CustomizableEdges = customizableEdges17;
-            btnReturn.FillColor = Color.FromArgb(111, 66, 193);
-            btnReturn.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            btnReturn.ForeColor = Color.White;
-            btnReturn.Location = new Point(361, 149);
-            btnReturn.Name = "btnReturn";
-            btnReturn.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            btnReturn.Size = new Size(206, 40);
-            btnReturn.TabIndex = 3;
-            btnReturn.Text = "XÁC NHẬN TRẢ HÀNG";
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -378,19 +220,136 @@
             dataGridViewTextBoxColumn4.MinimumWidth = 8;
             dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
             // 
+            // gbReturn
+            // 
+            gbReturn.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            gbReturn.BorderRadius = 18;
+            gbReturn.Controls.Add(rdRefund);
+            gbReturn.Controls.Add(rdExchange);
+            gbReturn.Controls.Add(txtNote);
+            gbReturn.CustomizableEdges = customizableEdges11;
+            gbReturn.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            gbReturn.ForeColor = Color.FromArgb(125, 137, 149);
+            gbReturn.Location = new Point(20, 472);
+            gbReturn.Name = "gbReturn";
+            gbReturn.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            gbReturn.Size = new Size(470, 200);
+            gbReturn.TabIndex = 3;
+            gbReturn.Text = "Thông tin xử lý";
+            // 
+            // rdRefund
+            // 
+            rdRefund.CheckedState.BorderThickness = 0;
+            rdRefund.Font = new Font("Segoe UI", 11F);
+            rdRefund.Location = new Point(25, 60);
+            rdRefund.Name = "rdRefund";
+            rdRefund.Size = new Size(170, 42);
+            rdRefund.TabIndex = 0;
+            rdRefund.Text = "Hoàn tiền";
+            rdRefund.UncheckedState.BorderThickness = 0;
+            // 
+            // rdExchange
+            // 
+            rdExchange.CheckedState.BorderThickness = 0;
+            rdExchange.Font = new Font("Segoe UI", 11F);
+            rdExchange.Location = new Point(240, 60);
+            rdExchange.Name = "rdExchange";
+            rdExchange.Size = new Size(185, 42);
+            rdExchange.TabIndex = 1;
+            rdExchange.Text = "Đổi sản phẩm";
+            rdExchange.UncheckedState.BorderThickness = 0;
+            // 
+            // txtNote
+            // 
+            txtNote.BorderRadius = 12;
+            txtNote.CustomizableEdges = customizableEdges9;
+            txtNote.DefaultText = "";
+            txtNote.Font = new Font("Segoe UI", 9F);
+            txtNote.Location = new Point(25, 110);
+            txtNote.Margin = new Padding(4, 5, 4, 5);
+            txtNote.Multiline = true;
+            txtNote.Name = "txtNote";
+            txtNote.PlaceholderText = "Ghi chú...";
+            txtNote.SelectedText = "";
+            txtNote.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            txtNote.Size = new Size(420, 70);
+            txtNote.TabIndex = 2;
+            // 
+            // summaryPanel
+            // 
+            summaryPanel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            summaryPanel.BorderRadius = 20;
+            summaryPanel.Controls.Add(lblMoney);
+            summaryPanel.Controls.Add(lblFee);
+            summaryPanel.Controls.Add(lblFinal);
+            summaryPanel.Controls.Add(btnReturn);
+            summaryPanel.CustomizableEdges = customizableEdges15;
+            summaryPanel.FillColor = Color.White;
+            summaryPanel.Location = new Point(500, 472);
+            summaryPanel.Name = "summaryPanel";
+            summaryPanel.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            summaryPanel.Size = new Size(494, 200);
+            summaryPanel.TabIndex = 4;
+            // 
+            // lblMoney
+            // 
+            lblMoney.AutoSize = true;
+            lblMoney.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            lblMoney.Location = new Point(30, 22);
+            lblMoney.Name = "lblMoney";
+            lblMoney.Size = new Size(245, 21);
+            lblMoney.TabIndex = 0;
+            lblMoney.Text = "Tổng tiền hoàn: 1.500.000 VNĐ";
+            // 
+            // lblFee
+            // 
+            lblFee.AutoSize = true;
+            lblFee.Font = new Font("Segoe UI", 11F);
+            lblFee.Location = new Point(30, 60);
+            lblFee.Name = "lblFee";
+            lblFee.Size = new Size(149, 20);
+            lblFee.TabIndex = 1;
+            lblFee.Text = "Phí xử lý: 50.000 VNĐ";
+            // 
+            // lblFinal
+            // 
+            lblFinal.AutoSize = true;
+            lblFinal.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            lblFinal.ForeColor = Color.FromArgb(40, 167, 69);
+            lblFinal.Location = new Point(30, 99);
+            lblFinal.Name = "lblFinal";
+            lblFinal.Size = new Size(247, 25);
+            lblFinal.TabIndex = 2;
+            lblFinal.Text = "Khách nhận: 1.450.000 VNĐ";
+            // 
+            // btnReturn
+            // 
+            btnReturn.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnReturn.BorderRadius = 14;
+            btnReturn.CustomizableEdges = customizableEdges13;
+            btnReturn.FillColor = Color.FromArgb(111, 66, 193);
+            btnReturn.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnReturn.ForeColor = Color.White;
+            btnReturn.Location = new Point(268, 140);
+            btnReturn.Name = "btnReturn";
+            btnReturn.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            btnReturn.Size = new Size(206, 40);
+            btnReturn.TabIndex = 3;
+            btnReturn.Text = "XÁC NHẬN TRẢ HÀNG";
+            // 
             // ucReturns
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
-            BackColor = Color.FromArgb(245, 247, 250);
-            Controls.Add(headerPanel);
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(240, 242, 245);
             Controls.Add(gbInvoice);
             Controls.Add(gridPanel);
             Controls.Add(gbReturn);
             Controls.Add(summaryPanel);
+            Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "ucReturns";
-            Size = new Size(1200, 760);
-            headerPanel.ResumeLayout(false);
-            headerPanel.PerformLayout();
+            Padding = new Padding(20);
+            Size = new Size(1014, 692);
             gbInvoice.ResumeLayout(false);
             gridPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgv).EndInit();
@@ -427,8 +386,6 @@
         private Guna.UI2.WinForms.Guna2HtmlLabel lblTienTra;
 
         private Guna.UI2.WinForms.Guna2Button btnTraHang;
-        private Guna.UI2.WinForms.Guna2Panel headerPanel;
-        private Guna.UI2.WinForms.Guna2Button btnLogout;
         private Guna.UI2.WinForms.Guna2GroupBox gbInvoice;
         private Label lblInvoice;
         private Guna.UI2.WinForms.Guna2TextBox txtInvoice;
@@ -448,7 +405,6 @@
         private Label lblFee;
         private Label lblFinal;
         private Guna.UI2.WinForms.Guna2Button btnReturn;
-        private Label lblTitle;
     }
 }
 

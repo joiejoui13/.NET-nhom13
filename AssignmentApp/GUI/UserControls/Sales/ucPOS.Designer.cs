@@ -1,4 +1,4 @@
-﻿namespace AssignmentApp.GUI.UserControls.Sales
+namespace AssignmentApp.GUI.UserControls.Sales
 {
     partial class ucPOS
     {
@@ -70,6 +70,7 @@
             // 
             // pnlTop
             // 
+            pnlTop.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pnlTop.BackColor = Color.White;
             pnlTop.BorderRadius = 15;
             pnlTop.Controls.Add(lblTitle);
@@ -79,7 +80,7 @@
             pnlTop.Location = new Point(20, 20);
             pnlTop.Name = "pnlTop";
             pnlTop.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            pnlTop.Size = new Size(1360, 80);
+            pnlTop.Size = new Size(960, 80);
             pnlTop.TabIndex = 0;
             // 
             // lblTitle
@@ -95,27 +96,29 @@
             // 
             // txtSearch
             // 
+            txtSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtSearch.BorderRadius = 12;
             txtSearch.CustomizableEdges = customizableEdges1;
             txtSearch.DefaultText = "";
             txtSearch.Font = new Font("Segoe UI", 11F);
-            txtSearch.Location = new Point(420, 18);
+            txtSearch.Location = new Point(300, 18);
             txtSearch.Margin = new Padding(4, 5, 4, 5);
             txtSearch.Name = "txtSearch";
             txtSearch.PlaceholderText = "Tìm kiếm sản phẩm...";
             txtSearch.SelectedText = "";
             txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            txtSearch.Size = new Size(500, 45);
+            txtSearch.Size = new Size(460, 45);
             txtSearch.TabIndex = 1;
             // 
             // btnLogout
             // 
+            btnLogout.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnLogout.BorderRadius = 10;
             btnLogout.CustomizableEdges = customizableEdges3;
             btnLogout.FillColor = Color.FromArgb(220, 38, 38);
             btnLogout.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnLogout.ForeColor = Color.White;
-            btnLogout.Location = new Point(1180, 18);
+            btnLogout.Location = new Point(790, 18);
             btnLogout.Name = "btnLogout";
             btnLogout.ShadowDecoration.CustomizableEdges = customizableEdges4;
             btnLogout.Size = new Size(150, 45);
@@ -124,6 +127,7 @@
             // 
             // pnlProducts
             // 
+            pnlProducts.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlProducts.BackColor = Color.White;
             pnlProducts.BorderRadius = 20;
             pnlProducts.Controls.Add(flowProducts);
@@ -131,7 +135,7 @@
             pnlProducts.Location = new Point(20, 120);
             pnlProducts.Name = "pnlProducts";
             pnlProducts.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            pnlProducts.Size = new Size(850, 700);
+            pnlProducts.Size = new Size(590, 560);
             pnlProducts.TabIndex = 1;
             // 
             // flowProducts
@@ -142,11 +146,12 @@
             flowProducts.Location = new Point(0, 0);
             flowProducts.Name = "flowProducts";
             flowProducts.Padding = new Padding(20);
-            flowProducts.Size = new Size(850, 700);
+            flowProducts.Size = new Size(590, 560);
             flowProducts.TabIndex = 0;
             // 
             // pnlCart
             // 
+            pnlCart.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             pnlCart.BackColor = Color.White;
             pnlCart.BorderRadius = 20;
             pnlCart.Controls.Add(dgvCart);
@@ -158,10 +163,10 @@
             pnlCart.Controls.Add(btnCancel);
             pnlCart.Controls.Add(btnNew);
             pnlCart.CustomizableEdges = customizableEdges15;
-            pnlCart.Location = new Point(890, 120);
+            pnlCart.Location = new Point(630, 120);
             pnlCart.Name = "pnlCart";
             pnlCart.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            pnlCart.Size = new Size(490, 700);
+            pnlCart.Size = new Size(350, 560);
             pnlCart.TabIndex = 2;
             // 
             // dgvCart
@@ -191,8 +196,9 @@
             dgvCart.RowHeadersVisible = false;
             dgvCart.RowHeadersWidth = 62;
             dgvCart.RowTemplate.Height = 40;
-            dgvCart.Size = new Size(450, 350);
+            dgvCart.Size = new Size(310, 275);
             dgvCart.TabIndex = 0;
+            dgvCart.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dgvCart.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvCart.ThemeStyle.AlternatingRowsStyle.Font = null;
             dgvCart.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
@@ -217,9 +223,10 @@
             // 
             // lblSubtotal
             // 
+            lblSubtotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblSubtotal.BackColor = Color.Transparent;
             lblSubtotal.Font = new Font("Segoe UI", 11F);
-            lblSubtotal.Location = new Point(25, 400);
+            lblSubtotal.Location = new Point(20, 310);
             lblSubtotal.Name = "lblSubtotal";
             lblSubtotal.Size = new Size(167, 32);
             lblSubtotal.TabIndex = 1;
@@ -227,9 +234,10 @@
             // 
             // lblDiscount
             // 
+            lblDiscount.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblDiscount.BackColor = Color.Transparent;
             lblDiscount.Font = new Font("Segoe UI", 11F);
-            lblDiscount.Location = new Point(25, 440);
+            lblDiscount.Location = new Point(20, 340);
             lblDiscount.Name = "lblDiscount";
             lblDiscount.Size = new Size(168, 32);
             lblDiscount.TabIndex = 2;
@@ -237,9 +245,10 @@
             // 
             // lblVAT
             // 
+            lblVAT.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblVAT.BackColor = Color.Transparent;
             lblVAT.Font = new Font("Segoe UI", 11F);
-            lblVAT.Location = new Point(25, 480);
+            lblVAT.Location = new Point(20, 370);
             lblVAT.Name = "lblVAT";
             lblVAT.Size = new Size(123, 32);
             lblVAT.TabIndex = 3;
@@ -247,10 +256,11 @@
             // 
             // lblTotal
             // 
+            lblTotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblTotal.BackColor = Color.Transparent;
             lblTotal.Font = new Font("Segoe UI", 22F, FontStyle.Bold);
             lblTotal.ForeColor = Color.FromArgb(22, 163, 74);
-            lblTotal.Location = new Point(25, 530);
+            lblTotal.Location = new Point(20, 400);
             lblTotal.Name = "lblTotal";
             lblTotal.Size = new Size(136, 62);
             lblTotal.TabIndex = 4;
@@ -258,55 +268,61 @@
             // 
             // btnPay
             // 
+            btnPay.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             btnPay.BorderRadius = 12;
             btnPay.CustomizableEdges = customizableEdges9;
             btnPay.FillColor = Color.FromArgb(22, 163, 74);
             btnPay.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             btnPay.ForeColor = Color.White;
-            btnPay.Location = new Point(20, 598);
+            btnPay.Location = new Point(20, 495);
             btnPay.Name = "btnPay";
             btnPay.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            btnPay.Size = new Size(140, 77);
+            btnPay.Size = new Size(310, 45);
             btnPay.TabIndex = 5;
             btnPay.Text = "THANH TOÁN";
             // 
             // btnCancel
             // 
+            btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnCancel.BorderRadius = 12;
             btnCancel.CustomizableEdges = customizableEdges11;
             btnCancel.FillColor = Color.FromArgb(107, 114, 128);
-            btnCancel.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnCancel.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnCancel.ForeColor = Color.White;
-            btnCancel.Location = new Point(166, 598);
+            btnCancel.Location = new Point(20, 450);
             btnCancel.Name = "btnCancel";
             btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            btnCancel.Size = new Size(144, 77);
+            btnCancel.Size = new Size(150, 38);
             btnCancel.TabIndex = 6;
             btnCancel.Text = "HỦY ĐƠN";
             // 
             // btnNew
             // 
+            btnNew.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             btnNew.BorderRadius = 12;
             btnNew.CustomizableEdges = customizableEdges13;
             btnNew.FillColor = Color.FromArgb(37, 99, 235);
-            btnNew.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
+            btnNew.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnNew.ForeColor = Color.White;
-            btnNew.Location = new Point(325, 598);
+            btnNew.Location = new Point(180, 450);
             btnNew.Name = "btnNew";
             btnNew.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            btnNew.Size = new Size(135, 77);
+            btnNew.Size = new Size(150, 38);
             btnNew.TabIndex = 7;
             btnNew.Text = "TẠO MỚI";
             // 
             // ucPOS
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
-            BackColor = Color.FromArgb(243, 244, 246);
+            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(240, 242, 245);
             Controls.Add(pnlTop);
             Controls.Add(pnlProducts);
             Controls.Add(pnlCart);
+            Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "ucPOS";
-            Size = new Size(1400, 850);
+            Padding = new Padding(20);
+            Size = new Size(1000, 700);
             pnlTop.ResumeLayout(false);
             pnlTop.PerformLayout();
             pnlProducts.ResumeLayout(false);

@@ -38,14 +38,12 @@ namespace AssignmentApp.GUI.UserControls.Admin
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges7 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
@@ -83,11 +81,10 @@ namespace AssignmentApp.GUI.UserControls.Admin
             pnlHeader.Controls.Add(dtpStartDate);
             pnlHeader.CustomizableEdges = customizableEdges9;
             pnlHeader.Dock = DockStyle.Top;
-            pnlHeader.Location = new Point(31, 41);
-            pnlHeader.Margin = new Padding(3, 4, 3, 4);
+            pnlHeader.Location = new Point(20, 20);
             pnlHeader.Name = "pnlHeader";
             pnlHeader.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            pnlHeader.Size = new Size(1081, 107);
+            pnlHeader.Size = new Size(950, 70);
             pnlHeader.TabIndex = 0;
             // 
             // lblEndDate
@@ -95,9 +92,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblEndDate.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblEndDate.AutoSize = true;
             lblEndDate.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblEndDate.Location = new Point(452, 47);
+            lblEndDate.Location = new Point(430, 23);
             lblEndDate.Name = "lblEndDate";
-            lblEndDate.Size = new Size(87, 23);
+            lblEndDate.Size = new Size(71, 19);
             lblEndDate.TabIndex = 6;
             lblEndDate.Text = "Đến ngày:";
             // 
@@ -106,9 +103,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblStartDate.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             lblStartDate.AutoSize = true;
             lblStartDate.Font = new Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblStartDate.Location = new Point(178, 47);
+            lblStartDate.Location = new Point(200, 23);
             lblStartDate.Name = "lblStartDate";
-            lblStartDate.Size = new Size(75, 23);
+            lblStartDate.Size = new Size(61, 19);
             lblStartDate.TabIndex = 5;
             lblStartDate.Text = "Từ ngày:";
             // 
@@ -123,11 +120,10 @@ namespace AssignmentApp.GUI.UserControls.Admin
             btnExport.FillColor = Color.White;
             btnExport.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnExport.ForeColor = Color.FromArgb(0, 126, 249);
-            btnExport.Location = new Point(909, 33);
-            btnExport.Margin = new Padding(3, 4, 3, 4);
+            btnExport.Location = new Point(800, 15);
             btnExport.Name = "btnExport";
             btnExport.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            btnExport.Size = new Size(137, 53);
+            btnExport.Size = new Size(130, 40);
             btnExport.TabIndex = 4;
             btnExport.Text = "Xuất báo cáo";
             // 
@@ -140,11 +136,10 @@ namespace AssignmentApp.GUI.UserControls.Admin
             btnFilter.FillColor = Color.FromArgb(0, 126, 249);
             btnFilter.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnFilter.ForeColor = Color.White;
-            btnFilter.Location = new Point(761, 33);
-            btnFilter.Margin = new Padding(3, 4, 3, 4);
+            btnFilter.Location = new Point(670, 15);
             btnFilter.Name = "btnFilter";
             btnFilter.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            btnFilter.Size = new Size(126, 53);
+            btnFilter.Size = new Size(120, 40);
             btnFilter.TabIndex = 3;
             btnFilter.Text = "Lọc dữ liệu";
             // 
@@ -157,13 +152,12 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dtpEndDate.FillColor = Color.White;
             dtpEndDate.Font = new Font("Segoe UI", 9F);
             dtpEndDate.Format = DateTimePickerFormat.Short;
-            dtpEndDate.Location = new Point(544, 33);
-            dtpEndDate.Margin = new Padding(3, 4, 3, 4);
+            dtpEndDate.Location = new Point(520, 15);
             dtpEndDate.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtpEndDate.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtpEndDate.Name = "dtpEndDate";
             dtpEndDate.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            dtpEndDate.Size = new Size(171, 53);
+            dtpEndDate.Size = new Size(140, 40);
             dtpEndDate.TabIndex = 2;
             dtpEndDate.Value = new DateTime(2026, 5, 20, 0, 0, 0, 0);
             // 
@@ -176,13 +170,12 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dtpStartDate.FillColor = Color.White;
             dtpStartDate.Font = new Font("Segoe UI", 9F);
             dtpStartDate.Format = DateTimePickerFormat.Short;
-            dtpStartDate.Location = new Point(258, 33);
-            dtpStartDate.Margin = new Padding(3, 4, 3, 4);
+            dtpStartDate.Location = new Point(280, 15);
             dtpStartDate.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtpStartDate.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtpStartDate.Name = "dtpStartDate";
             dtpStartDate.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            dtpStartDate.Size = new Size(171, 53);
+            dtpStartDate.Size = new Size(140, 40);
             dtpStartDate.TabIndex = 1;
             dtpStartDate.Value = new DateTime(2026, 5, 20, 0, 0, 0, 0);
             // 
@@ -190,13 +183,12 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // 
             pnlCards.Controls.Add(cardOrders);
             pnlCards.Controls.Add(cardRevenue);
-            pnlCards.CustomizableEdges = customizableEdges15;
+            pnlCards.CustomizableEdges = customizableEdges13;
             pnlCards.Dock = DockStyle.Top;
-            pnlCards.Location = new Point(31, 148);
-            pnlCards.Margin = new Padding(3, 4, 3, 4);
+            pnlCards.Location = new Point(20, 90);
             pnlCards.Name = "pnlCards";
-            pnlCards.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            pnlCards.Size = new Size(1081, 160);
+            pnlCards.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            pnlCards.Size = new Size(950, 120);
             pnlCards.TabIndex = 1;
             // 
             // cardOrders
@@ -206,11 +198,10 @@ namespace AssignmentApp.GUI.UserControls.Admin
             cardOrders.Controls.Add(lblOrdersTitle);
             cardOrders.CustomizableEdges = customizableEdges11;
             cardOrders.FillColor = Color.FromArgb(0, 126, 249);
-            cardOrders.Location = new Point(389, 13);
-            cardOrders.Margin = new Padding(3, 4, 3, 4);
+            cardOrders.Location = new Point(320, 10);
             cardOrders.Name = "cardOrders";
-            cardOrders.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            cardOrders.Size = new Size(343, 133);
+            cardOrders.ShadowDecoration.CustomizableEdges = customizableEdges11;
+            cardOrders.Size = new Size(300, 100);
             cardOrders.TabIndex = 1;
             // 
             // lblOrdersValue
@@ -219,9 +210,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblOrdersValue.BackColor = Color.Transparent;
             lblOrdersValue.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblOrdersValue.ForeColor = Color.White;
-            lblOrdersValue.Location = new Point(23, 60);
+            lblOrdersValue.Location = new Point(15, 45);
             lblOrdersValue.Name = "lblOrdersValue";
-            lblOrdersValue.Size = new Size(40, 46);
+            lblOrdersValue.Size = new Size(33, 37);
             lblOrdersValue.TabIndex = 1;
             lblOrdersValue.Text = "0";
             // 
@@ -231,9 +222,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblOrdersTitle.BackColor = Color.Transparent;
             lblOrdersTitle.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblOrdersTitle.ForeColor = Color.White;
-            lblOrdersTitle.Location = new Point(23, 27);
+            lblOrdersTitle.Location = new Point(15, 15);
             lblOrdersTitle.Name = "lblOrdersTitle";
-            lblOrdersTitle.Size = new Size(146, 28);
+            lblOrdersTitle.Size = new Size(116, 21);
             lblOrdersTitle.TabIndex = 0;
             lblOrdersTitle.Text = "Tổng đơn hàng";
             // 
@@ -242,13 +233,12 @@ namespace AssignmentApp.GUI.UserControls.Admin
             cardRevenue.BorderRadius = 10;
             cardRevenue.Controls.Add(lblRevenueValue);
             cardRevenue.Controls.Add(lblRevenueTitle);
-            cardRevenue.CustomizableEdges = customizableEdges13;
+            cardRevenue.CustomizableEdges = customizableEdges12;
             cardRevenue.FillColor = Color.FromArgb(0, 126, 249);
-            cardRevenue.Location = new Point(23, 13);
-            cardRevenue.Margin = new Padding(3, 4, 3, 4);
+            cardRevenue.Location = new Point(0, 10);
             cardRevenue.Name = "cardRevenue";
-            cardRevenue.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            cardRevenue.Size = new Size(343, 133);
+            cardRevenue.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            cardRevenue.Size = new Size(300, 100);
             cardRevenue.TabIndex = 0;
             // 
             // lblRevenueValue
@@ -257,9 +247,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblRevenueValue.BackColor = Color.Transparent;
             lblRevenueValue.Font = new Font("Segoe UI", 20F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblRevenueValue.ForeColor = Color.White;
-            lblRevenueValue.Location = new Point(23, 60);
+            lblRevenueValue.Location = new Point(15, 45);
             lblRevenueValue.Name = "lblRevenueValue";
-            lblRevenueValue.Size = new Size(71, 46);
+            lblRevenueValue.Size = new Size(57, 37);
             lblRevenueValue.TabIndex = 1;
             lblRevenueValue.Text = "0 ₫";
             // 
@@ -269,23 +259,22 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblRevenueTitle.BackColor = Color.Transparent;
             lblRevenueTitle.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblRevenueTitle.ForeColor = Color.White;
-            lblRevenueTitle.Location = new Point(23, 27);
+            lblRevenueTitle.Location = new Point(15, 15);
             lblRevenueTitle.Name = "lblRevenueTitle";
-            lblRevenueTitle.Size = new Size(152, 28);
+            lblRevenueTitle.Size = new Size(120, 21);
             lblRevenueTitle.TabIndex = 0;
             lblRevenueTitle.Text = "Tổng doanh thu";
             // 
             // pnlGrid
             // 
             pnlGrid.Controls.Add(dgvReports);
-            pnlGrid.CustomizableEdges = customizableEdges17;
+            pnlGrid.CustomizableEdges = customizableEdges15;
             pnlGrid.Dock = DockStyle.Fill;
-            pnlGrid.Location = new Point(31, 308);
-            pnlGrid.Margin = new Padding(3, 4, 3, 4);
+            pnlGrid.Location = new Point(20, 210);
             pnlGrid.Name = "pnlGrid";
-            pnlGrid.Padding = new Padding(23, 27, 23, 27);
-            pnlGrid.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            pnlGrid.Size = new Size(1081, 584);
+            pnlGrid.Padding = new Padding(0, 10, 0, 0);
+            pnlGrid.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            pnlGrid.Size = new Size(950, 453);
             pnlGrid.TabIndex = 2;
             // 
             // dgvReports
@@ -312,13 +301,12 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dgvReports.DefaultCellStyle = dataGridViewCellStyle3;
             dgvReports.Dock = DockStyle.Fill;
             dgvReports.GridColor = Color.FromArgb(231, 229, 255);
-            dgvReports.Location = new Point(23, 27);
-            dgvReports.Margin = new Padding(3, 4, 3, 4);
+            dgvReports.Location = new Point(0, 10);
             dgvReports.Name = "dgvReports";
             dgvReports.RowHeadersVisible = false;
             dgvReports.RowHeadersWidth = 51;
             dgvReports.RowTemplate.Height = 35;
-            dgvReports.Size = new Size(1035, 530);
+            dgvReports.Size = new Size(950, 443);
             dgvReports.TabIndex = 0;
             dgvReports.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvReports.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -344,16 +332,16 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // 
             // ucReports
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 242, 245);
             Controls.Add(pnlGrid);
             Controls.Add(pnlCards);
             Controls.Add(pnlHeader);
-            Margin = new Padding(5, 7, 5, 7);
+            Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "ucReports";
-            Padding = new Padding(31, 41, 31, 41);
-            Size = new Size(1143, 933);
+            Padding = new Padding(20);
+            Size = new Size(990, 683);
             pnlHeader.ResumeLayout(false);
             pnlHeader.PerformLayout();
             pnlCards.ResumeLayout(false);

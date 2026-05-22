@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace AssignmentApp.GUI.UserControls.Warehouse
 {
-    public partial class ucProductList : Base.ucBase
+    public partial class ucProductList : UserControl
     {
         public ucProductList()
         {

@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace AssignmentApp.GUI.UserControls.Sales
 {
-    public partial class ucReturns : Base.ucBase
+    public partial class ucReturns : UserControl
     {
         public ucReturns()
         {

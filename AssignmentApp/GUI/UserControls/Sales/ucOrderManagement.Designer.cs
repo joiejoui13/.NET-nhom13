@@ -70,12 +70,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             this.dgvOrders.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvOrders.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvOrders.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvOrders.Location = new System.Drawing.Point(0, 200);
+            this.dgvOrders.Location = new System.Drawing.Point(20, 220);
             this.dgvOrders.Name = "dgvOrders";
             this.dgvOrders.ReadOnly = true;
             this.dgvOrders.RowHeadersVisible = false;
             this.dgvOrders.RowTemplate.Height = 35;
-            this.dgvOrders.Size = new System.Drawing.Size(1000, 500);
+            this.dgvOrders.Size = new System.Drawing.Size(960, 460);
             this.dgvOrders.TabIndex = 1;
             this.dgvOrders.ThemeStyle.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.dgvOrders.ThemeStyle.HeaderStyle.ForeColor = System.Drawing.Color.White;
@@ -99,9 +99,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             this.pnlTop.Controls.Add(this.btnViewDetails);
             this.pnlTop.Controls.Add(this.btnRefresh);
             this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlTop.Location = new System.Drawing.Point(0, 0);
+            this.pnlTop.Location = new System.Drawing.Point(20, 20);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(1000, 200);
+            this.pnlTop.Size = new System.Drawing.Size(960, 200);
             this.pnlTop.TabIndex = 0;
             // 
             // lblTitle
@@ -119,7 +119,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             this.txtMaHD.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtMaHD.DefaultText = "";
             this.txtMaHD.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtMaHD.Location = new System.Drawing.Point(25, 60);
+            this.txtMaHD.Location = new System.Drawing.Point(20, 60);
             this.txtMaHD.Name = "txtMaHD";
             this.txtMaHD.PlaceholderText = "Mã Hóa Đơn (Tự tạo)";
             this.txtMaHD.ReadOnly = true;
@@ -131,7 +131,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             this.txtMaKH.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtMaKH.DefaultText = "";
             this.txtMaKH.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtMaKH.Location = new System.Drawing.Point(185, 60);
+            this.txtMaKH.Location = new System.Drawing.Point(180, 60);
             this.txtMaKH.Name = "txtMaKH";
             this.txtMaKH.PlaceholderText = "Mã Khách Hàng";
             this.txtMaKH.Size = new System.Drawing.Size(150, 36);
@@ -142,7 +142,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             this.txtMaND.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtMaND.DefaultText = "";
             this.txtMaND.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtMaND.Location = new System.Drawing.Point(345, 60);
+            this.txtMaND.Location = new System.Drawing.Point(340, 60);
             this.txtMaND.Name = "txtMaND";
             this.txtMaND.PlaceholderText = "Mã Nhân Viên";
             this.txtMaND.Size = new System.Drawing.Size(150, 36);
@@ -153,7 +153,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             this.txtMaKM.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtMaKM.DefaultText = "";
             this.txtMaKM.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtMaKM.Location = new System.Drawing.Point(505, 60);
+            this.txtMaKM.Location = new System.Drawing.Point(500, 60);
             this.txtMaKM.Name = "txtMaKM";
             this.txtMaKM.PlaceholderText = "Mã Khuyến Mãi";
             this.txtMaKM.Size = new System.Drawing.Size(150, 36);
@@ -164,7 +164,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             this.txtGiamGia.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtGiamGia.DefaultText = "0";
             this.txtGiamGia.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtGiamGia.Location = new System.Drawing.Point(665, 60);
+            this.txtGiamGia.Location = new System.Drawing.Point(20, 105);
             this.txtGiamGia.Name = "txtGiamGia";
             this.txtGiamGia.PlaceholderText = "Giảm Giá";
             this.txtGiamGia.Size = new System.Drawing.Size(150, 36);
@@ -175,7 +175,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             this.txtMaGiaoHang.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtMaGiaoHang.DefaultText = "";
             this.txtMaGiaoHang.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtMaGiaoHang.Location = new System.Drawing.Point(825, 60);
+            this.txtMaGiaoHang.Location = new System.Drawing.Point(180, 105);
             this.txtMaGiaoHang.Name = "txtMaGiaoHang";
             this.txtMaGiaoHang.PlaceholderText = "Mã Giao Hàng";
             this.txtMaGiaoHang.Size = new System.Drawing.Size(150, 36);
@@ -186,7 +186,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             this.txtTongTien.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtTongTien.DefaultText = "0";
             this.txtTongTien.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.txtTongTien.Location = new System.Drawing.Point(25, 105);
+            this.txtTongTien.Location = new System.Drawing.Point(340, 105);
             this.txtTongTien.Name = "txtTongTien";
             this.txtTongTien.PlaceholderText = "Tổng Tiền (Đọc)";
             this.txtTongTien.ReadOnly = true;
@@ -206,7 +206,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             "Chuyển khoản",
             "Thẻ ngân hàng",
             "Ví điện tử"});
-            this.cbHinhThucThanhToan.Location = new System.Drawing.Point(185, 105);
+            this.cbHinhThucThanhToan.Location = new System.Drawing.Point(500, 105);
             this.cbHinhThucThanhToan.Name = "cbHinhThucThanhToan";
             this.cbHinhThucThanhToan.Size = new System.Drawing.Size(150, 36);
             this.cbHinhThucThanhToan.TabIndex = 8;
@@ -215,7 +215,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnAdd.ForeColor = System.Drawing.Color.White;
-            this.btnAdd.Location = new System.Drawing.Point(25, 150);
+            this.btnAdd.Location = new System.Drawing.Point(20, 150);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(100, 36);
             this.btnAdd.TabIndex = 9;
@@ -226,7 +226,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             this.btnUpdate.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnUpdate.ForeColor = System.Drawing.Color.White;
-            this.btnUpdate.Location = new System.Drawing.Point(135, 150);
+            this.btnUpdate.Location = new System.Drawing.Point(130, 150);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(100, 36);
             this.btnUpdate.TabIndex = 10;
@@ -238,7 +238,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             this.btnDelete.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnDelete.ForeColor = System.Drawing.Color.White;
             this.btnDelete.FillColor = System.Drawing.Color.Red;
-            this.btnDelete.Location = new System.Drawing.Point(245, 150);
+            this.btnDelete.Location = new System.Drawing.Point(240, 150);
             this.btnDelete.Name = "btnDelete";
             this.btnDelete.Size = new System.Drawing.Size(100, 36);
             this.btnDelete.TabIndex = 11;
@@ -250,7 +250,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             this.btnViewDetails.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnViewDetails.ForeColor = System.Drawing.Color.White;
             this.btnViewDetails.FillColor = System.Drawing.Color.Green;
-            this.btnViewDetails.Location = new System.Drawing.Point(355, 150);
+            this.btnViewDetails.Location = new System.Drawing.Point(350, 150);
             this.btnViewDetails.Name = "btnViewDetails";
             this.btnViewDetails.Size = new System.Drawing.Size(120, 36);
             this.btnViewDetails.TabIndex = 12;
@@ -261,7 +261,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnRefresh.ForeColor = System.Drawing.Color.White;
-            this.btnRefresh.Location = new System.Drawing.Point(485, 150);
+            this.btnRefresh.Location = new System.Drawing.Point(480, 150);
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(100, 36);
             this.btnRefresh.TabIndex = 13;
@@ -270,12 +270,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // ucOrderManagement
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(242)))), ((int)(((byte)(245)))));
             this.Controls.Add(this.dgvOrders);
             this.Controls.Add(this.pnlTop);
+            this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "ucOrderManagement";
+            this.Padding = new System.Windows.Forms.Padding(20);
             this.Size = new System.Drawing.Size(1000, 700);
             this.Load += new System.EventHandler(this.ucOrderManagement_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrders)).EndInit();

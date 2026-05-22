@@ -56,11 +56,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnAdd = new Guna.UI2.WinForms.Guna2Button();
             btnUpdate = new Guna.UI2.WinForms.Guna2Button();
             btnRefresh = new Guna.UI2.WinForms.Guna2Button();
-            guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2HtmlLabel4 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2HtmlLabel5 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            guna2HtmlLabel1 = new System.Windows.Forms.Label();
+            guna2HtmlLabel2 = new System.Windows.Forms.Label();
+            guna2HtmlLabel3 = new System.Windows.Forms.Label();
+            guna2HtmlLabel4 = new System.Windows.Forms.Label();
+            guna2HtmlLabel5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)dgvDeliveries).BeginInit();
             pnlTop.SuspendLayout();
             SuspendLayout();
@@ -88,14 +88,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvDeliveries.DefaultCellStyle = dataGridViewCellStyle3;
             dgvDeliveries.Dock = DockStyle.Fill;
             dgvDeliveries.GridColor = Color.FromArgb(231, 229, 255);
-            dgvDeliveries.Location = new Point(107, 936);
-            dgvDeliveries.Margin = new Padding(6, 7, 6, 7);
+            dgvDeliveries.DefaultCellStyle = dataGridViewCellStyle3;
+            dgvDeliveries.Dock = DockStyle.Fill;
+            dgvDeliveries.GridColor = Color.FromArgb(231, 229, 255);
+            dgvDeliveries.Location = new Point(20, 220);
             dgvDeliveries.Name = "dgvDeliveries";
             dgvDeliveries.ReadOnly = true;
             dgvDeliveries.RowHeadersVisible = false;
-            dgvDeliveries.RowHeadersWidth = 92;
+            dgvDeliveries.RowHeadersWidth = 51;
             dgvDeliveries.RowTemplate.Height = 35;
-            dgvDeliveries.Size = new Size(1929, 650);
+            dgvDeliveries.Size = new Size(960, 460);
             dgvDeliveries.TabIndex = 1;
             dgvDeliveries.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvDeliveries.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -129,7 +131,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlTop.Controls.Add(guna2HtmlLabel3);
             pnlTop.Controls.Add(guna2HtmlLabel2);
             pnlTop.Controls.Add(guna2HtmlLabel1);
-            pnlTop.Controls.Add(lblTitle);
             pnlTop.Controls.Add(txtMaGH);
             pnlTop.Controls.Add(txtMaHD);
             pnlTop.Controls.Add(txtDiaChi);
@@ -140,11 +141,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlTop.Controls.Add(btnRefresh);
             pnlTop.CustomizableEdges = customizableEdges17;
             pnlTop.Dock = DockStyle.Top;
-            pnlTop.Location = new Point(107, 141);
-            pnlTop.Margin = new Padding(6, 7, 6, 7);
+            pnlTop.Location = new Point(20, 20);
             pnlTop.Name = "pnlTop";
             pnlTop.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            pnlTop.Size = new Size(1929, 795);
+            pnlTop.Size = new Size(960, 200);
             pnlTop.TabIndex = 0;
             // 
             // lblTitle
@@ -164,14 +164,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtMaGH.CustomizableEdges = customizableEdges1;
             txtMaGH.DefaultText = "";
             txtMaGH.Font = new Font("Segoe UI", 9F);
-            txtMaGH.Location = new Point(220, 176);
-            txtMaGH.Margin = new Padding(13, 17, 13, 17);
+            txtMaGH.Location = new Point(150, 15);
             txtMaGH.Name = "txtMaGH";
             txtMaGH.PlaceholderText = "Mã Giao Hàng (Tự tạo)";
             txtMaGH.ReadOnly = true;
             txtMaGH.SelectedText = "";
             txtMaGH.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            txtMaGH.Size = new Size(386, 89);
+            txtMaGH.Size = new Size(160, 36);
             txtMaGH.TabIndex = 1;
             // 
             // txtMaHD
@@ -180,13 +179,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtMaHD.CustomizableEdges = customizableEdges3;
             txtMaHD.DefaultText = "";
             txtMaHD.Font = new Font("Segoe UI", 9F);
-            txtMaHD.Location = new Point(220, 391);
-            txtMaHD.Margin = new Padding(13, 17, 13, 17);
+            txtMaHD.Location = new Point(150, 65);
             txtMaHD.Name = "txtMaHD";
             txtMaHD.PlaceholderText = "Mã Hóa Đơn";
             txtMaHD.SelectedText = "";
             txtMaHD.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            txtMaHD.Size = new Size(386, 89);
+            txtMaHD.Size = new Size(160, 36);
             txtMaHD.TabIndex = 2;
             // 
             // txtDiaChi
@@ -195,13 +193,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtDiaChi.CustomizableEdges = customizableEdges5;
             txtDiaChi.DefaultText = "";
             txtDiaChi.Font = new Font("Segoe UI", 9F);
-            txtDiaChi.Location = new Point(844, 176);
-            txtDiaChi.Margin = new Padding(13, 17, 13, 17);
+            txtDiaChi.Location = new Point(430, 15);
             txtDiaChi.Name = "txtDiaChi";
             txtDiaChi.PlaceholderText = "Địa Chỉ Giao";
             txtDiaChi.SelectedText = "";
             txtDiaChi.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            txtDiaChi.Size = new Size(429, 89);
+            txtDiaChi.Size = new Size(180, 36);
             txtDiaChi.TabIndex = 3;
             // 
             // cbTrangThai
@@ -215,11 +212,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cbTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
             cbTrangThai.ItemHeight = 30;
             cbTrangThai.Items.AddRange(new object[] { "Chưa giao", "Đang chuẩn bị hàng", "Đang giao", "Đã giao" });
-            cbTrangThai.Location = new Point(844, 423);
-            cbTrangThai.Margin = new Padding(6, 7, 6, 7);
+            cbTrangThai.Location = new Point(430, 65);
             cbTrangThai.Name = "cbTrangThai";
             cbTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            cbTrangThai.Size = new Size(381, 36);
+            cbTrangThai.Size = new Size(180, 36);
             cbTrangThai.TabIndex = 4;
             cbTrangThai.SelectedIndexChanged += cbTrangThai_SelectedIndexChanged;
             // 
@@ -229,14 +225,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dtpNgayGiao.CustomizableEdges = customizableEdges9;
             dtpNgayGiao.FillColor = Color.White;
             dtpNgayGiao.Font = new Font("Segoe UI", 9F);
-            dtpNgayGiao.Format = DateTimePickerFormat.Long;
-            dtpNgayGiao.Location = new Point(1500, 176);
-            dtpNgayGiao.Margin = new Padding(6, 7, 6, 7);
+            dtpNgayGiao.Format = DateTimePickerFormat.Short;
+            dtpNgayGiao.Location = new Point(740, 15);
             dtpNgayGiao.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtpNgayGiao.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtpNgayGiao.Name = "dtpNgayGiao";
             dtpNgayGiao.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            dtpNgayGiao.Size = new Size(386, 89);
+            dtpNgayGiao.Size = new Size(180, 36);
             dtpNgayGiao.TabIndex = 5;
             dtpNgayGiao.Value = new DateTime(2026, 5, 21, 0, 0, 0, 0);
             // 
@@ -245,11 +240,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnAdd.CustomizableEdges = customizableEdges11;
             btnAdd.Font = new Font("Segoe UI", 9F);
             btnAdd.ForeColor = Color.White;
-            btnAdd.Location = new Point(220, 622);
-            btnAdd.Margin = new Padding(6, 7, 6, 7);
+            btnAdd.FillColor = Color.FromArgb(0, 126, 249);
+            btnAdd.BorderRadius = 4;
+            btnAdd.Location = new Point(150, 125);
             btnAdd.Name = "btnAdd";
             btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            btnAdd.Size = new Size(257, 89);
+            btnAdd.Size = new Size(120, 42);
             btnAdd.TabIndex = 6;
             btnAdd.Text = "Thêm Mới";
             btnAdd.Click += btnAdd_Click;
@@ -259,11 +255,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnUpdate.CustomizableEdges = customizableEdges13;
             btnUpdate.Font = new Font("Segoe UI", 9F);
             btnUpdate.ForeColor = Color.White;
-            btnUpdate.Location = new Point(876, 622);
-            btnUpdate.Margin = new Padding(6, 7, 6, 7);
+            btnUpdate.FillColor = Color.FromArgb(0, 126, 249);
+            btnUpdate.BorderRadius = 4;
+            btnUpdate.Location = new Point(290, 125);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            btnUpdate.Size = new Size(257, 89);
+            btnUpdate.Size = new Size(120, 42);
             btnUpdate.TabIndex = 7;
             btnUpdate.Text = "Cập Nhật";
             btnUpdate.Click += btnUpdate_Click;
@@ -273,11 +270,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnRefresh.CustomizableEdges = customizableEdges15;
             btnRefresh.Font = new Font("Segoe UI", 9F);
             btnRefresh.ForeColor = Color.White;
-            btnRefresh.Location = new Point(1478, 622);
-            btnRefresh.Margin = new Padding(6, 7, 6, 7);
+            btnRefresh.FillColor = Color.FromArgb(0, 126, 249);
+            btnRefresh.BorderRadius = 4;
+            btnRefresh.Location = new Point(430, 125);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            btnRefresh.Size = new Size(257, 89);
+            btnRefresh.Size = new Size(120, 42);
             btnRefresh.TabIndex = 8;
             btnRefresh.Text = "Làm Mới";
             btnRefresh.Click += btnRefresh_Click;
@@ -285,60 +283,65 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // guna2HtmlLabel1
             // 
             guna2HtmlLabel1.BackColor = Color.Transparent;
-            guna2HtmlLabel1.Location = new Point(36, 203);
+            guna2HtmlLabel1.Location = new Point(20, 23);
             guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            guna2HtmlLabel1.Size = new Size(168, 39);
+            guna2HtmlLabel1.Size = new Size(120, 20);
             guna2HtmlLabel1.TabIndex = 9;
             guna2HtmlLabel1.Text = "Mã giao hàng";
+            guna2HtmlLabel1.AutoSize = true;
             guna2HtmlLabel1.Click += guna2HtmlLabel1_Click;
             // 
             // guna2HtmlLabel2
             // 
             guna2HtmlLabel2.BackColor = Color.Transparent;
-            guna2HtmlLabel2.Location = new Point(701, 420);
+            guna2HtmlLabel2.Location = new Point(340, 73);
             guna2HtmlLabel2.Name = "guna2HtmlLabel2";
-            guna2HtmlLabel2.Size = new Size(123, 39);
+            guna2HtmlLabel2.Size = new Size(80, 20);
             guna2HtmlLabel2.TabIndex = 10;
             guna2HtmlLabel2.Text = "Trạng thái";
+            guna2HtmlLabel2.AutoSize = true;
             // 
             // guna2HtmlLabel3
             // 
             guna2HtmlLabel3.BackColor = Color.Transparent;
-            guna2HtmlLabel3.Location = new Point(36, 417);
+            guna2HtmlLabel3.Location = new Point(20, 73);
             guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            guna2HtmlLabel3.Size = new Size(147, 39);
+            guna2HtmlLabel3.Size = new Size(120, 20);
             guna2HtmlLabel3.TabIndex = 11;
             guna2HtmlLabel3.Text = "Mã hóa đơn";
+            guna2HtmlLabel3.AutoSize = true;
             // 
             // guna2HtmlLabel4
             // 
             guna2HtmlLabel4.BackColor = Color.Transparent;
-            guna2HtmlLabel4.Location = new Point(701, 203);
+            guna2HtmlLabel4.Location = new Point(340, 23);
             guna2HtmlLabel4.Name = "guna2HtmlLabel4";
-            guna2HtmlLabel4.Size = new Size(84, 39);
+            guna2HtmlLabel4.Size = new Size(80, 20);
             guna2HtmlLabel4.TabIndex = 12;
             guna2HtmlLabel4.Text = "Địa chỉ";
+            guna2HtmlLabel4.AutoSize = true;
             // 
             // guna2HtmlLabel5
             // 
             guna2HtmlLabel5.BackColor = Color.Transparent;
-            guna2HtmlLabel5.Location = new Point(1331, 203);
+            guna2HtmlLabel5.Location = new Point(640, 23);
             guna2HtmlLabel5.Name = "guna2HtmlLabel5";
-            guna2HtmlLabel5.Size = new Size(126, 39);
+            guna2HtmlLabel5.Size = new Size(90, 20);
             guna2HtmlLabel5.TabIndex = 13;
             guna2HtmlLabel5.Text = "Ngày giao";
+            guna2HtmlLabel5.AutoSize = true;
             // 
             // ucDelivery
             // 
-            AutoScaleDimensions = new SizeF(15F, 37F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 242, 245);
             Controls.Add(dgvDeliveries);
             Controls.Add(pnlTop);
-            Margin = new Padding(17, 22, 17, 22);
+            Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "ucDelivery";
-            Padding = new Padding(107, 141, 107, 141);
-            Size = new Size(2143, 1727);
+            Padding = new Padding(20);
+            Size = new Size(1000, 700);
             Load += ucDelivery_Load;
             ((System.ComponentModel.ISupportInitialize)dgvDeliveries).EndInit();
             pnlTop.ResumeLayout(false);
@@ -360,10 +363,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private Guna.UI2.WinForms.Guna2Button btnAdd;
         private Guna.UI2.WinForms.Guna2Button btnUpdate;
         private Guna.UI2.WinForms.Guna2Button btnRefresh;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel4;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel3;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel2;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel1;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel5;
+        private System.Windows.Forms.Label guna2HtmlLabel4;
+        private System.Windows.Forms.Label guna2HtmlLabel3;
+        private System.Windows.Forms.Label guna2HtmlLabel2;
+        private System.Windows.Forms.Label guna2HtmlLabel1;
+        private System.Windows.Forms.Label guna2HtmlLabel5;
     }
 }

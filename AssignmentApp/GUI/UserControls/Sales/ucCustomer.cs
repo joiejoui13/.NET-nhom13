@@ -6,7 +6,7 @@ using AssignmentApp.DTO;
 
 namespace AssignmentApp.GUI.UserControls.Sales
 {
-    public partial class ucCustomer : Base.ucBase
+    public partial class ucCustomer : UserControl
     {
         private CustomerService _customerService;
 

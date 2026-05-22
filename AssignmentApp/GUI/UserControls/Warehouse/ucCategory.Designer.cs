@@ -1,4 +1,4 @@
-﻿namespace AssignmentApp.GUI.UserControls.Warehouse
+namespace AssignmentApp.GUI.UserControls.Warehouse
 {
     partial class ucCategory
     {
@@ -91,11 +91,11 @@
             headerPanel.CustomizableEdges = customizableEdges3;
             headerPanel.Dock = DockStyle.Top;
             headerPanel.FillColor = Color.White;
-            headerPanel.Location = new Point(33, 38);
+            headerPanel.Location = new Point(20, 20);
             headerPanel.Name = "headerPanel";
             headerPanel.ShadowDecoration.CustomizableEdges = customizableEdges4;
             headerPanel.ShadowDecoration.Enabled = true;
-            headerPanel.Size = new Size(1184, 75);
+            headerPanel.Size = new Size(960, 75);
             headerPanel.TabIndex = 0;
             // 
             // lblTitle
@@ -105,18 +105,19 @@
             lblTitle.ForeColor = Color.FromArgb(88, 28, 135);
             lblTitle.Location = new Point(30, 18);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(429, 54);
+            lblTitle.Size = new Size(291, 37);
             lblTitle.TabIndex = 0;
             lblTitle.Text = "QUẢN LÝ DANH MỤC";
             // 
             // btnRefresh
             // 
+            btnRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRefresh.BorderRadius = 12;
             btnRefresh.CustomizableEdges = customizableEdges1;
             btnRefresh.FillColor = Color.FromArgb(99, 102, 241);
             btnRefresh.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnRefresh.ForeColor = Color.White;
-            btnRefresh.Location = new Point(1037, 18);
+            btnRefresh.Location = new Point(810, 18);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.ShadowDecoration.CustomizableEdges = customizableEdges2;
             btnRefresh.Size = new Size(130, 42);
@@ -125,6 +126,7 @@
             // 
             // formPanel
             // 
+            formPanel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             formPanel.BorderRadius = 18;
             formPanel.Controls.Add(lblMa);
             formPanel.Controls.Add(lblTen);
@@ -140,10 +142,10 @@
             formPanel.CustomizableEdges = customizableEdges19;
             formPanel.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             formPanel.ForeColor = Color.FromArgb(125, 137, 149);
-            formPanel.Location = new Point(33, 113);
+            formPanel.Location = new Point(20, 110);
             formPanel.Name = "formPanel";
             formPanel.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            formPanel.Size = new Size(1210, 220);
+            formPanel.Size = new Size(960, 220);
             formPanel.TabIndex = 1;
             formPanel.Text = "Thông tin danh mục";
             // 
@@ -210,7 +212,7 @@
             txtTenDanhMuc.PlaceholderText = "Nhập tên danh mục...";
             txtTenDanhMuc.SelectedText = "";
             txtTenDanhMuc.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            txtTenDanhMuc.Size = new Size(350, 42);
+            txtTenDanhMuc.Size = new Size(260, 42);
             txtTenDanhMuc.TabIndex = 5;
             // 
             // txtMoTa
@@ -226,17 +228,18 @@
             txtMoTa.PlaceholderText = "Nhập mô tả...";
             txtMoTa.SelectedText = "";
             txtMoTa.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            txtMoTa.Size = new Size(740, 55);
+            txtMoTa.Size = new Size(435, 55);
             txtMoTa.TabIndex = 6;
             // 
             // dtNgayTao
             // 
+            dtNgayTao.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             dtNgayTao.BorderRadius = 12;
             dtNgayTao.Checked = true;
             dtNgayTao.CustomizableEdges = customizableEdges11;
             dtNgayTao.Font = new Font("Segoe UI", 9F);
             dtNgayTao.Format = DateTimePickerFormat.Long;
-            dtNgayTao.Location = new Point(830, 91);
+            dtNgayTao.Location = new Point(690, 81);
             dtNgayTao.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtNgayTao.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtNgayTao.Name = "dtNgayTao";
@@ -247,12 +250,13 @@
             // 
             // btnThem
             // 
+            btnThem.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnThem.BorderRadius = 12;
             btnThem.CustomizableEdges = customizableEdges13;
             btnThem.FillColor = Color.FromArgb(34, 197, 94);
             btnThem.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnThem.ForeColor = Color.White;
-            btnThem.Location = new Point(810, 150);
+            btnThem.Location = new Point(560, 150);
             btnThem.Name = "btnThem";
             btnThem.ShadowDecoration.CustomizableEdges = customizableEdges14;
             btnThem.Size = new Size(120, 45);
@@ -261,12 +265,13 @@
             // 
             // btnSua
             // 
+            btnSua.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnSua.BorderRadius = 12;
             btnSua.CustomizableEdges = customizableEdges15;
             btnSua.FillColor = Color.FromArgb(59, 130, 246);
             btnSua.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnSua.ForeColor = Color.White;
-            btnSua.Location = new Point(946, 150);
+            btnSua.Location = new Point(695, 150);
             btnSua.Name = "btnSua";
             btnSua.ShadowDecoration.CustomizableEdges = customizableEdges16;
             btnSua.Size = new Size(120, 45);
@@ -275,12 +280,13 @@
             // 
             // btnXoa
             // 
+            btnXoa.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnXoa.BorderRadius = 12;
             btnXoa.CustomizableEdges = customizableEdges17;
             btnXoa.FillColor = Color.FromArgb(239, 68, 68);
             btnXoa.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnXoa.ForeColor = Color.White;
-            btnXoa.Location = new Point(1075, 150);
+            btnXoa.Location = new Point(830, 150);
             btnXoa.Name = "btnXoa";
             btnXoa.ShadowDecoration.CustomizableEdges = customizableEdges18;
             btnXoa.Size = new Size(120, 45);
@@ -294,26 +300,27 @@
             txtSearch.DefaultText = "";
             txtSearch.Font = new Font("Segoe UI", 9F);
             txtSearch.IconLeft = (Image)resources.GetObject("txtSearch.IconLeft");
-            txtSearch.Location = new Point(33, 341);
+            txtSearch.Location = new Point(20, 345);
             txtSearch.Margin = new Padding(4, 5, 4, 5);
             txtSearch.Name = "txtSearch";
             txtSearch.PlaceholderText = "Tìm kiếm danh mục...";
             txtSearch.SelectedText = "";
             txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges22;
-            txtSearch.Size = new Size(400, 45);
+            txtSearch.Size = new Size(300, 45);
             txtSearch.TabIndex = 2;
             // 
             // gridPanel
             // 
+            gridPanel.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             gridPanel.BorderRadius = 20;
             gridPanel.Controls.Add(dgvDanhMuc);
             gridPanel.CustomizableEdges = customizableEdges23;
             gridPanel.FillColor = Color.White;
-            gridPanel.Location = new Point(33, 394);
+            gridPanel.Location = new Point(20, 400);
             gridPanel.Name = "gridPanel";
             gridPanel.Padding = new Padding(15);
             gridPanel.ShadowDecoration.CustomizableEdges = customizableEdges24;
-            gridPanel.Size = new Size(1210, 320);
+            gridPanel.Size = new Size(960, 280);
             gridPanel.TabIndex = 3;
             gridPanel.Paint += gridPanel_Paint;
             // 
@@ -347,7 +354,8 @@
             dgvDanhMuc.Name = "dgvDanhMuc";
             dgvDanhMuc.RowHeadersVisible = false;
             dgvDanhMuc.RowHeadersWidth = 62;
-            dgvDanhMuc.Size = new Size(1180, 290);
+            dgvDanhMuc.RowTemplate.Height = 33;
+            dgvDanhMuc.Size = new Size(930, 250);
             dgvDanhMuc.TabIndex = 0;
             dgvDanhMuc.ThemeStyle.AlternatingRowsStyle.BackColor = Color.FromArgb(249, 250, 251);
             dgvDanhMuc.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -397,14 +405,17 @@
             // 
             // ucCategory
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
-            BackColor = Color.FromArgb(245, 247, 250);
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            BackColor = Color.FromArgb(240, 242, 245);
             Controls.Add(headerPanel);
             Controls.Add(formPanel);
             Controls.Add(txtSearch);
             Controls.Add(gridPanel);
+            Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "ucCategory";
-            Size = new Size(1250, 760);
+            Padding = new Padding(20);
+            Size = new Size(1000, 700);
             headerPanel.ResumeLayout(false);
             headerPanel.PerformLayout();
             formPanel.ResumeLayout(false);

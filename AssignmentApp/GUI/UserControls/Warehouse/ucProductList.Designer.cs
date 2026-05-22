@@ -1,4 +1,4 @@
-﻿namespace AssignmentApp.GUI.UserControls.Warehouse
+namespace AssignmentApp.GUI.UserControls.Warehouse
 {
     partial class ucProductList
     {
@@ -32,28 +32,25 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges12 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges13 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
-            cboCategory = new Guna.UI2.WinForms.Guna2ComboBox();
             btnSearch = new Guna.UI2.WinForms.Guna2Button();
-            guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
+            cboCategory = new Guna.UI2.WinForms.Guna2ComboBox();
             btnAdd = new Guna.UI2.WinForms.Guna2Button();
             btnEdit = new Guna.UI2.WinForms.Guna2Button();
             btndelete = new Guna.UI2.WinForms.Guna2Button();
@@ -70,10 +67,11 @@
             guna2Panel1.Controls.Add(btnSearch);
             guna2Panel1.Controls.Add(cboCategory);
             guna2Panel1.CustomizableEdges = customizableEdges7;
-            guna2Panel1.Location = new Point(0, 0);
+            guna2Panel1.Dock = DockStyle.Top;
+            guna2Panel1.Location = new Point(20, 20);
             guna2Panel1.Name = "guna2Panel1";
             guna2Panel1.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            guna2Panel1.Size = new Size(1000, 70);
+            guna2Panel1.Size = new Size(960, 70);
             guna2Panel1.TabIndex = 0;
             // 
             // txtSearch
@@ -96,6 +94,22 @@
             txtSearch.Size = new Size(286, 60);
             txtSearch.TabIndex = 0;
             // 
+            // btnSearch
+            // 
+            btnSearch.CustomizableEdges = customizableEdges3;
+            btnSearch.DisabledState.BorderColor = Color.DarkGray;
+            btnSearch.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnSearch.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnSearch.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnSearch.Font = new Font("Segoe UI", 9F);
+            btnSearch.ForeColor = Color.White;
+            btnSearch.Location = new Point(51, 8);
+            btnSearch.Name = "btnSearch";
+            btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            btnSearch.Size = new Size(225, 56);
+            btnSearch.TabIndex = 2;
+            btnSearch.Text = "Tìm kiếm";
+            // 
             // cboCategory
             // 
             cboCategory.BackColor = Color.Transparent;
@@ -113,76 +127,50 @@
             cboCategory.Size = new Size(175, 36);
             cboCategory.TabIndex = 1;
             // 
-            // btnSearch
-            // 
-            btnSearch.CustomizableEdges = customizableEdges3;
-            btnSearch.DisabledState.BorderColor = Color.DarkGray;
-            btnSearch.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnSearch.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            btnSearch.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            btnSearch.Font = new Font("Segoe UI", 9F);
-            btnSearch.ForeColor = Color.White;
-            btnSearch.Location = new Point(51, 8);
-            btnSearch.Name = "btnSearch";
-            btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            btnSearch.Size = new Size(225, 56);
-            btnSearch.TabIndex = 2;
-            btnSearch.Text = "Tìm kiếm";
-            // 
-            // guna2Panel2
-            // 
-            guna2Panel2.CustomizableEdges = customizableEdges9;
-            guna2Panel2.Dock = DockStyle.Bottom;
-            guna2Panel2.Location = new Point(27, 609);
-            guna2Panel2.Name = "guna2Panel2";
-            guna2Panel2.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            guna2Panel2.Size = new Size(946, 60);
-            guna2Panel2.TabIndex = 3;
-            // 
             // btnAdd
             // 
-            btnAdd.CustomizableEdges = customizableEdges11;
+            btnAdd.CustomizableEdges = customizableEdges9;
             btnAdd.DisabledState.BorderColor = Color.DarkGray;
             btnAdd.DisabledState.CustomBorderColor = Color.DarkGray;
             btnAdd.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             btnAdd.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnAdd.Font = new Font("Segoe UI", 9F);
             btnAdd.ForeColor = Color.White;
-            btnAdd.Location = new Point(82, 16);
+            btnAdd.Location = new Point(34, 17);
             btnAdd.Name = "btnAdd";
-            btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges10;
             btnAdd.Size = new Size(225, 56);
             btnAdd.TabIndex = 4;
             btnAdd.Text = "Thêm mới";
             // 
             // btnEdit
             // 
-            btnEdit.CustomizableEdges = customizableEdges13;
+            btnEdit.CustomizableEdges = customizableEdges11;
             btnEdit.DisabledState.BorderColor = Color.DarkGray;
             btnEdit.DisabledState.CustomBorderColor = Color.DarkGray;
             btnEdit.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             btnEdit.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnEdit.Font = new Font("Segoe UI", 9F);
             btnEdit.ForeColor = Color.White;
-            btnEdit.Location = new Point(674, 16);
+            btnEdit.Location = new Point(680, 17);
             btnEdit.Name = "btnEdit";
-            btnEdit.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            btnEdit.ShadowDecoration.CustomizableEdges = customizableEdges12;
             btnEdit.Size = new Size(225, 56);
             btnEdit.TabIndex = 5;
             btnEdit.Text = "Sửa";
             // 
             // btndelete
             // 
-            btndelete.CustomizableEdges = customizableEdges15;
+            btndelete.CustomizableEdges = customizableEdges13;
             btndelete.DisabledState.BorderColor = Color.DarkGray;
             btndelete.DisabledState.CustomBorderColor = Color.DarkGray;
             btndelete.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
             btndelete.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btndelete.Font = new Font("Segoe UI", 9F);
             btndelete.ForeColor = Color.White;
-            btndelete.Location = new Point(347, 16);
+            btndelete.Location = new Point(313, 17);
             btndelete.Name = "btndelete";
-            btndelete.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            btndelete.ShadowDecoration.CustomizableEdges = customizableEdges14;
             btndelete.Size = new Size(225, 56);
             btndelete.TabIndex = 6;
             btndelete.Text = "Xóa";
@@ -199,7 +187,8 @@
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgvProducts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            dgvProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvProducts.ColumnHeadersHeight = 4;
+            dgvProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -210,11 +199,12 @@
             dgvProducts.DefaultCellStyle = dataGridViewCellStyle3;
             dgvProducts.Dock = DockStyle.Fill;
             dgvProducts.GridColor = Color.FromArgb(231, 229, 255);
-            dgvProducts.Location = new Point(27, 31);
+            dgvProducts.Location = new Point(20, 20);
             dgvProducts.Name = "dgvProducts";
             dgvProducts.RowHeadersVisible = false;
             dgvProducts.RowHeadersWidth = 51;
-            dgvProducts.Size = new Size(946, 638);
+            dgvProducts.RowTemplate.Height = 29;
+            dgvProducts.Size = new Size(960, 660);
             dgvProducts.TabIndex = 7;
             dgvProducts.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvProducts.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -227,7 +217,7 @@
             dgvProducts.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvProducts.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dgvProducts.ThemeStyle.HeaderStyle.ForeColor = Color.White;
-            dgvProducts.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvProducts.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             dgvProducts.ThemeStyle.HeaderStyle.Height = 4;
             dgvProducts.ThemeStyle.ReadOnly = false;
             dgvProducts.ThemeStyle.RowsStyle.BackColor = Color.White;
@@ -243,24 +233,25 @@
             guna2Panel3.Controls.Add(btnAdd);
             guna2Panel3.Controls.Add(btnEdit);
             guna2Panel3.Controls.Add(btndelete);
-            guna2Panel3.CustomizableEdges = customizableEdges17;
+            guna2Panel3.CustomizableEdges = customizableEdges15;
             guna2Panel3.Dock = DockStyle.Bottom;
-            guna2Panel3.Location = new Point(27, 484);
+            guna2Panel3.Location = new Point(20, 592);
             guna2Panel3.Name = "guna2Panel3";
-            guna2Panel3.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            guna2Panel3.Size = new Size(946, 125);
+            guna2Panel3.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            guna2Panel3.Size = new Size(960, 88);
             guna2Panel3.TabIndex = 8;
             // 
             // ucProductList
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 242, 245);
             Controls.Add(guna2Panel3);
-            Controls.Add(guna2Panel2);
             Controls.Add(guna2Panel1);
             Controls.Add(dgvProducts);
+            Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "ucProductList";
+            Padding = new Padding(20);
             Size = new Size(1000, 700);
             guna2Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvProducts).EndInit();
@@ -274,7 +265,6 @@
         private Guna.UI2.WinForms.Guna2TextBox txtSearch;
         private Guna.UI2.WinForms.Guna2ComboBox cboCategory;
         private Guna.UI2.WinForms.Guna2Button btnSearch;
-        private Guna.UI2.WinForms.Guna2Panel guna2Panel2;
         private Guna.UI2.WinForms.Guna2Button btnAdd;
         private Guna.UI2.WinForms.Guna2Button btnEdit;
         private Guna.UI2.WinForms.Guna2Button btndelete;

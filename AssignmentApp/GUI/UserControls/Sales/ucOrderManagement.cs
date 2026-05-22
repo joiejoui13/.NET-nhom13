@@ -7,7 +7,7 @@ using AssignmentApp.GUI.Forms;
 
 namespace AssignmentApp.GUI.UserControls.Sales
 {
-    public partial class ucOrderManagement : Base.ucBase
+    public partial class ucOrderManagement : UserControl
     {
         private OrderService _orderService;
 

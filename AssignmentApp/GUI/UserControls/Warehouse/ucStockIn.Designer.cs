@@ -1,4 +1,4 @@
-﻿namespace AssignmentApp.GUI.UserControls.Warehouse
+namespace AssignmentApp.GUI.UserControls.Warehouse
 {
     partial class ucStockIn
     {
@@ -136,6 +136,7 @@
             // 
             guna2Panel2.Controls.Add(txtInputPrice);
             guna2Panel2.Controls.Add(btnAddToGrid);
+            guna2Panel2.Controls.Add(btnSaveStockIn);
             guna2Panel2.Controls.Add(txtQuantity);
             guna2Panel2.Controls.Add(cboProducts);
             guna2Panel2.CustomizableEdges = customizableEdges17;
@@ -279,7 +280,7 @@
             btnSaveStockIn.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnSaveStockIn.Font = new Font("Segoe UI", 9F);
             btnSaveStockIn.ForeColor = Color.White;
-            btnSaveStockIn.Location = new Point(732, 502);
+            btnSaveStockIn.Location = new Point(53, 410);
             btnSaveStockIn.Name = "btnSaveStockIn";
             btnSaveStockIn.ShadowDecoration.CustomizableEdges = customizableEdges20;
             btnSaveStockIn.Size = new Size(225, 56);
@@ -291,11 +292,12 @@
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 242, 245);
-            Controls.Add(btnSaveStockIn);
             Controls.Add(dgvStockInDetails);
             Controls.Add(guna2Panel2);
             Controls.Add(guna2Panel1);
+            Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "ucStockIn";
+            Padding = new Padding(20);
             Size = new Size(1000, 700);
             guna2Panel1.ResumeLayout(false);
             guna2Panel2.ResumeLayout(false);

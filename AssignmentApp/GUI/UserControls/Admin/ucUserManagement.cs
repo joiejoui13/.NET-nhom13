@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace AssignmentApp.GUI.UserControls.Admin
 {
-    public partial class ucUserManagement : Base.ucBase
+    public partial class ucUserManagement : UserControl
     {
         // Định nghĩa các sự kiện (events) để Form chính có thể lắng nghe
         public event EventHandler AddNewRequested;

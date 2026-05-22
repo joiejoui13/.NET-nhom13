@@ -1,4 +1,4 @@
-﻿namespace AssignmentApp.GUI.UserControls.Warehouse
+namespace AssignmentApp.GUI.UserControls.Warehouse
 {
     partial class ucInventory
     {
@@ -53,7 +53,11 @@
             colQuantity = new DataGridViewTextBoxColumn();
             colProductName = new DataGridViewTextBoxColumn();
             colCategory = new DataGridViewTextBoxColumn();
+            pnlHeader = new Guna.UI2.WinForms.Guna2Panel();
+            pnlActions = new Guna.UI2.WinForms.Guna2Panel();
             ((System.ComponentModel.ISupportInitialize)dgvInventory).BeginInit();
+            pnlHeader.SuspendLayout();
+            pnlActions.SuspendLayout();
             SuspendLayout();
             // 
             // txtSearch
@@ -67,7 +71,7 @@
             txtSearch.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
             txtSearch.Font = new Font("Segoe UI", 9F);
             txtSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSearch.Location = new Point(67, 102);
+            txtSearch.Location = new Point(20, 5);
             txtSearch.Margin = new Padding(3, 4, 3, 4);
             txtSearch.Name = "txtSearch";
             txtSearch.PlaceholderText = "tìm kiếm văn phòng phẩm";
@@ -87,7 +91,7 @@
             cboCategory.Font = new Font("Segoe UI", 10F);
             cboCategory.ForeColor = Color.FromArgb(68, 88, 112);
             cboCategory.ItemHeight = 30;
-            cboCategory.Location = new Point(639, 117);
+            cboCategory.Location = new Point(320, 17);
             cboCategory.Name = "cboCategory";
             cboCategory.ShadowDecoration.CustomizableEdges = customizableEdges4;
             cboCategory.Size = new Size(175, 36);
@@ -102,7 +106,7 @@
             btnEdit.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnEdit.Font = new Font("Segoe UI", 9F);
             btnEdit.ForeColor = Color.White;
-            btnEdit.Location = new Point(376, 460);
+            btnEdit.Location = new Point(265, 7);
             btnEdit.Name = "btnEdit";
             btnEdit.ShadowDecoration.CustomizableEdges = customizableEdges6;
             btnEdit.Size = new Size(225, 56);
@@ -118,7 +122,7 @@
             btndelete.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btndelete.Font = new Font("Segoe UI", 9F);
             btndelete.ForeColor = Color.White;
-            btndelete.Location = new Point(668, 460);
+            btndelete.Location = new Point(510, 7);
             btndelete.Name = "btndelete";
             btndelete.ShadowDecoration.CustomizableEdges = customizableEdges8;
             btndelete.Size = new Size(225, 56);
@@ -134,7 +138,7 @@
             btnAdd.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnAdd.Font = new Font("Segoe UI", 9F);
             btnAdd.ForeColor = Color.White;
-            btnAdd.Location = new Point(85, 460);
+            btnAdd.Location = new Point(20, 7);
             btnAdd.Name = "btnAdd";
             btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges10;
             btnAdd.Size = new Size(225, 56);
@@ -166,11 +170,11 @@
             dgvInventory.DefaultCellStyle = dataGridViewCellStyle3;
             dgvInventory.Dock = DockStyle.Fill;
             dgvInventory.GridColor = Color.FromArgb(231, 229, 255);
-            dgvInventory.Location = new Point(27, 31);
+            dgvInventory.Location = new Point(20, 90);
             dgvInventory.Name = "dgvInventory";
             dgvInventory.RowHeadersVisible = false;
             dgvInventory.RowHeadersWidth = 51;
-            dgvInventory.Size = new Size(946, 638);
+            dgvInventory.Size = new Size(960, 520);
             dgvInventory.TabIndex = 6;
             dgvInventory.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvInventory.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -230,20 +234,42 @@
             colCategory.MinimumWidth = 6;
             colCategory.Name = "colCategory";
             // 
+            // pnlHeader
+            // 
+            pnlHeader.Controls.Add(txtSearch);
+            pnlHeader.Controls.Add(cboCategory);
+            pnlHeader.Dock = DockStyle.Top;
+            pnlHeader.Location = new Point(20, 20);
+            pnlHeader.Name = "pnlHeader";
+            pnlHeader.Size = new Size(960, 70);
+            pnlHeader.TabIndex = 7;
+            // 
+            // pnlActions
+            // 
+            pnlActions.Controls.Add(btnAdd);
+            pnlActions.Controls.Add(btnEdit);
+            pnlActions.Controls.Add(btndelete);
+            pnlActions.Dock = DockStyle.Bottom;
+            pnlActions.Location = new Point(20, 610);
+            pnlActions.Name = "pnlActions";
+            pnlActions.Size = new Size(960, 70);
+            pnlActions.TabIndex = 8;
+            // 
             // ucInventory
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 242, 245);
-            Controls.Add(btnAdd);
-            Controls.Add(btndelete);
-            Controls.Add(btnEdit);
-            Controls.Add(cboCategory);
-            Controls.Add(txtSearch);
+            Controls.Add(pnlActions);
+            Controls.Add(pnlHeader);
             Controls.Add(dgvInventory);
+            Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "ucInventory";
+            Padding = new Padding(20);
             Size = new Size(1000, 700);
             ((System.ComponentModel.ISupportInitialize)dgvInventory).EndInit();
+            pnlHeader.ResumeLayout(false);
+            pnlActions.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -261,5 +287,7 @@
         private DataGridViewTextBoxColumn colQuantity;
         private DataGridViewTextBoxColumn colProductName;
         private DataGridViewTextBoxColumn colCategory;
+        private Guna.UI2.WinForms.Guna2Panel pnlHeader;
+        private Guna.UI2.WinForms.Guna2Panel pnlActions;
     }
 }

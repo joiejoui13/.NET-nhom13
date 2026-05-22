@@ -53,10 +53,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnAdd = new Guna.UI2.WinForms.Guna2Button();
             btnUpdate = new Guna.UI2.WinForms.Guna2Button();
             btnRefresh = new Guna.UI2.WinForms.Guna2Button();
-            guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2HtmlLabel3 = new Guna.UI2.WinForms.Guna2HtmlLabel();
-            guna2HtmlLabel4 = new Guna.UI2.WinForms.Guna2HtmlLabel();
+            guna2HtmlLabel1 = new System.Windows.Forms.Label();
+            guna2HtmlLabel2 = new System.Windows.Forms.Label();
+            guna2HtmlLabel3 = new System.Windows.Forms.Label();
+            guna2HtmlLabel4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)dgvCustomers).BeginInit();
             pnlTop.SuspendLayout();
             SuspendLayout();
@@ -84,14 +84,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvCustomers.DefaultCellStyle = dataGridViewCellStyle3;
             dgvCustomers.Dock = DockStyle.Fill;
             dgvCustomers.GridColor = Color.FromArgb(231, 229, 255);
-            dgvCustomers.Location = new Point(107, 889);
-            dgvCustomers.Margin = new Padding(6, 7, 6, 7);
+            dgvCustomers.Location = new Point(20, 220);
             dgvCustomers.Name = "dgvCustomers";
             dgvCustomers.ReadOnly = true;
             dgvCustomers.RowHeadersVisible = false;
-            dgvCustomers.RowHeadersWidth = 92;
+            dgvCustomers.RowHeadersWidth = 51;
             dgvCustomers.RowTemplate.Height = 35;
-            dgvCustomers.Size = new Size(1929, 697);
+            dgvCustomers.Size = new Size(960, 460);
             dgvCustomers.TabIndex = 1;
             dgvCustomers.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvCustomers.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -123,7 +122,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlTop.Controls.Add(guna2HtmlLabel3);
             pnlTop.Controls.Add(guna2HtmlLabel2);
             pnlTop.Controls.Add(guna2HtmlLabel1);
-            pnlTop.Controls.Add(lblTitle);
             pnlTop.Controls.Add(txtMaKH);
             pnlTop.Controls.Add(txtTenKH);
             pnlTop.Controls.Add(txtSDT);
@@ -133,11 +131,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlTop.Controls.Add(btnRefresh);
             pnlTop.CustomizableEdges = customizableEdges15;
             pnlTop.Dock = DockStyle.Top;
-            pnlTop.Location = new Point(107, 141);
-            pnlTop.Margin = new Padding(6, 7, 6, 7);
+            pnlTop.Location = new Point(20, 20);
             pnlTop.Name = "pnlTop";
             pnlTop.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            pnlTop.Size = new Size(1929, 748);
+            pnlTop.Size = new Size(960, 200);
             pnlTop.TabIndex = 0;
             pnlTop.Paint += pnlTop_Paint;
             // 
@@ -158,14 +155,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtMaKH.CustomizableEdges = customizableEdges1;
             txtMaKH.DefaultText = "";
             txtMaKH.Font = new Font("Segoe UI", 9F);
-            txtMaKH.Location = new Point(276, 160);
-            txtMaKH.Margin = new Padding(13, 17, 13, 17);
+            txtMaKH.Location = new Point(150, 15);
             txtMaKH.Name = "txtMaKH";
             txtMaKH.PlaceholderText = "Mã Khách Hàng (Tự tạo)";
             txtMaKH.ReadOnly = true;
             txtMaKH.SelectedText = "";
             txtMaKH.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            txtMaKH.Size = new Size(429, 89);
+            txtMaKH.Size = new Size(200, 36);
             txtMaKH.TabIndex = 1;
             // 
             // txtTenKH
@@ -174,13 +170,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtTenKH.CustomizableEdges = customizableEdges3;
             txtTenKH.DefaultText = "";
             txtTenKH.Font = new Font("Segoe UI", 9F);
-            txtTenKH.Location = new Point(1131, 160);
-            txtTenKH.Margin = new Padding(13, 17, 13, 17);
+            txtTenKH.Location = new Point(520, 15);
             txtTenKH.Name = "txtTenKH";
             txtTenKH.PlaceholderText = "Tên Khách Hàng";
             txtTenKH.SelectedText = "";
             txtTenKH.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            txtTenKH.Size = new Size(429, 89);
+            txtTenKH.Size = new Size(200, 36);
             txtTenKH.TabIndex = 2;
             // 
             // txtSDT
@@ -189,13 +184,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSDT.CustomizableEdges = customizableEdges5;
             txtSDT.DefaultText = "";
             txtSDT.Font = new Font("Segoe UI", 9F);
-            txtSDT.Location = new Point(276, 369);
-            txtSDT.Margin = new Padding(13, 17, 13, 17);
+            txtSDT.Location = new Point(150, 65);
             txtSDT.Name = "txtSDT";
             txtSDT.PlaceholderText = "Số Điện Thoại";
             txtSDT.SelectedText = "";
             txtSDT.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            txtSDT.Size = new Size(429, 89);
+            txtSDT.Size = new Size(200, 36);
             txtSDT.TabIndex = 3;
             // 
             // txtDiem
@@ -204,13 +198,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtDiem.CustomizableEdges = customizableEdges7;
             txtDiem.DefaultText = "";
             txtDiem.Font = new Font("Segoe UI", 9F);
-            txtDiem.Location = new Point(1141, 369);
-            txtDiem.Margin = new Padding(13, 17, 13, 17);
+            txtDiem.Location = new Point(520, 65);
             txtDiem.Name = "txtDiem";
             txtDiem.PlaceholderText = "Điểm Tích Lũy (Số)";
             txtDiem.SelectedText = "";
             txtDiem.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            txtDiem.Size = new Size(429, 89);
+            txtDiem.Size = new Size(200, 36);
             txtDiem.TabIndex = 4;
             // 
             // btnAdd
@@ -218,11 +211,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnAdd.CustomizableEdges = customizableEdges9;
             btnAdd.Font = new Font("Segoe UI", 9F);
             btnAdd.ForeColor = Color.White;
-            btnAdd.Location = new Point(122, 591);
-            btnAdd.Margin = new Padding(6, 7, 6, 7);
+            btnAdd.FillColor = Color.FromArgb(0, 126, 249);
+            btnAdd.BorderRadius = 4;
+            btnAdd.Location = new Point(150, 125);
             btnAdd.Name = "btnAdd";
             btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            btnAdd.Size = new Size(257, 89);
+            btnAdd.Size = new Size(120, 42);
             btnAdd.TabIndex = 5;
             btnAdd.Text = "Thêm Mới";
             btnAdd.Click += btnAdd_Click;
@@ -232,11 +226,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnUpdate.CustomizableEdges = customizableEdges11;
             btnUpdate.Font = new Font("Segoe UI", 9F);
             btnUpdate.ForeColor = Color.White;
-            btnUpdate.Location = new Point(775, 591);
-            btnUpdate.Margin = new Padding(6, 7, 6, 7);
+            btnUpdate.FillColor = Color.FromArgb(0, 126, 249);
+            btnUpdate.BorderRadius = 4;
+            btnUpdate.Location = new Point(290, 125);
             btnUpdate.Name = "btnUpdate";
             btnUpdate.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            btnUpdate.Size = new Size(257, 89);
+            btnUpdate.Size = new Size(120, 42);
             btnUpdate.TabIndex = 6;
             btnUpdate.Text = "Cập Nhật";
             btnUpdate.Click += btnUpdate_Click;
@@ -246,11 +241,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnRefresh.CustomizableEdges = customizableEdges13;
             btnRefresh.Font = new Font("Segoe UI", 9F);
             btnRefresh.ForeColor = Color.White;
-            btnRefresh.Location = new Point(1350, 601);
-            btnRefresh.Margin = new Padding(6, 7, 6, 7);
+            btnRefresh.FillColor = Color.FromArgb(0, 126, 249);
+            btnRefresh.BorderRadius = 4;
+            btnRefresh.Location = new Point(430, 125);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            btnRefresh.Size = new Size(257, 89);
+            btnRefresh.Size = new Size(120, 42);
             btnRefresh.TabIndex = 7;
             btnRefresh.Text = "Làm Mới";
             btnRefresh.Click += btnRefresh_Click;
@@ -258,50 +254,54 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // guna2HtmlLabel1
             // 
             guna2HtmlLabel1.BackColor = Color.Transparent;
-            guna2HtmlLabel1.Location = new Point(55, 185);
+            guna2HtmlLabel1.Location = new Point(20, 23);
             guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            guna2HtmlLabel1.Size = new Size(184, 39);
+            guna2HtmlLabel1.Size = new Size(120, 20);
             guna2HtmlLabel1.TabIndex = 8;
             guna2HtmlLabel1.Text = "Mã khách hàng";
+            guna2HtmlLabel1.AutoSize = true;
             // 
             // guna2HtmlLabel2
             // 
             guna2HtmlLabel2.BackColor = Color.Transparent;
-            guna2HtmlLabel2.Location = new Point(55, 404);
+            guna2HtmlLabel2.Location = new Point(20, 73);
             guna2HtmlLabel2.Name = "guna2HtmlLabel2";
-            guna2HtmlLabel2.Size = new Size(160, 39);
+            guna2HtmlLabel2.Size = new Size(120, 20);
             guna2HtmlLabel2.TabIndex = 9;
             guna2HtmlLabel2.Text = "Số điện thoại";
+            guna2HtmlLabel2.AutoSize = true;
             // 
             // guna2HtmlLabel3
             // 
             guna2HtmlLabel3.BackColor = Color.Transparent;
-            guna2HtmlLabel3.Location = new Point(896, 185);
+            guna2HtmlLabel3.Location = new Point(390, 23);
             guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            guna2HtmlLabel3.Size = new Size(189, 39);
+            guna2HtmlLabel3.Size = new Size(120, 20);
             guna2HtmlLabel3.TabIndex = 10;
             guna2HtmlLabel3.Text = "Tên khách hàng";
+            guna2HtmlLabel3.AutoSize = true;
             // 
             // guna2HtmlLabel4
             // 
             guna2HtmlLabel4.BackColor = Color.Transparent;
-            guna2HtmlLabel4.Location = new Point(896, 404);
+            guna2HtmlLabel4.Location = new Point(390, 73);
             guna2HtmlLabel4.Name = "guna2HtmlLabel4";
-            guna2HtmlLabel4.Size = new Size(158, 39);
+            guna2HtmlLabel4.Size = new Size(120, 20);
             guna2HtmlLabel4.TabIndex = 11;
             guna2HtmlLabel4.Text = "Điểm tích lũy";
+            guna2HtmlLabel4.AutoSize = true;
             // 
             // ucCustomer
             // 
-            AutoScaleDimensions = new SizeF(15F, 37F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 242, 245);
             Controls.Add(dgvCustomers);
             Controls.Add(pnlTop);
-            Margin = new Padding(17, 22, 17, 22);
+            Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             Name = "ucCustomer";
-            Padding = new Padding(107, 141, 107, 141);
-            Size = new Size(2143, 1727);
+            Padding = new Padding(20);
+            Size = new Size(1000, 700);
             Load += ucCustomer_Load;
             ((System.ComponentModel.ISupportInitialize)dgvCustomers).EndInit();
             pnlTop.ResumeLayout(false);
@@ -322,10 +322,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private Guna.UI2.WinForms.Guna2Button btnAdd;
         private Guna.UI2.WinForms.Guna2Button btnUpdate;
         private Guna.UI2.WinForms.Guna2Button btnRefresh;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel4;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel3;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel2;
-        private Guna.UI2.WinForms.Guna2HtmlLabel guna2HtmlLabel1;
+        private System.Windows.Forms.Label guna2HtmlLabel4;
+        private System.Windows.Forms.Label guna2HtmlLabel3;
+        private System.Windows.Forms.Label guna2HtmlLabel2;
+        private System.Windows.Forms.Label guna2HtmlLabel1;
     }
 }
 

@@ -1,4 +1,4 @@
-﻿using AssignmentApp.GUI.Base;
+using AssignmentApp.GUI.Base;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +11,7 @@ using System.Windows.Forms;
 
 namespace AssignmentApp.GUI.UserControls.Warehouse
 {
-    public partial class ucCategory : Base.ucBase
+    public partial class ucCategory : UserControl
     {
         public ucCategory()
         {

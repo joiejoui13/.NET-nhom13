@@ -97,6 +97,7 @@ CREATE TABLE HoaDon (
     GiamGia DECIMAL(18, 2),
     MaGiaoHang VARCHAR(50), 
     HinhThucThanhToan NVARCHAR(50),
+    TrangThai NVARCHAR(50),
     NgayTao DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (MaKhachHang) REFERENCES KhachHang(MaKhachHang),
     FOREIGN KEY (MaNguoiDung) REFERENCES NguoiDung(MaNguoiDung),
@@ -338,24 +339,24 @@ INSERT INTO ChiTietPhieuNhap (MaChiTietPhieuNhap, MaPhieuNhap, MaSanPham, SoLuon
 ('CTPN015', 'PN015', 'SP015', 25, 8800000);
 
 -- ========================================================
--- 9. DỮ LIỆU BẢNG: HoaDon (15 dòng)
+-- 9. DỮ LIỆU BẢNG: HoaDon (15 dòng) 
 -- ========================================================
-INSERT INTO HoaDon (MaHoaDon, MaKhachHang, MaNguoiDung, MaKhuyenMai, TongTien, GiamGia, MaGiaoHang, HinhThucThanhToan, NgayTao) VALUES
-('HD001', 'KH001', 'ND002', 'KM001', 27000000, 3000000, 'GH001', N'Tiền mặt', '2026-02-02'),
-('HD002', 'KH002', 'ND002', NULL, 600000, 0, NULL, N'Thẻ ngân hàng', '2026-02-05'),
-('HD003', 'KH003', 'ND005', 'KM002', 24080000, 3920000, 'GH002', N'Chuyển khoản', '2026-02-14'),
-('HD004', 'KH005', 'ND005', 'KM003', 18400000, 1600000, 'GH003', N'Chuyển khoản', '2026-03-08'),
-('HD005', 'KH006', 'ND002', NULL, 7500000, 0, NULL, N'Tiền mặt', '2026-03-12'),
-('HD006', 'KH008', 'ND013', NULL, 1400000, 0, 'GH004', N'Ví điện tử', '2026-03-28'),
-('HD007', 'KH010', 'ND013', NULL, 32000000, 0, 'GH005', N'Thẻ ngân hàng', '2026-04-12'),
-('HD008', 'KH012', 'ND002', NULL, 10500000, 0, 'GH006', N'Chuyển khoản', '2026-04-30'),
-('HD009', 'KH014', 'ND005', 'KM004', 51000000, 9000000, 'GH007', N'Chuyển khoản', '2026-05-02'),
-('HD010', 'KH015', 'ND005', 'KM004', 21250000, 3750000, 'GH008', N'Tiền mặt', '2026-05-12'),
-('HD011', 'KH004', 'ND002', 'KM013', 24600000, 5400000, 'GH009', N'Thẻ ngân hàng', '2026-05-14'),
-('HD012', 'KH007', 'ND002', 'KM014', 420000, 280000, NULL, N'Tiền mặt', '2026-05-15'),
-('HD013', 'KH009', 'ND013', 'KM015', 7125000, 375000, NULL, N'Ví điện tử', '2026-05-18'),
-('HD014', 'KH011', 'ND013', NULL, 3500000, 0, 'GH010', N'Tiền mặt', '2026-05-18'),
-('HD015', 'KH013', 'ND005', NULL, 12000000, 0, 'GH011', N'Chuyển khoản', '2026-05-18');
+INSERT INTO HoaDon (MaHoaDon, MaKhachHang, MaNguoiDung, MaKhuyenMai, TongTien, GiamGia, MaGiaoHang, HinhThucThanhToan, TrangThai, NgayTao) VALUES
+('HD001', 'KH001', 'ND002', 'KM001', 27000000, 3000000, 'GH001', N'Tiền mặt', N'Đã hoàn thành', '2026-02-02'),
+('HD002', 'KH002', 'ND002', NULL, 600000, 0, NULL, N'Thẻ ngân hàng', N'Đã hoàn thành', '2026-02-05'),
+('HD003', 'KH003', 'ND005', 'KM002', 24080000, 3920000, 'GH002', N'Chuyển khoản', N'Đã hoàn thành', '2026-02-14'),
+('HD004', 'KH005', 'ND005', 'KM003', 18400000, 1600000, 'GH003', N'Chuyển khoản', N'Đã hoàn thành', '2026-03-08'),
+('HD005', 'KH006', 'ND002', NULL, 7500000, 0, NULL, N'Tiền mặt', N'Đã hoàn thành', '2026-03-12'),
+('HD006', 'KH008', 'ND013', NULL, 1400000, 0, 'GH004', N'Ví điện tử', N'Đã hoàn thành', '2026-03-28'),
+('HD007', 'KH010', 'ND013', NULL, 32000000, 0, 'GH005', N'Thẻ ngân hàng', N'Đã hoàn thành', '2026-04-12'),
+('HD008', 'KH012', 'ND002', NULL, 10500000, 0, 'GH006', N'Chuyển khoản', N'Đã hoàn thành', '2026-04-30'),
+('HD009', 'KH014', 'ND005', 'KM004', 51000000, 9000000, 'GH007', N'Chuyển khoản', N'Đã hoàn thành', '2026-05-02'),
+('HD010', 'KH015', 'ND005', 'KM004', 21250000, 3750000, 'GH008', N'Tiền mặt', N'Đã hoàn thành', '2026-05-12'),
+('HD011', 'KH004', 'ND002', 'KM013', 24600000, 5400000, 'GH009', N'Thẻ ngân hàng', N'Đang giao hàng', '2026-05-14'),
+('HD012', 'KH007', 'ND002', 'KM014', 420000, 280000, NULL, N'Tiền mặt', N'Đã hoàn thành', '2026-05-15'),
+('HD013', 'KH009', 'ND013', 'KM015', 7125000, 375000, NULL, N'Ví điện tử', N'Đã hoàn thành', '2026-05-18'),
+('HD014', 'KH011', 'ND013', NULL, 3500000, 0, 'GH010', N'Tiền mặt', N'Chờ xử lý', '2026-05-18'),
+('HD015', 'KH013', 'ND005', NULL, 12000000, 0, 'GH011', N'Chuyển khoản', N'Chờ xử lý', '2026-05-18');
 
 -- ========================================================
 -- 10. DỮ LIỆU BẢNG: ChiTietHoaDon (15 dòng)

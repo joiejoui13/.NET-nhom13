@@ -7,6 +7,7 @@ CREATE TABLE DanhMuc (
     MaDanhMuc VARCHAR(50) PRIMARY KEY,
     TenDanhMuc NVARCHAR(100) NOT NULL,
     MoTa NVARCHAR(255),
+    TrangThai NVARCHAR(50),
     NgayTao DATETIME DEFAULT GETDATE()
 );
 
@@ -52,6 +53,7 @@ CREATE TABLE SanPham (
     GiaNhap DECIMAL(18, 2),
     SoLuongTon INT DEFAULT 0,
     MoTa NVARCHAR(255),
+    Anh NVARCHAR(255),
     TrangThai NVARCHAR(50),
     NgayTao DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (MaDanhMuc) REFERENCES DanhMuc(MaDanhMuc)
@@ -94,7 +96,6 @@ CREATE TABLE HoaDon (
     MaNguoiDung VARCHAR(50),
     MaKhuyenMai VARCHAR(50),
     TongTien DECIMAL(18, 2),
-    GiamGia DECIMAL(18, 2),
     MaGiaoHang VARCHAR(50), 
     HinhThucThanhToan NVARCHAR(50),
     TrangThai NVARCHAR(50),
@@ -261,22 +262,22 @@ SET MatKhau = '$2a$11$/8NjLZAiQlZSczFphButv.5yu4tp3LO5mFPCQUcxLmygJWfTcCYUO';
 -- ========================================================
 -- 5. DỮ LIỆU BẢNG: SanPham (15 dòng)
 -- ========================================================
-INSERT INTO SanPham (MaSanPham, TenSanPham, MaDanhMuc, GiaBan, GiaNhap, SoLuongTon, MoTa, TrangThai, NgayTao) VALUES
-('SP001', N'iPhone 15 Pro Max', 'DM001', 30000000, 26000000, 45, N'Điện thoại Apple cao cấp', N'Đang bán', '2026-01-15'),
-('SP002', N'Samsung Galaxy S24 Ultra', 'DM001', 28000000, 24000000, 30, N'Điện thoại flagship Samsung', N'Đang bán', '2026-01-16'),
-('SP003', N'MacBook Air M3', 'DM002', 26000000, 22000000, 15, N'Laptop Apple mỏng nhẹ', N'Đang bán', '2026-01-17'),
-('SP004', N'Dell XPS 13', 'DM002', 32000000, 28000000, 10, N'Laptop Dell cao cấp', N'Đang bán', '2026-01-18'),
-('SP005', N'iPad Pro M2', 'DM003', 20000000, 17500000, 20, N'Máy tính bảng cấu hình mạnh', N'Đang bán', '2026-01-19'),
-('SP006', N'Sạc nhanh Anker 65W', 'DM004', 600000, 350000, 120, N'Củ sạc nhiều cổng tiện lợi', N'Đang bán', '2026-01-20'),
-('SP007', N'Apple Watch Ultra 2', 'DM005', 21000000, 18500000, 12, N'Đồng hồ thông minh thể thao', N'Đang bán', '2026-01-21'),
-('SP008', N'Router Asus AX3000', 'DM006', 2500000, 1900000, 25, N'Thiết bị phát Wifi 6 chuẩn tốc độ', N'Đang bán', '2026-01-22'),
-('SP009', N'Camera Ezviz C6N', 'DM007', 700000, 450000, 80, N'Camera giám sát xoay 360 độ', N'Đang bán', '2026-01-23'),
-('SP010', N'Loa Marshall Acton III', 'DM008', 7500000, 6000000, 18, N'Loa bluetooth decor cực đẹp', N'Đang bán', '2026-01-24'),
-('SP011', N'Nồi cơm điện Cuckoo', 'DM009', 3500000, 2700000, 14, N'Nồi cơm cao tần Hàn Quốc', N'Đang bán', '2026-01-25'),
-('SP012', N'Smart Tivi LG 55 inch', 'DM010', 12000000, 9800000, 8, N'Tivi hiển thị sắc nét 4K', N'Đang bán', '2026-01-26'),
-('SP013', N'Tủ lạnh Panasonic 320L', 'DM011', 14500000, 12000000, 5, N'Tủ lạnh ngăn đá dưới hiện đại', N'Đang bán', '2026-01-27'),
-('SP014', N'Máy giặt Toshiba 9kg', 'DM012', 8000000, 6500000, 7, N'Máy giặt truyền động trực tiếp', N'Ngừng bán', '2026-01-28'),
-('SP015', N'Điều hòa Daikin 1 HP', 'DM013', 10500000, 8800000, 22, N'Điều hòa 1 chiều Inverter', N'Đang bán', '2026-01-29');
+INSERT INTO SanPham (MaSanPham, TenSanPham, MaDanhMuc, GiaBan, GiaNhap, SoLuongTon, MoTa, Anh, TrangThai, NgayTao) VALUES
+('SP001', N'iPhone 15 Pro Max', 'DM001', 30000000, 26000000, 45, N'Điện thoại Apple cao cấp', 'iphone15_promax.jpg', N'Đang bán', '2026-01-15'),
+('SP002', N'Samsung Galaxy S24 Ultra', 'DM001', 28000000, 24000000, 30, N'Điện thoại flagship Samsung', 'samsung_s24_ultra.jpg', N'Đang bán', '2026-01-16'),
+('SP003', N'MacBook Air M3', 'DM002', 26000000, 22000000, 15, N'Laptop Apple mỏng nhẹ', 'macbook_air_m3.jpg', N'Đang bán', '2026-01-17'),
+('SP004', N'Dell XPS 13', 'DM002', 32000000, 28000000, 10, N'Laptop Dell cao cấp', 'dell_xps_13.jpg', N'Đang bán', '2026-01-18'),
+('SP005', N'iPad Pro M2', 'DM003', 20000000, 17500000, 20, N'Máy tính bảng cấu hình mạnh', 'ipad_pro_m2.jpg', N'Đang bán', '2026-01-19'),
+('SP006', N'Sạc nhanh Anker 65W', 'DM004', 600000, 350000, 120, N'Củ sạc nhiều cổng tiện lợi', 'anker_65w.jpg', N'Đang bán', '2026-01-20'),
+('SP007', N'Apple Watch Ultra 2', 'DM005', 21000000, 18500000, 12, N'Đồng hồ thông minh thể thao', 'apple_watch_ultra_2.jpg', N'Đang bán', '2026-01-21'),
+('SP008', N'Router Asus AX3000', 'DM006', 2500000, 1900000, 25, N'Thiết bị phát Wifi 6 chuẩn tốc độ', 'router_asus_ax3000.jpg', N'Đang bán', '2026-01-22'),
+('SP009', N'Camera Ezviz C6N', 'DM007', 700000, 450000, 80, N'Camera giám sát xoay 360 độ', 'camera_ezviz_c6n.jpg', N'Đang bán', '2026-01-23'),
+('SP010', N'Loa Marshall Acton III', 'DM008', 7500000, 6000000, 18, N'Loa bluetooth decor cực đẹp', 'marshall_acton_3.jpg', N'Đang bán', '2026-01-24'),
+('SP011', N'Nồi cơm điện Cuckoo', 'DM009', 3500000, 2700000, 14, N'Nồi cơm cao tần Hàn Quốc', 'noi_com_cuckoo.jpg', N'Đang bán', '2026-01-25'),
+('SP012', N'Smart Tivi LG 55 inch', 'DM010', 12000000, 9800000, 8, N'Tivi hiển thị sắc nét 4K', 'tivi_lg_55.jpg', N'Đang bán', '2026-01-26'),
+('SP013', N'Tủ lạnh Panasonic 320L', 'DM011', 14500000, 12000000, 5, N'Tủ lạnh ngăn đá dưới hiện đại', 'tu_lanh_panasonic.jpg', N'Đang bán', '2026-01-27'),
+('SP014', N'Máy giặt Toshiba 9kg', 'DM012', 8000000, 6500000, 7, N'Máy giặt truyền động trực tiếp', 'may_giat_toshiba.jpg', N'Ngừng bán', '2026-01-28'),
+('SP015', N'Điều hòa Daikin 1 HP', 'DM013', 10500000, 8800000, 22, N'Điều hòa 1 chiều Inverter', 'dieu_hoa_daikin.jpg', N'Đang bán', '2026-01-29');
 
 -- ========================================================
 -- 6. DỮ LIỆU BẢNG: LichSuTonKho (15 dòng)
@@ -341,22 +342,22 @@ INSERT INTO ChiTietPhieuNhap (MaChiTietPhieuNhap, MaPhieuNhap, MaSanPham, SoLuon
 -- ========================================================
 -- 9. DỮ LIỆU BẢNG: HoaDon (15 dòng) 
 -- ========================================================
-INSERT INTO HoaDon (MaHoaDon, MaKhachHang, MaNguoiDung, MaKhuyenMai, TongTien, GiamGia, MaGiaoHang, HinhThucThanhToan, TrangThai, NgayTao) VALUES
-('HD001', 'KH001', 'ND002', 'KM001', 27000000, 3000000, 'GH001', N'Tiền mặt', N'Đã hoàn thành', '2026-02-02'),
-('HD002', 'KH002', 'ND002', NULL, 600000, 0, NULL, N'Thẻ ngân hàng', N'Đã hoàn thành', '2026-02-05'),
-('HD003', 'KH003', 'ND005', 'KM002', 24080000, 3920000, 'GH002', N'Chuyển khoản', N'Đã hoàn thành', '2026-02-14'),
-('HD004', 'KH005', 'ND005', 'KM003', 18400000, 1600000, 'GH003', N'Chuyển khoản', N'Đã hoàn thành', '2026-03-08'),
-('HD005', 'KH006', 'ND002', NULL, 7500000, 0, NULL, N'Tiền mặt', N'Đã hoàn thành', '2026-03-12'),
-('HD006', 'KH008', 'ND013', NULL, 1400000, 0, 'GH004', N'Ví điện tử', N'Đã hoàn thành', '2026-03-28'),
-('HD007', 'KH010', 'ND013', NULL, 32000000, 0, 'GH005', N'Thẻ ngân hàng', N'Đã hoàn thành', '2026-04-12'),
-('HD008', 'KH012', 'ND002', NULL, 10500000, 0, 'GH006', N'Chuyển khoản', N'Đã hoàn thành', '2026-04-30'),
-('HD009', 'KH014', 'ND005', 'KM004', 51000000, 9000000, 'GH007', N'Chuyển khoản', N'Đã hoàn thành', '2026-05-02'),
-('HD010', 'KH015', 'ND005', 'KM004', 21250000, 3750000, 'GH008', N'Tiền mặt', N'Đã hoàn thành', '2026-05-12'),
-('HD011', 'KH004', 'ND002', 'KM013', 24600000, 5400000, 'GH009', N'Thẻ ngân hàng', N'Đang giao hàng', '2026-05-14'),
-('HD012', 'KH007', 'ND002', 'KM014', 420000, 280000, NULL, N'Tiền mặt', N'Đã hoàn thành', '2026-05-15'),
-('HD013', 'KH009', 'ND013', 'KM015', 7125000, 375000, NULL, N'Ví điện tử', N'Đã hoàn thành', '2026-05-18'),
-('HD014', 'KH011', 'ND013', NULL, 3500000, 0, 'GH010', N'Tiền mặt', N'Chờ xử lý', '2026-05-18'),
-('HD015', 'KH013', 'ND005', NULL, 12000000, 0, 'GH011', N'Chuyển khoản', N'Chờ xử lý', '2026-05-18');
+INSERT INTO HoaDon (MaHoaDon, MaKhachHang, MaNguoiDung, MaKhuyenMai, TongTien, MaGiaoHang, HinhThucThanhToan, TrangThai, NgayTao) VALUES
+('HD001', 'KH001', 'ND002', 'KM001', 27000000, 'GH001', N'Tiền mặt', N'Đã hoàn thành', '2026-02-02'),
+('HD002', 'KH002', 'ND002', NULL, 600000, NULL, N'Thẻ ngân hàng', N'Đã hoàn thành', '2026-02-05'),
+('HD003', 'KH003', 'ND005', 'KM002', 24080000, 'GH002', N'Chuyển khoản', N'Đã hoàn thành', '2026-02-14'),
+('HD004', 'KH005', 'ND005', 'KM003', 18400000, 'GH003', N'Chuyển khoản', N'Đã hoàn thành', '2026-03-08'),
+('HD005', 'KH006', 'ND002', NULL, 7500000, NULL, N'Tiền mặt', N'Đã hoàn thành', '2026-03-12'),
+('HD006', 'KH008', 'ND013', NULL, 1400000, 'GH004', N'Ví điện tử', N'Đã hoàn thành', '2026-03-28'),
+('HD007', 'KH010', 'ND013', NULL, 32000000, 'GH005', N'Thẻ ngân hàng', N'Đã hoàn thành', '2026-04-12'),
+('HD008', 'KH012', 'ND002', NULL, 10500000, 'GH006', N'Chuyển khoản', N'Đã hoàn thành', '2026-04-30'),
+('HD009', 'KH014', 'ND005', 'KM004', 51000000,'GH007', N'Chuyển khoản', N'Đã hoàn thành', '2026-05-02'),
+('HD010', 'KH015', 'ND005', 'KM004', 21250000, 'GH008', N'Tiền mặt', N'Đã hoàn thành', '2026-05-12'),
+('HD011', 'KH004', 'ND002', 'KM013', 24600000, 'GH009', N'Thẻ ngân hàng', N'Đang giao hàng', '2026-05-14'),
+('HD012', 'KH007', 'ND002', 'KM014', 420000,  NULL, N'Tiền mặt', N'Đã hoàn thành', '2026-05-15'),
+('HD013', 'KH009', 'ND013', 'KM015', 7125000,  NULL, N'Ví điện tử', N'Đã hoàn thành', '2026-05-18'),
+('HD014', 'KH011', 'ND013', NULL, 3500000,  'GH010', N'Tiền mặt', N'Chờ xử lý', '2026-05-18'),
+('HD015', 'KH013', 'ND005', NULL, 12000000, 'GH011', N'Chuyển khoản', N'Chờ xử lý', '2026-05-18');
 
 -- ========================================================
 -- 10. DỮ LIỆU BẢNG: ChiTietHoaDon (15 dòng)

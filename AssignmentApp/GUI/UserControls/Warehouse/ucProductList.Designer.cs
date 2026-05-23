@@ -72,6 +72,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtMoTa = new Guna.UI2.WinForms.Guna2TextBox();
             lblTrangThai = new Label();
             cboTrangThai = new Guna.UI2.WinForms.Guna2ComboBox();
+            lblAnh = new Label();
+            picProductImage = new Guna.UI2.WinForms.Guna2PictureBox();
+            btnChonAnh = new Guna.UI2.WinForms.Guna2Button();
             btnAdd = new Guna.UI2.WinForms.Guna2Button();
             btnEdit = new Guna.UI2.WinForms.Guna2Button();
             btnDelete = new Guna.UI2.WinForms.Guna2Button();
@@ -81,6 +84,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             btnSearch = new Guna.UI2.WinForms.Guna2Button();
             pnlGridCard = new Guna.UI2.WinForms.Guna2Panel();
             lblGridTitle = new Label();
+            tabProductContainer = new TabControl();
+            tabProductList = new TabPage();
+            tabProductDetail = new TabPage();
             dgvSanPham = new Guna.UI2.WinForms.Guna2DataGridView();
             colMaSanPham = new DataGridViewTextBoxColumn();
             colTenSanPham = new DataGridViewTextBoxColumn();
@@ -90,8 +96,20 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             colSoLuongTon = new DataGridViewTextBoxColumn();
             colTrangThai = new DataGridViewTextBoxColumn();
             colNgayTao = new DataGridViewTextBoxColumn();
+            pnlProductDetailCard = new Guna.UI2.WinForms.Guna2Panel();
+            picProductDetailImage = new Guna.UI2.WinForms.Guna2PictureBox();
+            lblProductDetailName = new Label();
+            lblProductDetailPrice = new Label();
+            lblProductDetailStock = new Label();
+            lblProductDetailDesc = new Label();
             pnlInputCard.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picProductImage).BeginInit();
             pnlGridCard.SuspendLayout();
+            tabProductContainer.SuspendLayout();
+            tabProductList.SuspendLayout();
+            tabProductDetail.SuspendLayout();
+            pnlProductDetailCard.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picProductDetailImage).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dgvSanPham).BeginInit();
             SuspendLayout();
             // 
@@ -117,6 +135,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             pnlInputCard.Controls.Add(txtMoTa);
             pnlInputCard.Controls.Add(lblTrangThai);
             pnlInputCard.Controls.Add(cboTrangThai);
+            pnlInputCard.Controls.Add(lblAnh);
+            pnlInputCard.Controls.Add(picProductImage);
+            pnlInputCard.Controls.Add(btnChonAnh);
             pnlInputCard.Controls.Add(btnAdd);
             pnlInputCard.Controls.Add(btnEdit);
             pnlInputCard.Controls.Add(btnDelete);
@@ -160,47 +181,20 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtMaSanPham.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtMaSanPham.Font = new Font("Segoe UI", 9F);
             txtMaSanPham.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtMaSanPham.Location = new Point(15, 58);
+            txtMaSanPham.Location = new Point(15, 60);
             txtMaSanPham.Name = "txtMaSanPham";
-            txtMaSanPham.PlaceholderText = "Nhập mã sản phẩm...";
+            txtMaSanPham.PlaceholderText = "Mã SP...";
             txtMaSanPham.SelectedText = "";
             txtMaSanPham.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            txtMaSanPham.Size = new Size(290, 30);
+            txtMaSanPham.Size = new Size(135, 30);
             txtMaSanPham.TabIndex = 1;
-            // 
-            // lblTenSanPham
-            // 
-            lblTenSanPham.AutoSize = true;
-            lblTenSanPham.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblTenSanPham.ForeColor = Color.FromArgb(64, 64, 64);
-            lblTenSanPham.Location = new Point(15, 94);
-            lblTenSanPham.Name = "lblTenSanPham";
-            lblTenSanPham.Size = new Size(85, 15);
-            lblTenSanPham.TabIndex = 2;
-            lblTenSanPham.Text = "Tên sản phẩm:";
-            // 
-            // txtTenSanPham
-            // 
-            txtTenSanPham.BorderRadius = 5;
-            txtTenSanPham.CustomizableEdges = customizableEdges3;
-            txtTenSanPham.DefaultText = "";
-            txtTenSanPham.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtTenSanPham.Font = new Font("Segoe UI", 9F);
-            txtTenSanPham.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtTenSanPham.Location = new Point(15, 112);
-            txtTenSanPham.Name = "txtTenSanPham";
-            txtTenSanPham.PlaceholderText = "Nhập tên sản phẩm...";
-            txtTenSanPham.SelectedText = "";
-            txtTenSanPham.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            txtTenSanPham.Size = new Size(290, 30);
-            txtTenSanPham.TabIndex = 2;
             // 
             // lblDanhMuc
             // 
             lblDanhMuc.AutoSize = true;
             lblDanhMuc.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblDanhMuc.ForeColor = Color.FromArgb(64, 64, 64);
-            lblDanhMuc.Location = new Point(15, 148);
+            lblDanhMuc.Location = new Point(170, 40);
             lblDanhMuc.Name = "lblDanhMuc";
             lblDanhMuc.Size = new Size(66, 15);
             lblDanhMuc.TabIndex = 3;
@@ -217,19 +211,46 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             cboDanhMuc.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             cboDanhMuc.Font = new Font("Segoe UI", 9F);
             cboDanhMuc.ForeColor = Color.FromArgb(68, 88, 112);
-            cboDanhMuc.ItemHeight = 30;
-            cboDanhMuc.Location = new Point(15, 166);
+            cboDanhMuc.ItemHeight = 24;
+            cboDanhMuc.Location = new Point(170, 60);
             cboDanhMuc.Name = "cboDanhMuc";
             cboDanhMuc.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            cboDanhMuc.Size = new Size(290, 36);
+            cboDanhMuc.Size = new Size(135, 30);
             cboDanhMuc.TabIndex = 3;
+            // 
+            // lblTenSanPham
+            // 
+            lblTenSanPham.AutoSize = true;
+            lblTenSanPham.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblTenSanPham.ForeColor = Color.FromArgb(64, 64, 64);
+            lblTenSanPham.Location = new Point(15, 96);
+            lblTenSanPham.Name = "lblTenSanPham";
+            lblTenSanPham.Size = new Size(85, 15);
+            lblTenSanPham.TabIndex = 2;
+            lblTenSanPham.Text = "Tên sản phẩm:";
+            // 
+            // txtTenSanPham
+            // 
+            txtTenSanPham.BorderRadius = 5;
+            txtTenSanPham.CustomizableEdges = customizableEdges3;
+            txtTenSanPham.DefaultText = "";
+            txtTenSanPham.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            txtTenSanPham.Font = new Font("Segoe UI", 9F);
+            txtTenSanPham.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtTenSanPham.Location = new Point(15, 116);
+            txtTenSanPham.Name = "txtTenSanPham";
+            txtTenSanPham.PlaceholderText = "Nhập tên sản phẩm...";
+            txtTenSanPham.SelectedText = "";
+            txtTenSanPham.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            txtTenSanPham.Size = new Size(290, 30);
+            txtTenSanPham.TabIndex = 2;
             // 
             // lblGiaNhap
             // 
             lblGiaNhap.AutoSize = true;
             lblGiaNhap.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblGiaNhap.ForeColor = Color.FromArgb(64, 64, 64);
-            lblGiaNhap.Location = new Point(15, 202);
+            lblGiaNhap.Location = new Point(15, 152);
             lblGiaNhap.Name = "lblGiaNhap";
             lblGiaNhap.Size = new Size(58, 15);
             lblGiaNhap.TabIndex = 4;
@@ -243,12 +264,12 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtGiaNhap.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtGiaNhap.Font = new Font("Segoe UI", 9F);
             txtGiaNhap.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtGiaNhap.Location = new Point(15, 220);
+            txtGiaNhap.Location = new Point(15, 172);
             txtGiaNhap.Name = "txtGiaNhap";
             txtGiaNhap.PlaceholderText = "Giá nhập...";
             txtGiaNhap.SelectedText = "";
             txtGiaNhap.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            txtGiaNhap.Size = new Size(290, 30);
+            txtGiaNhap.Size = new Size(135, 30);
             txtGiaNhap.TabIndex = 4;
             // 
             // lblGiaBan
@@ -256,7 +277,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblGiaBan.AutoSize = true;
             lblGiaBan.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblGiaBan.ForeColor = Color.FromArgb(64, 64, 64);
-            lblGiaBan.Location = new Point(15, 256);
+            lblGiaBan.Location = new Point(170, 152);
             lblGiaBan.Name = "lblGiaBan";
             lblGiaBan.Size = new Size(51, 15);
             lblGiaBan.TabIndex = 5;
@@ -270,12 +291,12 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtGiaBan.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtGiaBan.Font = new Font("Segoe UI", 9F);
             txtGiaBan.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtGiaBan.Location = new Point(15, 274);
+            txtGiaBan.Location = new Point(170, 172);
             txtGiaBan.Name = "txtGiaBan";
             txtGiaBan.PlaceholderText = "Giá bán...";
             txtGiaBan.SelectedText = "";
             txtGiaBan.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            txtGiaBan.Size = new Size(290, 30);
+            txtGiaBan.Size = new Size(135, 30);
             txtGiaBan.TabIndex = 5;
             // 
             // lblSoLuongTon
@@ -283,7 +304,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblSoLuongTon.AutoSize = true;
             lblSoLuongTon.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblSoLuongTon.ForeColor = Color.FromArgb(64, 64, 64);
-            lblSoLuongTon.Location = new Point(15, 310);
+            lblSoLuongTon.Location = new Point(15, 208);
             lblSoLuongTon.Name = "lblSoLuongTon";
             lblSoLuongTon.Size = new Size(82, 15);
             lblSoLuongTon.TabIndex = 6;
@@ -297,48 +318,20 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtSoLuongTon.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtSoLuongTon.Font = new Font("Segoe UI", 9F);
             txtSoLuongTon.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSoLuongTon.Location = new Point(15, 328);
+            txtSoLuongTon.Location = new Point(15, 228);
             txtSoLuongTon.Name = "txtSoLuongTon";
-            txtSoLuongTon.PlaceholderText = "Số lượng tồn...";
+            txtSoLuongTon.PlaceholderText = "Tồn kho...";
             txtSoLuongTon.SelectedText = "";
             txtSoLuongTon.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            txtSoLuongTon.Size = new Size(290, 30);
+            txtSoLuongTon.Size = new Size(135, 30);
             txtSoLuongTon.TabIndex = 6;
-            // 
-            // lblMoTa
-            // 
-            lblMoTa.AutoSize = true;
-            lblMoTa.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblMoTa.ForeColor = Color.FromArgb(64, 64, 64);
-            lblMoTa.Location = new Point(15, 364);
-            lblMoTa.Name = "lblMoTa";
-            lblMoTa.Size = new Size(42, 15);
-            lblMoTa.TabIndex = 7;
-            lblMoTa.Text = "Mô tả:";
-            // 
-            // txtMoTa
-            // 
-            txtMoTa.BorderRadius = 5;
-            txtMoTa.CustomizableEdges = customizableEdges13;
-            txtMoTa.DefaultText = "";
-            txtMoTa.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtMoTa.Font = new Font("Segoe UI", 9F);
-            txtMoTa.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtMoTa.Location = new Point(15, 382);
-            txtMoTa.Multiline = true;
-            txtMoTa.Name = "txtMoTa";
-            txtMoTa.PlaceholderText = "Mô tả sản phẩm...";
-            txtMoTa.SelectedText = "";
-            txtMoTa.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            txtMoTa.Size = new Size(290, 48);
-            txtMoTa.TabIndex = 7;
             // 
             // lblTrangThai
             // 
             lblTrangThai.AutoSize = true;
             lblTrangThai.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblTrangThai.ForeColor = Color.FromArgb(64, 64, 64);
-            lblTrangThai.Location = new Point(15, 436);
+            lblTrangThai.Location = new Point(170, 208);
             lblTrangThai.Name = "lblTrangThai";
             lblTrangThai.Size = new Size(65, 15);
             lblTrangThai.TabIndex = 8;
@@ -355,13 +348,84 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             cboTrangThai.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             cboTrangThai.Font = new Font("Segoe UI", 9F);
             cboTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
-            cboTrangThai.ItemHeight = 30;
+            cboTrangThai.ItemHeight = 24;
             cboTrangThai.Items.AddRange(new object[] { "Hoạt động", "Ngừng hoạt động" });
-            cboTrangThai.Location = new Point(15, 454);
+            cboTrangThai.Location = new Point(170, 228);
             cboTrangThai.Name = "cboTrangThai";
             cboTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            cboTrangThai.Size = new Size(290, 36);
+            cboTrangThai.Size = new Size(135, 30);
             cboTrangThai.TabIndex = 8;
+            // 
+            // lblMoTa
+            // 
+            lblMoTa.AutoSize = true;
+            lblMoTa.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblMoTa.ForeColor = Color.FromArgb(64, 64, 64);
+            lblMoTa.Location = new Point(15, 264);
+            lblMoTa.Name = "lblMoTa";
+            lblMoTa.Size = new Size(42, 15);
+            lblMoTa.TabIndex = 7;
+            lblMoTa.Text = "Mô tả:";
+            // 
+            // txtMoTa
+            // 
+            txtMoTa.BorderRadius = 5;
+            txtMoTa.CustomizableEdges = customizableEdges13;
+            txtMoTa.DefaultText = "";
+            txtMoTa.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            txtMoTa.Font = new Font("Segoe UI", 9F);
+            txtMoTa.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtMoTa.Location = new Point(15, 284);
+            txtMoTa.Multiline = true;
+            txtMoTa.Name = "txtMoTa";
+            txtMoTa.PlaceholderText = "Mô tả sản phẩm...";
+            txtMoTa.SelectedText = "";
+            txtMoTa.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            txtMoTa.Size = new Size(290, 50);
+            txtMoTa.TabIndex = 7;
+            // 
+            // lblAnh
+            // 
+            lblAnh.AutoSize = true;
+            lblAnh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblAnh.ForeColor = Color.FromArgb(64, 64, 64);
+            lblAnh.Location = new Point(15, 344);
+            lblAnh.Name = "lblAnh";
+            lblAnh.Size = new Size(88, 15);
+            lblAnh.TabIndex = 15;
+            lblAnh.Text = "Ảnh sản phẩm:";
+            // 
+            // picProductImage
+            // 
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesPic1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesPic2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            picProductImage.CustomizableEdges = customizableEdgesPic1;
+            picProductImage.ShadowDecoration.CustomizableEdges = customizableEdgesPic2;
+            picProductImage.BorderRadius = 8;
+            picProductImage.FillColor = Color.FromArgb(240, 242, 245);
+            picProductImage.Location = new Point(15, 364);
+            picProductImage.Name = "picProductImage";
+            picProductImage.Size = new Size(80, 80);
+            picProductImage.SizeMode = PictureBoxSizeMode.Zoom;
+            picProductImage.TabIndex = 16;
+            picProductImage.TabStop = false;
+            // 
+            // btnChonAnh
+            // 
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesBtn1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesBtn2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            btnChonAnh.CustomizableEdges = customizableEdgesBtn1;
+            btnChonAnh.ShadowDecoration.CustomizableEdges = customizableEdgesBtn2;
+            btnChonAnh.BorderRadius = 5;
+            btnChonAnh.FillColor = Color.FromArgb(108, 117, 125);
+            btnChonAnh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnChonAnh.ForeColor = Color.White;
+            btnChonAnh.Location = new Point(110, 386);
+            btnChonAnh.Name = "btnChonAnh";
+            btnChonAnh.Size = new Size(195, 36);
+            btnChonAnh.TabIndex = 17;
+            btnChonAnh.Text = "CHỌN ẢNH...";
+            btnChonAnh.Click += btnChonAnh_Click;
             // 
             // btnAdd
             // 
@@ -482,7 +546,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             pnlGridCard.Controls.Add(lblGridTitle);
             pnlGridCard.Controls.Add(btnSearch);
             pnlGridCard.Controls.Add(btnRefresh);
-            pnlGridCard.Controls.Add(dgvSanPham);
+            pnlGridCard.Controls.Add(tabProductContainer);
             pnlGridCard.CustomizableEdges = customizableEdges33;
             pnlGridCard.FillColor = Color.White;
             pnlGridCard.Location = new Point(360, 20);
@@ -502,13 +566,46 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblGridTitle.TabIndex = 17;
             lblGridTitle.Text = "CHI TIẾT SẢN PHẨM";
             // 
+            // tabProductContainer
+            // 
+            tabProductContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabProductContainer.Controls.Add(tabProductList);
+            tabProductContainer.Controls.Add(tabProductDetail);
+            tabProductContainer.Location = new Point(15, 95);
+            tabProductContainer.Name = "tabProductContainer";
+            tabProductContainer.SelectedIndex = 0;
+            tabProductContainer.Size = new Size(590, 550);
+            tabProductContainer.TabIndex = 18;
+            // 
+            // tabProductList
+            // 
+            tabProductList.Controls.Add(dgvSanPham);
+            tabProductList.Location = new Point(4, 24);
+            tabProductList.Name = "tabProductList";
+            tabProductList.Padding = new Padding(3);
+            tabProductList.Size = new Size(582, 522);
+            tabProductList.TabIndex = 0;
+            tabProductList.Text = "Danh sách sản phẩm";
+            tabProductList.UseVisualStyleBackColor = true;
+            // 
+            // tabProductDetail
+            // 
+            tabProductDetail.Controls.Add(pnlProductDetailCard);
+            tabProductDetail.Location = new Point(4, 24);
+            tabProductDetail.Name = "tabProductDetail";
+            tabProductDetail.Padding = new Padding(3);
+            tabProductDetail.Size = new Size(582, 522);
+            tabProductDetail.TabIndex = 1;
+            tabProductDetail.Text = "Chi tiết sản phẩm";
+            tabProductDetail.UseVisualStyleBackColor = true;
+            // 
             // dgvSanPham
             // 
             dgvSanPham.AllowUserToAddRows = false;
             dgvSanPham.AllowUserToDeleteRows = false;
             dataGridViewCellStyle1.BackColor = Color.White;
             dgvSanPham.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            dgvSanPham.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvSanPham.Dock = DockStyle.Fill;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = Color.FromArgb(0, 126, 249);
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -528,12 +625,12 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dgvSanPham.DefaultCellStyle = dataGridViewCellStyle3;
             dgvSanPham.GridColor = Color.FromArgb(231, 229, 255);
-            dgvSanPham.Location = new Point(15, 95);
+            dgvSanPham.Location = new Point(3, 3);
             dgvSanPham.Name = "dgvSanPham";
             dgvSanPham.ReadOnly = true;
             dgvSanPham.RowHeadersVisible = false;
             dgvSanPham.RowTemplate.Height = 30;
-            dgvSanPham.Size = new Size(590, 550);
+            dgvSanPham.Size = new Size(576, 516);
             dgvSanPham.TabIndex = 0;
             dgvSanPham.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvSanPham.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -557,6 +654,75 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvSanPham.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dgvSanPham.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
             dgvSanPham.CellClick += dgvSanPham_CellClick;
+            // 
+            // pnlProductDetailCard
+            // 
+            pnlProductDetailCard.BackColor = Color.White;
+            pnlProductDetailCard.Controls.Add(picProductDetailImage);
+            pnlProductDetailCard.Controls.Add(lblProductDetailName);
+            pnlProductDetailCard.Controls.Add(lblProductDetailPrice);
+            pnlProductDetailCard.Controls.Add(lblProductDetailStock);
+            pnlProductDetailCard.Controls.Add(lblProductDetailDesc);
+            pnlProductDetailCard.CustomizableEdges = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            pnlProductDetailCard.Dock = DockStyle.Fill;
+            pnlProductDetailCard.Location = new Point(3, 3);
+            pnlProductDetailCard.Name = "pnlProductDetailCard";
+            pnlProductDetailCard.ShadowDecoration.CustomizableEdges = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            pnlProductDetailCard.Size = new Size(576, 516);
+            pnlProductDetailCard.TabIndex = 0;
+            // 
+            // picProductDetailImage
+            // 
+            picProductDetailImage.BorderRadius = 10;
+            picProductDetailImage.CustomizableEdges = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            picProductDetailImage.FillColor = Color.FromArgb(240, 242, 245);
+            picProductDetailImage.Location = new Point(20, 20);
+            picProductDetailImage.Name = "picProductDetailImage";
+            picProductDetailImage.ShadowDecoration.CustomizableEdges = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            picProductDetailImage.Size = new Size(240, 240);
+            picProductDetailImage.SizeMode = PictureBoxSizeMode.Zoom;
+            picProductDetailImage.TabIndex = 0;
+            picProductDetailImage.TabStop = false;
+            // 
+            // lblProductDetailName
+            // 
+            lblProductDetailName.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
+            lblProductDetailName.ForeColor = Color.FromArgb(0, 126, 249);
+            lblProductDetailName.Location = new Point(280, 20);
+            lblProductDetailName.Name = "lblProductDetailName";
+            lblProductDetailName.Size = new Size(280, 40);
+            lblProductDetailName.TabIndex = 1;
+            lblProductDetailName.Text = "Tên Sản Phẩm";
+            // 
+            // lblProductDetailPrice
+            // 
+            lblProductDetailPrice.Font = new Font("Segoe UI", 14F, FontStyle.Bold);
+            lblProductDetailPrice.ForeColor = Color.FromArgb(40, 167, 69);
+            lblProductDetailPrice.Location = new Point(280, 70);
+            lblProductDetailPrice.Name = "lblProductDetailPrice";
+            lblProductDetailPrice.Size = new Size(280, 30);
+            lblProductDetailPrice.TabIndex = 2;
+            lblProductDetailPrice.Text = "Giá bán: 0 VNĐ";
+            // 
+            // lblProductDetailStock
+            // 
+            lblProductDetailStock.Font = new Font("Segoe UI", 12F, FontStyle.Regular);
+            lblProductDetailStock.ForeColor = Color.FromArgb(108, 117, 125);
+            lblProductDetailStock.Location = new Point(280, 110);
+            lblProductDetailStock.Name = "lblProductDetailStock";
+            lblProductDetailStock.Size = new Size(280, 30);
+            lblProductDetailStock.TabIndex = 3;
+            lblProductDetailStock.Text = "Số lượng tồn: 0";
+            // 
+            // lblProductDetailDesc
+            // 
+            lblProductDetailDesc.Font = new Font("Segoe UI", 10F, FontStyle.Italic);
+            lblProductDetailDesc.ForeColor = Color.DimGray;
+            lblProductDetailDesc.Location = new Point(280, 150);
+            lblProductDetailDesc.Name = "lblProductDetailDesc";
+            lblProductDetailDesc.Size = new Size(280, 110);
+            lblProductDetailDesc.TabIndex = 4;
+            lblProductDetailDesc.Text = "Mô tả sản phẩm...";
             // 
             // colMaSanPham
             // 
@@ -620,6 +786,11 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             Load += ucProductList_Load;
             pnlInputCard.ResumeLayout(false);
             pnlInputCard.PerformLayout();
+            tabProductContainer.ResumeLayout(false);
+            tabProductList.ResumeLayout(false);
+            tabProductDetail.ResumeLayout(false);
+            pnlProductDetailCard.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)picProductDetailImage).EndInit();
             pnlGridCard.ResumeLayout(false);
             pnlGridCard.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvSanPham).EndInit();
@@ -646,6 +817,19 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         private Guna.UI2.WinForms.Guna2TextBox txtMoTa;
         private System.Windows.Forms.Label lblTrangThai;
         private Guna.UI2.WinForms.Guna2ComboBox cboTrangThai;
+        private Guna.UI2.WinForms.Guna2PictureBox picProductImage;
+        private Guna.UI2.WinForms.Guna2Button btnChonAnh;
+        private System.Windows.Forms.Label lblAnh;
+
+        private System.Windows.Forms.TabControl tabProductContainer;
+        private System.Windows.Forms.TabPage tabProductList;
+        private System.Windows.Forms.TabPage tabProductDetail;
+        private Guna.UI2.WinForms.Guna2Panel pnlProductDetailCard;
+        private Guna.UI2.WinForms.Guna2PictureBox picProductDetailImage;
+        private System.Windows.Forms.Label lblProductDetailName;
+        private System.Windows.Forms.Label lblProductDetailPrice;
+        private System.Windows.Forms.Label lblProductDetailStock;
+        private System.Windows.Forms.Label lblProductDetailDesc;
 
         private Guna.UI2.WinForms.Guna2Button btnAdd;
         private Guna.UI2.WinForms.Guna2Button btnEdit;

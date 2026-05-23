@@ -11,6 +11,7 @@ namespace AssignmentApp.DTO
         public decimal GiaNhap { get; set; }
         public int SoLuongTon { get; set; }
         public string? MoTa { get; set; }
+        public string? Anh { get; set; }
         public string? TrangThai { get; set; }
         public DateTime NgayTao { get; set; }
     }

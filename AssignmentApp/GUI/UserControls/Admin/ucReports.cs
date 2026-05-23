@@ -200,5 +200,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
         private void btnEdit_Click(object sender, EventArgs e) { }
         private void btnDelete_Click(object sender, EventArgs e) { }
         private void btnCancel_Click(object sender, EventArgs e) { }
+        private void dgvReports_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
     }
 }

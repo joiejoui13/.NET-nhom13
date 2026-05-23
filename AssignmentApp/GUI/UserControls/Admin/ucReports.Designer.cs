@@ -20,6 +20,8 @@ namespace AssignmentApp.GUI.UserControls.Admin
 
         private void InitializeComponent()
         {
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -36,8 +38,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges14 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges15 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -46,13 +46,26 @@ namespace AssignmentApp.GUI.UserControls.Admin
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges25 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges26 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges29 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges30 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges27 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges28 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-
+            LiveChartsCore.SkiaSharpView.SKCharts.SKDefaultLegend skDefaultLegend1 = new LiveChartsCore.SkiaSharpView.SKCharts.SKDefaultLegend();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ucReports));
+            LiveChartsCore.Drawing.Padding padding1 = new LiveChartsCore.Drawing.Padding();
+            LiveChartsCore.SkiaSharpView.SKCharts.SKDefaultTooltip skDefaultTooltip1 = new LiveChartsCore.SkiaSharpView.SKCharts.SKDefaultTooltip();
+            LiveChartsCore.Drawing.Padding padding2 = new LiveChartsCore.Drawing.Padding();
+            LiveChartsCore.SkiaSharpView.SKCharts.SKDefaultLegend skDefaultLegend2 = new LiveChartsCore.SkiaSharpView.SKCharts.SKDefaultLegend();
+            LiveChartsCore.Drawing.Padding padding3 = new LiveChartsCore.Drawing.Padding();
+            LiveChartsCore.SkiaSharpView.SKCharts.SKDefaultTooltip skDefaultTooltip2 = new LiveChartsCore.SkiaSharpView.SKCharts.SKDefaultTooltip();
+            LiveChartsCore.Drawing.Padding padding4 = new LiveChartsCore.Drawing.Padding();
+            LiveChartsCore.SkiaSharpView.SKCharts.SKDefaultLegend skDefaultLegend3 = new LiveChartsCore.SkiaSharpView.SKCharts.SKDefaultLegend();
+            LiveChartsCore.Drawing.Padding padding5 = new LiveChartsCore.Drawing.Padding();
+            LiveChartsCore.SkiaSharpView.SKCharts.SKDefaultTooltip skDefaultTooltip3 = new LiveChartsCore.SkiaSharpView.SKCharts.SKDefaultTooltip();
+            LiveChartsCore.Drawing.Padding padding6 = new LiveChartsCore.Drawing.Padding();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
-
             pnlInputCard = new Guna.UI2.WinForms.Guna2Panel();
             lblInputTitle = new Label();
             lblStartDate = new Label();
@@ -72,27 +85,22 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblProductsTitle = new Label();
             btnSearch = new Guna.UI2.WinForms.Guna2Button();
             btnSave = new Guna.UI2.WinForms.Guna2Button();
-
-            // Rác từ stubs CRUD
             btnAdd = new Guna.UI2.WinForms.Guna2Button();
             btnEdit = new Guna.UI2.WinForms.Guna2Button();
             btnDelete = new Guna.UI2.WinForms.Guna2Button();
             btnCancel = new Guna.UI2.WinForms.Guna2Button();
-
             pnlGridCard = new Guna.UI2.WinForms.Guna2Panel();
             lblGridTitle = new Label();
             btnRefresh = new Guna.UI2.WinForms.Guna2Button();
-            
             tabReportContainer = new TabControl();
             tabCharts = new TabPage();
-            tabDataGrid = new TabPage();
             tblChartsLayout = new TableLayoutPanel();
-            tblPieChartsLayout = new TableLayoutPanel();
             cartesianChart1 = new LiveChartsCore.SkiaSharpView.WinForms.CartesianChart();
+            tblPieChartsLayout = new TableLayoutPanel();
             pieChartProducts = new LiveChartsCore.SkiaSharpView.WinForms.PieChart();
             pieChartStatus = new LiveChartsCore.SkiaSharpView.WinForms.PieChart();
+            tabDataGrid = new TabPage();
             dgvReports = new Guna.UI2.WinForms.Guna2DataGridView();
-
             pnlInputCard.SuspendLayout();
             cardRevenue.SuspendLayout();
             cardOrders.SuspendLayout();
@@ -100,12 +108,11 @@ namespace AssignmentApp.GUI.UserControls.Admin
             pnlGridCard.SuspendLayout();
             tabReportContainer.SuspendLayout();
             tabCharts.SuspendLayout();
-            tabDataGrid.SuspendLayout();
             tblChartsLayout.SuspendLayout();
             tblPieChartsLayout.SuspendLayout();
+            tabDataGrid.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvReports).BeginInit();
             SuspendLayout();
-
             // 
             // pnlInputCard
             // 
@@ -124,14 +131,13 @@ namespace AssignmentApp.GUI.UserControls.Admin
             pnlInputCard.Controls.Add(cardProducts);
             pnlInputCard.Controls.Add(btnSearch);
             pnlInputCard.Controls.Add(btnSave);
-            pnlInputCard.CustomizableEdges = customizableEdges1;
+            pnlInputCard.CustomizableEdges = customizableEdges17;
             pnlInputCard.FillColor = Color.White;
             pnlInputCard.Location = new Point(20, 20);
             pnlInputCard.Name = "pnlInputCard";
-            pnlInputCard.ShadowDecoration.CustomizableEdges = customizableEdges2;
+            pnlInputCard.ShadowDecoration.CustomizableEdges = customizableEdges18;
             pnlInputCard.Size = new Size(320, 660);
             pnlInputCard.TabIndex = 0;
-
             // 
             // lblInputTitle
             // 
@@ -140,10 +146,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblInputTitle.ForeColor = Color.FromArgb(0, 126, 249);
             lblInputTitle.Location = new Point(15, 10);
             lblInputTitle.Name = "lblInputTitle";
-            lblInputTitle.Size = new Size(172, 21);
+            lblInputTitle.Size = new Size(152, 21);
             lblInputTitle.TabIndex = 0;
             lblInputTitle.Text = "BỘ LỌC THỜI GIAN";
-
             // 
             // lblStartDate
             // 
@@ -155,13 +160,12 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblStartDate.Size = new Size(54, 15);
             lblStartDate.TabIndex = 1;
             lblStartDate.Text = "Từ ngày:";
-
             // 
             // dtpStartDate
             // 
             dtpStartDate.BorderRadius = 5;
             dtpStartDate.Checked = true;
-            dtpStartDate.CustomizableEdges = customizableEdges3;
+            dtpStartDate.CustomizableEdges = customizableEdges1;
             dtpStartDate.FillColor = Color.FromArgb(240, 242, 245);
             dtpStartDate.Font = new Font("Segoe UI", 9F);
             dtpStartDate.Format = DateTimePickerFormat.Short;
@@ -169,11 +173,10 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dtpStartDate.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtpStartDate.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtpStartDate.Name = "dtpStartDate";
-            dtpStartDate.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            dtpStartDate.ShadowDecoration.CustomizableEdges = customizableEdges2;
             dtpStartDate.Size = new Size(290, 32);
             dtpStartDate.TabIndex = 1;
             dtpStartDate.Value = new DateTime(2026, 1, 1, 0, 0, 0, 0);
-
             // 
             // lblEndDate
             // 
@@ -185,13 +188,12 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblEndDate.Size = new Size(62, 15);
             lblEndDate.TabIndex = 2;
             lblEndDate.Text = "Đến ngày:";
-
             // 
             // dtpEndDate
             // 
             dtpEndDate.BorderRadius = 5;
             dtpEndDate.Checked = true;
-            dtpEndDate.CustomizableEdges = customizableEdges5;
+            dtpEndDate.CustomizableEdges = customizableEdges3;
             dtpEndDate.FillColor = Color.FromArgb(240, 242, 245);
             dtpEndDate.Font = new Font("Segoe UI", 9F);
             dtpEndDate.Format = DateTimePickerFormat.Short;
@@ -199,11 +201,10 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dtpEndDate.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtpEndDate.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtpEndDate.Name = "dtpEndDate";
-            dtpEndDate.ShadowDecoration.CustomizableEdges = customizableEdges6;
+            dtpEndDate.ShadowDecoration.CustomizableEdges = customizableEdges4;
             dtpEndDate.Size = new Size(290, 32);
             dtpEndDate.TabIndex = 2;
             dtpEndDate.Value = new DateTime(2026, 12, 31, 0, 0, 0, 0);
-
             // 
             // lblPeriod
             // 
@@ -212,16 +213,15 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblPeriod.ForeColor = Color.FromArgb(64, 64, 64);
             lblPeriod.Location = new Point(15, 152);
             lblPeriod.Name = "lblPeriod";
-            lblPeriod.Size = new Size(61, 15);
+            lblPeriod.Size = new Size(63, 15);
             lblPeriod.TabIndex = 3;
             lblPeriod.Text = "Tổng hợp:";
-
             // 
             // cboPeriod
             // 
             cboPeriod.BackColor = Color.Transparent;
             cboPeriod.BorderRadius = 5;
-            cboPeriod.CustomizableEdges = customizableEdges7;
+            cboPeriod.CustomizableEdges = customizableEdges5;
             cboPeriod.DrawMode = DrawMode.OwnerDrawFixed;
             cboPeriod.DropDownStyle = ComboBoxStyle.DropDownList;
             cboPeriod.FocusedColor = Color.FromArgb(0, 126, 249);
@@ -232,24 +232,22 @@ namespace AssignmentApp.GUI.UserControls.Admin
             cboPeriod.Items.AddRange(new object[] { "Ngày", "Tháng", "Năm" });
             cboPeriod.Location = new Point(15, 170);
             cboPeriod.Name = "cboPeriod";
-            cboPeriod.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            cboPeriod.ShadowDecoration.CustomizableEdges = customizableEdges6;
             cboPeriod.Size = new Size(290, 32);
             cboPeriod.TabIndex = 3;
-
             // 
             // cardRevenue
             // 
             cardRevenue.BorderRadius = 8;
             cardRevenue.Controls.Add(lblRevenueValue);
             cardRevenue.Controls.Add(lblRevenueTitle);
-            cardRevenue.CustomizableEdges = customizableEdges9;
+            cardRevenue.CustomizableEdges = customizableEdges7;
             cardRevenue.FillColor = Color.FromArgb(0, 126, 249);
             cardRevenue.Location = new Point(10, 220);
             cardRevenue.Name = "cardRevenue";
-            cardRevenue.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            cardRevenue.ShadowDecoration.CustomizableEdges = customizableEdges8;
             cardRevenue.Size = new Size(300, 75);
             cardRevenue.TabIndex = 4;
-
             // 
             // lblRevenueValue
             // 
@@ -259,37 +257,34 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblRevenueValue.ForeColor = Color.White;
             lblRevenueValue.Location = new Point(12, 33);
             lblRevenueValue.Name = "lblRevenueValue";
-            lblRevenueValue.Size = new Size(47, 30);
+            lblRevenueValue.Size = new Size(46, 30);
             lblRevenueValue.TabIndex = 0;
             lblRevenueValue.Text = "0 ₫";
-
             // 
             // lblRevenueTitle
             // 
             lblRevenueTitle.AutoSize = true;
             lblRevenueTitle.BackColor = Color.Transparent;
-            lblRevenueTitle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            lblRevenueTitle.Font = new Font("Segoe UI", 10F);
             lblRevenueTitle.ForeColor = Color.White;
             lblRevenueTitle.Location = new Point(12, 10);
             lblRevenueTitle.Name = "lblRevenueTitle";
-            lblRevenueTitle.Size = new Size(106, 19);
+            lblRevenueTitle.Size = new Size(108, 19);
             lblRevenueTitle.TabIndex = 1;
             lblRevenueTitle.Text = "Tổng doanh thu";
-
             // 
             // cardOrders
             // 
             cardOrders.BorderRadius = 8;
             cardOrders.Controls.Add(lblOrdersValue);
             cardOrders.Controls.Add(lblOrdersTitle);
-            cardOrders.CustomizableEdges = customizableEdges11;
+            cardOrders.CustomizableEdges = customizableEdges9;
             cardOrders.FillColor = Color.FromArgb(243, 156, 18);
             cardOrders.Location = new Point(10, 305);
             cardOrders.Name = "cardOrders";
-            cardOrders.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            cardOrders.ShadowDecoration.CustomizableEdges = customizableEdges10;
             cardOrders.Size = new Size(300, 75);
             cardOrders.TabIndex = 5;
-
             // 
             // lblOrdersValue
             // 
@@ -299,37 +294,34 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblOrdersValue.ForeColor = Color.White;
             lblOrdersValue.Location = new Point(12, 33);
             lblOrdersValue.Name = "lblOrdersValue";
-            lblOrdersValue.Size = new Size(25, 30);
+            lblOrdersValue.Size = new Size(26, 30);
             lblOrdersValue.TabIndex = 0;
             lblOrdersValue.Text = "0";
-
             // 
             // lblOrdersTitle
             // 
             lblOrdersTitle.AutoSize = true;
             lblOrdersTitle.BackColor = Color.Transparent;
-            lblOrdersTitle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            lblOrdersTitle.Font = new Font("Segoe UI", 10F);
             lblOrdersTitle.ForeColor = Color.White;
             lblOrdersTitle.Location = new Point(12, 10);
             lblOrdersTitle.Name = "lblOrdersTitle";
-            lblOrdersTitle.Size = new Size(104, 19);
+            lblOrdersTitle.Size = new Size(103, 19);
             lblOrdersTitle.TabIndex = 1;
             lblOrdersTitle.Text = "Tổng đơn hàng";
-
             // 
             // cardProducts
             // 
             cardProducts.BorderRadius = 8;
             cardProducts.Controls.Add(lblProductsValue);
             cardProducts.Controls.Add(lblProductsTitle);
-            cardProducts.CustomizableEdges = customizableEdges13;
+            cardProducts.CustomizableEdges = customizableEdges11;
             cardProducts.FillColor = Color.FromArgb(155, 89, 182);
             cardProducts.Location = new Point(10, 390);
             cardProducts.Name = "cardProducts";
-            cardProducts.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            cardProducts.ShadowDecoration.CustomizableEdges = customizableEdges12;
             cardProducts.Size = new Size(300, 75);
             cardProducts.TabIndex = 6;
-
             // 
             // lblProductsValue
             // 
@@ -339,55 +331,95 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblProductsValue.ForeColor = Color.White;
             lblProductsValue.Location = new Point(12, 33);
             lblProductsValue.Name = "lblProductsValue";
-            lblProductsValue.Size = new Size(25, 30);
+            lblProductsValue.Size = new Size(26, 30);
             lblProductsValue.TabIndex = 0;
             lblProductsValue.Text = "0";
-
             // 
             // lblProductsTitle
             // 
             lblProductsTitle.AutoSize = true;
             lblProductsTitle.BackColor = Color.Transparent;
-            lblProductsTitle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
+            lblProductsTitle.Font = new Font("Segoe UI", 10F);
             lblProductsTitle.ForeColor = Color.White;
             lblProductsTitle.Location = new Point(12, 10);
             lblProductsTitle.Name = "lblProductsTitle";
-            lblProductsTitle.Size = new Size(118, 19);
+            lblProductsTitle.Size = new Size(116, 19);
             lblProductsTitle.TabIndex = 1;
             lblProductsTitle.Text = "Sản phẩm đã bán";
-
             // 
             // btnSearch
             // 
             btnSearch.BorderRadius = 5;
-            btnSearch.CustomizableEdges = customizableEdges15;
+            btnSearch.CustomizableEdges = customizableEdges13;
             btnSearch.FillColor = Color.FromArgb(0, 126, 249);
             btnSearch.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnSearch.ForeColor = Color.White;
             btnSearch.Location = new Point(15, 550);
             btnSearch.Name = "btnSearch";
-            btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges14;
             btnSearch.Size = new Size(290, 40);
             btnSearch.TabIndex = 7;
             btnSearch.Text = "LỌC BÁO CÁO";
             btnSearch.Click += btnSearch_Click;
-
             // 
             // btnSave
             // 
             btnSave.BorderRadius = 5;
-            btnSave.CustomizableEdges = customizableEdges17;
+            btnSave.CustomizableEdges = customizableEdges15;
             btnSave.FillColor = Color.FromArgb(46, 204, 113);
             btnSave.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
             btnSave.Location = new Point(15, 600);
             btnSave.Name = "btnSave";
-            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges16;
             btnSave.Size = new Size(290, 40);
             btnSave.TabIndex = 8;
             btnSave.Text = "XUẤT BÁO CÁO";
             btnSave.Click += btnSave_Click;
-
+            // 
+            // btnAdd
+            // 
+            btnAdd.CustomizableEdges = customizableEdges19;
+            btnAdd.Font = new Font("Segoe UI", 9F);
+            btnAdd.ForeColor = Color.White;
+            btnAdd.Location = new Point(0, 0);
+            btnAdd.Name = "btnAdd";
+            btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            btnAdd.Size = new Size(180, 45);
+            btnAdd.TabIndex = 0;
+            // 
+            // btnEdit
+            // 
+            btnEdit.CustomizableEdges = customizableEdges21;
+            btnEdit.Font = new Font("Segoe UI", 9F);
+            btnEdit.ForeColor = Color.White;
+            btnEdit.Location = new Point(0, 0);
+            btnEdit.Name = "btnEdit";
+            btnEdit.ShadowDecoration.CustomizableEdges = customizableEdges22;
+            btnEdit.Size = new Size(180, 45);
+            btnEdit.TabIndex = 0;
+            // 
+            // btnDelete
+            // 
+            btnDelete.CustomizableEdges = customizableEdges23;
+            btnDelete.Font = new Font("Segoe UI", 9F);
+            btnDelete.ForeColor = Color.White;
+            btnDelete.Location = new Point(0, 0);
+            btnDelete.Name = "btnDelete";
+            btnDelete.ShadowDecoration.CustomizableEdges = customizableEdges24;
+            btnDelete.Size = new Size(180, 45);
+            btnDelete.TabIndex = 0;
+            // 
+            // btnCancel
+            // 
+            btnCancel.CustomizableEdges = customizableEdges25;
+            btnCancel.Font = new Font("Segoe UI", 9F);
+            btnCancel.ForeColor = Color.White;
+            btnCancel.Location = new Point(0, 0);
+            btnCancel.Name = "btnCancel";
+            btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges26;
+            btnCancel.Size = new Size(180, 45);
+            btnCancel.TabIndex = 0;
             // 
             // pnlGridCard
             // 
@@ -397,15 +429,14 @@ namespace AssignmentApp.GUI.UserControls.Admin
             pnlGridCard.Controls.Add(lblGridTitle);
             pnlGridCard.Controls.Add(btnRefresh);
             pnlGridCard.Controls.Add(tabReportContainer);
-            pnlGridCard.CustomizableEdges = customizableEdges19;
+            pnlGridCard.CustomizableEdges = customizableEdges29;
             pnlGridCard.FillColor = Color.White;
             pnlGridCard.Location = new Point(360, 20);
             pnlGridCard.Name = "pnlGridCard";
             pnlGridCard.Padding = new Padding(15);
-            pnlGridCard.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            pnlGridCard.ShadowDecoration.CustomizableEdges = customizableEdges30;
             pnlGridCard.Size = new Size(620, 660);
             pnlGridCard.TabIndex = 9;
-
             // 
             // lblGridTitle
             // 
@@ -414,40 +445,37 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblGridTitle.ForeColor = Color.FromArgb(0, 126, 249);
             lblGridTitle.Location = new Point(15, 10);
             lblGridTitle.Name = "lblGridTitle";
-            lblGridTitle.Size = new Size(189, 21);
+            lblGridTitle.Size = new Size(219, 21);
             lblGridTitle.TabIndex = 0;
             lblGridTitle.Text = "DỮ LIỆU & BIỂU ĐỒ BÁO CÁO";
-
             // 
             // btnRefresh
             // 
             btnRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRefresh.BorderRadius = 5;
-            btnRefresh.CustomizableEdges = customizableEdges21;
+            btnRefresh.CustomizableEdges = customizableEdges27;
             btnRefresh.FillColor = Color.FromArgb(108, 117, 125);
             btnRefresh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnRefresh.ForeColor = Color.White;
             btnRefresh.Location = new Point(505, 10);
             btnRefresh.Name = "btnRefresh";
-            btnRefresh.ShadowDecoration.CustomizableEdges = customizableEdges22;
+            btnRefresh.ShadowDecoration.CustomizableEdges = customizableEdges28;
             btnRefresh.Size = new Size(100, 36);
             btnRefresh.TabIndex = 10;
             btnRefresh.Text = "LÀM MỚI";
             btnRefresh.Click += btnRefresh_Click;
-
             // 
             // tabReportContainer
             // 
             tabReportContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabReportContainer.Controls.Add(tabCharts);
             tabReportContainer.Controls.Add(tabDataGrid);
-            tabReportContainer.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            tabReportContainer.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
             tabReportContainer.Location = new Point(15, 55);
             tabReportContainer.Name = "tabReportContainer";
             tabReportContainer.SelectedIndex = 0;
             tabReportContainer.Size = new Size(590, 590);
             tabReportContainer.TabIndex = 11;
-
             // 
             // tabCharts
             // 
@@ -459,7 +487,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
             tabCharts.TabIndex = 0;
             tabCharts.Text = "Biểu đồ Phân tích";
             tabCharts.UseVisualStyleBackColor = true;
-
             // 
             // tblChartsLayout
             // 
@@ -475,16 +502,48 @@ namespace AssignmentApp.GUI.UserControls.Admin
             tblChartsLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 45F));
             tblChartsLayout.Size = new Size(576, 554);
             tblChartsLayout.TabIndex = 0;
-
             // 
             // cartesianChart1
             // 
+            cartesianChart1.AutoUpdateEnabled = true;
+            cartesianChart1.ChartTheme = null;
             cartesianChart1.Dock = DockStyle.Fill;
+            skDefaultLegend1.AnimationsSpeed = TimeSpan.Parse("00:00:00.1500000");
+            skDefaultLegend1.Content = null;
+            skDefaultLegend1.IsValid = true;
+            skDefaultLegend1.Opacity = 1F;
+            padding1.Bottom = 0F;
+            padding1.Left = 0F;
+            padding1.Right = 0F;
+            padding1.Top = 0F;
+            skDefaultLegend1.Padding = padding1;
+            skDefaultLegend1.RemoveOnCompleted = false;
+            skDefaultLegend1.RotateTransform = 0F;
+            skDefaultLegend1.X = 0F;
+            skDefaultLegend1.Y = 0F;
+            cartesianChart1.Legend = skDefaultLegend1;
             cartesianChart1.Location = new Point(3, 3);
+            cartesianChart1.MatchAxesScreenDataRatio = false;
             cartesianChart1.Name = "cartesianChart1";
             cartesianChart1.Size = new Size(570, 298);
             cartesianChart1.TabIndex = 0;
-
+            skDefaultTooltip1.AnimationsSpeed = TimeSpan.Parse("00:00:00.1500000");
+            skDefaultTooltip1.Content = null;
+            skDefaultTooltip1.IsValid = true;
+            skDefaultTooltip1.Opacity = 1F;
+            padding2.Bottom = 0F;
+            padding2.Left = 0F;
+            padding2.Right = 0F;
+            padding2.Top = 0F;
+            skDefaultTooltip1.Padding = padding2;
+            skDefaultTooltip1.RemoveOnCompleted = false;
+            skDefaultTooltip1.RotateTransform = 0F;
+            skDefaultTooltip1.Wedge = 10;
+            skDefaultTooltip1.X = 0F;
+            skDefaultTooltip1.Y = 0F;
+            cartesianChart1.Tooltip = skDefaultTooltip1;
+            cartesianChart1.TooltipFindingStrategy = LiveChartsCore.Measure.TooltipFindingStrategy.Automatic;
+            cartesianChart1.UpdaterThrottler = TimeSpan.Parse("00:00:00.0500000");
             // 
             // tblPieChartsLayout
             // 
@@ -500,25 +559,86 @@ namespace AssignmentApp.GUI.UserControls.Admin
             tblPieChartsLayout.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
             tblPieChartsLayout.Size = new Size(570, 244);
             tblPieChartsLayout.TabIndex = 1;
-
             // 
             // pieChartProducts
             // 
+            pieChartProducts.AutoUpdateEnabled = true;
+            pieChartProducts.ChartTheme = null;
             pieChartProducts.Dock = DockStyle.Fill;
+            skDefaultLegend2.AnimationsSpeed = TimeSpan.Parse("00:00:00.1500000");
+            skDefaultLegend2.Content = null;
+            skDefaultLegend2.IsValid = true;
+            skDefaultLegend2.Opacity = 1F;
+            padding3.Bottom = 0F;
+            padding3.Left = 0F;
+            padding3.Right = 0F;
+            padding3.Top = 0F;
+            skDefaultLegend2.Padding = padding3;
+            skDefaultLegend2.RemoveOnCompleted = false;
+            skDefaultLegend2.RotateTransform = 0F;
+            skDefaultLegend2.X = 0F;
+            skDefaultLegend2.Y = 0F;
+            pieChartProducts.Legend = skDefaultLegend2;
             pieChartProducts.Location = new Point(3, 3);
             pieChartProducts.Name = "pieChartProducts";
             pieChartProducts.Size = new Size(279, 238);
             pieChartProducts.TabIndex = 0;
-
+            skDefaultTooltip2.AnimationsSpeed = TimeSpan.Parse("00:00:00.1500000");
+            skDefaultTooltip2.Content = null;
+            skDefaultTooltip2.IsValid = true;
+            skDefaultTooltip2.Opacity = 1F;
+            padding4.Bottom = 0F;
+            padding4.Left = 0F;
+            padding4.Right = 0F;
+            padding4.Top = 0F;
+            skDefaultTooltip2.Padding = padding4;
+            skDefaultTooltip2.RemoveOnCompleted = false;
+            skDefaultTooltip2.RotateTransform = 0F;
+            skDefaultTooltip2.Wedge = 10;
+            skDefaultTooltip2.X = 0F;
+            skDefaultTooltip2.Y = 0F;
+            pieChartProducts.Tooltip = skDefaultTooltip2;
+            pieChartProducts.UpdaterThrottler = TimeSpan.Parse("00:00:00.0500000");
             // 
             // pieChartStatus
             // 
+            pieChartStatus.AutoUpdateEnabled = true;
+            pieChartStatus.ChartTheme = null;
             pieChartStatus.Dock = DockStyle.Fill;
+            skDefaultLegend3.AnimationsSpeed = TimeSpan.Parse("00:00:00.1500000");
+            skDefaultLegend3.Content = null;
+            skDefaultLegend3.IsValid = true;
+            skDefaultLegend3.Opacity = 1F;
+            padding5.Bottom = 0F;
+            padding5.Left = 0F;
+            padding5.Right = 0F;
+            padding5.Top = 0F;
+            skDefaultLegend3.Padding = padding5;
+            skDefaultLegend3.RemoveOnCompleted = false;
+            skDefaultLegend3.RotateTransform = 0F;
+            skDefaultLegend3.X = 0F;
+            skDefaultLegend3.Y = 0F;
+            pieChartStatus.Legend = skDefaultLegend3;
             pieChartStatus.Location = new Point(288, 3);
             pieChartStatus.Name = "pieChartStatus";
             pieChartStatus.Size = new Size(279, 238);
             pieChartStatus.TabIndex = 1;
-
+            skDefaultTooltip3.AnimationsSpeed = TimeSpan.Parse("00:00:00.1500000");
+            skDefaultTooltip3.Content = null;
+            skDefaultTooltip3.IsValid = true;
+            skDefaultTooltip3.Opacity = 1F;
+            padding6.Bottom = 0F;
+            padding6.Left = 0F;
+            padding6.Right = 0F;
+            padding6.Top = 0F;
+            skDefaultTooltip3.Padding = padding6;
+            skDefaultTooltip3.RemoveOnCompleted = false;
+            skDefaultTooltip3.RotateTransform = 0F;
+            skDefaultTooltip3.Wedge = 10;
+            skDefaultTooltip3.X = 0F;
+            skDefaultTooltip3.Y = 0F;
+            pieChartStatus.Tooltip = skDefaultTooltip3;
+            pieChartStatus.UpdaterThrottler = TimeSpan.Parse("00:00:00.0500000");
             // 
             // tabDataGrid
             // 
@@ -530,7 +650,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
             tabDataGrid.TabIndex = 1;
             tabDataGrid.Text = "Bảng dữ liệu chi tiết";
             tabDataGrid.UseVisualStyleBackColor = true;
-
             // 
             // dgvReports
             // 
@@ -540,7 +659,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dgvReports.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = Color.FromArgb(0, 126, 249);
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold, GraphicsUnit.Point);
+            dataGridViewCellStyle2.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
             dataGridViewCellStyle2.ForeColor = Color.White;
             dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(0, 126, 249);
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
@@ -550,7 +669,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dgvReports.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            dataGridViewCellStyle3.Font = new Font("Segoe UI", 9.75F);
             dataGridViewCellStyle3.ForeColor = Color.FromArgb(71, 69, 94);
             dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(71, 69, 94);
@@ -566,6 +685,10 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dgvReports.Size = new Size(576, 554);
             dgvReports.TabIndex = 0;
             dgvReports.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
+            dgvReports.ThemeStyle.AlternatingRowsStyle.Font = null;
+            dgvReports.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
+            dgvReports.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.Empty;
+            dgvReports.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
             dgvReports.ThemeStyle.BackColor = Color.White;
             dgvReports.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
             dgvReports.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(0, 126, 249);
@@ -582,7 +705,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dgvReports.ThemeStyle.RowsStyle.Height = 35;
             dgvReports.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dgvReports.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
-
+            dgvReports.CellContentClick += dgvReports_CellContentClick;
             // 
             // ucReports
             // 
@@ -591,11 +714,10 @@ namespace AssignmentApp.GUI.UserControls.Admin
             BackColor = Color.FromArgb(240, 242, 245);
             Controls.Add(pnlInputCard);
             Controls.Add(pnlGridCard);
-            Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            Font = new Font("Segoe UI", 9F);
             Name = "ucReports";
             Padding = new Padding(20);
             Size = new Size(1000, 700);
-
             pnlInputCard.ResumeLayout(false);
             pnlInputCard.PerformLayout();
             cardRevenue.ResumeLayout(false);
@@ -608,9 +730,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
             pnlGridCard.PerformLayout();
             tabReportContainer.ResumeLayout(false);
             tabCharts.ResumeLayout(false);
-            tabDataGrid.ResumeLayout(false);
             tblChartsLayout.ResumeLayout(false);
             tblPieChartsLayout.ResumeLayout(false);
+            tabDataGrid.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvReports).EndInit();
             ResumeLayout(false);
         }

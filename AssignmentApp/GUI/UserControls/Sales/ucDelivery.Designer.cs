@@ -69,6 +69,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblGridTitle = new Label();
             btnSearch = new Guna.UI2.WinForms.Guna2Button();
             btnRefresh = new Guna.UI2.WinForms.Guna2Button();
+            txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             dgvDeliveries = new Guna.UI2.WinForms.Guna2DataGridView();
             colMaGiaoHang = new DataGridViewTextBoxColumn();
             colMaHoaDon = new DataGridViewTextBoxColumn();
@@ -345,6 +346,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlGridCard.BackColor = Color.Transparent;
             pnlGridCard.BorderRadius = 10;
             pnlGridCard.Controls.Add(lblGridTitle);
+            pnlGridCard.Controls.Add(txtSearch);
             pnlGridCard.Controls.Add(btnSearch);
             pnlGridCard.Controls.Add(btnRefresh);
             pnlGridCard.Controls.Add(dgvDeliveries);
@@ -368,6 +370,24 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblGridTitle.TabIndex = 0;
             lblGridTitle.Text = "DANH SÁCH GIAO HÀNG";
             // 
+            // txtSearch
+            // 
+            txtSearch.BorderRadius = 5;
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges29 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges30 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            txtSearch.CustomizableEdges = customizableEdges29;
+            txtSearch.DefaultText = "";
+            txtSearch.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            txtSearch.Font = new Font("Segoe UI", 9F);
+            txtSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtSearch.Location = new Point(15, 45);
+            txtSearch.Name = "txtSearch";
+            txtSearch.PlaceholderText = "Tìm mã giao, mã HĐ, địa chỉ...";
+            txtSearch.SelectedText = "";
+            txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges30;
+            txtSearch.Size = new Size(250, 36);
+            txtSearch.TabIndex = 16;
+            // 
             // btnSearch
             // 
             btnSearch.BorderRadius = 5;
@@ -375,7 +395,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnSearch.FillColor = Color.FromArgb(0, 126, 249);
             btnSearch.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnSearch.ForeColor = Color.White;
-            btnSearch.Location = new Point(15, 45);
+            btnSearch.Location = new Point(275, 45);
             btnSearch.Name = "btnSearch";
             btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges24;
             btnSearch.Size = new Size(100, 36);
@@ -529,6 +549,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private System.Windows.Forms.Label lblGridTitle;
         private Guna.UI2.WinForms.Guna2Button btnSearch;
         private Guna.UI2.WinForms.Guna2Button btnRefresh;
+        private Guna.UI2.WinForms.Guna2TextBox txtSearch;
         private Guna.UI2.WinForms.Guna2DataGridView dgvDeliveries;
 
         private System.Windows.Forms.DataGridViewTextBoxColumn colMaGiaoHang;

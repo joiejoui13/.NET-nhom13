@@ -47,7 +47,23 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             btnSearch = new Guna.UI2.WinForms.Guna2Button();
             pnlProducts = new Guna.UI2.WinForms.Guna2Panel();
-            flowProducts = new FlowLayoutPanel();
+            tabPOSContainer = new TabControl();
+            tabProductList = new TabPage();
+            tabProductDetail = new TabPage();
+            dgvProducts = new Guna.UI2.WinForms.Guna2DataGridView();
+            colProdMaSP = new DataGridViewTextBoxColumn();
+            colProdTenSP = new DataGridViewTextBoxColumn();
+            colProdDanhMuc = new DataGridViewTextBoxColumn();
+            colProdDonGia = new DataGridViewTextBoxColumn();
+            colProdTonKho = new DataGridViewTextBoxColumn();
+            colProdTrangThai = new DataGridViewTextBoxColumn();
+            pnlProductDetailCard = new Guna.UI2.WinForms.Guna2Panel();
+            picProductDetailImage = new Guna.UI2.WinForms.Guna2PictureBox();
+            lblProductDetailName = new Label();
+            lblProductDetailPrice = new Label();
+            lblProductDetailStock = new Label();
+            lblProductDetailDesc = new Label();
+            btnDetailAddToCart = new Guna.UI2.WinForms.Guna2Button();
             pnlCart = new Guna.UI2.WinForms.Guna2Panel();
             dgvCart = new Guna.UI2.WinForms.Guna2DataGridView();
             colCartMaSP = new DataGridViewTextBoxColumn();
@@ -55,6 +71,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colCartSoLuong = new DataGridViewTextBoxColumn();
             colCartDonGia = new DataGridViewTextBoxColumn();
             colCartThanhTien = new DataGridViewTextBoxColumn();
+            colCartXoa = new DataGridViewButtonColumn();
             lblKhachHang = new Label();
             cboKhachHang = new Guna.UI2.WinForms.Guna2ComboBox();
             lblKhuyenMai = new Label();
@@ -69,8 +86,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnNew = new Guna.UI2.WinForms.Guna2Button();
             pnlTop.SuspendLayout();
             pnlProducts.SuspendLayout();
+            tabPOSContainer.SuspendLayout();
+            tabProductList.SuspendLayout();
+            tabProductDetail.SuspendLayout();
+            pnlProductDetailCard.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picProductDetailImage).BeginInit();
             pnlCart.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCart).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dgvProducts).BeginInit();
             SuspendLayout();
             // 
             // pnlTop
@@ -133,12 +156,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnSearch.Text = "TÌM KIẾM";
             btnSearch.Click += btnSearch_Click;
             // 
+            // 
             // pnlProducts
             // 
             pnlProducts.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlProducts.BackColor = Color.White;
             pnlProducts.BorderRadius = 10;
-            pnlProducts.Controls.Add(flowProducts);
+            pnlProducts.Controls.Add(tabPOSContainer);
             pnlProducts.CustomizableEdges = customizableEdges7;
             pnlProducts.Location = new Point(20, 100);
             pnlProducts.Name = "pnlProducts";
@@ -147,15 +171,217 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlProducts.Size = new Size(580, 580);
             pnlProducts.TabIndex = 1;
             // 
-            // flowProducts
+            // tabPOSContainer
             // 
-            flowProducts.AutoScroll = true;
-            flowProducts.BackColor = Color.White;
-            flowProducts.Dock = DockStyle.Fill;
-            flowProducts.Location = new Point(10, 10);
-            flowProducts.Name = "flowProducts";
-            flowProducts.Size = new Size(560, 560);
-            flowProducts.TabIndex = 0;
+            tabPOSContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tabPOSContainer.Controls.Add(tabProductList);
+            tabPOSContainer.Controls.Add(tabProductDetail);
+            tabPOSContainer.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            tabPOSContainer.Location = new Point(10, 10);
+            tabPOSContainer.Name = "tabPOSContainer";
+            tabPOSContainer.SelectedIndex = 0;
+            tabPOSContainer.Size = new Size(560, 560);
+            tabPOSContainer.TabIndex = 0;
+            // 
+            // tabProductList
+            // 
+            tabProductList.Controls.Add(dgvProducts);
+            tabProductList.Location = new Point(4, 25);
+            tabProductList.Name = "tabProductList";
+            tabProductList.Padding = new Padding(3);
+            tabProductList.Size = new Size(552, 531);
+            tabProductList.TabIndex = 0;
+            tabProductList.Text = "Danh sách sản phẩm";
+            tabProductList.UseVisualStyleBackColor = true;
+            // 
+            // tabProductDetail
+            // 
+            tabProductDetail.Controls.Add(pnlProductDetailCard);
+            tabProductDetail.Location = new Point(4, 25);
+            tabProductDetail.Name = "tabProductDetail";
+            tabProductDetail.Padding = new Padding(10);
+            tabProductDetail.Size = new Size(552, 531);
+            tabProductDetail.TabIndex = 1;
+            tabProductDetail.Text = "Chi tiết sản phẩm";
+            tabProductDetail.UseVisualStyleBackColor = true;
+            // 
+            // dgvProducts
+            // 
+            dgvProducts.AllowUserToAddRows = false;
+            dgvProducts.AllowUserToDeleteRows = false;
+            dgvProducts.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
+            dgvProducts.Dock = DockStyle.Fill;
+            dgvProducts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dgvProducts.ColumnHeadersHeight = 35;
+            dgvProducts.Columns.AddRange(new DataGridViewColumn[] { colProdMaSP, colProdTenSP, colProdDanhMuc, colProdDonGia, colProdTonKho, colProdTrangThai });
+            dgvProducts.DefaultCellStyle = dataGridViewCellStyle3;
+            dgvProducts.GridColor = Color.FromArgb(231, 229, 255);
+            dgvProducts.Location = new Point(3, 3);
+            dgvProducts.Name = "dgvProducts";
+            dgvProducts.ReadOnly = true;
+            dgvProducts.RowHeadersVisible = false;
+            dgvProducts.RowTemplate.Height = 30;
+            dgvProducts.Size = new Size(546, 525);
+            dgvProducts.TabIndex = 0;
+            dgvProducts.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
+            dgvProducts.ThemeStyle.BackColor = Color.White;
+            dgvProducts.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
+            dgvProducts.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(0, 126, 249);
+            dgvProducts.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvProducts.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
+            dgvProducts.ThemeStyle.HeaderStyle.ForeColor = Color.White;
+            dgvProducts.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvProducts.ThemeStyle.HeaderStyle.Height = 35;
+            dgvProducts.ThemeStyle.ReadOnly = true;
+            dgvProducts.ThemeStyle.RowsStyle.BackColor = Color.White;
+            dgvProducts.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvProducts.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F);
+            dgvProducts.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(71, 69, 94);
+            dgvProducts.ThemeStyle.RowsStyle.Height = 30;
+            dgvProducts.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
+            dgvProducts.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            dgvProducts.CellClick += dgvProducts_CellClick;
+            // 
+            // colProdMaSP
+            // 
+            colProdMaSP.HeaderText = "Mã SP";
+            colProdMaSP.Name = "colProdMaSP";
+            colProdMaSP.ReadOnly = true;
+            colProdMaSP.Width = 70;
+            // 
+            // colProdTenSP
+            // 
+            colProdTenSP.HeaderText = "Tên Sản Phẩm";
+            colProdTenSP.Name = "colProdTenSP";
+            colProdTenSP.ReadOnly = true;
+            colProdTenSP.Width = 160;
+            // 
+            // colProdDanhMuc
+            // 
+            colProdDanhMuc.HeaderText = "Danh mục";
+            colProdDanhMuc.Name = "colProdDanhMuc";
+            colProdDanhMuc.ReadOnly = true;
+            colProdDanhMuc.Width = 90;
+            // 
+            // colProdDonGia
+            // 
+            colProdDonGia.HeaderText = "Giá bán";
+            colProdDonGia.Name = "colProdDonGia";
+            colProdDonGia.ReadOnly = true;
+            colProdDonGia.Width = 80;
+            // 
+            // colProdTonKho
+            // 
+            colProdTonKho.HeaderText = "Tồn kho";
+            colProdTonKho.Name = "colProdTonKho";
+            colProdTonKho.ReadOnly = true;
+            colProdTonKho.Width = 65;
+            // 
+            // colProdTrangThai
+            // 
+            colProdTrangThai.HeaderText = "Trạng thái";
+            colProdTrangThai.Name = "colProdTrangThai";
+            colProdTrangThai.ReadOnly = true;
+            colProdTrangThai.Width = 80;
+            // 
+            // pnlProductDetailCard
+            // 
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesDetailCard1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesDetailCard2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            pnlProductDetailCard.CustomizableEdges = customizableEdgesDetailCard1;
+            pnlProductDetailCard.ShadowDecoration.CustomizableEdges = customizableEdgesDetailCard2;
+            pnlProductDetailCard.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pnlProductDetailCard.BorderColor = Color.FromArgb(230, 230, 230);
+            pnlProductDetailCard.BorderRadius = 15;
+            pnlProductDetailCard.BorderThickness = 1;
+            pnlProductDetailCard.Controls.Add(btnDetailAddToCart);
+            pnlProductDetailCard.Controls.Add(lblProductDetailDesc);
+            pnlProductDetailCard.Controls.Add(lblProductDetailStock);
+            pnlProductDetailCard.Controls.Add(lblProductDetailPrice);
+            pnlProductDetailCard.Controls.Add(lblProductDetailName);
+            pnlProductDetailCard.Controls.Add(picProductDetailImage);
+            pnlProductDetailCard.FillColor = Color.White;
+            pnlProductDetailCard.Location = new Point(26, 20);
+            pnlProductDetailCard.Name = "pnlProductDetailCard";
+            pnlProductDetailCard.Size = new Size(480, 470);
+            pnlProductDetailCard.TabIndex = 0;
+            // 
+            // picProductDetailImage
+            // 
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesDetailPic1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesDetailPic2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            picProductDetailImage.CustomizableEdges = customizableEdgesDetailPic1;
+            picProductDetailImage.ShadowDecoration.CustomizableEdges = customizableEdgesDetailPic2;
+            picProductDetailImage.BorderRadius = 10;
+            picProductDetailImage.FillColor = Color.FromArgb(240, 242, 245);
+            picProductDetailImage.Location = new Point(120, 20);
+            picProductDetailImage.Name = "picProductDetailImage";
+            picProductDetailImage.Size = new Size(240, 160);
+            picProductDetailImage.SizeMode = PictureBoxSizeMode.Zoom;
+            picProductDetailImage.TabIndex = 0;
+            picProductDetailImage.TabStop = false;
+            // 
+            // lblProductDetailName
+            // 
+            lblProductDetailName.Font = new Font("Segoe UI", 13F, FontStyle.Bold);
+            lblProductDetailName.ForeColor = Color.FromArgb(0, 126, 249);
+            lblProductDetailName.Location = new Point(20, 195);
+            lblProductDetailName.Name = "lblProductDetailName";
+            lblProductDetailName.Size = new Size(440, 45);
+            lblProductDetailName.TabIndex = 1;
+            lblProductDetailName.Text = "TÊN SẢN PHẨM CHỌN MUA";
+            lblProductDetailName.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblProductDetailPrice
+            // 
+            lblProductDetailPrice.Font = new Font("Segoe UI", 11.5F, FontStyle.Bold);
+            lblProductDetailPrice.ForeColor = Color.FromArgb(22, 163, 74);
+            lblProductDetailPrice.Location = new Point(20, 250);
+            lblProductDetailPrice.Name = "lblProductDetailPrice";
+            lblProductDetailPrice.Size = new Size(440, 25);
+            lblProductDetailPrice.TabIndex = 2;
+            lblProductDetailPrice.Text = "Giá bán: 0 đ";
+            lblProductDetailPrice.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblProductDetailStock
+            // 
+            lblProductDetailStock.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
+            lblProductDetailStock.ForeColor = Color.FromArgb(64, 64, 64);
+            lblProductDetailStock.Location = new Point(20, 285);
+            lblProductDetailStock.Name = "lblProductDetailStock";
+            lblProductDetailStock.Size = new Size(440, 25);
+            lblProductDetailStock.TabIndex = 3;
+            lblProductDetailStock.Text = "Tình trạng: Chọn sản phẩm để xem tồn kho";
+            lblProductDetailStock.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // lblProductDetailDesc
+            // 
+            lblProductDetailDesc.Font = new Font("Segoe UI", 8.5F);
+            lblProductDetailDesc.ForeColor = Color.FromArgb(127, 140, 141);
+            lblProductDetailDesc.Location = new Point(20, 320);
+            lblProductDetailDesc.Name = "lblProductDetailDesc";
+            lblProductDetailDesc.Size = new Size(440, 50);
+            lblProductDetailDesc.TabIndex = 4;
+            lblProductDetailDesc.Text = "Mã SP: -- | Danh mục: --\r\nThông tin chi tiết về sản phẩm sẽ được cập nhật ở đây.";
+            lblProductDetailDesc.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // btnDetailAddToCart
+            // 
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesDetailBtn1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesDetailBtn2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            btnDetailAddToCart.CustomizableEdges = customizableEdgesDetailBtn1;
+            btnDetailAddToCart.ShadowDecoration.CustomizableEdges = customizableEdgesDetailBtn2;
+            btnDetailAddToCart.BorderRadius = 8;
+            btnDetailAddToCart.FillColor = Color.FromArgb(0, 126, 249);
+            btnDetailAddToCart.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            btnDetailAddToCart.ForeColor = Color.White;
+            btnDetailAddToCart.Location = new Point(40, 390);
+            btnDetailAddToCart.Name = "btnDetailAddToCart";
+            btnDetailAddToCart.Size = new Size(400, 45);
+            btnDetailAddToCart.TabIndex = 5;
+            btnDetailAddToCart.Text = "THÊM VÀO GIỎ HÀNG";
+            btnDetailAddToCart.Click += btnDetailAddToCart_Click;
+            // 
             // 
             // pnlCart
             // 
@@ -198,7 +424,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgvCart.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvCart.ColumnHeadersHeight = 35;
-            dgvCart.Columns.AddRange(new DataGridViewColumn[] { colCartMaSP, colCartTenSP, colCartSoLuong, colCartDonGia, colCartThanhTien });
+            dgvCart.Columns.AddRange(new DataGridViewColumn[] { colCartMaSP, colCartTenSP, colCartSoLuong, colCartDonGia, colCartThanhTien, colCartXoa });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
@@ -266,6 +492,17 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colCartThanhTien.HeaderText = "T.Tiền";
             colCartThanhTien.Name = "colCartThanhTien";
             colCartThanhTien.ReadOnly = true;
+            // 
+            // colCartXoa
+            // 
+            colCartXoa.HeaderText = "Xóa";
+            colCartXoa.Name = "colCartXoa";
+            colCartXoa.Text = "X";
+            colCartXoa.UseColumnTextForButtonValue = true;
+            colCartXoa.Width = 35;
+            colCartXoa.FlatStyle = FlatStyle.Flat;
+            colCartXoa.DefaultCellStyle.ForeColor = Color.Red;
+            colCartXoa.DefaultCellStyle.SelectionForeColor = Color.Red;
             // 
             // lblKhachHang
             // 
@@ -455,6 +692,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlTop.ResumeLayout(false);
             pnlTop.PerformLayout();
             pnlProducts.ResumeLayout(false);
+            tabPOSContainer.ResumeLayout(false);
+            tabProductList.ResumeLayout(false);
+            tabProductDetail.ResumeLayout(false);
+            pnlProductDetailCard.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)picProductDetailImage).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dgvProducts).EndInit();
             pnlCart.ResumeLayout(false);
             pnlCart.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCart).EndInit();
@@ -469,7 +712,23 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private Guna.UI2.WinForms.Guna2Button btnSearch;
 
         private Guna.UI2.WinForms.Guna2Panel pnlProducts;
-        private System.Windows.Forms.FlowLayoutPanel flowProducts;
+        private System.Windows.Forms.TabControl tabPOSContainer;
+        private System.Windows.Forms.TabPage tabProductList;
+        private System.Windows.Forms.TabPage tabProductDetail;
+        private Guna.UI2.WinForms.Guna2DataGridView dgvProducts;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colProdMaSP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colProdTenSP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colProdDanhMuc;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colProdDonGia;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colProdTonKho;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colProdTrangThai;
+        private Guna.UI2.WinForms.Guna2Panel pnlProductDetailCard;
+        private Guna.UI2.WinForms.Guna2PictureBox picProductDetailImage;
+        private System.Windows.Forms.Label lblProductDetailName;
+        private System.Windows.Forms.Label lblProductDetailPrice;
+        private System.Windows.Forms.Label lblProductDetailStock;
+        private System.Windows.Forms.Label lblProductDetailDesc;
+        private Guna.UI2.WinForms.Guna2Button btnDetailAddToCart;
 
         private Guna.UI2.WinForms.Guna2Panel pnlCart;
         private Guna.UI2.WinForms.Guna2DataGridView dgvCart;
@@ -478,6 +737,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private System.Windows.Forms.DataGridViewTextBoxColumn colCartSoLuong;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCartDonGia;
         private System.Windows.Forms.DataGridViewTextBoxColumn colCartThanhTien;
+        private System.Windows.Forms.DataGridViewButtonColumn colCartXoa;
 
         private System.Windows.Forms.Label lblKhachHang;
         private Guna.UI2.WinForms.Guna2ComboBox cboKhachHang;

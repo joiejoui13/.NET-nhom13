@@ -45,5 +45,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private void txtSearch_KeyDown(object sender, KeyEventArgs e)
         {
         }
+
+        private void dgvProducts_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+        }
+
+        private void btnDetailAddToCart_Click(object sender, EventArgs e)
+        {
+        }
     }
 }

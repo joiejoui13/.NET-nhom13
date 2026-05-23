@@ -12,6 +12,7 @@ namespace AssignmentApp.DTO
         public decimal GiamGia { get; set; }
         public string? MaGiaoHang { get; set; }
         public string? HinhThucThanhToan { get; set; }
+        public string TrangThai { get; set; } = "Chờ xử lý";
         public DateTime NgayTao { get; set; }
 
         // Helper properties

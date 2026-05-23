@@ -12,7 +12,7 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = "SELECT * FROM tblHangHoa";
+            string sql = "SELECT MaSanPham AS MaHang, TenSanPham AS TenHang, MaDanhMuc AS MaLoai, GiaNhap AS DonGiaNhap, GiaBan AS DonGiaBan, SoLuongTon AS SoLuong, MoTa AS GhiChu, Anh FROM SanPham";
             return await DbContext.Conn.QueryAsync<Product>(sql);
         }
 
@@ -20,7 +20,7 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
         public async Task<Product> GetByIdAsync(string maHang)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = "SELECT * FROM tblHangHoa WHERE MaHang = @MaHang";
+            string sql = "SELECT MaSanPham AS MaHang, TenSanPham AS TenHang, MaDanhMuc AS MaLoai, GiaNhap AS DonGiaNhap, GiaBan AS DonGiaBan, SoLuongTon AS SoLuong, MoTa AS GhiChu, Anh FROM SanPham WHERE MaSanPham = @MaHang";
             return await DbContext.Conn.QuerySingleOrDefaultAsync<Product>(sql, new { MaHang = maHang });
         }
 
@@ -28,8 +28,8 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
         public async Task<int> AddAsync(Product p)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = @"INSERT INTO tblHangHoa (MaHang, TenHang, MaLoai, SoLuong, DonGiaBan) 
-                           VALUES (@MaHang, @TenHang, @MaLoai, @SoLuong, @DonGiaBan)";
+            string sql = @"INSERT INTO SanPham (MaSanPham, TenSanPham, MaDanhMuc, SoLuongTon, GiaNhap, GiaBan, MoTa, Anh) 
+                           VALUES (@MaHang, @TenHang, @MaLoai, @SoLuong, @DonGiaNhap, @DonGiaBan, @GhiChu, @Anh)";
             return await DbContext.Conn.ExecuteAsync(sql, p);
         }
 
@@ -37,8 +37,16 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
         public async Task<int> DeleteAsync(string maHang)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = "DELETE FROM tblHangHoa WHERE MaHang = @MaHang";
+            string sql = "DELETE FROM SanPham WHERE MaSanPham = @MaHang";
             return await DbContext.Conn.ExecuteAsync(sql, new { MaHang = maHang });
+        }
+
+        // 5. Cập nhật ảnh sản phẩm
+        public async Task<int> UpdateImageAsync(string maHang, string anh)
+        {
+            if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
+            string sql = "UPDATE SanPham SET Anh = @Anh WHERE MaSanPham = @MaHang";
+            return await DbContext.Conn.ExecuteAsync(sql, new { MaHang = maHang, Anh = anh });
         }
     }
 }

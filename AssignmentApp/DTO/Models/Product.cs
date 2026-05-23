@@ -9,5 +9,6 @@ namespace AssignmentApp.DTO
         public decimal DonGiaNhap { get; set; }
         public decimal DonGiaBan { get; set; }
         public string GhiChu { get; set; }
+        public string Anh { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace AssignmentApp.GUI.UserControls.Warehouse
+namespace AssignmentApp.GUI.UserControls.Warehouse
 {
     partial class ucProductList
     {
@@ -59,9 +59,14 @@
             btndelete = new Guna.UI2.WinForms.Guna2Button();
             dgvProducts = new Guna.UI2.WinForms.Guna2DataGridView();
             guna2Panel3 = new Guna.UI2.WinForms.Guna2Panel();
+            pnlRight = new Guna.UI2.WinForms.Guna2Panel();
+            picProduct = new Guna.UI2.WinForms.Guna2PictureBox();
+            btnChooseImage = new Guna.UI2.WinForms.Guna2Button();
             guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvProducts).BeginInit();
             guna2Panel3.SuspendLayout();
+            pnlRight.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)picProduct).BeginInit();
             SuspendLayout();
             // 
             // guna2Panel1
@@ -251,6 +256,49 @@
             guna2Panel3.Size = new Size(946, 125);
             guna2Panel3.TabIndex = 8;
             // 
+            // pnlRight
+            // 
+            Guna.UI2.WinForms.Suite.CustomizableEdges pnlRightEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges pnlRightEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            pnlRight.CustomizableEdges = pnlRightEdges1;
+            pnlRight.ShadowDecoration.CustomizableEdges = pnlRightEdges2;
+            pnlRight.Controls.Add(btnChooseImage);
+            pnlRight.Controls.Add(picProduct);
+            pnlRight.Dock = DockStyle.Right;
+            pnlRight.Location = new Point(750, 70);
+            pnlRight.Name = "pnlRight";
+            pnlRight.Size = new Size(250, 630);
+            pnlRight.TabIndex = 9;
+            // 
+            // picProduct
+            // 
+            Guna.UI2.WinForms.Suite.CustomizableEdges picProductEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges picProductEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            picProduct.CustomizableEdges = picProductEdges1;
+            picProduct.ShadowDecoration.CustomizableEdges = picProductEdges2;
+            picProduct.BorderStyle = BorderStyle.FixedSingle;
+            picProduct.ImageRotate = 0F;
+            picProduct.Location = new Point(25, 20);
+            picProduct.Name = "picProduct";
+            picProduct.Size = new Size(200, 200);
+            picProduct.SizeMode = PictureBoxSizeMode.Zoom;
+            picProduct.TabIndex = 0;
+            picProduct.TabStop = false;
+            // 
+            // btnChooseImage
+            // 
+            Guna.UI2.WinForms.Suite.CustomizableEdges btnChooseImageEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges btnChooseImageEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            btnChooseImage.CustomizableEdges = btnChooseImageEdges1;
+            btnChooseImage.ShadowDecoration.CustomizableEdges = btnChooseImageEdges2;
+            btnChooseImage.Font = new Font("Segoe UI", 9F);
+            btnChooseImage.ForeColor = Color.White;
+            btnChooseImage.Location = new Point(25, 240);
+            btnChooseImage.Name = "btnChooseImage";
+            btnChooseImage.Size = new Size(200, 45);
+            btnChooseImage.TabIndex = 1;
+            btnChooseImage.Text = "Chọn ảnh";
+            // 
             // ucProductList
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -259,12 +307,15 @@
             Controls.Add(guna2Panel3);
             Controls.Add(guna2Panel2);
             Controls.Add(guna2Panel1);
+            Controls.Add(pnlRight);
             Controls.Add(dgvProducts);
             Name = "ucProductList";
             Size = new Size(1000, 700);
             guna2Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvProducts).EndInit();
             guna2Panel3.ResumeLayout(false);
+            pnlRight.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)picProduct).EndInit();
             ResumeLayout(false);
         }
 
@@ -280,6 +331,9 @@
         private Guna.UI2.WinForms.Guna2Button btndelete;
         private Guna.UI2.WinForms.Guna2DataGridView dgvProducts;
         private Guna.UI2.WinForms.Guna2Panel guna2Panel3;
+        private Guna.UI2.WinForms.Guna2Panel pnlRight;
+        private Guna.UI2.WinForms.Guna2PictureBox picProduct;
+        private Guna.UI2.WinForms.Guna2Button btnChooseImage;
     }
 }
 

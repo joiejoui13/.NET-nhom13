@@ -7,5 +7,6 @@ namespace AssignmentApp.DTO
         public string MaKH { get; set; }
         public System.DateTime NgayBan { get; set; }
         public decimal TongTien { get; set; }
+        public string TrangThai { get; set; }
     }
 }

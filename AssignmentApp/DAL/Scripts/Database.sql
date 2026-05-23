@@ -52,6 +52,7 @@ CREATE TABLE SanPham (
     GiaNhap DECIMAL(18, 2),
     SoLuongTon INT DEFAULT 0,
     MoTa NVARCHAR(255),
+    Anh NVARCHAR(255),
     TrangThai NVARCHAR(50),
     NgayTao DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (MaDanhMuc) REFERENCES DanhMuc(MaDanhMuc)
@@ -97,6 +98,7 @@ CREATE TABLE HoaDon (
     GiamGia DECIMAL(18, 2),
     MaGiaoHang VARCHAR(50), 
     HinhThucThanhToan NVARCHAR(50),
+    TrangThai NVARCHAR(50),
     NgayTao DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (MaKhachHang) REFERENCES KhachHang(MaKhachHang),
     FOREIGN KEY (MaNguoiDung) REFERENCES NguoiDung(MaNguoiDung),
@@ -177,21 +179,21 @@ Go
 -- 1. DỮ LIỆU BẢNG: DanhMuc (15 dòng)
 -- ========================================================
 INSERT INTO DanhMuc (MaDanhMuc, TenDanhMuc, MoTa, NgayTao) VALUES
-('DM001', N'Điện thoại', N'Các dòng điện thoại thông minh', '2026-01-10'),
-('DM002', N'Laptop', N'Máy tính xách tay làm việc, chơi game', '2026-01-11'),
-('DM003', N'Máy tính bảng', N'Máy tính bảng giải trí và công việc', '2026-01-12'),
-('DM004', N'Phụ kiện', N'Cáp sạc, tai nghe, ốp lưng', '2026-01-13'),
-('DM005', N'Đồng hồ', N'Đồng hồ thông minh và thời trang', '2026-01-14'),
-('DM006', N'Thiết bị mạng', N'Router Wifi, bộ kích sóng', '2026-01-15'),
-('DM007', N'Camera', N'Camera an ninh, hành trình', '2026-01-16'),
-('DM008', N'Âm thanh', N'Loa bluetooth, loa thanh', '2026-01-17'),
-('DM009', N'Gia dụng', N'Nồi cơm điện, máy hút bụi', '2026-01-18'),
-('DM010', N'Tivi', N'Smart Tivi 4K, OLED', '2026-01-19'),
-('DM011', N'Tủ lạnh', N'Tủ lạnh inverter tiết kiệm điện', '2026-01-20'),
-('DM012', N'Máy giặt', N'Máy giặt lồng ngang, lồng đứng', '2026-01-21'),
-('DM013', N'Điều hòa', N'Máy lạnh một chiều, hai chiều', '2026-01-22'),
-('DM014', N'Máy lọc nước', N'Máy lọc nước RO gia đình', '2026-01-23'),
-('DM015', N'Thiết bị văn phòng', N'Máy in, máy scan, máy chiếu', '2026-01-24');
+('DM001', N'Bút các loại', N'Bút bi, bút máy, bút ký', '2026-01-10'),
+('DM002', N'Giấy in & Phân trang', N'Giấy A4, A3, giấy note', '2026-01-11'),
+('DM003', N'Bìa hồ sơ', N'Bìa còng, bìa lá, bìa trình ký', '2026-01-12'),
+('DM004', N'Sổ tay & Tập', N'Sổ da, sổ lò xo, tập học sinh', '2026-01-13'),
+('DM005', N'Dụng cụ cắt dán', N'Kéo, dao rọc giấy, hồ dán, băng keo', '2026-01-14'),
+('DM006', N'Bấm kim & Kim bấm', N'Dụng cụ bấm kim các loại', '2026-01-15'),
+('DM007', N'Dấu mộc & Mực', N'Mực in, mực dấu, con dấu', '2026-01-16'),
+('DM008', N'Kẹp ghim & Kẹp bướm', N'Kẹp tài liệu các cỡ', '2026-01-17'),
+('DM009', N'Thiết bị máy tính', N'Chuột, bàn phím văn phòng', '2026-01-18'),
+('DM010', N'Máy tính bỏ túi', N'Máy tính Casio, Vinacal', '2026-01-19'),
+('DM011', N'Bảng văn phòng', N'Bảng từ trắng, bảng ghim', '2026-01-20'),
+('DM012', N'Khay kệ rổ mica', N'Khay đựng tài liệu để bàn', '2026-01-21'),
+('DM013', N'Bảng tên & Dây đeo', N'Thẻ nhân viên, dây đeo thẻ', '2026-01-22'),
+('DM014', N'Vệ sinh văn phòng', N'Xịt phòng, nước lau sàn', '2026-01-23'),
+('DM015', N'Quà tặng văn phòng', N'Quà tặng doanh nghiệp', '2026-01-24');
 
 -- ========================================================
 -- 2. DỮ LIỆU BẢNG: KhuyenMai (15 dòng)
@@ -260,22 +262,22 @@ SET MatKhau = '$2a$11$/8NjLZAiQlZSczFphButv.5yu4tp3LO5mFPCQUcxLmygJWfTcCYUO';
 -- ========================================================
 -- 5. DỮ LIỆU BẢNG: SanPham (15 dòng)
 -- ========================================================
-INSERT INTO SanPham (MaSanPham, TenSanPham, MaDanhMuc, GiaBan, GiaNhap, SoLuongTon, MoTa, TrangThai, NgayTao) VALUES
-('SP001', N'iPhone 15 Pro Max', 'DM001', 30000000, 26000000, 45, N'Điện thoại Apple cao cấp', N'Đang bán', '2026-01-15'),
-('SP002', N'Samsung Galaxy S24 Ultra', 'DM001', 28000000, 24000000, 30, N'Điện thoại flagship Samsung', N'Đang bán', '2026-01-16'),
-('SP003', N'MacBook Air M3', 'DM002', 26000000, 22000000, 15, N'Laptop Apple mỏng nhẹ', N'Đang bán', '2026-01-17'),
-('SP004', N'Dell XPS 13', 'DM002', 32000000, 28000000, 10, N'Laptop Dell cao cấp', N'Đang bán', '2026-01-18'),
-('SP005', N'iPad Pro M2', 'DM003', 20000000, 17500000, 20, N'Máy tính bảng cấu hình mạnh', N'Đang bán', '2026-01-19'),
-('SP006', N'Sạc nhanh Anker 65W', 'DM004', 600000, 350000, 120, N'Củ sạc nhiều cổng tiện lợi', N'Đang bán', '2026-01-20'),
-('SP007', N'Apple Watch Ultra 2', 'DM005', 21000000, 18500000, 12, N'Đồng hồ thông minh thể thao', N'Đang bán', '2026-01-21'),
-('SP008', N'Router Asus AX3000', 'DM006', 2500000, 1900000, 25, N'Thiết bị phát Wifi 6 chuẩn tốc độ', N'Đang bán', '2026-01-22'),
-('SP009', N'Camera Ezviz C6N', 'DM007', 700000, 450000, 80, N'Camera giám sát xoay 360 độ', N'Đang bán', '2026-01-23'),
-('SP010', N'Loa Marshall Acton III', 'DM008', 7500000, 6000000, 18, N'Loa bluetooth decor cực đẹp', N'Đang bán', '2026-01-24'),
-('SP011', N'Nồi cơm điện Cuckoo', 'DM009', 3500000, 2700000, 14, N'Nồi cơm cao tần Hàn Quốc', N'Đang bán', '2026-01-25'),
-('SP012', N'Smart Tivi LG 55 inch', 'DM010', 12000000, 9800000, 8, N'Tivi hiển thị sắc nét 4K', N'Đang bán', '2026-01-26'),
-('SP013', N'Tủ lạnh Panasonic 320L', 'DM011', 14500000, 12000000, 5, N'Tủ lạnh ngăn đá dưới hiện đại', N'Đang bán', '2026-01-27'),
-('SP014', N'Máy giặt Toshiba 9kg', 'DM012', 8000000, 6500000, 7, N'Máy giặt truyền động trực tiếp', N'Ngừng bán', '2026-01-28'),
-('SP015', N'Điều hòa Daikin 1 HP', 'DM013', 10500000, 8800000, 22, N'Điều hòa 1 chiều Inverter', N'Đang bán', '2026-01-29');
+INSERT INTO SanPham (MaSanPham, TenSanPham, MaDanhMuc, GiaBan, GiaNhap, SoLuongTon, MoTa, Anh, TrangThai, NgayTao) VALUES
+('SP001', N'Bút bi Thiên Long TL-027', 'DM001', 5000, 3500, 500, N'Bút bi phổ thông mực xanh', 'but-bi-xanh.webp', N'Đang bán', '2026-01-15'),
+('SP002', N'Bút ký cao cấp Parker', 'DM001', 550000, 450000, 30, N'Bút ký mạ vàng sang trọng', 'Bút ký mạ vàng sang trọng.jpg', N'Đang bán', '2026-01-16'),
+('SP003', N'Giấy in Double A A4 70gsm', 'DM002', 65000, 55000, 200, N'Giấy in cao cấp, thùng 5 gram', 'Giấy in cao cấp.jpg', N'Đang bán', '2026-01-17'),
+('SP004', N'Giấy note vàng 3x3', 'DM002', 12000, 8000, 150, N'Giấy nhớ dạ quang', 'giấy nhớ dạ quang.webp', N'Đang bán', '2026-01-18'),
+('SP005', N'Bìa còng Thiên Long 7F', 'DM003', 35000, 25000, 100, N'Bìa lưu trữ hồ sơ dày 7cm', 'Bìa lưu trữ hồ sơ dày 7cm.jpg', N'Đang bán', '2026-01-19'),
+('SP006', N'Bìa lá nhựa A4', 'DM003', 2000, 1200, 1000, N'Bìa trong mỏng đựng tài liệu', 'Bìa trong mỏng đựng tài liệu.jpg', N'Đang bán', '2026-01-20'),
+('SP007', N'Sổ da cao cấp A5', 'DM004', 120000, 85000, 50, N'Sổ bìa da thật dùng đi họp', 'Sổ bìa da thật dùng đi họp.jpg', N'Đang bán', '2026-01-21'),
+('SP008', N'Kéo cắt giấy văn phòng lớn', 'DM005', 45000, 30000, 80, N'Kéo thép không gỉ cỡ lớn', 'Kéo thép không gỉ cỡ lớn.png', N'Đang bán', '2026-01-22'),
+('SP009', N'Bấm kim Plus số 10', 'DM006', 25000, 18000, 120, N'Dụng cụ bấm kim cỡ nhỏ', 'Dụng cụ bấm kim cỡ nhỏ.jpg', N'Đang bán', '2026-01-23'),
+('SP010', N'Mực dấu đỏ Trodat', 'DM007', 30000, 22000, 60, N'Mực châm con dấu công ty', 'Mực châm con dấu công ty.jpg', N'Đang bán', '2026-01-24'),
+('SP011', N'Kẹp bướm 25mm (Hộp 12 cái)', 'DM008', 15000, 10000, 200, N'Kẹp tài liệu kim loại đen', 'Kẹp tài liệu kim loại đen.jpg', N'Đang bán', '2026-01-25'),
+('SP012', N'Chuột không dây Logitech M170', 'DM009', 180000, 130000, 40, N'Chuột văn phòng tiết kiệm pin', 'Chuột văn phòng tiết kiệm pin.png', N'Đang bán', '2026-01-26'),
+('SP013', N'Máy tính Casio FX-580VNX', 'DM010', 650000, 550000, 25, N'Máy tính khoa học chính hãng', 'Máy tính khoa học chính hãng.webp', N'Đang bán', '2026-01-27'),
+('SP014', N'Bảng từ trắng 1.2 x 2.4m', 'DM011', 1200000, 950000, 10, N'Bảng viết bút lông có từ tính', 'Bảng viết bút lông có từ tính.jpg', N'Đang bán', '2026-01-28'),
+('SP015', N'Khay mica rổ 3 tầng', 'DM012', 85000, 65000, 70, N'Kệ nhựa đựng tài liệu để bàn', 'Kệ nhựa đựng tài liệu để bàn.jpg', N'Đang bán', '2026-01-29');
 
 -- ========================================================
 -- 6. DỮ LIỆU BẢNG: LichSuTonKho (15 dòng)
@@ -340,22 +342,22 @@ INSERT INTO ChiTietPhieuNhap (MaChiTietPhieuNhap, MaPhieuNhap, MaSanPham, SoLuon
 -- ========================================================
 -- 9. DỮ LIỆU BẢNG: HoaDon (15 dòng)
 -- ========================================================
-INSERT INTO HoaDon (MaHoaDon, MaKhachHang, MaNguoiDung, MaKhuyenMai, TongTien, GiamGia, MaGiaoHang, HinhThucThanhToan, NgayTao) VALUES
-('HD001', 'KH001', 'ND002', 'KM001', 27000000, 3000000, 'GH001', N'Tiền mặt', '2026-02-02'),
-('HD002', 'KH002', 'ND002', NULL, 600000, 0, NULL, N'Thẻ ngân hàng', '2026-02-05'),
-('HD003', 'KH003', 'ND005', 'KM002', 24080000, 3920000, 'GH002', N'Chuyển khoản', '2026-02-14'),
-('HD004', 'KH005', 'ND005', 'KM003', 18400000, 1600000, 'GH003', N'Chuyển khoản', '2026-03-08'),
-('HD005', 'KH006', 'ND002', NULL, 7500000, 0, NULL, N'Tiền mặt', '2026-03-12'),
-('HD006', 'KH008', 'ND013', NULL, 1400000, 0, 'GH004', N'Ví điện tử', '2026-03-28'),
-('HD007', 'KH010', 'ND013', NULL, 32000000, 0, 'GH005', N'Thẻ ngân hàng', '2026-04-12'),
-('HD008', 'KH012', 'ND002', NULL, 10500000, 0, 'GH006', N'Chuyển khoản', '2026-04-30'),
-('HD009', 'KH014', 'ND005', 'KM004', 51000000, 9000000, 'GH007', N'Chuyển khoản', '2026-05-02'),
-('HD010', 'KH015', 'ND005', 'KM004', 21250000, 3750000, 'GH008', N'Tiền mặt', '2026-05-12'),
-('HD011', 'KH004', 'ND002', 'KM013', 24600000, 5400000, 'GH009', N'Thẻ ngân hàng', '2026-05-14'),
-('HD012', 'KH007', 'ND002', 'KM014', 420000, 280000, NULL, N'Tiền mặt', '2026-05-15'),
-('HD013', 'KH009', 'ND013', 'KM015', 7125000, 375000, NULL, N'Ví điện tử', '2026-05-18'),
-('HD014', 'KH011', 'ND013', NULL, 3500000, 0, 'GH010', N'Tiền mặt', '2026-05-18'),
-('HD015', 'KH013', 'ND005', NULL, 12000000, 0, 'GH011', N'Chuyển khoản', '2026-05-18');
+INSERT INTO HoaDon (MaHoaDon, MaKhachHang, MaNguoiDung, MaKhuyenMai, TongTien, GiamGia, MaGiaoHang, HinhThucThanhToan, TrangThai, NgayTao) VALUES
+('HD001', 'KH001', 'ND002', 'KM001', 27000000, 3000000, 'GH001', N'Tiền mặt', N'Đã giao', '2026-02-02'),
+('HD002', 'KH002', 'ND002', NULL, 600000, 0, NULL, N'Thẻ ngân hàng', N'Hoàn thành', '2026-02-05'),
+('HD003', 'KH003', 'ND005', 'KM002', 24080000, 3920000, 'GH002', N'Chuyển khoản', N'Đã giao', '2026-02-14'),
+('HD004', 'KH005', 'ND005', 'KM003', 18400000, 1600000, 'GH003', N'Chuyển khoản', N'Đã giao', '2026-03-08'),
+('HD005', 'KH006', 'ND002', NULL, 7500000, 0, NULL, N'Tiền mặt', N'Hủy', '2026-03-12'),
+('HD006', 'KH008', 'ND013', NULL, 1400000, 0, 'GH004', N'Ví điện tử', N'Đã giao', '2026-03-28'),
+('HD007', 'KH010', 'ND013', NULL, 32000000, 0, 'GH005', N'Thẻ ngân hàng', N'Đã giao', '2026-04-12'),
+('HD008', 'KH012', 'ND002', NULL, 10500000, 0, 'GH006', N'Chuyển khoản', N'Đã giao', '2026-04-30'),
+('HD009', 'KH014', 'ND005', 'KM004', 51000000, 9000000, 'GH007', N'Chuyển khoản', N'Đang giao', '2026-05-02'),
+('HD010', 'KH015', 'ND005', 'KM004', 21250000, 3750000, 'GH008', N'Tiền mặt', N'Đang giao', '2026-05-12'),
+('HD011', 'KH004', 'ND002', 'KM013', 24600000, 5400000, 'GH009', N'Thẻ ngân hàng', N'Chờ xử lý', '2026-05-14'),
+('HD012', 'KH007', 'ND002', 'KM014', 420000, 280000, NULL, N'Tiền mặt', N'Hoàn thành', '2026-05-15'),
+('HD013', 'KH009', 'ND013', 'KM015', 7125000, 375000, NULL, N'Ví điện tử', N'Chờ xử lý', '2026-05-18'),
+('HD014', 'KH011', 'ND013', NULL, 3500000, 0, 'GH010', N'Tiền mặt', N'Đang giao', '2026-05-18'),
+('HD015', 'KH013', 'ND005', NULL, 12000000, 0, 'GH011', N'Chuyển khoản', N'Chờ xử lý', '2026-05-18');
 
 -- ========================================================
 -- 10. DỮ LIỆU BẢNG: ChiTietHoaDon (15 dòng)
@@ -401,21 +403,21 @@ INSERT INTO GiaoHang (MaGiaoHang, MaHoaDon, DiaChiGiao, TrangThaiGiao, NgayGiao)
 -- 12. DỮ LIỆU BẢNG: TraHang (15 dòng)
 -- ========================================================
 INSERT INTO TraHang (MaTraHang, MaHoaDon, NgayTra, LyDo, TongTienHoan, MaNguoiDung) VALUES
-('TH001', 'HD001', '2026-02-04', N'Lỗi màn hình sọc xanh', 27000000, 'ND008'),
+('TH001', 'HD001', '2026-02-04', N'Bút bi bị tắc mực', 27000000, 'ND008'),
 ('TH002', 'HD002', '2026-02-06', N'Khách đổi ý không muốn mua nữa', 600000, 'ND008'),
-('TH003', 'HD005', '2026-03-13', N'Loa bị móp vỏ khi bóc hộp', 7500000, 'ND008'),
-('TH004', 'HD007', '2026-04-15', N'Laptop không lên nguồn', 32000000, 'ND008'),
-('TH005', 'HD012', '2026-05-16', N'Sạc không đúng công suất quảng cáo', 420000, 'ND008'),
-('TH006', 'HD003', '2026-02-18', N'Giao sai màu sắc máy', 24080000, 'ND008'),
-('TH007', 'HD004', '2026-03-10', N'Máy tính bảng bị ám màn', 18400000, 'ND008'),
-('TH008', 'HD006', '2026-04-01', N'Khách hàng không hài lòng chất lượng camera', 1400000, 'ND008'),
-('TH009', 'HD008', '2026-05-02', N'Điều hòa làm lạnh kém', 10500000, 'ND008'),
-('TH010', 'HD009', '2026-05-05', N'Hàng bị va đập móp méo lúc giao', 25500000, 'ND008'),
-('TH011', 'HD010', '2026-05-15', N'Khách chê máy thô, đổi mẫu', 21250000, 'ND008'),
+('TH003', 'HD005', '2026-03-13', N'Giấy in bị ẩm khi giao', 7500000, 'ND008'),
+('TH004', 'HD007', '2026-04-15', N'Bìa còng bị gãy chốt', 32000000, 'ND008'),
+('TH005', 'HD012', '2026-05-16', N'Kéo cắt giấy bị rỉ sét', 420000, 'ND008'),
+('TH006', 'HD003', '2026-02-18', N'Giao sai màu bìa hồ sơ', 24080000, 'ND008'),
+('TH007', 'HD004', '2026-03-10', N'Bảng từ trắng bị xước bề mặt', 18400000, 'ND008'),
+('TH008', 'HD006', '2026-04-01', N'Khách hàng không hài lòng chất lượng giấy note', 1400000, 'ND008'),
+('TH009', 'HD008', '2026-05-02', N'Máy tính Casio bấm không ăn', 10500000, 'ND008'),
+('TH010', 'HD009', '2026-05-05', N'Sổ da bị rách mép lúc giao', 25500000, 'ND008'),
+('TH011', 'HD010', '2026-05-15', N'Khách chê mẫu mã khay rổ mica', 21250000, 'ND008'),
 ('TH012', 'HD011', '2026-05-16', N'Hủy đơn do chờ vận chuyển lâu', 24600000, 'ND008'),
-('TH013', 'HD013', '2026-05-18', N'Loa rè nứt vỏ', 7125000, 'ND008'),
-('TH014', 'HD014', '2026-05-19', N'Nồi cơm bị trầy xước lòng nồi', 3500000, 'ND008'),
-('TH015', 'HD015', '2026-05-19', N'Tivi bị lỗi kẻ sọc panel', 12000000, 'ND008');
+('TH013', 'HD013', '2026-05-18', N'Chuột máy tính bị đơ trượt', 7125000, 'ND008'),
+('TH014', 'HD014', '2026-05-19', N'Mực dấu bị khô hỏng', 3500000, 'ND008'),
+('TH015', 'HD015', '2026-05-19', N'Bấm kim bị kẹt lò xo', 12000000, 'ND008');
 
 -- ========================================================
 -- 13. DỮ LIỆU BẢNG: ChiTietTraHang (15 dòng)
@@ -441,21 +443,21 @@ INSERT INTO ChiTietTraHang (MaChiTietTra, MaTraHang, MaSanPham, SoLuong, TienHoa
 -- 14. DỮ LIỆU BẢNG: DoiHang (15 dòng)
 -- ========================================================
 INSERT INTO DoiHang (MaDoiHang, MaHoaDon, NgayDoi, MaNguoiDung, LyDo) VALUES
-('DH001', 'HD001', '2026-02-05', 'ND008', N'Khách muốn đổi sang màu titan tự nhiên'),
-('DH002', 'HD003', '2026-02-15', 'ND008', N'Lỗi camera mờ đổi cây mới tương đương'),
-('DH003', 'HD004', '2026-03-10', 'ND008', N'Màn hình có điểm chết (Dead pixel)'),
-('DH004', 'HD005', '2026-03-14', 'ND008', N'Đổi sang mẫu loa to hơn cùng hãng'),
-('DH005', 'HD007', '2026-04-16', 'ND008', N'Bàn phím chập chờn không gõ được chữ'),
-('DH006', 'HD006', '2026-04-02', 'ND008', N'Đổi loại camera có màu ban đêm'),
-('DH007', 'HD008', '2026-05-02', 'ND008', N'Đổi công suất máy lạnh lớn hơn'),
-('DH008', 'HD009', '2026-05-05', 'ND008', N'Vỏ hộp máy móp méo nặng cần đổi nguyên seal'),
-('DH009', 'HD010', '2026-05-14', 'ND008', N'Đổi lên dòng Pro cấu hình cao hơn'),
-('DH010', 'HD011', '2026-05-16', 'ND008', N'Máy nóng bất thường khi sạc'),
-('DH011', 'HD012', '2026-05-17', 'ND008', N'Lỗi chân cắm sạc bị lỏng'),
-('DH012', 'HD013', '2026-05-18', 'ND008', N'Bluetooth kết nối chập chờn không ổn định'),
-('DH013', 'HD014', '2026-05-19', 'ND008', N'Nồi không nhận điện cảm ứng'),
-('DH014', 'HD015', '2026-05-19', 'ND008', N'Màn hình tivi loang màu góc trái'),
-('DH015', 'HD002', '2026-02-07', 'ND008', N'Củ sạc bị nứt vỏ nhựa cách điện');
+('DH001', 'HD001', '2026-02-05', 'ND008', N'Khách muốn đổi sang bút màu đen'),
+('DH002', 'HD003', '2026-02-15', 'ND008', N'Lỗi tắc mực đổi cây mới tương đương'),
+('DH003', 'HD004', '2026-03-10', 'ND008', N'Giấy in có lấm chấm mốc'),
+('DH004', 'HD005', '2026-03-14', 'ND008', N'Đổi sang mẫu bìa còng dày hơn'),
+('DH005', 'HD007', '2026-04-16', 'ND008', N'Bấm kim ghim bị kẹt chốt'),
+('DH006', 'HD006', '2026-04-02', 'ND008', N'Đổi loại khay rổ sang mica dẻo'),
+('DH007', 'HD008', '2026-05-02', 'ND008', N'Đổi dao rọc giấy cán chống trượt'),
+('DH008', 'HD009', '2026-05-05', 'ND008', N'Hộp giấy móp méo nặng cần đổi nguyên vẹn'),
+('DH009', 'HD010', '2026-05-14', 'ND008', N'Đổi sổ da A5 sang loại có khóa số'),
+('DH010', 'HD011', '2026-05-16', 'ND008', N'Mực dấu bị chảy lem nắp'),
+('DH011', 'HD012', '2026-05-17', 'ND008', N'Lỗi chuột không dây mất tín hiệu USB'),
+('DH012', 'HD013', '2026-05-18', 'ND008', N'Kẹp bướm bị móp méo gãy chốt'),
+('DH013', 'HD014', '2026-05-19', 'ND008', N'Máy tính casio liệt phím màn hình'),
+('DH014', 'HD015', '2026-05-19', 'ND008', N'Bảng từ bong tróc góc bo nhôm'),
+('DH015', 'HD002', '2026-02-07', 'ND008', N'Bìa lá nhựa dán mép bị lỗi hở keo');
 
 -- ========================================================
 -- 15. DỮ LIỆU BẢNG: ChiTietDoiHang (15 dòng)

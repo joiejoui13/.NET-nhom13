@@ -19,6 +19,14 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         {
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesThamChieu1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesThamChieu2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesTruoc1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesTruoc2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesSau1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesSau2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesTrangThai1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesTrangThai2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -50,12 +58,20 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblInputTitle = new Label();
             lblMaLichSu = new Label();
             txtMaLichSu = new Guna.UI2.WinForms.Guna2TextBox();
+            lblMaThamChieu = new Label();
+            txtMaThamChieu = new Guna.UI2.WinForms.Guna2TextBox();
             lblSanPham = new Label();
             cboSanPham = new Guna.UI2.WinForms.Guna2ComboBox();
             lblSoLuongThayDoi = new Label();
             txtSoLuongThayDoi = new Guna.UI2.WinForms.Guna2TextBox();
             lblLoaiThayDoi = new Label();
             cboLoaiThayDoi = new Guna.UI2.WinForms.Guna2ComboBox();
+            lblSoLuongTruoc = new Label();
+            txtSoLuongTruoc = new Guna.UI2.WinForms.Guna2TextBox();
+            lblSoLuongSau = new Label();
+            txtSoLuongSau = new Guna.UI2.WinForms.Guna2TextBox();
+            lblTrangThai = new Label();
+            cboTrangThai = new Guna.UI2.WinForms.Guna2ComboBox();
             btnAdd = new Guna.UI2.WinForms.Guna2Button();
             btnEdit = new Guna.UI2.WinForms.Guna2Button();
             btnDelete = new Guna.UI2.WinForms.Guna2Button();
@@ -70,7 +86,11 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             colMaSanPham = new DataGridViewTextBoxColumn();
             colTenSanPham = new DataGridViewTextBoxColumn();
             colSoLuongThayDoi = new DataGridViewTextBoxColumn();
+            colSoLuongTruoc = new DataGridViewTextBoxColumn();
+            colSoLuongSau = new DataGridViewTextBoxColumn();
             colLoai = new DataGridViewTextBoxColumn();
+            colMaThamChieu = new DataGridViewTextBoxColumn();
+            colTrangThai = new DataGridViewTextBoxColumn();
             colNgay = new DataGridViewTextBoxColumn();
             pnlInputCard.SuspendLayout();
             pnlGridCard.SuspendLayout();
@@ -85,12 +105,20 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             pnlInputCard.Controls.Add(lblInputTitle);
             pnlInputCard.Controls.Add(lblMaLichSu);
             pnlInputCard.Controls.Add(txtMaLichSu);
+            pnlInputCard.Controls.Add(lblMaThamChieu);
+            pnlInputCard.Controls.Add(txtMaThamChieu);
             pnlInputCard.Controls.Add(lblSanPham);
             pnlInputCard.Controls.Add(cboSanPham);
             pnlInputCard.Controls.Add(lblSoLuongThayDoi);
             pnlInputCard.Controls.Add(txtSoLuongThayDoi);
             pnlInputCard.Controls.Add(lblLoaiThayDoi);
             pnlInputCard.Controls.Add(cboLoaiThayDoi);
+            pnlInputCard.Controls.Add(lblSoLuongTruoc);
+            pnlInputCard.Controls.Add(txtSoLuongTruoc);
+            pnlInputCard.Controls.Add(lblSoLuongSau);
+            pnlInputCard.Controls.Add(txtSoLuongSau);
+            pnlInputCard.Controls.Add(lblTrangThai);
+            pnlInputCard.Controls.Add(cboTrangThai);
             pnlInputCard.Controls.Add(btnAdd);
             pnlInputCard.Controls.Add(btnEdit);
             pnlInputCard.Controls.Add(btnDelete);
@@ -115,12 +143,13 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblInputTitle.TabIndex = 0;
             lblInputTitle.Text = "ĐIỀU CHỈNH KHO HÀNG";
             // 
+            // 
             // lblMaLichSu
             // 
             lblMaLichSu.AutoSize = true;
             lblMaLichSu.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblMaLichSu.ForeColor = Color.FromArgb(64, 64, 64);
-            lblMaLichSu.Location = new Point(15, 48);
+            lblMaLichSu.Location = new Point(15, 35);
             lblMaLichSu.Name = "lblMaLichSu";
             lblMaLichSu.Size = new Size(65, 15);
             lblMaLichSu.TabIndex = 1;
@@ -134,20 +163,47 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtMaLichSu.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtMaLichSu.Font = new Font("Segoe UI", 9F);
             txtMaLichSu.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtMaLichSu.Location = new Point(15, 68);
+            txtMaLichSu.Location = new Point(15, 55);
             txtMaLichSu.Name = "txtMaLichSu";
-            txtMaLichSu.PlaceholderText = "Nhập mã lịch sử...";
+            txtMaLichSu.PlaceholderText = "Mã lịch sử...";
             txtMaLichSu.SelectedText = "";
             txtMaLichSu.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            txtMaLichSu.Size = new Size(290, 36);
+            txtMaLichSu.Size = new Size(135, 30);
             txtMaLichSu.TabIndex = 1;
+            // 
+            // lblMaThamChieu
+            // 
+            lblMaThamChieu.AutoSize = true;
+            lblMaThamChieu.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblMaThamChieu.ForeColor = Color.FromArgb(64, 64, 64);
+            lblMaThamChieu.Location = new Point(170, 35);
+            lblMaThamChieu.Name = "lblMaThamChieu";
+            lblMaThamChieu.Size = new Size(88, 15);
+            lblMaThamChieu.TabIndex = 11;
+            lblMaThamChieu.Text = "Mã tham chiếu:";
+            // 
+            // txtMaThamChieu
+            // 
+            txtMaThamChieu.BorderRadius = 5;
+            txtMaThamChieu.CustomizableEdges = customizableEdgesThamChieu1;
+            txtMaThamChieu.DefaultText = "";
+            txtMaThamChieu.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            txtMaThamChieu.Font = new Font("Segoe UI", 9F);
+            txtMaThamChieu.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtMaThamChieu.Location = new Point(170, 55);
+            txtMaThamChieu.Name = "txtMaThamChieu";
+            txtMaThamChieu.PlaceholderText = "Mã TC...";
+            txtMaThamChieu.SelectedText = "";
+            txtMaThamChieu.ShadowDecoration.CustomizableEdges = customizableEdgesThamChieu2;
+            txtMaThamChieu.Size = new Size(135, 30);
+            txtMaThamChieu.TabIndex = 12;
             // 
             // lblSanPham
             // 
             lblSanPham.AutoSize = true;
             lblSanPham.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblSanPham.ForeColor = Color.FromArgb(64, 64, 64);
-            lblSanPham.Location = new Point(15, 123);
+            lblSanPham.Location = new Point(15, 90);
             lblSanPham.Name = "lblSanPham";
             lblSanPham.Size = new Size(64, 15);
             lblSanPham.TabIndex = 2;
@@ -164,11 +220,11 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             cboSanPham.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             cboSanPham.Font = new Font("Segoe UI", 9F);
             cboSanPham.ForeColor = Color.FromArgb(68, 88, 112);
-            cboSanPham.ItemHeight = 30;
-            cboSanPham.Location = new Point(15, 143);
+            cboSanPham.ItemHeight = 24;
+            cboSanPham.Location = new Point(15, 110);
             cboSanPham.Name = "cboSanPham";
             cboSanPham.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            cboSanPham.Size = new Size(290, 36);
+            cboSanPham.Size = new Size(290, 30);
             cboSanPham.TabIndex = 2;
             // 
             // lblSoLuongThayDoi
@@ -176,11 +232,11 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblSoLuongThayDoi.AutoSize = true;
             lblSoLuongThayDoi.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblSoLuongThayDoi.ForeColor = Color.FromArgb(64, 64, 64);
-            lblSoLuongThayDoi.Location = new Point(15, 198);
+            lblSoLuongThayDoi.Location = new Point(15, 145);
             lblSoLuongThayDoi.Name = "lblSoLuongThayDoi";
-            lblSoLuongThayDoi.Size = new Size(108, 15);
+            lblSoLuongThayDoi.Size = new Size(58, 15);
             lblSoLuongThayDoi.TabIndex = 3;
-            lblSoLuongThayDoi.Text = "Số lượng thay đổi:";
+            lblSoLuongThayDoi.Text = "Thay đổi:";
             // 
             // txtSoLuongThayDoi
             // 
@@ -190,12 +246,12 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtSoLuongThayDoi.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtSoLuongThayDoi.Font = new Font("Segoe UI", 9F);
             txtSoLuongThayDoi.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSoLuongThayDoi.Location = new Point(15, 218);
+            txtSoLuongThayDoi.Location = new Point(15, 165);
             txtSoLuongThayDoi.Name = "txtSoLuongThayDoi";
-            txtSoLuongThayDoi.PlaceholderText = "Nhập số lượng (+/-)...";
+            txtSoLuongThayDoi.PlaceholderText = "Thay đổi...";
             txtSoLuongThayDoi.SelectedText = "";
             txtSoLuongThayDoi.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            txtSoLuongThayDoi.Size = new Size(290, 36);
+            txtSoLuongThayDoi.Size = new Size(135, 30);
             txtSoLuongThayDoi.TabIndex = 3;
             // 
             // lblLoaiThayDoi
@@ -203,7 +259,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblLoaiThayDoi.AutoSize = true;
             lblLoaiThayDoi.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblLoaiThayDoi.ForeColor = Color.FromArgb(64, 64, 64);
-            lblLoaiThayDoi.Location = new Point(15, 273);
+            lblLoaiThayDoi.Location = new Point(170, 145);
             lblLoaiThayDoi.Name = "lblLoaiThayDoi";
             lblLoaiThayDoi.Size = new Size(80, 15);
             lblLoaiThayDoi.TabIndex = 4;
@@ -220,13 +276,97 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             cboLoaiThayDoi.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             cboLoaiThayDoi.Font = new Font("Segoe UI", 9F);
             cboLoaiThayDoi.ForeColor = Color.FromArgb(68, 88, 112);
-            cboLoaiThayDoi.ItemHeight = 30;
+            cboLoaiThayDoi.ItemHeight = 24;
             cboLoaiThayDoi.Items.AddRange(new object[] { "Nhập kho", "Xuất kho bán", "Xuất hủy" });
-            cboLoaiThayDoi.Location = new Point(15, 293);
+            cboLoaiThayDoi.Location = new Point(170, 165);
             cboLoaiThayDoi.Name = "cboLoaiThayDoi";
             cboLoaiThayDoi.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            cboLoaiThayDoi.Size = new Size(290, 36);
+            cboLoaiThayDoi.Size = new Size(135, 30);
             cboLoaiThayDoi.TabIndex = 4;
+            // 
+            // lblSoLuongTruoc
+            // 
+            lblSoLuongTruoc.AutoSize = true;
+            lblSoLuongTruoc.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblSoLuongTruoc.ForeColor = Color.FromArgb(64, 64, 64);
+            lblSoLuongTruoc.Location = new Point(15, 200);
+            lblSoLuongTruoc.Name = "lblSoLuongTruoc";
+            lblSoLuongTruoc.Size = new Size(90, 15);
+            lblSoLuongTruoc.TabIndex = 13;
+            lblSoLuongTruoc.Text = "Số lượng trước:";
+            // 
+            // txtSoLuongTruoc
+            // 
+            txtSoLuongTruoc.BorderRadius = 5;
+            txtSoLuongTruoc.CustomizableEdges = customizableEdgesTruoc1;
+            txtSoLuongTruoc.DefaultText = "";
+            txtSoLuongTruoc.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            txtSoLuongTruoc.Font = new Font("Segoe UI", 9F);
+            txtSoLuongTruoc.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtSoLuongTruoc.Location = new Point(15, 220);
+            txtSoLuongTruoc.Name = "txtSoLuongTruoc";
+            txtSoLuongTruoc.PlaceholderText = "Trước...";
+            txtSoLuongTruoc.SelectedText = "";
+            txtSoLuongTruoc.ShadowDecoration.CustomizableEdges = customizableEdgesTruoc2;
+            txtSoLuongTruoc.Size = new Size(135, 30);
+            txtSoLuongTruoc.TabIndex = 14;
+            // 
+            // lblSoLuongSau
+            // 
+            lblSoLuongSau.AutoSize = true;
+            lblSoLuongSau.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblSoLuongSau.ForeColor = Color.FromArgb(64, 64, 64);
+            lblSoLuongSau.Location = new Point(170, 200);
+            lblSoLuongSau.Name = "lblSoLuongSau";
+            lblSoLuongSau.Size = new Size(82, 15);
+            lblSoLuongSau.TabIndex = 15;
+            lblSoLuongSau.Text = "Số lượng sau:";
+            // 
+            // txtSoLuongSau
+            // 
+            txtSoLuongSau.BorderRadius = 5;
+            txtSoLuongSau.CustomizableEdges = customizableEdgesSau1;
+            txtSoLuongSau.DefaultText = "";
+            txtSoLuongSau.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            txtSoLuongSau.Font = new Font("Segoe UI", 9F);
+            txtSoLuongSau.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtSoLuongSau.Location = new Point(170, 220);
+            txtSoLuongSau.Name = "txtSoLuongSau";
+            txtSoLuongSau.PlaceholderText = "Sau...";
+            txtSoLuongSau.SelectedText = "";
+            txtSoLuongSau.ShadowDecoration.CustomizableEdges = customizableEdgesSau2;
+            txtSoLuongSau.Size = new Size(135, 30);
+            txtSoLuongSau.TabIndex = 16;
+            // 
+            // lblTrangThai
+            // 
+            lblTrangThai.AutoSize = true;
+            lblTrangThai.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblTrangThai.ForeColor = Color.FromArgb(64, 64, 64);
+            lblTrangThai.Location = new Point(15, 255);
+            lblTrangThai.Name = "lblTrangThai";
+            lblTrangThai.Size = new Size(68, 15);
+            lblTrangThai.TabIndex = 17;
+            lblTrangThai.Text = "Trạng thái:";
+            // 
+            // cboTrangThai
+            // 
+            cboTrangThai.BackColor = Color.Transparent;
+            cboTrangThai.BorderRadius = 5;
+            cboTrangThai.CustomizableEdges = customizableEdgesTrangThai1;
+            cboTrangThai.DrawMode = DrawMode.OwnerDrawFixed;
+            cboTrangThai.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboTrangThai.FocusedColor = Color.FromArgb(0, 126, 249);
+            cboTrangThai.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            cboTrangThai.Font = new Font("Segoe UI", 9F);
+            cboTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
+            cboTrangThai.ItemHeight = 24;
+            cboTrangThai.Items.AddRange(new object[] { "Đang hoạt động", "Đã khóa" });
+            cboTrangThai.Location = new Point(15, 275);
+            cboTrangThai.Name = "cboTrangThai";
+            cboTrangThai.ShadowDecoration.CustomizableEdges = customizableEdgesTrangThai2;
+            cboTrangThai.Size = new Size(290, 30);
+            cboTrangThai.TabIndex = 18;
             // 
             // btnAdd
             // 
@@ -383,7 +523,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgvLichSu.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvLichSu.ColumnHeadersHeight = 35;
-            dgvLichSu.Columns.AddRange(new DataGridViewColumn[] { colMaLichSu, colMaSanPham, colTenSanPham, colSoLuongThayDoi, colLoai, colNgay });
+            dgvLichSu.Columns.AddRange(new DataGridViewColumn[] { colMaLichSu, colMaSanPham, colTenSanPham, colSoLuongThayDoi, colSoLuongTruoc, colSoLuongSau, colLoai, colMaThamChieu, colTrangThai, colNgay });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
@@ -447,11 +587,35 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             colSoLuongThayDoi.Name = "colSoLuongThayDoi";
             colSoLuongThayDoi.ReadOnly = true;
             // 
+            // colSoLuongTruoc
+            // 
+            colSoLuongTruoc.HeaderText = "Trước";
+            colSoLuongTruoc.Name = "colSoLuongTruoc";
+            colSoLuongTruoc.ReadOnly = true;
+            // 
+            // colSoLuongSau
+            // 
+            colSoLuongSau.HeaderText = "Sau";
+            colSoLuongSau.Name = "colSoLuongSau";
+            colSoLuongSau.ReadOnly = true;
+            // 
             // colLoai
             // 
             colLoai.HeaderText = "Loại";
             colLoai.Name = "colLoai";
             colLoai.ReadOnly = true;
+            // 
+            // colMaThamChieu
+            // 
+            colMaThamChieu.HeaderText = "Tham Chiếu";
+            colMaThamChieu.Name = "colMaThamChieu";
+            colMaThamChieu.ReadOnly = true;
+            // 
+            // colTrangThai
+            // 
+            colTrangThai.HeaderText = "Trạng Thế";
+            colTrangThai.Name = "colTrangThai";
+            colTrangThai.ReadOnly = true;
             // 
             // colNgay
             // 
@@ -485,12 +649,20 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         private System.Windows.Forms.Label lblInputTitle;
         private System.Windows.Forms.Label lblMaLichSu;
         private Guna.UI2.WinForms.Guna2TextBox txtMaLichSu;
+        private System.Windows.Forms.Label lblMaThamChieu;
+        private Guna.UI2.WinForms.Guna2TextBox txtMaThamChieu;
         private System.Windows.Forms.Label lblSanPham;
         private Guna.UI2.WinForms.Guna2ComboBox cboSanPham;
         private System.Windows.Forms.Label lblSoLuongThayDoi;
         private Guna.UI2.WinForms.Guna2TextBox txtSoLuongThayDoi;
         private System.Windows.Forms.Label lblLoaiThayDoi;
         private Guna.UI2.WinForms.Guna2ComboBox cboLoaiThayDoi;
+        private System.Windows.Forms.Label lblSoLuongTruoc;
+        private Guna.UI2.WinForms.Guna2TextBox txtSoLuongTruoc;
+        private System.Windows.Forms.Label lblSoLuongSau;
+        private Guna.UI2.WinForms.Guna2TextBox txtSoLuongSau;
+        private System.Windows.Forms.Label lblTrangThai;
+        private Guna.UI2.WinForms.Guna2ComboBox cboTrangThai;
 
         private Guna.UI2.WinForms.Guna2Button btnAdd;
         private Guna.UI2.WinForms.Guna2Button btnEdit;
@@ -506,7 +678,11 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         private System.Windows.Forms.DataGridViewTextBoxColumn colMaSanPham;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTenSanPham;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSoLuongThayDoi;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSoLuongTruoc;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSoLuongSau;
         private System.Windows.Forms.DataGridViewTextBoxColumn colLoai;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMaThamChieu;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTrangThai;
         private System.Windows.Forms.DataGridViewTextBoxColumn colNgay;
         private Label lblGridTitle;
     }

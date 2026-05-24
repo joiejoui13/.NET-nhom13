@@ -19,6 +19,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesLoaiGiaoDich1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesLoaiGiaoDich2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -72,6 +74,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colCartDonGia = new DataGridViewTextBoxColumn();
             colCartThanhTien = new DataGridViewTextBoxColumn();
             colCartXoa = new DataGridViewButtonColumn();
+            lblLoaiGiaoDich = new Label();
+            cboLoaiGiaoDich = new Guna.UI2.WinForms.Guna2ComboBox();
             lblKhachHang = new Label();
             cboKhachHang = new Guna.UI2.WinForms.Guna2ComboBox();
             lblKhuyenMai = new Label();
@@ -389,6 +393,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlCart.BackColor = Color.White;
             pnlCart.BorderRadius = 10;
             pnlCart.Controls.Add(dgvCart);
+            pnlCart.Controls.Add(lblLoaiGiaoDich);
+            pnlCart.Controls.Add(cboLoaiGiaoDich);
             pnlCart.Controls.Add(lblKhachHang);
             pnlCart.Controls.Add(cboKhachHang);
             pnlCart.Controls.Add(lblKhuyenMai);
@@ -438,7 +444,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvCart.Name = "dgvCart";
             dgvCart.RowHeadersVisible = false;
             dgvCart.RowTemplate.Height = 28;
-            dgvCart.Size = new Size(330, 205);
+            dgvCart.Size = new Size(330, 155);
             dgvCart.TabIndex = 0;
             dgvCart.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvCart.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -504,13 +510,46 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colCartXoa.DefaultCellStyle.ForeColor = Color.Red;
             colCartXoa.DefaultCellStyle.SelectionForeColor = Color.Red;
             // 
+            // 
+            // lblLoaiGiaoDich
+            // 
+            lblLoaiGiaoDich.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblLoaiGiaoDich.AutoSize = true;
+            lblLoaiGiaoDich.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
+            lblLoaiGiaoDich.ForeColor = Color.FromArgb(64, 64, 64);
+            lblLoaiGiaoDich.Location = new Point(15, 180);
+            lblLoaiGiaoDich.Name = "lblLoaiGiaoDich";
+            lblLoaiGiaoDich.Size = new Size(88, 15);
+            lblLoaiGiaoDich.TabIndex = 10;
+            lblLoaiGiaoDich.Text = "Loại Giao Dịch:";
+            // 
+            // cboLoaiGiaoDich
+            // 
+            cboLoaiGiaoDich.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            cboLoaiGiaoDich.BackColor = Color.Transparent;
+            cboLoaiGiaoDich.BorderRadius = 5;
+            cboLoaiGiaoDich.CustomizableEdges = customizableEdgesLoaiGiaoDich1;
+            cboLoaiGiaoDich.DrawMode = DrawMode.OwnerDrawFixed;
+            cboLoaiGiaoDich.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboLoaiGiaoDich.FocusedColor = Color.Empty;
+            cboLoaiGiaoDich.Font = new Font("Segoe UI", 9F);
+            cboLoaiGiaoDich.ForeColor = Color.FromArgb(68, 88, 112);
+            cboLoaiGiaoDich.ItemHeight = 24;
+            cboLoaiGiaoDich.Items.AddRange(new object[] { "Đơn bán hàng (Hóa đơn)", "Đơn đổi trả hàng (Phiếu trả)" });
+            cboLoaiGiaoDich.Location = new Point(15, 198);
+            cboLoaiGiaoDich.Name = "cboLoaiGiaoDich";
+            cboLoaiGiaoDich.ShadowDecoration.CustomizableEdges = customizableEdgesLoaiGiaoDich2;
+            cboLoaiGiaoDich.Size = new Size(330, 30);
+            cboLoaiGiaoDich.TabIndex = 0;
+            cboLoaiGiaoDich.SelectedIndexChanged += cboLoaiGiaoDich_SelectedIndexChanged;
+            // 
             // lblKhachHang
             // 
             lblKhachHang.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             lblKhachHang.AutoSize = true;
             lblKhachHang.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
             lblKhachHang.ForeColor = Color.FromArgb(64, 64, 64);
-            lblKhachHang.Location = new Point(15, 230);
+            lblKhachHang.Location = new Point(15, 233);
             lblKhachHang.Name = "lblKhachHang";
             lblKhachHang.Size = new Size(76, 15);
             lblKhachHang.TabIndex = 1;
@@ -528,7 +567,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboKhachHang.Font = new Font("Segoe UI", 9F);
             cboKhachHang.ForeColor = Color.FromArgb(68, 88, 112);
             cboKhachHang.ItemHeight = 24;
-            cboKhachHang.Location = new Point(15, 248);
+            cboKhachHang.Location = new Point(15, 251);
             cboKhachHang.Name = "cboKhachHang";
             cboKhachHang.ShadowDecoration.CustomizableEdges = customizableEdges10;
             cboKhachHang.Size = new Size(330, 30);
@@ -540,7 +579,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblKhuyenMai.AutoSize = true;
             lblKhuyenMai.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
             lblKhuyenMai.ForeColor = Color.FromArgb(64, 64, 64);
-            lblKhuyenMai.Location = new Point(15, 283);
+            lblKhuyenMai.Location = new Point(15, 286);
             lblKhuyenMai.Name = "lblKhuyenMai";
             lblKhuyenMai.Size = new Size(75, 15);
             lblKhuyenMai.TabIndex = 2;
@@ -558,7 +597,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboKhuyenMai.Font = new Font("Segoe UI", 9F);
             cboKhuyenMai.ForeColor = Color.FromArgb(68, 88, 112);
             cboKhuyenMai.ItemHeight = 24;
-            cboKhuyenMai.Location = new Point(15, 301);
+            cboKhuyenMai.Location = new Point(15, 304);
             cboKhuyenMai.Name = "cboKhuyenMai";
             cboKhuyenMai.ShadowDecoration.CustomizableEdges = customizableEdges12;
             cboKhuyenMai.Size = new Size(330, 30);
@@ -571,7 +610,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblHinhThucThanhToan.AutoSize = true;
             lblHinhThucThanhToan.Font = new Font("Segoe UI", 8.5F, FontStyle.Bold);
             lblHinhThucThanhToan.ForeColor = Color.FromArgb(64, 64, 64);
-            lblHinhThucThanhToan.Location = new Point(15, 336);
+            lblHinhThucThanhToan.Location = new Point(15, 339);
             lblHinhThucThanhToan.Name = "lblHinhThucThanhToan";
             lblHinhThucThanhToan.Size = new Size(133, 15);
             lblHinhThucThanhToan.TabIndex = 3;
@@ -590,7 +629,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboHinhThucThanhToan.ForeColor = Color.FromArgb(68, 88, 112);
             cboHinhThucThanhToan.ItemHeight = 24;
             cboHinhThucThanhToan.Items.AddRange(new object[] { "Tiền mặt", "Chuyển khoản", "Thẻ ngân hàng", "Ví điện tử" });
-            cboHinhThucThanhToan.Location = new Point(15, 354);
+            cboHinhThucThanhToan.Location = new Point(15, 357);
             cboHinhThucThanhToan.Name = "cboHinhThucThanhToan";
             cboHinhThucThanhToan.ShadowDecoration.CustomizableEdges = customizableEdges14;
             cboHinhThucThanhToan.Size = new Size(330, 30);
@@ -601,7 +640,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblSubtotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lblSubtotal.Font = new Font("Segoe UI", 9.5F);
             lblSubtotal.ForeColor = Color.FromArgb(64, 64, 64);
-            lblSubtotal.Location = new Point(15, 395);
+            lblSubtotal.Location = new Point(15, 400);
             lblSubtotal.Name = "lblSubtotal";
             lblSubtotal.Size = new Size(330, 20);
             lblSubtotal.TabIndex = 4;
@@ -612,7 +651,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblDiscount.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lblDiscount.Font = new Font("Segoe UI", 9.5F);
             lblDiscount.ForeColor = Color.FromArgb(64, 64, 64);
-            lblDiscount.Location = new Point(15, 415);
+            lblDiscount.Location = new Point(15, 420);
             lblDiscount.Name = "lblDiscount";
             lblDiscount.Size = new Size(330, 20);
             lblDiscount.TabIndex = 5;
@@ -623,7 +662,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblTotal.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lblTotal.Font = new Font("Segoe UI", 16F, FontStyle.Bold);
             lblTotal.ForeColor = Color.FromArgb(22, 163, 74);
-            lblTotal.Location = new Point(15, 435);
+            lblTotal.Location = new Point(15, 440);
             lblTotal.Name = "lblTotal";
             lblTotal.Size = new Size(330, 30);
             lblTotal.TabIndex = 6;
@@ -746,6 +785,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private System.Windows.Forms.Label lblHinhThucThanhToan;
         private Guna.UI2.WinForms.Guna2ComboBox cboHinhThucThanhToan;
 
+        private System.Windows.Forms.Label lblLoaiGiaoDich;
+        private Guna.UI2.WinForms.Guna2ComboBox cboLoaiGiaoDich;
         private System.Windows.Forms.Label lblSubtotal;
         private System.Windows.Forms.Label lblDiscount;
         private System.Windows.Forms.Label lblTotal;

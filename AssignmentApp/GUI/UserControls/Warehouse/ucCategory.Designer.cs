@@ -19,6 +19,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         {
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesTrangThai1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesTrangThai2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -52,6 +54,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtTenDanhMuc = new Guna.UI2.WinForms.Guna2TextBox();
             lblMoTa = new Label();
             txtMoTa = new Guna.UI2.WinForms.Guna2TextBox();
+            lblTrangThai = new Label();
+            cboTrangThai = new Guna.UI2.WinForms.Guna2ComboBox();
             btnAdd = new Guna.UI2.WinForms.Guna2Button();
             btnEdit = new Guna.UI2.WinForms.Guna2Button();
             btnDelete = new Guna.UI2.WinForms.Guna2Button();
@@ -65,6 +69,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             colMaDanhMuc = new DataGridViewTextBoxColumn();
             colTenDanhMuc = new DataGridViewTextBoxColumn();
             colMoTa = new DataGridViewTextBoxColumn();
+            colTrangThai = new DataGridViewTextBoxColumn();
             colNgayTao = new DataGridViewTextBoxColumn();
             pnlInputCard.SuspendLayout();
             pnlGridCard.SuspendLayout();
@@ -83,6 +88,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             pnlInputCard.Controls.Add(txtTenDanhMuc);
             pnlInputCard.Controls.Add(lblMoTa);
             pnlInputCard.Controls.Add(txtMoTa);
+            pnlInputCard.Controls.Add(lblTrangThai);
+            pnlInputCard.Controls.Add(cboTrangThai);
             pnlInputCard.Controls.Add(btnAdd);
             pnlInputCard.Controls.Add(btnEdit);
             pnlInputCard.Controls.Add(btnDelete);
@@ -188,6 +195,37 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtMoTa.ShadowDecoration.CustomizableEdges = customizableEdges6;
             txtMoTa.Size = new Size(290, 100);
             txtMoTa.TabIndex = 3;
+            // 
+            // lblTrangThai
+            // 
+            lblTrangThai.AutoSize = true;
+            lblTrangThai.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblTrangThai.ForeColor = Color.FromArgb(64, 64, 64);
+            lblTrangThai.Location = new Point(15, 316);
+            lblTrangThai.Name = "lblTrangThai";
+            lblTrangThai.Size = new Size(68, 15);
+            lblTrangThai.TabIndex = 10;
+            lblTrangThai.Text = "Trạng thái:";
+            // 
+            // cboTrangThai
+            // 
+            cboTrangThai.BackColor = Color.Transparent;
+            cboTrangThai.BorderRadius = 5;
+            cboTrangThai.CustomizableEdges = customizableEdgesTrangThai1;
+            cboTrangThai.DrawMode = DrawMode.OwnerDrawFixed;
+            cboTrangThai.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboTrangThai.FocusedColor = Color.FromArgb(0, 126, 249);
+            cboTrangThai.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            cboTrangThai.Font = new Font("Segoe UI", 9F);
+            cboTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
+            cboTrangThai.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            cboTrangThai.ItemHeight = 30;
+            cboTrangThai.Items.AddRange(new object[] { "Hoạt động", "Ngưng hoạt động" });
+            cboTrangThai.Location = new Point(15, 336);
+            cboTrangThai.Name = "cboTrangThai";
+            cboTrangThai.ShadowDecoration.CustomizableEdges = customizableEdgesTrangThai2;
+            cboTrangThai.Size = new Size(290, 36);
+            cboTrangThai.TabIndex = 11;
             // 
             // btnAdd
             // 
@@ -345,7 +383,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgvDanhMuc.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvDanhMuc.ColumnHeadersHeight = 35;
-            dgvDanhMuc.Columns.AddRange(new DataGridViewColumn[] { colMaDanhMuc, colTenDanhMuc, colMoTa, colNgayTao });
+            dgvDanhMuc.Columns.AddRange(new DataGridViewColumn[] { colMaDanhMuc, colTenDanhMuc, colMoTa, colTrangThai, colNgayTao });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F);
@@ -406,6 +444,13 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             colMoTa.Name = "colMoTa";
             colMoTa.ReadOnly = true;
             // 
+            // colTrangThai
+            // 
+            colTrangThai.DataPropertyName = "TrangThai";
+            colTrangThai.HeaderText = "Trạng thái";
+            colTrangThai.Name = "colTrangThai";
+            colTrangThai.ReadOnly = true;
+            // 
             // colNgayTao
             // 
             colNgayTao.DataPropertyName = "NgayTao";
@@ -443,6 +488,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         private Guna.UI2.WinForms.Guna2TextBox txtTenDanhMuc;
         private System.Windows.Forms.Label lblMoTa;
         private Guna.UI2.WinForms.Guna2TextBox txtMoTa;
+        private System.Windows.Forms.Label lblTrangThai;
+        private Guna.UI2.WinForms.Guna2ComboBox cboTrangThai;
         
         private Guna.UI2.WinForms.Guna2Button btnAdd;
         private Guna.UI2.WinForms.Guna2Button btnEdit;
@@ -457,6 +504,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         private System.Windows.Forms.DataGridViewTextBoxColumn colMaDanhMuc;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTenDanhMuc;
         private System.Windows.Forms.DataGridViewTextBoxColumn colMoTa;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTrangThai;
         private System.Windows.Forms.DataGridViewTextBoxColumn colNgayTao;
         private Label lblGridTitle;
     }

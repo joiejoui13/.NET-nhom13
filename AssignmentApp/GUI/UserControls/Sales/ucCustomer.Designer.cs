@@ -19,6 +19,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesEmail1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesEmail2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesDiaChi1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesDiaChi2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -54,8 +58,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtTenKhachHang = new Guna.UI2.WinForms.Guna2TextBox();
             lblSoDienThoai = new Label();
             txtSoDienThoai = new Guna.UI2.WinForms.Guna2TextBox();
-            lblDiemTichLuy = new Label();
-            txtDiemTichLuy = new Guna.UI2.WinForms.Guna2TextBox();
+            lblEmail = new Label();
+            txtEmail = new Guna.UI2.WinForms.Guna2TextBox();
+            lblDiaChi = new Label();
+            txtDiaChi = new Guna.UI2.WinForms.Guna2TextBox();
             btnAdd = new Guna.UI2.WinForms.Guna2Button();
             btnEdit = new Guna.UI2.WinForms.Guna2Button();
             btnDelete = new Guna.UI2.WinForms.Guna2Button();
@@ -69,7 +75,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colMaKhachHang = new DataGridViewTextBoxColumn();
             colTenKhachHang = new DataGridViewTextBoxColumn();
             colSoDienThoai = new DataGridViewTextBoxColumn();
-            colDiemTichLuy = new DataGridViewTextBoxColumn();
+            colEmail = new DataGridViewTextBoxColumn();
+            colDiaChi = new DataGridViewTextBoxColumn();
             colNgayTao = new DataGridViewTextBoxColumn();
             pnlInputCard.SuspendLayout();
             pnlGridCard.SuspendLayout();
@@ -88,8 +95,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlInputCard.Controls.Add(txtTenKhachHang);
             pnlInputCard.Controls.Add(lblSoDienThoai);
             pnlInputCard.Controls.Add(txtSoDienThoai);
-            pnlInputCard.Controls.Add(lblDiemTichLuy);
-            pnlInputCard.Controls.Add(txtDiemTichLuy);
+            pnlInputCard.Controls.Add(lblEmail);
+            pnlInputCard.Controls.Add(txtEmail);
+            pnlInputCard.Controls.Add(lblDiaChi);
+            pnlInputCard.Controls.Add(txtDiaChi);
             pnlInputCard.Controls.Add(btnAdd);
             pnlInputCard.Controls.Add(btnEdit);
             pnlInputCard.Controls.Add(btnDelete);
@@ -195,32 +204,59 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSoDienThoai.Size = new Size(290, 30);
             txtSoDienThoai.TabIndex = 3;
             // 
-            // lblDiemTichLuy
+            // lblEmail
             // 
-            lblDiemTichLuy.AutoSize = true;
-            lblDiemTichLuy.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblDiemTichLuy.ForeColor = Color.FromArgb(64, 64, 64);
-            lblDiemTichLuy.Location = new Point(15, 225);
-            lblDiemTichLuy.Name = "lblDiemTichLuy";
-            lblDiemTichLuy.Size = new Size(83, 15);
-            lblDiemTichLuy.TabIndex = 4;
-            lblDiemTichLuy.Text = "Điểm tích lũy:";
+            lblEmail.AutoSize = true;
+            lblEmail.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblEmail.ForeColor = Color.FromArgb(64, 64, 64);
+            lblEmail.Location = new Point(15, 225);
+            lblEmail.Name = "lblEmail";
+            lblEmail.Size = new Size(38, 15);
+            lblEmail.TabIndex = 4;
+            lblEmail.Text = "Email:";
             // 
-            // txtDiemTichLuy
+            // txtEmail
             // 
-            txtDiemTichLuy.BorderRadius = 5;
-            txtDiemTichLuy.CustomizableEdges = customizableEdges7;
-            txtDiemTichLuy.DefaultText = "";
-            txtDiemTichLuy.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtDiemTichLuy.Font = new Font("Segoe UI", 9F);
-            txtDiemTichLuy.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtDiemTichLuy.Location = new Point(15, 245);
-            txtDiemTichLuy.Name = "txtDiemTichLuy";
-            txtDiemTichLuy.PlaceholderText = "Điểm tích lũy...";
-            txtDiemTichLuy.SelectedText = "";
-            txtDiemTichLuy.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            txtDiemTichLuy.Size = new Size(290, 30);
-            txtDiemTichLuy.TabIndex = 4;
+            txtEmail.BorderRadius = 5;
+            txtEmail.CustomizableEdges = customizableEdgesEmail1;
+            txtEmail.DefaultText = "";
+            txtEmail.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            txtEmail.Font = new Font("Segoe UI", 9F);
+            txtEmail.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtEmail.Location = new Point(15, 245);
+            txtEmail.Name = "txtEmail";
+            txtEmail.PlaceholderText = "Nhập email...";
+            txtEmail.SelectedText = "";
+            txtEmail.ShadowDecoration.CustomizableEdges = customizableEdgesEmail2;
+            txtEmail.Size = new Size(290, 30);
+            txtEmail.TabIndex = 4;
+            // 
+            // lblDiaChi
+            // 
+            lblDiaChi.AutoSize = true;
+            lblDiaChi.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblDiaChi.ForeColor = Color.FromArgb(64, 64, 64);
+            lblDiaChi.Location = new Point(15, 285);
+            lblDiaChi.Name = "lblDiaChi";
+            lblDiaChi.Size = new Size(47, 15);
+            lblDiaChi.TabIndex = 15;
+            lblDiaChi.Text = "Địa chỉ:";
+            // 
+            // txtDiaChi
+            // 
+            txtDiaChi.BorderRadius = 5;
+            txtDiaChi.CustomizableEdges = customizableEdgesDiaChi1;
+            txtDiaChi.DefaultText = "";
+            txtDiaChi.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            txtDiaChi.Font = new Font("Segoe UI", 9F);
+            txtDiaChi.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtDiaChi.Location = new Point(15, 305);
+            txtDiaChi.Name = "txtDiaChi";
+            txtDiaChi.PlaceholderText = "Nhập địa chỉ...";
+            txtDiaChi.SelectedText = "";
+            txtDiaChi.ShadowDecoration.CustomizableEdges = customizableEdgesDiaChi2;
+            txtDiaChi.Size = new Size(290, 30);
+            txtDiaChi.TabIndex = 16;
             // 
             // btnAdd
             // 
@@ -378,7 +414,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgvCustomers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvCustomers.ColumnHeadersHeight = 35;
-            dgvCustomers.Columns.AddRange(new DataGridViewColumn[] { colMaKhachHang, colTenKhachHang, colSoDienThoai, colDiemTichLuy, colNgayTao });
+            dgvCustomers.Columns.AddRange(new DataGridViewColumn[] { colMaKhachHang, colTenKhachHang, colSoDienThoai, colEmail, colDiaChi, colNgayTao });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -436,11 +472,17 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colSoDienThoai.Name = "colSoDienThoai";
             colSoDienThoai.ReadOnly = true;
             // 
-            // colDiemTichLuy
+            // colEmail
             // 
-            colDiemTichLuy.HeaderText = "Điểm";
-            colDiemTichLuy.Name = "colDiemTichLuy";
-            colDiemTichLuy.ReadOnly = true;
+            colEmail.HeaderText = "Email";
+            colEmail.Name = "colEmail";
+            colEmail.ReadOnly = true;
+            // 
+            // colDiaChi
+            // 
+            colDiaChi.HeaderText = "Địa Chỉ";
+            colDiaChi.Name = "colDiaChi";
+            colDiaChi.ReadOnly = true;
             // 
             // colNgayTao
             // 
@@ -478,8 +520,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private Guna.UI2.WinForms.Guna2TextBox txtTenKhachHang;
         private System.Windows.Forms.Label lblSoDienThoai;
         private Guna.UI2.WinForms.Guna2TextBox txtSoDienThoai;
-        private System.Windows.Forms.Label lblDiemTichLuy;
-        private Guna.UI2.WinForms.Guna2TextBox txtDiemTichLuy;
+        private System.Windows.Forms.Label lblEmail;
+        private Guna.UI2.WinForms.Guna2TextBox txtEmail;
+        private System.Windows.Forms.Label lblDiaChi;
+        private Guna.UI2.WinForms.Guna2TextBox txtDiaChi;
         private Guna.UI2.WinForms.Guna2Button btnAdd;
         private Guna.UI2.WinForms.Guna2Button btnEdit;
         private Guna.UI2.WinForms.Guna2Button btnDelete;
@@ -495,7 +539,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private System.Windows.Forms.DataGridViewTextBoxColumn colMaKhachHang;
         private System.Windows.Forms.DataGridViewTextBoxColumn colTenKhachHang;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSoDienThoai;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDiemTichLuy;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colEmail;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDiaChi;
         private System.Windows.Forms.DataGridViewTextBoxColumn colNgayTao;
     }
 }

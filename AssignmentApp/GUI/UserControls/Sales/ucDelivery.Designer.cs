@@ -69,7 +69,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblGridTitle = new Label();
             btnSearch = new Guna.UI2.WinForms.Guna2Button();
             btnRefresh = new Guna.UI2.WinForms.Guna2Button();
-            txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
             dgvDeliveries = new Guna.UI2.WinForms.Guna2DataGridView();
             colMaGiaoHang = new DataGridViewTextBoxColumn();
             colMaHoaDon = new DataGridViewTextBoxColumn();
@@ -262,13 +261,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // btnAdd
             // 
+            btnAdd.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnAdd.BorderRadius = 5;
             btnAdd.CustomizableEdges = customizableEdges11;
             btnAdd.FillColor = Color.FromArgb(0, 126, 249);
             btnAdd.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnAdd.ForeColor = Color.White;
             btnAdd.Location = new Point(15, 510);
-            btnAdd.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnAdd.Name = "btnAdd";
             btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges12;
             btnAdd.Size = new Size(90, 36);
@@ -278,13 +277,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // btnEdit
             // 
+            btnEdit.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnEdit.BorderRadius = 5;
             btnEdit.CustomizableEdges = customizableEdges13;
             btnEdit.FillColor = Color.FromArgb(0, 126, 249);
             btnEdit.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnEdit.ForeColor = Color.White;
             btnEdit.Location = new Point(115, 510);
-            btnEdit.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnEdit.Name = "btnEdit";
             btnEdit.ShadowDecoration.CustomizableEdges = customizableEdges14;
             btnEdit.Size = new Size(90, 36);
@@ -294,13 +293,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // btnDelete
             // 
+            btnDelete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDelete.BorderRadius = 5;
             btnDelete.CustomizableEdges = customizableEdges15;
             btnDelete.FillColor = Color.FromArgb(244, 67, 54);
             btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnDelete.ForeColor = Color.White;
             btnDelete.Location = new Point(215, 510);
-            btnDelete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDelete.Name = "btnDelete";
             btnDelete.ShadowDecoration.CustomizableEdges = customizableEdges16;
             btnDelete.Size = new Size(90, 36);
@@ -310,13 +309,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // btnSave
             // 
+            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSave.BorderRadius = 5;
             btnSave.CustomizableEdges = customizableEdges17;
             btnSave.FillColor = Color.FromArgb(0, 126, 249);
             btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSave.ForeColor = Color.White;
             btnSave.Location = new Point(15, 560);
-            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSave.Name = "btnSave";
             btnSave.ShadowDecoration.CustomizableEdges = customizableEdges18;
             btnSave.Size = new Size(290, 40);
@@ -326,13 +325,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // btnCancel
             // 
+            btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnCancel.BorderRadius = 5;
             btnCancel.CustomizableEdges = customizableEdges19;
             btnCancel.FillColor = Color.FromArgb(108, 117, 125);
             btnCancel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancel.ForeColor = Color.White;
             btnCancel.Location = new Point(15, 610);
-            btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnCancel.Name = "btnCancel";
             btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges20;
             btnCancel.Size = new Size(290, 35);
@@ -346,7 +345,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlGridCard.BackColor = Color.Transparent;
             pnlGridCard.BorderRadius = 10;
             pnlGridCard.Controls.Add(lblGridTitle);
-            pnlGridCard.Controls.Add(txtSearch);
             pnlGridCard.Controls.Add(btnSearch);
             pnlGridCard.Controls.Add(btnRefresh);
             pnlGridCard.Controls.Add(dgvDeliveries);
@@ -370,24 +368,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblGridTitle.TabIndex = 0;
             lblGridTitle.Text = "DANH SÁCH GIAO HÀNG";
             // 
-            // txtSearch
-            // 
-            txtSearch.BorderRadius = 5;
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges29 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges30 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            txtSearch.CustomizableEdges = customizableEdges29;
-            txtSearch.DefaultText = "";
-            txtSearch.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtSearch.Font = new Font("Segoe UI", 9F);
-            txtSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSearch.Location = new Point(15, 45);
-            txtSearch.Name = "txtSearch";
-            txtSearch.PlaceholderText = "Tìm mã giao, mã HĐ, địa chỉ...";
-            txtSearch.SelectedText = "";
-            txtSearch.ShadowDecoration.CustomizableEdges = customizableEdges30;
-            txtSearch.Size = new Size(250, 36);
-            txtSearch.TabIndex = 16;
-            // 
             // btnSearch
             // 
             btnSearch.BorderRadius = 5;
@@ -395,7 +375,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnSearch.FillColor = Color.FromArgb(0, 126, 249);
             btnSearch.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnSearch.ForeColor = Color.White;
-            btnSearch.Location = new Point(275, 45);
+            btnSearch.Location = new Point(15, 45);
             btnSearch.Name = "btnSearch";
             btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges24;
             btnSearch.Size = new Size(100, 36);
@@ -549,7 +529,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private System.Windows.Forms.Label lblGridTitle;
         private Guna.UI2.WinForms.Guna2Button btnSearch;
         private Guna.UI2.WinForms.Guna2Button btnRefresh;
-        private Guna.UI2.WinForms.Guna2TextBox txtSearch;
         private Guna.UI2.WinForms.Guna2DataGridView dgvDeliveries;
 
         private System.Windows.Forms.DataGridViewTextBoxColumn colMaGiaoHang;

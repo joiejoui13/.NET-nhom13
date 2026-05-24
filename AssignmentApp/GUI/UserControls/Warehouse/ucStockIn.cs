@@ -37,7 +37,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         private List<MockProduct> mockProducts = new List<MockProduct>();
         private List<MockStockInReceipt> mockReceipts = new List<MockStockInReceipt>();
         private MockStockInReceipt? selectedReceipt = null;
-        
+
         // Items currently in the grid during add/edit
         private List<MockStockInDetail> currentDetails = new List<MockStockInDetail>();
         private bool isEditing = false;
@@ -52,7 +52,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         {
             InitializeProducts();
             InitializeMockReceipts();
-            
+
             cboProductCategory.SelectedIndex = 0;
 
             // Load default receipt
@@ -60,7 +60,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             {
                 LoadReceipt(mockReceipts[0]);
             }
-            
+
             SetEditState(false);
         }
 
@@ -146,7 +146,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             isEditing = editing;
 
             // Header fields
-            txtMaPhieuNhap.ReadOnly = !isAddingNew; 
+            txtMaPhieuNhap.ReadOnly = !isAddingNew;
             dtNgayNhap.Enabled = editing;
             cboTrangThai.Enabled = editing;
 
@@ -154,7 +154,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             btnSave.Visible = editing;
             btnCancel.Visible = editing;
             btnChooseProducts.Enabled = editing;
-            
+
             if (editing)
             {
                 btnAdd.Enabled = false;
@@ -180,17 +180,17 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 // Enter Add Receipt mode
                 isAddingNew = true;
                 isEditing = true;
-                
+
                 txtMaPhieuNhap.Text = (mockReceipts.Count > 0 ? mockReceipts.Max(r => r.MaPhieuNhap) + 1 : 101).ToString();
-                txtNguoiDung.Text = "Nguyễn Văn Kho"; 
+                txtNguoiDung.Text = "Nguyễn Văn Kho";
                 dtNgayNhap.Value = DateTime.Now;
                 cboTrangThai.Text = "Chờ xử lý";
-                
+
                 currentDetails.Clear();
                 PopulateDetailsGrid();
-                
+
                 SetEditState(true);
-                
+
                 // Auto switch to Tab 2 to pick products after preparing the receipt header
                 btnChooseProducts_Click(this, EventArgs.Empty);
             }
@@ -207,7 +207,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
             isAddingNew = false;
             SetEditState(true);
-            
+
             // Auto switch to Tab 2 for editing products list
             btnChooseProducts_Click(this, EventArgs.Empty);
         }
@@ -215,13 +215,13 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         private void btnDelete_Click(object? sender, EventArgs e)
         {
             if (selectedReceipt == null) return;
-            
+
             var confirmResult = MessageBox.Show($"Xác nhận xóa phiếu nhập #{selectedReceipt.MaPhieuNhap}?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {
                 mockReceipts.Remove(selectedReceipt);
                 MessageBox.Show("Xóa phiếu nhập thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                
+
                 if (mockReceipts.Count > 0)
                 {
                     LoadReceipt(mockReceipts[0]);
@@ -235,7 +235,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                     currentDetails.Clear();
                     PopulateDetailsGrid();
                 }
-                
+
                 SetEditState(false);
             }
         }
@@ -370,7 +370,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         {
             // Switch to Tab 2
             tabMain.SelectedTab = tabChonSanPham;
-            
+
             // Clear input TextBoxes first
             btnResetCartForm_Click(this, EventArgs.Empty);
 
@@ -575,9 +575,14 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         {
             // Switch back to Tab 1
             tabMain.SelectedTab = tabPhieuNhap;
-            
+
             // Sync current items back to Tab 1 grid
             PopulateDetailsGrid();
+        }
+
+        private void btnRemoveFromCart_Click_1(object sender, EventArgs e)
+        {
+
         }
     }
 }

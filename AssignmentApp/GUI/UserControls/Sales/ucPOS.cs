@@ -58,7 +58,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             InitializeMockData();
             BindDropdowns();
             LoadProductsGrid();
-            
+
             // Set Default Selected Index for LoaiGiaoDich
             cboLoaiGiaoDich.SelectedIndex = 0; // "Đơn bán hàng (Hóa đơn)"
             cboHinhThucThanhToan.SelectedIndex = 0; // "Tiền mặt"
@@ -97,14 +97,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private void BindDropdowns()
         {
-            cboKhachHang.DataSource = customers.Select(c => new {
+            cboKhachHang.DataSource = customers.Select(c => new
+            {
                 Id = c.MaKhachHang,
                 DisplayText = string.IsNullOrEmpty(c.SoDienThoai) ? c.TenKhachHang : $"{c.TenKhachHang} ({c.SoDienThoai})"
             }).ToList();
             cboKhachHang.DisplayMember = "DisplayText";
             cboKhachHang.ValueMember = "Id";
 
-            cboKhuyenMai.DataSource = promotions.Select(p => new {
+            cboKhuyenMai.DataSource = promotions.Select(p => new
+            {
                 Id = p.MaKhuyenMai,
                 DisplayText = p.PhanTramGiam > 0 ? $"{p.TenKhuyenMai} ({p.PhanTramGiam}%)" : p.TenKhuyenMai
             }).ToList();
@@ -137,7 +139,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 btnPay.Text = "THANH TOÁN";
                 btnPay.FillColor = Color.FromArgb(22, 163, 74); // Green for Sales Pay
                 lblTotal.ForeColor = Color.FromArgb(22, 163, 74);
-                
+
                 lblKhuyenMai.Enabled = true;
                 cboKhuyenMai.Enabled = true;
                 lblHinhThucThanhToan.Enabled = true;
@@ -148,7 +150,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 btnPay.Text = "XÁC NHẬN TRẢ HÀNG";
                 btnPay.FillColor = Color.FromArgb(244, 67, 54); // Red for Return Refund
                 lblTotal.ForeColor = Color.FromArgb(244, 67, 54);
-                
+
                 // Disable Promotions/Payments since returns refund money back directly
                 lblKhuyenMai.Enabled = false;
                 cboKhuyenMai.SelectedIndex = 0;
@@ -299,7 +301,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             lblSubtotal.Text = $"Tạm tính: {subtotal.ToString("N0")} đ";
             lblDiscount.Text = $"Giảm giá: {discount.ToString("N0")} đ";
-            
+
             if (cboLoaiGiaoDich.SelectedIndex == 0)
             {
                 lblTotal.Text = $"TỔNG: {total.ToString("N0")} đ";
@@ -347,7 +349,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             if (isSales)
             {
                 double total = cart.Sum(i => i.ThanhTien) - (cart.Sum(i => i.ThanhTien) * (promotions.FirstOrDefault(p => p.MaKhuyenMai == Convert.ToInt32(cboKhuyenMai.SelectedValue))?.PhanTramGiam ?? 0) / 100.0);
-                
+
                 // Deduct stock
                 foreach (var item in cart)
                 {
@@ -361,7 +363,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 MessageBox.Show($"Thanh toán hóa đơn thành công!\n" +
                                 $"Khách hàng: {customerName}\n" +
                                 $"Tổng tiền: {total.ToString("N0")} đ\n" +
-                                $"[TỒN KHO] Đã cập nhật trừ số lượng tương ứng trong kho hàng!", 
+                                $"[TỒN KHO] Đã cập nhật trừ số lượng tương ứng trong kho hàng!",
                                 "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
@@ -381,7 +383,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 MessageBox.Show($"Tạo phiếu trả hàng & Hoàn tiền thành công!\n" +
                                 $"Khách hàng trả: {customerName}\n" +
                                 $"Tổng tiền hoàn trả: {refund.ToString("N0")} đ\n" +
-                                $"[TỒN KHO] Đã cộng trả lại tồn kho của các mặt hàng!", 
+                                $"[TỒN KHO] Đã cộng trả lại tồn kho của các mặt hàng!",
                                 "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
@@ -398,9 +400,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
-            var filtered = products.Where(p => 
-                p.MaSanPham.ToString().Contains(keyword) || 
-                p.TenSanPham.ToLower().Contains(keyword) || 
+            var filtered = products.Where(p =>
+                p.MaSanPham.ToString().Contains(keyword) ||
+                p.TenSanPham.ToLower().Contains(keyword) ||
                 p.DanhMuc.ToLower().Contains(keyword)
             ).ToList();
 
@@ -415,6 +417,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
+        }
+
+        private void lblKhuyenMai_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

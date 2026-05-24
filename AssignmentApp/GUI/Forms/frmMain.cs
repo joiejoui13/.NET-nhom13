@@ -130,7 +130,7 @@ namespace AssignmentApp.GUI.Forms
         private void btnSales_Returns_Click(object sender, EventArgs e)
         {
             HighlightButton(sender);
-            LoadUserControl(new ucReturns());
+            LoadUserControl(new ucReturn());
         }
 
         private void btnSales_Customers_Click(object sender, EventArgs e)

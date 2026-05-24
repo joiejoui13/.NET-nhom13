@@ -142,10 +142,12 @@ CREATE TABLE ChiTietHoaDon (
 CREATE TABLE GiaoHang (
     MaGiaoHang INT IDENTITY(1,1) PRIMARY KEY,
     MaHoaDon INT,
+    MaTraHang INT,
     DiaChiGiao NVARCHAR(255),
     TrangThai NVARCHAR(50),
     NgayGiao DATETIME,
-    FOREIGN KEY (MaHoaDon) REFERENCES HoaDon(MaHoaDon)
+    FOREIGN KEY (MaHoaDon) REFERENCES HoaDon(MaHoaDon),
+    FOREIGN KEY (MaTraHang) REFERENCES TraHang(MaTraHang)
 );
 
 CREATE TABLE TraHang (
@@ -274,8 +276,8 @@ SET IDENTITY_INSERT GiaoHang OFF;
 
 -- 10. TraHang & ChiTietTraHang (Lỗi sản phẩm)
 SET IDENTITY_INSERT TraHang ON;
-INSERT INTO TraHang (MaTraHang, MaHoaDon, MaNguoiDung, LyDo, TongTienHoan, TrangThai, LoaiGiaoDich, NgayTra) VALUES
-(1, 1, 2, N'Máy tính phím bấm bị kẹt', 680000, N'Hoàn tất', N'Đổi 1:1', GETDATE());
+INSERT INTO TraHang (MaTraHang, MaHoaDon,MaTraHang, MaNguoiDung, LyDo, TongTienHoan, TrangThai, LoaiGiaoDich, NgayTra) VALUES
+(1, 1, Null, 2, N'Máy tính phím bấm bị kẹt', 680000, N'Hoàn tất', N'Đổi 1:1', GETDATE());
 SET IDENTITY_INSERT TraHang OFF;
 
 SET IDENTITY_INSERT ChiTietTraHang ON;

@@ -53,12 +53,24 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             InitializeProducts();
             InitializeMockReceipts();
 
-            cboProductCategory.SelectedIndex = 0;
+            // Dynamic header customization to show receipts instead of products
+            lblGridTitle.Text = "DANH SÁCH PHIẾU NHẬP";
+            dgvDetails.Columns[0].HeaderText = "Mã Phiếu Nhập";
+            dgvDetails.Columns[1].HeaderText = "Người Nhập";
+            dgvDetails.Columns[2].HeaderText = "Ngày Nhập";
+            dgvDetails.Columns[3].HeaderText = "Trạng Thái";
+            dgvDetails.Columns[4].HeaderText = "Tổng Tiền";
 
-            // Load default receipt
+            // Wire up cell click dynamically
+            dgvDetails.CellClick += dgvDetails_CellClick;
+
+            // Load all receipts in Tab 1 master grid
+            LoadReceiptsGrid();
+
+            // Select default receipt
             if (mockReceipts.Count > 0)
             {
-                LoadReceipt(mockReceipts[0]);
+                SelectReceiptRow(0);
             }
 
             SetEditState(false);
@@ -106,38 +118,55 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             mockReceipts.Add(r2);
         }
 
-        private void LoadReceipt(MockStockInReceipt receipt)
-        {
-            selectedReceipt = receipt;
-            txtMaPhieuNhap.Text = receipt.MaPhieuNhap.ToString();
-            txtNguoiDung.Text = receipt.NguoiTao;
-            dtNgayNhap.Value = receipt.NgayNhap;
-            cboTrangThai.Text = receipt.TrangThai;
-
-            // Load details grid
-            currentDetails = receipt.Details.Select(d => new MockStockInDetail
-            {
-                MaSanPham = d.MaSanPham,
-                TenSanPham = d.TenSanPham,
-                SoLuong = d.SoLuong,
-                GiaNhap = d.GiaNhap
-            }).ToList();
-
-            PopulateDetailsGrid();
-        }
-
-        private void PopulateDetailsGrid()
+        private void LoadReceiptsGrid(List<MockStockInReceipt>? dataSource = null)
         {
             dgvDetails.Rows.Clear();
-            foreach (var item in currentDetails)
+            var list = dataSource ?? mockReceipts;
+            foreach (var r in list)
             {
+                double total = r.Details.Sum(d => d.ThanhTien);
                 dgvDetails.Rows.Add(
-                    item.MaSanPham,
-                    item.TenSanPham,
-                    item.SoLuong.ToString("N0"),
-                    item.GiaNhap.ToString("N0") + " đ",
-                    item.ThanhTien.ToString("N0") + " đ"
+                    r.MaPhieuNhap,
+                    r.NguoiTao,
+                    r.NgayNhap.ToString("dd/MM/yyyy HH:mm"),
+                    r.TrangThai,
+                    total.ToString("N0") + " đ"
                 );
+            }
+        }
+
+        private void SelectReceiptRow(int rowIndex)
+        {
+            if (rowIndex < 0 || rowIndex >= dgvDetails.Rows.Count) return;
+
+            dgvDetails.ClearSelection();
+            dgvDetails.Rows[rowIndex].Selected = true;
+
+            int receiptId = Convert.ToInt32(dgvDetails.Rows[rowIndex].Cells[0].Value);
+            selectedReceipt = mockReceipts.FirstOrDefault(r => r.MaPhieuNhap == receiptId);
+
+            if (selectedReceipt != null)
+            {
+                txtMaPhieuNhap.Text = selectedReceipt.MaPhieuNhap.ToString();
+                txtNguoiDung.Text = selectedReceipt.NguoiTao;
+                dtNgayNhap.Value = selectedReceipt.NgayNhap;
+                cboTrangThai.Text = selectedReceipt.TrangThai;
+
+                currentDetails = selectedReceipt.Details.Select(d => new MockStockInDetail
+                {
+                    MaSanPham = d.MaSanPham,
+                    TenSanPham = d.TenSanPham,
+                    SoLuong = d.SoLuong,
+                    GiaNhap = d.GiaNhap
+                }).ToList();
+            }
+        }
+
+        private void dgvDetails_CellClick(object? sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0 && !isEditing)
+            {
+                SelectReceiptRow(e.RowIndex);
             }
         }
 
@@ -150,10 +179,29 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dtNgayNhap.Enabled = editing;
             cboTrangThai.Enabled = editing;
 
-            // Buttons behavior
-            btnSave.Visible = editing;
-            btnCancel.Visible = editing;
-            btnChooseProducts.Enabled = editing;
+            // Make all buttons visible at all times
+            btnAdd.Visible = true;
+            btnEdit.Visible = true;
+            btnDelete.Visible = true;
+            btnSave.Visible = true;
+            btnCancel.Visible = true;
+
+            // Position them statically side-by-side
+            btnAdd.Location = new Point(15, 470);
+            btnEdit.Location = new Point(115, 470);
+            btnDelete.Location = new Point(215, 470);
+
+            btnSave.Location = new Point(15, 515);
+            btnSave.Size = new Size(140, 36);
+            btnCancel.Location = new Point(165, 515);
+            btnCancel.Size = new Size(140, 36);
+
+            btnAdd.Enabled = !editing;
+            btnEdit.Enabled = !editing;
+            btnDelete.Enabled = !editing;
+
+            btnSave.Enabled = editing;
+            btnCancel.Enabled = editing;
 
             if (editing)
             {
@@ -187,7 +235,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 cboTrangThai.Text = "Chờ xử lý";
 
                 currentDetails.Clear();
-                PopulateDetailsGrid();
 
                 SetEditState(true);
 
@@ -222,9 +269,11 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 mockReceipts.Remove(selectedReceipt);
                 MessageBox.Show("Xóa phiếu nhập thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                LoadReceiptsGrid();
+
                 if (mockReceipts.Count > 0)
                 {
-                    LoadReceipt(mockReceipts[0]);
+                    SelectReceiptRow(0);
                 }
                 else
                 {
@@ -233,7 +282,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                     txtNguoiDung.Text = "";
                     cboTrangThai.SelectedIndex = -1;
                     currentDetails.Clear();
-                    PopulateDetailsGrid();
                 }
 
                 SetEditState(false);
@@ -321,9 +369,16 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
             isAddingNew = false;
             SetEditState(false);
+            
+            LoadReceiptsGrid();
+
             if (selectedReceipt != null)
             {
-                LoadReceipt(selectedReceipt);
+                int index = mockReceipts.IndexOf(selectedReceipt);
+                if (index >= 0)
+                {
+                    SelectReceiptRow(index);
+                }
             }
         }
 
@@ -333,7 +388,11 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             SetEditState(false);
             if (selectedReceipt != null)
             {
-                LoadReceipt(selectedReceipt);
+                int index = mockReceipts.IndexOf(selectedReceipt);
+                if (index >= 0)
+                {
+                    SelectReceiptRow(index);
+                }
             }
         }
 
@@ -348,7 +407,11 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             var receipt = mockReceipts.FirstOrDefault(r => r.MaPhieuNhap == searchId);
             if (receipt != null)
             {
-                LoadReceipt(receipt);
+                int index = mockReceipts.IndexOf(receipt);
+                if (index >= 0)
+                {
+                    SelectReceiptRow(index);
+                }
                 SetEditState(false);
             }
             else
@@ -359,9 +422,10 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
         private void btnRefresh_Click(object? sender, EventArgs e)
         {
+            LoadReceiptsGrid();
             if (mockReceipts.Count > 0)
             {
-                LoadReceipt(mockReceipts[0]);
+                SelectReceiptRow(0);
             }
             SetEditState(false);
         }
@@ -402,24 +466,15 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             FilterProducts();
         }
 
-        private void cboProductCategory_SelectedIndexChanged(object? sender, EventArgs e)
-        {
-            FilterProducts();
-        }
-
         private void FilterProducts()
         {
             string keyword = txtProductSearch.Text.Trim().ToLower();
-            string category = cboProductCategory.Text;
 
             var filtered = mockProducts.Where(p =>
-            {
-                bool matchKeyword = string.IsNullOrEmpty(keyword) ||
-                                    p.MaSanPham.ToString() == keyword ||
-                                    p.TenSanPham.ToLower().Contains(keyword);
-                bool matchCategory = category == "Tất cả danh mục" || p.DanhMuc == category;
-                return matchKeyword && matchCategory;
-            }).ToList();
+                string.IsNullOrEmpty(keyword) ||
+                p.MaSanPham.ToString() == keyword ||
+                p.TenSanPham.ToLower().Contains(keyword)
+            ).ToList();
 
             LoadProductsSelectionGrid(filtered);
         }
@@ -449,6 +504,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                         {
                             txtSelSoLuong.Text = "1";
                         }
+
+                        tabSelectionContainer.SelectedTab = tabProductDetail;
 
                         txtSelSoLuong.Focus();
                         txtSelSoLuong.SelectAll();
@@ -499,6 +556,12 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
         private void btnAddToCart_Click(object? sender, EventArgs e)
         {
+            if (!isEditing)
+            {
+                MessageBox.Show("Vui lòng nhấn nút THÊM hoặc SỬA ở Tab 1 trước khi chỉnh sửa sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             string rawId = txtSelMaSP.Text;
             if (string.IsNullOrEmpty(rawId) || !int.TryParse(rawId, out int id))
             {
@@ -543,6 +606,12 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
         private void btnRemoveFromCart_Click(object? sender, EventArgs e)
         {
+            if (!isEditing)
+            {
+                MessageBox.Show("Vui lòng nhấn nút THÊM hoặc SỬA ở Tab 1 trước khi chỉnh sửa sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             string rawId = txtSelMaSP.Text;
             if (string.IsNullOrEmpty(rawId) || !int.TryParse(rawId, out int id))
             {
@@ -571,18 +640,66 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtSelGiaNhap.Text = "";
         }
 
+        private void btnStockInSearch_Click(object? sender, EventArgs e)
+        {
+            string maSp = txtSelMaSP.Text.Trim().ToLower();
+            string tenSp = txtSelTenSP.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(maSp) && string.IsNullOrEmpty(tenSp))
+            {
+                LoadProductsSelectionGrid();
+                return;
+            }
+
+            var filtered = mockProducts.Where(p =>
+                (string.IsNullOrEmpty(maSp) || p.MaSanPham.ToString().ToLower().Contains(maSp)) &&
+                (string.IsNullOrEmpty(tenSp) || p.TenSanPham.ToLower().Contains(tenSp))
+            ).ToList();
+
+            LoadProductsSelectionGrid(filtered);
+        }
+
+        private void btnStockInRefresh_Click(object? sender, EventArgs e)
+        {
+            txtSelMaSP.Text = "";
+            txtSelTenSP.Text = "";
+            txtSelSoLuong.Text = "";
+            txtSelGiaNhap.Text = "";
+            LoadProductsSelectionGrid();
+        }
+
+        private void tabSelectionContainer_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            if (tabSelectionContainer.SelectedTab == tabProductDetail)
+            {
+                // Optional loading of product detail visual picture or spec card
+                picProductDetail.Image = null;
+            }
+        }
+
+        private void btnSelectProduct_Click(object? sender, EventArgs e)
+        {
+            string rawId = txtSelMaSP.Text;
+            if (!string.IsNullOrEmpty(rawId) && int.TryParse(rawId, out int id))
+            {
+                var prod = mockProducts.FirstOrDefault(p => p.MaSanPham == id);
+                if (prod != null)
+                {
+                    txtSelMaSP.Text = prod.MaSanPham.ToString();
+                    txtSelTenSP.Text = prod.TenSanPham;
+                    txtSelGiaNhap.Text = prod.GiaNhap.ToString();
+                    txtSelSoLuong.Text = "1";
+                    tabSelectionContainer.SelectedTab = tabListProducts; // shift back to list
+                    txtSelSoLuong.Focus();
+                    txtSelSoLuong.SelectAll();
+                }
+            }
+        }
+
         private void btnBackToReceipt_Click(object? sender, EventArgs e)
         {
             // Switch back to Tab 1
             tabMain.SelectedTab = tabPhieuNhap;
-
-            // Sync current items back to Tab 1 grid
-            PopulateDetailsGrid();
-        }
-
-        private void btnRemoveFromCart_Click_1(object sender, EventArgs e)
-        {
-
         }
     }
 }

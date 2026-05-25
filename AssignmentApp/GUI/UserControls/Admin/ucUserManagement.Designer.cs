@@ -332,13 +332,13 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // 
             // btnAdd
             // 
+            btnAdd.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnAdd.BorderRadius = 5;
             btnAdd.CustomizableEdges = customizableEdges15;
             btnAdd.FillColor = Color.FromArgb(0, 126, 249);
             btnAdd.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnAdd.ForeColor = Color.White;
             btnAdd.Location = new Point(15, 510);
-            btnAdd.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnAdd.Name = "btnAdd";
             btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges16;
             btnAdd.Size = new Size(90, 36);
@@ -348,13 +348,13 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // 
             // btnEdit
             // 
+            btnEdit.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnEdit.BorderRadius = 5;
             btnEdit.CustomizableEdges = customizableEdges17;
             btnEdit.FillColor = Color.FromArgb(0, 126, 249);
             btnEdit.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnEdit.ForeColor = Color.White;
             btnEdit.Location = new Point(115, 510);
-            btnEdit.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnEdit.Name = "btnEdit";
             btnEdit.ShadowDecoration.CustomizableEdges = customizableEdges18;
             btnEdit.Size = new Size(90, 36);
@@ -364,13 +364,13 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // 
             // btnDelete
             // 
+            btnDelete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDelete.BorderRadius = 5;
             btnDelete.CustomizableEdges = customizableEdges19;
             btnDelete.FillColor = Color.FromArgb(244, 67, 54);
             btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnDelete.ForeColor = Color.White;
             btnDelete.Location = new Point(215, 510);
-            btnDelete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDelete.Name = "btnDelete";
             btnDelete.ShadowDecoration.CustomizableEdges = customizableEdges20;
             btnDelete.Size = new Size(90, 36);
@@ -380,13 +380,13 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // 
             // btnSave
             // 
+            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSave.BorderRadius = 5;
             btnSave.CustomizableEdges = customizableEdges21;
             btnSave.FillColor = Color.FromArgb(0, 126, 249);
             btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSave.ForeColor = Color.White;
             btnSave.Location = new Point(15, 560);
-            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSave.Name = "btnSave";
             btnSave.ShadowDecoration.CustomizableEdges = customizableEdges22;
             btnSave.Size = new Size(290, 40);
@@ -396,13 +396,13 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // 
             // btnCancel
             // 
+            btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnCancel.BorderRadius = 5;
             btnCancel.CustomizableEdges = customizableEdges23;
             btnCancel.FillColor = Color.FromArgb(108, 117, 125);
             btnCancel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancel.ForeColor = Color.White;
             btnCancel.Location = new Point(15, 610);
-            btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnCancel.Name = "btnCancel";
             btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges24;
             btnCancel.Size = new Size(290, 35);
@@ -525,6 +525,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dgvUsers.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dgvUsers.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
             dgvUsers.CellClick += dgvUsers_CellClick;
+            dgvUsers.CellContentClick += dgvUsers_CellContentClick;
             // 
             // colMaNguoiDung
             // 

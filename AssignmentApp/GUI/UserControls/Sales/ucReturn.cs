@@ -182,17 +182,38 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboTrangThai.Enabled = editing;
             cboLoaiGiaoDich.Enabled = editing;
 
-            // Chế độ chỉnh sửa: ẩn Add/Delete, hiện Save/Cancel/ChooseProducts
-            btnAdd.Visible = !editing;
-            btnDelete.Visible = !editing;
-            btnSave.Visible = editing;
-            btnCancel.Visible = editing;
-            btnChooseProducts.Visible = editing;
+            // Make all buttons visible at all times
+            btnAdd.Visible = true;
+            btnEdit.Visible = true;
+            btnDelete.Visible = true;
+            btnSave.Visible = true;
+            btnCancel.Visible = true;
 
-            if (!editing)
+            // Position them statically side-by-side
+            btnAdd.Location = new Point(15, 500);
+            btnEdit.Location = new Point(115, 500);
+            btnDelete.Location = new Point(215, 500);
+
+            btnSave.Location = new Point(15, 545);
+            btnSave.Size = new Size(140, 36);
+            btnCancel.Location = new Point(165, 545);
+            btnCancel.Size = new Size(140, 36);
+
+            // Enable/disable based on editing state
+            btnAdd.Enabled = !editing;
+            btnEdit.Enabled = false; // Not used in Returns
+
+            if (editing)
             {
-                btnAdd.Enabled = true;
+                btnDelete.Enabled = false;
+                btnSave.Enabled = true;
+                btnCancel.Enabled = true;
+            }
+            else
+            {
                 btnDelete.Enabled = selectedReturn != null;
+                btnSave.Enabled = false;
+                btnCancel.Enabled = false;
             }
         }
 
@@ -348,14 +369,19 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private void btnSearch_Click(object? sender, EventArgs e)
         {
-            string kw = txtSearch.Text.Trim();
-            if (string.IsNullOrEmpty(kw))
+            string kw = txtMaHoaDon.Text.Trim();
+            string reason = txtLyDo.Text.Trim().ToLower();
+            if (string.IsNullOrEmpty(kw) && string.IsNullOrEmpty(reason))
             {
                 LoadReturnListGrid();
                 return;
             }
 
-            var filtered = mockReturns.Where(r => r.MaTraHang.ToString() == kw || r.MaHoaDon.Contains(kw) || r.KhachHang.Contains(kw)).ToList();
+            var filtered = mockReturns.Where(r => 
+                (string.IsNullOrEmpty(kw) || r.MaTraHang.ToString() == kw || r.MaHoaDon.Contains(kw) || r.KhachHang.Contains(kw)) &&
+                (string.IsNullOrEmpty(reason) || r.LyDo.ToLower().Contains(reason))
+            ).ToList();
+            
             dgvReturns.Rows.Clear();
             foreach (var r in filtered)
             {
@@ -374,7 +400,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private void btnRefresh_Click(object? sender, EventArgs e)
         {
-            txtSearch.Text = "";
             LoadReturnListGrid();
         }
 
@@ -504,6 +529,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
                         txtSelTinhTrang.Text = "";
                     }
 
+                    tabSelectionContainer.SelectedTab = tabProductDetail;
+
                     txtSelSoLuong.Focus();
                     txtSelSoLuong.SelectAll();
                 }
@@ -532,6 +559,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private void btnAddToCart_Click(object? sender, EventArgs e)
         {
+            if (!isEditing)
+            {
+                MessageBox.Show("Vui lòng nhấn nút THÊM hoặc SỬA ở Tab 1 trước khi chỉnh sửa sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             string id = txtSelMaSP.Text;
             if (string.IsNullOrEmpty(id))
             {
@@ -584,6 +617,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private void btnRemoveFromCart_Click(object? sender, EventArgs e)
         {
+            if (!isEditing)
+            {
+                MessageBox.Show("Vui lòng nhấn nút THÊM hoặc SỬA ở Tab 1 trước khi chỉnh sửa sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             string id = txtSelMaSP.Text;
             if (string.IsNullOrEmpty(id))
             {
@@ -609,10 +648,85 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelTinhTrang.Text = "";
         }
 
+        private void btnReturnSearch_Click(object? sender, EventArgs e)
+        {
+            string maSp = txtSelMaSP.Text.Trim().ToLower();
+            string tenSp = txtSelTenSP.Text.Trim().ToLower();
+
+            if (string.IsNullOrEmpty(maSp) && string.IsNullOrEmpty(tenSp))
+            {
+                LoadProductsSelectionGrid();
+                return;
+            }
+
+            var filtered = invoiceProducts.Where(p =>
+                (string.IsNullOrEmpty(maSp) || p.MaSanPham.ToLower().Contains(maSp)) &&
+                (string.IsNullOrEmpty(tenSp) || p.TenSanPham.ToLower().Contains(tenSp))
+            ).ToList();
+
+            dgvProductsSelection.Rows.Clear();
+            foreach (var p in filtered)
+            {
+                dgvProductsSelection.Rows.Add(
+                    p.MaSanPham,
+                    p.TenSanPham,
+                    p.SoLuongMua,
+                    p.DaTra,
+                    p.DonGia.ToString("N0") + " đ"
+                );
+            }
+        }
+
+        private void btnReturnRefresh_Click(object? sender, EventArgs e)
+        {
+            txtSelMaSP.Text = "";
+            txtSelTenSP.Text = "";
+            txtSelSoLuong.Text = "";
+            txtSelDonGia.Text = "";
+            txtSelTinhTrang.Text = "";
+            LoadProductsSelectionGrid();
+        }
+
+        private void tabSelectionContainer_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            // Optional picture load when selecting product detail tab
+        }
+
         private void btnBackToReceipt_Click(object? sender, EventArgs e)
         {
             tabMain.SelectedTab = tabPhieuTra;
             PopulateDetailsGrid();
+        }
+
+        private void btnSelectProduct_Click(object? sender, EventArgs e)
+        {
+            string id = txtSelMaSP.Text;
+            if (!string.IsNullOrEmpty(id))
+            {
+                var prod = invoiceProducts.FirstOrDefault(p => p.MaSanPham == id);
+                if (prod != null)
+                {
+                    txtSelMaSP.Text = prod.MaSanPham;
+                    txtSelTenSP.Text = prod.TenSanPham;
+                    txtSelDonGia.Text = prod.DonGia.ToString();
+                    
+                    var existing = currentDetails.FirstOrDefault(d => d.MaSanPham == id);
+                    if (existing != null)
+                    {
+                        txtSelSoLuong.Text = existing.SoLuong.ToString();
+                        txtSelTinhTrang.Text = existing.TinhTrang;
+                    }
+                    else
+                    {
+                        txtSelSoLuong.Text = "1";
+                        txtSelTinhTrang.Text = "";
+                    }
+
+                    tabSelectionContainer.SelectedTab = tabListProducts; // shift back to list
+                    txtSelSoLuong.Focus();
+                    txtSelSoLuong.SelectAll();
+                }
+            }
         }
     }
 }

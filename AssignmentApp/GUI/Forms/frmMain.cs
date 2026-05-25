@@ -109,16 +109,10 @@ namespace AssignmentApp.GUI.Forms
         // ==========================================
         // EVENTS CHO MENU SALES
         // ==========================================
-        private void btnSales_POS_Click(object sender, EventArgs e)
-        {
-            HighlightButton(sender);
-            LoadUserControl(new ucPOS());
-        }
-
         private void btnSales_Orders_Click(object sender, EventArgs e)
         {
             HighlightButton(sender);
-            LoadUserControl(new ucOrderManagement());
+            LoadUserControl(new ucOrderManagement(defaultToPOS: false));
         }
 
         private void btnSales_Delivery_Click(object sender, EventArgs e)

@@ -128,12 +128,30 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboTrangThaiGiao.Enabled = editing;
             dtpNgayGiao.Enabled = editing;
 
-            // Toggle buttons
-            btnSave.Visible = editing;
-            btnCancel.Visible = editing;
+            // Make all buttons visible at all times
+            btnAdd.Visible = true;
+            btnEdit.Visible = true;
+            btnDelete.Visible = true;
+            btnSave.Visible = true;
+            btnCancel.Visible = true;
+
+            // Position them statically side-by-side
+            btnAdd.Location = new Point(15, 510);
+            btnEdit.Location = new Point(115, 510);
+            btnDelete.Location = new Point(215, 510);
+
+            btnSave.Location = new Point(15, 555);
+            btnSave.Size = new Size(140, 36);
+            btnCancel.Location = new Point(165, 555);
+            btnCancel.Size = new Size(140, 36);
+
+            // Enable/disable based on editing state
             btnAdd.Enabled = !editing;
             btnEdit.Enabled = !editing;
             btnDelete.Enabled = !editing;
+
+            btnSave.Enabled = editing;
+            btnCancel.Enabled = editing;
         }
 
         private void ClearInputs()
@@ -206,7 +224,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            txtSearch.Text = "";
             ClearInputs();
             LoadDeliveriesGrid();
             SetEditState(false);
@@ -236,34 +253,17 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            string keyword = txtSearch.Text.Trim().ToLower();
+            string orderIdTerm = txtMaHoaDon.Text.Trim();
+            string addressTerm = txtDiaChiGiao.Text.Trim().ToLower();
 
-            // Nếu ô tìm kiếm chung trống, ta kiểm tra và lấy tiêu chí từ ô nhập liệu Panel trái
-            if (string.IsNullOrEmpty(keyword))
+            var filteredInputs = mockDeliveries.Where(d =>
             {
-                string orderIdTerm = txtMaHoaDon.Text.Trim();
-                string addressTerm = txtDiaChiGiao.Text.Trim().ToLower();
+                bool matchOrder = string.IsNullOrEmpty(orderIdTerm) || d.MaHoaDon.ToString() == orderIdTerm;
+                bool matchAddress = string.IsNullOrEmpty(addressTerm) || d.DiaChiGiao.ToLower().Contains(addressTerm);
+                return matchOrder && matchAddress;
+            }).ToList();
 
-                var filteredInputs = mockDeliveries.Where(d =>
-                {
-                    bool matchOrder = string.IsNullOrEmpty(orderIdTerm) || d.MaHoaDon.ToString() == orderIdTerm;
-                    bool matchAddress = string.IsNullOrEmpty(addressTerm) || d.DiaChiGiao.ToLower().Contains(addressTerm);
-                    return matchOrder && matchAddress;
-                }).ToList();
-
-                LoadDeliveriesGrid(filteredInputs);
-            }
-            else
-            {
-                var filtered = mockDeliveries.Where(d =>
-                    d.MaGiaoHang.ToString() == keyword ||
-                    d.MaHoaDon.ToString() == keyword ||
-                    d.DiaChiGiao.ToLower().Contains(keyword) ||
-                    d.TrangThaiGiao.ToLower().Contains(keyword)
-                ).ToList();
-
-                LoadDeliveriesGrid(filtered);
-            }
+            LoadDeliveriesGrid(filteredInputs);
 
             if (dgvDeliveries.Rows.Count > 0)
             {

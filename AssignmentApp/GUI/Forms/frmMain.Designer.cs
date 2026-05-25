@@ -71,7 +71,6 @@ namespace AssignmentApp.GUI.Forms
             btnSales_Returns = new Guna.UI2.WinForms.Guna2Button();
             btnSales_Delivery = new Guna.UI2.WinForms.Guna2Button();
             btnSales_Orders = new Guna.UI2.WinForms.Guna2Button();
-            btnSales_POS = new Guna.UI2.WinForms.Guna2Button();
             pnlMenuWarehouse = new Guna.UI2.WinForms.Guna2Panel();
             btnWarehouse_Inventory = new Guna.UI2.WinForms.Guna2Button();
             btnWarehouse_StockIn = new Guna.UI2.WinForms.Guna2Button();
@@ -192,7 +191,6 @@ namespace AssignmentApp.GUI.Forms
             pnlMenuSales.Controls.Add(btnSales_Returns);
             pnlMenuSales.Controls.Add(btnSales_Delivery);
             pnlMenuSales.Controls.Add(btnSales_Orders);
-            pnlMenuSales.Controls.Add(btnSales_POS);
             pnlMenuSales.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlMenuSales.CustomizableEdges = customizableEdges15;
             pnlMenuSales.Dock = DockStyle.None;
@@ -273,36 +271,16 @@ namespace AssignmentApp.GUI.Forms
             btnSales_Orders.ForeColor = Color.FromArgb(160, 164, 177);
             btnSales_Orders.HoverState.FillColor = Color.FromArgb(46, 51, 73);
             btnSales_Orders.HoverState.ForeColor = Color.FromArgb(0, 126, 249);
-            btnSales_Orders.Location = new Point(0, 58);
+            btnSales_Orders.Location = new Point(0, 0);
             btnSales_Orders.Margin = new Padding(0);
             btnSales_Orders.Name = "btnSales_Orders";
             btnSales_Orders.ShadowDecoration.CustomizableEdges = customizableEdges12;
             btnSales_Orders.Size = new Size(180, 58);
             btnSales_Orders.TabIndex = 1;
-            btnSales_Orders.Text = "ĐƠN HÀNG";
+            btnSales_Orders.Text = "ĐƠN HÀNG & POS";
             btnSales_Orders.TextAlign = HorizontalAlignment.Left;
             btnSales_Orders.TextOffset = new Point(5, 0);
             btnSales_Orders.Click += btnSales_Orders_Click;
-            // 
-            // btnSales_POS
-            // 
-            btnSales_POS.CustomizableEdges = customizableEdges13;
-            btnSales_POS.Dock = DockStyle.Top;
-            btnSales_POS.FillColor = Color.Transparent;
-            btnSales_POS.Font = new Font("Segoe UI Semibold", 9F);
-            btnSales_POS.ForeColor = Color.FromArgb(160, 164, 177);
-            btnSales_POS.HoverState.FillColor = Color.FromArgb(46, 51, 73);
-            btnSales_POS.HoverState.ForeColor = Color.FromArgb(0, 126, 249);
-            btnSales_POS.Location = new Point(0, 0);
-            btnSales_POS.Margin = new Padding(0);
-            btnSales_POS.Name = "btnSales_POS";
-            btnSales_POS.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            btnSales_POS.Size = new Size(180, 58);
-            btnSales_POS.TabIndex = 0;
-            btnSales_POS.Text = "BÁN HÀNG (POS)";
-            btnSales_POS.TextAlign = HorizontalAlignment.Left;
-            btnSales_POS.TextOffset = new Point(5, 0);
-            btnSales_POS.Click += btnSales_POS_Click;
             // 
             // pnlMenuWarehouse
             // 
@@ -520,7 +498,6 @@ namespace AssignmentApp.GUI.Forms
         private Guna.UI2.WinForms.Guna2Button btnAdmin_Promo;
         private Guna.UI2.WinForms.Guna2Button btnAdmin_Users;
         private Guna.UI2.WinForms.Guna2Panel pnlMenuSales;
-        private Guna.UI2.WinForms.Guna2Button btnSales_POS;
         private Guna.UI2.WinForms.Guna2Button btnSales_Orders;
         private Guna.UI2.WinForms.Guna2Button btnSales_Delivery;
         private Guna.UI2.WinForms.Guna2Button btnSales_Returns;

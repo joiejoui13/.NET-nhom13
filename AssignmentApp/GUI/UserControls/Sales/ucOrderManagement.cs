@@ -54,7 +54,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             InitializeMockData();
             InitializeProducts();
             LoadOrdersGrid();
-            cboFilterStatus.SelectedIndex = 0; // "Tất cả"
+     
             SetEditState(false);
             
             if (dgvOrders.Rows.Count > 0)
@@ -201,19 +201,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private void UpdateConvertToSalesState()
         {
-            if (selectedOrder != null && !isEditing)
-            {
-                bool isPreOrder = selectedOrder.LoaiHoaDon == "Đơn đặt hàng";
-                bool isCanceledOrCompleted = selectedOrder.TrangThai == "Đã huỷ" || selectedOrder.TrangThai == "Đã hoàn thành";
-                
-                btnConvertToInvoice.Enabled = isPreOrder && !isCanceledOrCompleted;
-                btnConvertToInvoice.Visible = isPreOrder;
-            }
-            else
-            {
-                btnConvertToInvoice.Enabled = false;
-                btnConvertToInvoice.Visible = isEditing ? false : true;
-            }
+
         }
 
         private void SetEditState(bool editing)
@@ -281,38 +269,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private void btnSearch_Click(object? sender, EventArgs e)
         {
-            string keyword = txtSearch.Text.Trim().ToLower();
-            string statusFilter = cboFilterStatus.Text;
 
-            var filtered = mockOrders.Where(o =>
-            {
-                bool matchesKeyword = string.IsNullOrEmpty(keyword) || 
-                                     o.MaHoaDon.ToString().Contains(keyword) ||
-                                     o.TenKhachHang.ToLower().Contains(keyword) ||
-                                     o.TenNguoiDung.ToLower().Contains(keyword);
 
-                bool matchesStatus = statusFilter == "Tất cả" || o.TrangThai == statusFilter;
-
-                return matchesKeyword && matchesStatus;
-            }).ToList();
-
-            LoadOrdersGrid(filtered);
-
-            if (dgvOrders.Rows.Count > 0)
-            {
-                SelectOrderRow(0);
-            }
-            else
-            {
-                selectedOrder = null;
-                ClearInputs();
-            }
+      
         }
 
         private void btnRefresh_Click(object? sender, EventArgs e)
         {
-            txtSearch.Text = "";
-            cboFilterStatus.SelectedIndex = 0;
+
             LoadOrdersGrid();
             SetEditState(false);
             if (dgvOrders.Rows.Count > 0)
@@ -334,7 +298,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboTrangThai.SelectedIndex = -1;
             txtLyDoHuy.Text = "";
             dgvOrderDetails.Rows.Clear();
-            btnConvertToInvoice.Enabled = false;
+       
         }
 
         private void btnAdd_Click(object? sender, EventArgs e)

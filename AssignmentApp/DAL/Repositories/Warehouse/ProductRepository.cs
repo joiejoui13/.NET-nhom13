@@ -8,45 +8,44 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
 {
     public class ProductRepository
     {
-        // 1. Lấy danh sách tất cả sản phẩm
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = "SELECT MaSanPham AS MaHang, TenSanPham AS TenHang, MaDanhMuc AS MaLoai, GiaNhap AS DonGiaNhap, GiaBan AS DonGiaBan, SoLuongTon AS SoLuong, MoTa AS GhiChu, Anh FROM SanPham";
+            string sql = "SELECT * FROM SanPham";
             return await DbContext.Conn.QueryAsync<Product>(sql);
         }
 
-        // 2. Lấy sản phẩm theo mã
-        public async Task<Product> GetByIdAsync(string maHang)
+        public async Task<Product> GetByIdAsync(string maSanPham)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = "SELECT MaSanPham AS MaHang, TenSanPham AS TenHang, MaDanhMuc AS MaLoai, GiaNhap AS DonGiaNhap, GiaBan AS DonGiaBan, SoLuongTon AS SoLuong, MoTa AS GhiChu, Anh FROM SanPham WHERE MaSanPham = @MaHang";
-            return await DbContext.Conn.QuerySingleOrDefaultAsync<Product>(sql, new { MaHang = maHang });
+            string sql = "SELECT * FROM SanPham WHERE MaSanPham = @MaSanPham";
+            return await DbContext.Conn.QuerySingleOrDefaultAsync<Product>(sql, new { MaSanPham = maSanPham });
         }
 
-        // 3. Thêm sản phẩm mới (Dùng Parameters để chống SQL Injection)
         public async Task<int> AddAsync(Product p)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = @"INSERT INTO SanPham (MaSanPham, TenSanPham, MaDanhMuc, SoLuongTon, GiaNhap, GiaBan, MoTa, Anh) 
-                           VALUES (@MaHang, @TenHang, @MaLoai, @SoLuong, @DonGiaNhap, @DonGiaBan, @GhiChu, @Anh)";
+            string sql = @"INSERT INTO SanPham (MaSanPham, TenSanPham, MaDanhMuc, GiaBan, GiaNhap, SoLuongTon, MoTa, TrangThai, NgayTao) 
+                           VALUES (@MaSanPham, @TenSanPham, @MaDanhMuc, @GiaBan, @GiaNhap, @SoLuongTon, @MoTa, @TrangThai, @NgayTao)";
             return await DbContext.Conn.ExecuteAsync(sql, p);
         }
 
-        // 4. Xóa sản phẩm
-        public async Task<int> DeleteAsync(string maHang)
+        public async Task<int> UpdateAsync(Product p)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = "DELETE FROM SanPham WHERE MaSanPham = @MaHang";
-            return await DbContext.Conn.ExecuteAsync(sql, new { MaHang = maHang });
+            string sql = @"UPDATE SanPham 
+                           SET TenSanPham = @TenSanPham, MaDanhMuc = @MaDanhMuc, GiaBan = @GiaBan, 
+                               GiaNhap = @GiaNhap, SoLuongTon = @SoLuongTon, MoTa = @MoTa, 
+                               TrangThai = @TrangThai 
+                           WHERE MaSanPham = @MaSanPham";
+            return await DbContext.Conn.ExecuteAsync(sql, p);
         }
 
-        // 5. Cập nhật ảnh sản phẩm
-        public async Task<int> UpdateImageAsync(string maHang, string anh)
+        public async Task<int> DeleteAsync(string maSanPham)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = "UPDATE SanPham SET Anh = @Anh WHERE MaSanPham = @MaHang";
-            return await DbContext.Conn.ExecuteAsync(sql, new { MaHang = maHang, Anh = anh });
+            string sql = "DELETE FROM SanPham WHERE MaSanPham = @MaSanPham";
+            return await DbContext.Conn.ExecuteAsync(sql, new { MaSanPham = maSanPham });
         }
     }
 }

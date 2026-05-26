@@ -29,8 +29,8 @@ namespace AssignmentApp.GUI.Forms
             picLogo.ImageLocation = System.IO.Path.Combine(Application.StartupPath, @"..\..\..\GUI\Resources\Anhlogo.png");
             picLogo.SizeMode = PictureBoxSizeMode.StretchImage;
             picLogo.Padding = new Padding(0); // Đảm bảo không bị lề thụt vào
-           
-           
+
+
         }
 
         private void ApplyAuthorization(string role)
@@ -56,7 +56,7 @@ namespace AssignmentApp.GUI.Forms
         private void HighlightButton(object senderButton)
         {
             if (senderButton == null) return;
-            
+
             // Reset màu cho tất cả các nút
             Panel[] menus = { pnlMenuAdmin, pnlMenuSales, pnlMenuWarehouse };
             foreach (var panel in menus)
@@ -109,16 +109,10 @@ namespace AssignmentApp.GUI.Forms
         // ==========================================
         // EVENTS CHO MENU SALES
         // ==========================================
-        private void btnSales_POS_Click(object sender, EventArgs e)
-        {
-            HighlightButton(sender);
-            LoadUserControl(new ucPOS());
-        }
-
         private void btnSales_Orders_Click(object sender, EventArgs e)
         {
             HighlightButton(sender);
-            LoadUserControl(new ucOrderManagement());
+            LoadUserControl(new ucOrderManagement(defaultToPOS: false));
         }
 
         private void btnSales_Delivery_Click(object sender, EventArgs e)
@@ -130,7 +124,7 @@ namespace AssignmentApp.GUI.Forms
         private void btnSales_Returns_Click(object sender, EventArgs e)
         {
             HighlightButton(sender);
-            LoadUserControl(new ucReturns());
+            LoadUserControl(new ucReturn());
         }
 
         private void btnSales_Customers_Click(object sender, EventArgs e)
@@ -170,10 +164,10 @@ namespace AssignmentApp.GUI.Forms
 
         private void btnDangXuat_Click(object sender, EventArgs e)
         {
-            DialogResult result = AssignmentApp.GUI.Utils.MsgBox.Show(this, 
-                "Bạn có chắc chắn muốn đăng xuất không?", 
-                "Xác nhận", 
-                Guna.UI2.WinForms.MessageDialogButtons.YesNo, 
+            DialogResult result = AssignmentApp.GUI.Utils.MsgBox.Show(this,
+                "Bạn có chắc chắn muốn đăng xuất không?",
+                "Xác nhận",
+                Guna.UI2.WinForms.MessageDialogButtons.YesNo,
                 Guna.UI2.WinForms.MessageDialogIcon.Question);
 
             if (result == DialogResult.Yes)
@@ -182,14 +176,14 @@ namespace AssignmentApp.GUI.Forms
                 _isLoggingOut = true;
 
                 // Gọi xuống BLL (MainService) để xử lý nghiệp vụ đăng xuất
-                _mainService.Logout(); 
-                
-                 // Mở lại trang Login sử dụng DI Container
-                 this.Hide();
-                 frmAuth login = Program.ServiceProvider.GetRequiredService<frmAuth>();
-                 login.ShowDialog();
-                 this.Close();
-             }
+                _mainService.Logout();
+
+                // Mở lại trang Login sử dụng DI Container
+                this.Hide();
+                frmAuth login = Program.ServiceProvider.GetRequiredService<frmAuth>();
+                login.ShowDialog();
+                this.Close();
+            }
         }
 
         private void frmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -197,15 +191,20 @@ namespace AssignmentApp.GUI.Forms
             // Nếu đang trong quá trình đăng xuất, bỏ qua xác nhận đóng
             if (_isLoggingOut) return;
 
-            DialogResult result = AssignmentApp.GUI.Utils.MsgBox.Show(this, 
-                "Bạn có chắc chắn muốn đóng ứng dụng không?", 
-                "Xác nhận đóng", 
-                Guna.UI2.WinForms.MessageDialogButtons.YesNo, 
+            DialogResult result = AssignmentApp.GUI.Utils.MsgBox.Show(this,
+                "Bạn có chắc chắn muốn đóng ứng dụng không?",
+                "Xác nhận đóng",
+                Guna.UI2.WinForms.MessageDialogButtons.YesNo,
                 Guna.UI2.WinForms.MessageDialogIcon.Question);
             if (result == DialogResult.No)
             {
                 e.Cancel = true; // Hủy lệnh đóng Form
             }
+        }
+
+        private void pnlMenuAdmin_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

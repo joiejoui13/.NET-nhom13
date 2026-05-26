@@ -8,5 +8,9 @@ namespace AssignmentApp.DTO
         public System.DateTime NgayBan { get; set; }
         public decimal TongTien { get; set; }
         public string TrangThai { get; set; }
+        public string MaKM { get; set; }
+        public decimal GiamGia { get; set; }
+        public string MaGiaoHang { get; set; }
+        public string HinhThucThanhToan { get; set; }
     }
 }

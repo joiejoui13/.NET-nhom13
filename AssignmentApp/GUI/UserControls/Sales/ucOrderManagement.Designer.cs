@@ -41,8 +41,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             this.btnUpdate = new Guna.UI2.WinForms.Guna2Button();
             this.btnDelete = new Guna.UI2.WinForms.Guna2Button();
             this.btnViewDetails = new Guna.UI2.WinForms.Guna2Button();
-            this.btnRefresh = new Guna.UI2.WinForms.Guna2Button();
-            
+            this.cbTrangThai = new Guna.UI2.WinForms.Guna2ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvOrders)).BeginInit();
             this.pnlTop.SuspendLayout();
             this.SuspendLayout();
@@ -84,6 +83,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // pnlTop
             // 
             this.pnlTop.BackColor = System.Drawing.Color.White;
+            this.pnlTop.Controls.Add(this.cbTrangThai);
             this.pnlTop.Controls.Add(this.lblTitle);
             this.pnlTop.Controls.Add(this.txtMaHD);
             this.pnlTop.Controls.Add(this.txtMaKH);
@@ -211,6 +211,25 @@ namespace AssignmentApp.GUI.UserControls.Sales
             this.cbHinhThucThanhToan.Size = new System.Drawing.Size(150, 36);
             this.cbHinhThucThanhToan.TabIndex = 8;
             // 
+            // cbTrangThai
+            // 
+            this.cbTrangThai.BackColor = System.Drawing.Color.Transparent;
+            this.cbTrangThai.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cbTrangThai.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTrangThai.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cbTrangThai.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(68)))), ((int)(((byte)(88)))), ((int)(((byte)(112)))));
+            this.cbTrangThai.ItemHeight = 30;
+            this.cbTrangThai.Items.AddRange(new object[] {
+            "Chờ xử lý",
+            "Đang giao",
+            "Đã giao",
+            "Hoàn thành",
+            "Hủy"});
+            this.cbTrangThai.Location = new System.Drawing.Point(345, 105);
+            this.cbTrangThai.Name = "cbTrangThai";
+            this.cbTrangThai.Size = new System.Drawing.Size(150, 36);
+            this.cbTrangThai.TabIndex = 14;
+            // 
             // btnAdd
             // 
             this.btnAdd.Font = new System.Drawing.Font("Segoe UI", 9F);
@@ -303,6 +322,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private Guna.UI2.WinForms.Guna2Button btnDelete;
         private Guna.UI2.WinForms.Guna2Button btnViewDetails;
         private Guna.UI2.WinForms.Guna2Button btnRefresh;
+        private Guna.UI2.WinForms.Guna2ComboBox cbTrangThai;
     }
 }
 

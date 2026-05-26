@@ -32,10 +32,10 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges8 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges4 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges5 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges6 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges9 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges10 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges11 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -49,10 +49,16 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             txtSearch = new Guna.UI2.WinForms.Guna2TextBox();
-            cboCategory = new Guna.UI2.WinForms.Guna2ComboBox();
             btnSearch = new Guna.UI2.WinForms.Guna2Button();
+            cboCategory = new Guna.UI2.WinForms.Guna2ComboBox();
             guna2Panel2 = new Guna.UI2.WinForms.Guna2Panel();
             btnAdd = new Guna.UI2.WinForms.Guna2Button();
             btnEdit = new Guna.UI2.WinForms.Guna2Button();
@@ -60,8 +66,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvProducts = new Guna.UI2.WinForms.Guna2DataGridView();
             guna2Panel3 = new Guna.UI2.WinForms.Guna2Panel();
             pnlRight = new Guna.UI2.WinForms.Guna2Panel();
-            picProduct = new Guna.UI2.WinForms.Guna2PictureBox();
             btnChooseImage = new Guna.UI2.WinForms.Guna2Button();
+            picProduct = new Guna.UI2.WinForms.Guna2PictureBox();
             guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvProducts).BeginInit();
             guna2Panel3.SuspendLayout();
@@ -78,7 +84,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             guna2Panel1.Location = new Point(0, 0);
             guna2Panel1.Name = "guna2Panel1";
             guna2Panel1.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            guna2Panel1.Size = new Size(1000, 70);
+            guna2Panel1.Size = new Size(1007, 70);
             guna2Panel1.TabIndex = 0;
             // 
             // txtSearch
@@ -101,6 +107,22 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtSearch.Size = new Size(286, 60);
             txtSearch.TabIndex = 0;
             // 
+            // btnSearch
+            // 
+            btnSearch.CustomizableEdges = customizableEdges3;
+            btnSearch.DisabledState.BorderColor = Color.DarkGray;
+            btnSearch.DisabledState.CustomBorderColor = Color.DarkGray;
+            btnSearch.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
+            btnSearch.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
+            btnSearch.Font = new Font("Segoe UI", 9F);
+            btnSearch.ForeColor = Color.White;
+            btnSearch.Location = new Point(51, 8);
+            btnSearch.Name = "btnSearch";
+            btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges4;
+            btnSearch.Size = new Size(225, 56);
+            btnSearch.TabIndex = 2;
+            btnSearch.Text = "Tìm kiếm";
+            // 
             // cboCategory
             // 
             cboCategory.BackColor = Color.Transparent;
@@ -118,30 +140,14 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             cboCategory.Size = new Size(175, 36);
             cboCategory.TabIndex = 1;
             // 
-            // btnSearch
-            // 
-            btnSearch.CustomizableEdges = customizableEdges3;
-            btnSearch.DisabledState.BorderColor = Color.DarkGray;
-            btnSearch.DisabledState.CustomBorderColor = Color.DarkGray;
-            btnSearch.DisabledState.FillColor = Color.FromArgb(169, 169, 169);
-            btnSearch.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
-            btnSearch.Font = new Font("Segoe UI", 9F);
-            btnSearch.ForeColor = Color.White;
-            btnSearch.Location = new Point(51, 8);
-            btnSearch.Name = "btnSearch";
-            btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            btnSearch.Size = new Size(225, 56);
-            btnSearch.TabIndex = 2;
-            btnSearch.Text = "Tìm kiếm";
-            // 
             // guna2Panel2
             // 
             guna2Panel2.CustomizableEdges = customizableEdges9;
             guna2Panel2.Dock = DockStyle.Bottom;
-            guna2Panel2.Location = new Point(27, 609);
+            guna2Panel2.Location = new Point(27, 617);
             guna2Panel2.Name = "guna2Panel2";
             guna2Panel2.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            guna2Panel2.Size = new Size(946, 60);
+            guna2Panel2.Size = new Size(736, 60);
             guna2Panel2.TabIndex = 3;
             // 
             // btnAdd
@@ -153,10 +159,10 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             btnAdd.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnAdd.Font = new Font("Segoe UI", 9F);
             btnAdd.ForeColor = Color.White;
-            btnAdd.Location = new Point(82, 16);
+            btnAdd.Location = new Point(24, 16);
             btnAdd.Name = "btnAdd";
             btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            btnAdd.Size = new Size(225, 56);
+            btnAdd.Size = new Size(210, 56);
             btnAdd.TabIndex = 4;
             btnAdd.Text = "Thêm mới";
             // 
@@ -169,10 +175,10 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             btnEdit.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btnEdit.Font = new Font("Segoe UI", 9F);
             btnEdit.ForeColor = Color.White;
-            btnEdit.Location = new Point(674, 16);
+            btnEdit.Location = new Point(494, 16);
             btnEdit.Name = "btnEdit";
             btnEdit.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            btnEdit.Size = new Size(225, 56);
+            btnEdit.Size = new Size(215, 56);
             btnEdit.TabIndex = 5;
             btnEdit.Text = "Sửa";
             // 
@@ -185,10 +191,10 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             btndelete.DisabledState.ForeColor = Color.FromArgb(141, 141, 141);
             btndelete.Font = new Font("Segoe UI", 9F);
             btndelete.ForeColor = Color.White;
-            btndelete.Location = new Point(347, 16);
+            btndelete.Location = new Point(260, 16);
             btndelete.Name = "btndelete";
             btndelete.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            btndelete.Size = new Size(225, 56);
+            btndelete.Size = new Size(212, 56);
             btndelete.TabIndex = 6;
             btndelete.Text = "Xóa";
             // 
@@ -204,7 +210,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgvProducts.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            dgvProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvProducts.ColumnHeadersHeight = 4;
+            dgvProducts.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -219,7 +226,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvProducts.Name = "dgvProducts";
             dgvProducts.RowHeadersVisible = false;
             dgvProducts.RowHeadersWidth = 51;
-            dgvProducts.Size = new Size(946, 638);
+            dgvProducts.Size = new Size(980, 646);
             dgvProducts.TabIndex = 7;
             dgvProducts.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvProducts.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -232,7 +239,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvProducts.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvProducts.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
             dgvProducts.ThemeStyle.HeaderStyle.ForeColor = Color.White;
-            dgvProducts.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvProducts.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
             dgvProducts.ThemeStyle.HeaderStyle.Height = 4;
             dgvProducts.ThemeStyle.ReadOnly = false;
             dgvProducts.ThemeStyle.RowsStyle.BackColor = Color.White;
@@ -250,54 +257,48 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             guna2Panel3.Controls.Add(btndelete);
             guna2Panel3.CustomizableEdges = customizableEdges17;
             guna2Panel3.Dock = DockStyle.Bottom;
-            guna2Panel3.Location = new Point(27, 484);
+            guna2Panel3.Location = new Point(27, 492);
             guna2Panel3.Name = "guna2Panel3";
             guna2Panel3.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            guna2Panel3.Size = new Size(946, 125);
+            guna2Panel3.Size = new Size(736, 125);
             guna2Panel3.TabIndex = 8;
             // 
             // pnlRight
             // 
-            Guna.UI2.WinForms.Suite.CustomizableEdges pnlRightEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges pnlRightEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            pnlRight.CustomizableEdges = pnlRightEdges1;
-            pnlRight.ShadowDecoration.CustomizableEdges = pnlRightEdges2;
             pnlRight.Controls.Add(btnChooseImage);
             pnlRight.Controls.Add(picProduct);
+            pnlRight.CustomizableEdges = customizableEdges23;
             pnlRight.Dock = DockStyle.Right;
-            pnlRight.Location = new Point(750, 70);
+            pnlRight.Location = new Point(763, 31);
             pnlRight.Name = "pnlRight";
-            pnlRight.Size = new Size(250, 630);
+            pnlRight.ShadowDecoration.CustomizableEdges = customizableEdges24;
+            pnlRight.Size = new Size(244, 646);
             pnlRight.TabIndex = 9;
+            // 
+            // btnChooseImage
+            // 
+            btnChooseImage.CustomizableEdges = customizableEdges19;
+            btnChooseImage.Font = new Font("Segoe UI", 9F);
+            btnChooseImage.ForeColor = Color.White;
+            btnChooseImage.Location = new Point(25, 297);
+            btnChooseImage.Name = "btnChooseImage";
+            btnChooseImage.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            btnChooseImage.Size = new Size(200, 45);
+            btnChooseImage.TabIndex = 1;
+            btnChooseImage.Text = "Chọn ảnh";
             // 
             // picProduct
             // 
-            Guna.UI2.WinForms.Suite.CustomizableEdges picProductEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges picProductEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            picProduct.CustomizableEdges = picProductEdges1;
-            picProduct.ShadowDecoration.CustomizableEdges = picProductEdges2;
             picProduct.BorderStyle = BorderStyle.FixedSingle;
+            picProduct.CustomizableEdges = customizableEdges21;
             picProduct.ImageRotate = 0F;
-            picProduct.Location = new Point(25, 20);
+            picProduct.Location = new Point(25, 80);
             picProduct.Name = "picProduct";
+            picProduct.ShadowDecoration.CustomizableEdges = customizableEdges22;
             picProduct.Size = new Size(200, 200);
             picProduct.SizeMode = PictureBoxSizeMode.Zoom;
             picProduct.TabIndex = 0;
             picProduct.TabStop = false;
-            // 
-            // btnChooseImage
-            // 
-            Guna.UI2.WinForms.Suite.CustomizableEdges btnChooseImageEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges btnChooseImageEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            btnChooseImage.CustomizableEdges = btnChooseImageEdges1;
-            btnChooseImage.ShadowDecoration.CustomizableEdges = btnChooseImageEdges2;
-            btnChooseImage.Font = new Font("Segoe UI", 9F);
-            btnChooseImage.ForeColor = Color.White;
-            btnChooseImage.Location = new Point(25, 240);
-            btnChooseImage.Name = "btnChooseImage";
-            btnChooseImage.Size = new Size(200, 45);
-            btnChooseImage.TabIndex = 1;
-            btnChooseImage.Text = "Chọn ảnh";
             // 
             // ucProductList
             // 
@@ -310,7 +311,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             Controls.Add(pnlRight);
             Controls.Add(dgvProducts);
             Name = "ucProductList";
-            Size = new Size(1000, 700);
+            Size = new Size(1034, 708);
             guna2Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvProducts).EndInit();
             guna2Panel3.ResumeLayout(false);

@@ -15,7 +15,7 @@ namespace AssignmentApp.DAL.Repositories.Sales
             return await DbContext.Conn.QueryAsync<Delivery>(sql);
         }
 
-        public async Task<Delivery> GetByIdAsync(string maGiaoHang)
+        public async Task<Delivery> GetByIdAsync(int maGiaoHang)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
             string sql = "SELECT * FROM GiaoHang WHERE MaGiaoHang = @MaGiaoHang";
@@ -25,8 +25,8 @@ namespace AssignmentApp.DAL.Repositories.Sales
         public async Task<int> AddAsync(Delivery d)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = @"INSERT INTO GiaoHang (MaGiaoHang, MaHoaDon, DiaChiGiao, TrangThaiGiao, NgayGiao) 
-                           VALUES (@MaGiaoHang, @MaHoaDon, @DiaChiGiao, @TrangThaiGiao, @NgayGiao)";
+            string sql = @"INSERT INTO GiaoHang (MaHoaDon, MaTraHang, DiaChiGiao, TrangThai, NgayGiao) 
+                           VALUES (@MaHoaDon, @MaTraHang, @DiaChiGiao, @TrangThai, @NgayGiao)";
             return await DbContext.Conn.ExecuteAsync(sql, d);
         }
 
@@ -34,13 +34,13 @@ namespace AssignmentApp.DAL.Repositories.Sales
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
             string sql = @"UPDATE GiaoHang 
-                           SET MaHoaDon = @MaHoaDon, DiaChiGiao = @DiaChiGiao, 
-                               TrangThaiGiao = @TrangThaiGiao, NgayGiao = @NgayGiao 
+                           SET MaHoaDon = @MaHoaDon, MaTraHang = @MaTraHang, DiaChiGiao = @DiaChiGiao, 
+                               TrangThai = @TrangThai, NgayGiao = @NgayGiao 
                            WHERE MaGiaoHang = @MaGiaoHang";
             return await DbContext.Conn.ExecuteAsync(sql, d);
         }
 
-        public async Task<int> DeleteAsync(string maGiaoHang)
+        public async Task<int> DeleteAsync(int maGiaoHang)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
             string sql = "DELETE FROM GiaoHang WHERE MaGiaoHang = @MaGiaoHang";

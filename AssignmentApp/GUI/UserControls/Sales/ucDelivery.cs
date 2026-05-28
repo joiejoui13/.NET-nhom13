@@ -135,16 +135,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnSave.Visible = true;
             btnCancel.Visible = true;
 
-            // Position them statically side-by-side
-            btnAdd.Location = new Point(15, 510);
-            btnEdit.Location = new Point(115, 510);
-            btnDelete.Location = new Point(215, 510);
-
-            btnSave.Location = new Point(15, 555);
-            btnSave.Size = new Size(140, 36);
-            btnCancel.Location = new Point(165, 555);
-            btnCancel.Size = new Size(140, 36);
-
             // Enable/disable based on editing state
             btnAdd.Enabled = !editing;
             btnEdit.Enabled = !editing;
@@ -343,6 +333,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     SelectDeliveryRow(index);
                 }
             }
+        }
+
+        private void txtMaHoaDon_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

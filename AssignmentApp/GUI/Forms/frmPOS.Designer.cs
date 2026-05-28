@@ -1,6 +1,6 @@
-﻿namespace AssignmentApp.GUI.UserControls.Sales
+﻿namespace AssignmentApp.GUI.Forms
 {
-    partial class ucOrderManagement
+    partial class frmPOS
     {
         private System.ComponentModel.IContainer components = null;
 
@@ -60,10 +60,6 @@
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges45 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges46 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges39 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges40 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges41 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges42 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges43 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges44 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges53 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -76,16 +72,6 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges50 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges73 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges74 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges55 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges56 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges57 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges58 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges59 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges60 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges61 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges62 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges63 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges64 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             DataGridViewCellStyle dataGridViewCellStyle4 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle5 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle6 = new DataGridViewCellStyle();
@@ -97,6 +83,22 @@
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges70 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges71 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges72 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges55 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges56 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges57 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges58 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges59 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges60 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges61 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges62 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges63 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges64 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges39 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges40 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges41 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges42 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            //tabMain = new TabControl();
+            //tabPhieuXuat = new TabPage();
             pnlInputCard = new Guna.UI2.WinForms.Guna2Panel();
             lblInputTitle = new Label();
             lblMaHoaDon = new Label();
@@ -148,9 +150,8 @@
             colDetailSoLuong = new DataGridViewTextBoxColumn();
             colDetailDonGia = new DataGridViewTextBoxColumn();
             colDetailThanhTien = new DataGridViewTextBoxColumn();
+            //tabChonSanPham = new TabPage();
             pnlPOSTop = new Guna.UI2.WinForms.Guna2Panel();
-            btnStockInSearch = new Guna.UI2.WinForms.Guna2Button();
-            btnStockInRefresh = new Guna.UI2.WinForms.Guna2Button();
             lblPOSTitle = new Label();
             btnPOSSearch = new Guna.UI2.WinForms.Guna2Button();
             btnPOSRefresh = new Guna.UI2.WinForms.Guna2Button();
@@ -168,11 +169,6 @@
             btnSelectProduct = new Guna.UI2.WinForms.Guna2Button();
             lblProductDetailDesc = new Label();
             pnlChonRight = new Guna.UI2.WinForms.Guna2Panel();
-            guna2Button3 = new Guna.UI2.WinForms.Guna2Button();
-            guna2Button4 = new Guna.UI2.WinForms.Guna2Button();
-            btnAddToCart = new Guna.UI2.WinForms.Guna2Button();
-            btnRemoveFromCart = new Guna.UI2.WinForms.Guna2Button();
-            btnBackToReceipt = new Guna.UI2.WinForms.Guna2Button();
             lblChonRightTitle = new Label();
             dgvCurrentDetails = new Guna.UI2.WinForms.Guna2DataGridView();
             colCurMaSP = new DataGridViewTextBoxColumn();
@@ -190,6 +186,15 @@
             txtSelGiaNhap = new Guna.UI2.WinForms.Guna2TextBox();
             lblTotalAmount = new Label();
             txtProductSearch = new Guna.UI2.WinForms.Guna2TextBox();
+            guna2Button3 = new Guna.UI2.WinForms.Guna2Button();
+            guna2Button4 = new Guna.UI2.WinForms.Guna2Button();
+            btnAddToCart = new Guna.UI2.WinForms.Guna2Button();
+            btnRemoveFromCart = new Guna.UI2.WinForms.Guna2Button();
+            btnBackToReceipt = new Guna.UI2.WinForms.Guna2Button();
+            btnStockInSearch = new Guna.UI2.WinForms.Guna2Button();
+            btnStockInRefresh = new Guna.UI2.WinForms.Guna2Button();
+            tabMain.SuspendLayout();
+            tabPhieuXuat.SuspendLayout();
             pnlInputCard.SuspendLayout();
             pnlGridCard.SuspendLayout();
             tabOrderContainer.SuspendLayout();
@@ -197,6 +202,7 @@
             ((System.ComponentModel.ISupportInitialize)dgvOrders).BeginInit();
             tabOrderDetail.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvOrderDetails).BeginInit();
+            tabChonSanPham.SuspendLayout();
             pnlPOSTop.SuspendLayout();
             pnlChonLeft.SuspendLayout();
             tabSelectionContainer.SuspendLayout();
@@ -208,722 +214,7 @@
             pnlChonRight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCurrentDetails).BeginInit();
             SuspendLayout();
-            // 
-            // pnlInputCard
-            // 
-            pnlInputCard.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            pnlInputCard.AutoScroll = true;
-            pnlInputCard.BackColor = Color.Transparent;
-            pnlInputCard.BorderRadius = 10;
-            pnlInputCard.Controls.Add(lblInputTitle);
-            pnlInputCard.Controls.Add(lblMaHoaDon);
-            pnlInputCard.Controls.Add(txtMaHoaDon);
-            pnlInputCard.Controls.Add(lblLoaiHoaDon);
-            pnlInputCard.Controls.Add(cboLoaiHoaDon);
-            pnlInputCard.Controls.Add(lblMaKhachHang);
-            pnlInputCard.Controls.Add(txtMaKhachHang);
-            pnlInputCard.Controls.Add(lblTenNguoiDung);
-            pnlInputCard.Controls.Add(txtTenNguoiDung);
-            pnlInputCard.Controls.Add(lblHinhThucThanhToan);
-            pnlInputCard.Controls.Add(txtHinhThucThanhToan);
-            pnlInputCard.Controls.Add(lblTongTien);
-            pnlInputCard.Controls.Add(txtTongTien);
-            pnlInputCard.Controls.Add(lblGiamGia);
-            pnlInputCard.Controls.Add(txtGiamGia);
-            pnlInputCard.Controls.Add(lblNgayTao);
-            pnlInputCard.Controls.Add(txtNgayTao);
-            pnlInputCard.Controls.Add(lblTrangThai);
-            pnlInputCard.Controls.Add(cboTrangThai);
-            pnlInputCard.Controls.Add(lblLyDoHuy);
-            pnlInputCard.Controls.Add(txtLyDoHuy);
-            pnlInputCard.Controls.Add(btnAdd);
-            pnlInputCard.Controls.Add(btnEdit);
-            pnlInputCard.Controls.Add(btnDelete);
-            pnlInputCard.Controls.Add(btnSave);
-            pnlInputCard.Controls.Add(btnCancel);
-            pnlInputCard.CustomizableEdges = customizableEdges31;
-            pnlInputCard.FillColor = Color.White;
-            pnlInputCard.Location = new Point(15, 20);
-            pnlInputCard.Name = "pnlInputCard";
-            pnlInputCard.ShadowDecoration.CustomizableEdges = customizableEdges32;
-            pnlInputCard.Size = new Size(320, 1406);
-            pnlInputCard.TabIndex = 0;
-            // 
-            // lblInputTitle
-            // 
-            lblInputTitle.AutoSize = true;
-            lblInputTitle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblInputTitle.ForeColor = Color.FromArgb(0, 126, 249);
-            lblInputTitle.Location = new Point(15, 10);
-            lblInputTitle.Name = "lblInputTitle";
-            lblInputTitle.Size = new Size(402, 48);
-            lblInputTitle.TabIndex = 0;
-            lblInputTitle.Text = "THÔNG TIN HÓA ĐƠN";
-            // 
-            // lblMaHoaDon
-            // 
-            lblMaHoaDon.AutoSize = true;
-            lblMaHoaDon.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblMaHoaDon.ForeColor = Color.FromArgb(64, 64, 64);
-            lblMaHoaDon.Location = new Point(15, 40);
-            lblMaHoaDon.Name = "lblMaHoaDon";
-            lblMaHoaDon.Size = new Size(177, 37);
-            lblMaHoaDon.TabIndex = 1;
-            lblMaHoaDon.Text = "Mã hóa đơn:";
-            // 
-            // txtMaHoaDon
-            // 
-            txtMaHoaDon.BorderRadius = 5;
-            txtMaHoaDon.CustomizableEdges = customizableEdges1;
-            txtMaHoaDon.DefaultText = "";
-            txtMaHoaDon.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtMaHoaDon.Font = new Font("Segoe UI", 9F);
-            txtMaHoaDon.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtMaHoaDon.Location = new Point(15, 55);
-            txtMaHoaDon.Margin = new Padding(6, 7, 6, 7);
-            txtMaHoaDon.Name = "txtMaHoaDon";
-            txtMaHoaDon.PlaceholderText = "";
-            txtMaHoaDon.ReadOnly = true;
-            txtMaHoaDon.SelectedText = "";
-            txtMaHoaDon.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            txtMaHoaDon.Size = new Size(290, 30);
-            txtMaHoaDon.TabIndex = 1;
-            // 
-            // lblLoaiHoaDon
-            // 
-            lblLoaiHoaDon.AutoSize = true;
-            lblLoaiHoaDon.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblLoaiHoaDon.ForeColor = Color.FromArgb(64, 64, 64);
-            lblLoaiHoaDon.Location = new Point(15, 95);
-            lblLoaiHoaDon.Name = "lblLoaiHoaDon";
-            lblLoaiHoaDon.Size = new Size(190, 37);
-            lblLoaiHoaDon.TabIndex = 101;
-            lblLoaiHoaDon.Text = "Loại hóa đơn:";
-            // 
-            // cboLoaiHoaDon
-            // 
-            cboLoaiHoaDon.BackColor = Color.Transparent;
-            cboLoaiHoaDon.BorderRadius = 5;
-            cboLoaiHoaDon.CustomizableEdges = customizableEdges3;
-            cboLoaiHoaDon.DrawMode = DrawMode.OwnerDrawFixed;
-            cboLoaiHoaDon.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboLoaiHoaDon.FocusedColor = Color.FromArgb(0, 126, 249);
-            cboLoaiHoaDon.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            cboLoaiHoaDon.Font = new Font("Segoe UI", 9F);
-            cboLoaiHoaDon.ForeColor = Color.FromArgb(68, 88, 112);
-            cboLoaiHoaDon.ItemHeight = 24;
-            cboLoaiHoaDon.Items.AddRange(new object[] { "Ä\u0090Æ¡n bÃ¡n hÃ ng", "Ä\u0090Æ¡n Ä‘áº·t hÃ ng" });
-            cboLoaiHoaDon.Location = new Point(15, 110);
-            cboLoaiHoaDon.Name = "cboLoaiHoaDon";
-            cboLoaiHoaDon.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            cboLoaiHoaDon.Size = new Size(290, 30);
-            cboLoaiHoaDon.TabIndex = 2;
-            // 
-            // lblMaKhachHang
-            // 
-            lblMaKhachHang.AutoSize = true;
-            lblMaKhachHang.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblMaKhachHang.ForeColor = Color.FromArgb(64, 64, 64);
-            lblMaKhachHang.Location = new Point(15, 150);
-            lblMaKhachHang.Name = "lblMaKhachHang";
-            lblMaKhachHang.Size = new Size(173, 37);
-            lblMaKhachHang.TabIndex = 3;
-            lblMaKhachHang.Text = "Khách hàng:";
-            // 
-            // txtMaKhachHang
-            // 
-            txtMaKhachHang.BorderRadius = 5;
-            txtMaKhachHang.CustomizableEdges = customizableEdges5;
-            txtMaKhachHang.DefaultText = "";
-            txtMaKhachHang.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtMaKhachHang.Font = new Font("Segoe UI", 9F);
-            txtMaKhachHang.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtMaKhachHang.Location = new Point(15, 165);
-            txtMaKhachHang.Margin = new Padding(6, 7, 6, 7);
-            txtMaKhachHang.Name = "txtMaKhachHang";
-            txtMaKhachHang.PlaceholderText = "";
-            txtMaKhachHang.ReadOnly = true;
-            txtMaKhachHang.SelectedText = "";
-            txtMaKhachHang.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            txtMaKhachHang.Size = new Size(290, 30);
-            txtMaKhachHang.TabIndex = 4;
-            // 
-            // lblTenNguoiDung
-            // 
-            lblTenNguoiDung.AutoSize = true;
-            lblTenNguoiDung.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblTenNguoiDung.ForeColor = Color.FromArgb(64, 64, 64);
-            lblTenNguoiDung.Location = new Point(15, 205);
-            lblTenNguoiDung.Name = "lblTenNguoiDung";
-            lblTenNguoiDung.Size = new Size(203, 37);
-            lblTenNguoiDung.TabIndex = 5;
-            lblTenNguoiDung.Text = "Nhân viên tạo:";
-            // 
-            // txtTenNguoiDung
-            // 
-            txtTenNguoiDung.BorderRadius = 5;
-            txtTenNguoiDung.CustomizableEdges = customizableEdges7;
-            txtTenNguoiDung.DefaultText = "";
-            txtTenNguoiDung.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtTenNguoiDung.Font = new Font("Segoe UI", 9F);
-            txtTenNguoiDung.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtTenNguoiDung.Location = new Point(15, 220);
-            txtTenNguoiDung.Margin = new Padding(6, 7, 6, 7);
-            txtTenNguoiDung.Name = "txtTenNguoiDung";
-            txtTenNguoiDung.PlaceholderText = "";
-            txtTenNguoiDung.ReadOnly = true;
-            txtTenNguoiDung.SelectedText = "";
-            txtTenNguoiDung.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            txtTenNguoiDung.Size = new Size(290, 30);
-            txtTenNguoiDung.TabIndex = 6;
-            // 
-            // lblHinhThucThanhToan
-            // 
-            lblHinhThucThanhToan.AutoSize = true;
-            lblHinhThucThanhToan.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblHinhThucThanhToan.ForeColor = Color.FromArgb(64, 64, 64);
-            lblHinhThucThanhToan.Location = new Point(15, 370);
-            lblHinhThucThanhToan.Name = "lblHinhThucThanhToan";
-            lblHinhThucThanhToan.Size = new Size(297, 37);
-            lblHinhThucThanhToan.TabIndex = 11;
-            lblHinhThucThanhToan.Text = "Hình thức thanh toán:";
-            // 
-            // txtHinhThucThanhToan
-            // 
-            txtHinhThucThanhToan.BorderRadius = 5;
-            txtHinhThucThanhToan.CustomizableEdges = customizableEdges9;
-            txtHinhThucThanhToan.DefaultText = "";
-            txtHinhThucThanhToan.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtHinhThucThanhToan.Font = new Font("Segoe UI", 9F);
-            txtHinhThucThanhToan.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtHinhThucThanhToan.Location = new Point(15, 385);
-            txtHinhThucThanhToan.Margin = new Padding(6, 7, 6, 7);
-            txtHinhThucThanhToan.Name = "txtHinhThucThanhToan";
-            txtHinhThucThanhToan.PlaceholderText = "";
-            txtHinhThucThanhToan.ReadOnly = true;
-            txtHinhThucThanhToan.SelectedText = "";
-            txtHinhThucThanhToan.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            txtHinhThucThanhToan.Size = new Size(290, 30);
-            txtHinhThucThanhToan.TabIndex = 12;
-            // 
-            // lblTongTien
-            // 
-            lblTongTien.AutoSize = true;
-            lblTongTien.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblTongTien.ForeColor = Color.FromArgb(64, 64, 64);
-            lblTongTien.Location = new Point(15, 260);
-            lblTongTien.Name = "lblTongTien";
-            lblTongTien.Size = new Size(147, 37);
-            lblTongTien.TabIndex = 7;
-            lblTongTien.Text = "Tổng tiền:";
-            // 
-            // txtTongTien
-            // 
-            txtTongTien.BorderRadius = 5;
-            txtTongTien.CustomizableEdges = customizableEdges11;
-            txtTongTien.DefaultText = "";
-            txtTongTien.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtTongTien.Font = new Font("Segoe UI", 9F);
-            txtTongTien.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtTongTien.Location = new Point(15, 275);
-            txtTongTien.Margin = new Padding(6, 7, 6, 7);
-            txtTongTien.Name = "txtTongTien";
-            txtTongTien.PlaceholderText = "";
-            txtTongTien.ReadOnly = true;
-            txtTongTien.SelectedText = "";
-            txtTongTien.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            txtTongTien.Size = new Size(290, 30);
-            txtTongTien.TabIndex = 8;
-            // 
-            // lblGiamGia
-            // 
-            lblGiamGia.AutoSize = true;
-            lblGiamGia.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblGiamGia.ForeColor = Color.FromArgb(64, 64, 64);
-            lblGiamGia.Location = new Point(15, 315);
-            lblGiamGia.Name = "lblGiamGia";
-            lblGiamGia.Size = new Size(138, 37);
-            lblGiamGia.TabIndex = 9;
-            lblGiamGia.Text = "Giảm giá:";
-            // 
-            // txtGiamGia
-            // 
-            txtGiamGia.BorderRadius = 5;
-            txtGiamGia.CustomizableEdges = customizableEdges13;
-            txtGiamGia.DefaultText = "";
-            txtGiamGia.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtGiamGia.Font = new Font("Segoe UI", 9F);
-            txtGiamGia.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtGiamGia.Location = new Point(15, 330);
-            txtGiamGia.Margin = new Padding(6, 7, 6, 7);
-            txtGiamGia.Name = "txtGiamGia";
-            txtGiamGia.PlaceholderText = "";
-            txtGiamGia.ReadOnly = true;
-            txtGiamGia.SelectedText = "";
-            txtGiamGia.ShadowDecoration.CustomizableEdges = customizableEdges14;
-            txtGiamGia.Size = new Size(290, 30);
-            txtGiamGia.TabIndex = 10;
-            // 
-            // lblNgayTao
-            // 
-            lblNgayTao.AutoSize = true;
-            lblNgayTao.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblNgayTao.ForeColor = Color.FromArgb(64, 64, 64);
-            lblNgayTao.Location = new Point(15, 425);
-            lblNgayTao.Name = "lblNgayTao";
-            lblNgayTao.Size = new Size(142, 37);
-            lblNgayTao.TabIndex = 13;
-            lblNgayTao.Text = "Ngày tạo:";
-            // 
-            // txtNgayTao
-            // 
-            txtNgayTao.BorderRadius = 5;
-            txtNgayTao.CustomizableEdges = customizableEdges15;
-            txtNgayTao.DefaultText = "";
-            txtNgayTao.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtNgayTao.Font = new Font("Segoe UI", 9F);
-            txtNgayTao.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtNgayTao.Location = new Point(15, 440);
-            txtNgayTao.Margin = new Padding(6, 7, 6, 7);
-            txtNgayTao.Name = "txtNgayTao";
-            txtNgayTao.PlaceholderText = "";
-            txtNgayTao.ReadOnly = true;
-            txtNgayTao.SelectedText = "";
-            txtNgayTao.ShadowDecoration.CustomizableEdges = customizableEdges16;
-            txtNgayTao.Size = new Size(290, 30);
-            txtNgayTao.TabIndex = 14;
-            // 
-            // lblTrangThai
-            // 
-            lblTrangThai.AutoSize = true;
-            lblTrangThai.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblTrangThai.ForeColor = Color.FromArgb(64, 64, 64);
-            lblTrangThai.Location = new Point(15, 480);
-            lblTrangThai.Name = "lblTrangThai";
-            lblTrangThai.Size = new Size(154, 37);
-            lblTrangThai.TabIndex = 15;
-            lblTrangThai.Text = "Trạng thái:";
-            // 
-            // cboTrangThai
-            // 
-            cboTrangThai.BackColor = Color.Transparent;
-            cboTrangThai.BorderRadius = 5;
-            cboTrangThai.CustomizableEdges = customizableEdges17;
-            cboTrangThai.DrawMode = DrawMode.OwnerDrawFixed;
-            cboTrangThai.DropDownStyle = ComboBoxStyle.DropDownList;
-            cboTrangThai.FocusedColor = Color.FromArgb(0, 126, 249);
-            cboTrangThai.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            cboTrangThai.Font = new Font("Segoe UI", 9F);
-            cboTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
-            cboTrangThai.ItemHeight = 24;
-            cboTrangThai.Items.AddRange(new object[] { "Chá»\u009d xá»­ lÃ½", "Ä\u0090ang giao hÃ ng", "Ä\u0090Ã£ giao", "Ä\u0090Ã£ hoÃ n thÃ nh", "Ä\u0090Ã£ huá»·" });
-            cboTrangThai.Location = new Point(15, 495);
-            cboTrangThai.Name = "cboTrangThai";
-            cboTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges18;
-            cboTrangThai.Size = new Size(290, 30);
-            cboTrangThai.TabIndex = 16;
-            // 
-            // lblLyDoHuy
-            // 
-            lblLyDoHuy.AutoSize = true;
-            lblLyDoHuy.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblLyDoHuy.ForeColor = Color.FromArgb(64, 64, 64);
-            lblLyDoHuy.Location = new Point(15, 535);
-            lblLyDoHuy.Name = "lblLyDoHuy";
-            lblLyDoHuy.Size = new Size(147, 37);
-            lblLyDoHuy.TabIndex = 17;
-            lblLyDoHuy.Text = "Lý do hủy:";
-            // 
-            // txtLyDoHuy
-            // 
-            txtLyDoHuy.BorderRadius = 5;
-            txtLyDoHuy.CustomizableEdges = customizableEdges19;
-            txtLyDoHuy.DefaultText = "";
-            txtLyDoHuy.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtLyDoHuy.Font = new Font("Segoe UI", 9F);
-            txtLyDoHuy.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtLyDoHuy.Location = new Point(15, 550);
-            txtLyDoHuy.Margin = new Padding(6, 7, 6, 7);
-            txtLyDoHuy.Multiline = true;
-            txtLyDoHuy.Name = "txtLyDoHuy";
-            txtLyDoHuy.PlaceholderText = "Nhập lý do hủy .....";
-            txtLyDoHuy.SelectedText = "";
-            txtLyDoHuy.ShadowDecoration.CustomizableEdges = customizableEdges20;
-            txtLyDoHuy.Size = new Size(290, 60);
-            txtLyDoHuy.TabIndex = 18;
-            // 
-            // btnAdd
-            // 
-            btnAdd.BorderRadius = 5;
-            btnAdd.CustomizableEdges = customizableEdges21;
-            btnAdd.FillColor = Color.FromArgb(0, 126, 249);
-            btnAdd.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnAdd.ForeColor = Color.White;
-            btnAdd.Location = new Point(15, 1054);
-            btnAdd.Name = "btnAdd";
-            btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges22;
-            btnAdd.Size = new Size(140, 36);
-            btnAdd.TabIndex = 20;
-            btnAdd.Text = "THÊM";
-            btnAdd.Click += btnAdd_Click;
-            // 
-            // btnEdit
-            // 
-            btnEdit.BorderRadius = 5;
-            btnEdit.CustomizableEdges = customizableEdges23;
-            btnEdit.FillColor = Color.FromArgb(0, 126, 249);
-            btnEdit.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnEdit.ForeColor = Color.White;
-            btnEdit.Location = new Point(161, 1054);
-            btnEdit.Name = "btnEdit";
-            btnEdit.ShadowDecoration.CustomizableEdges = customizableEdges24;
-            btnEdit.Size = new Size(140, 36);
-            btnEdit.TabIndex = 21;
-            btnEdit.Text = "SỬA";
-            btnEdit.Click += btnEdit_Click;
-            // 
-            // btnDelete
-            // 
-            btnDelete.BorderRadius = 5;
-            btnDelete.CustomizableEdges = customizableEdges25;
-            btnDelete.FillColor = Color.FromArgb(244, 67, 54);
-            btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnDelete.ForeColor = Color.White;
-            btnDelete.Location = new Point(15, 1127);
-            btnDelete.Name = "btnDelete";
-            btnDelete.ShadowDecoration.CustomizableEdges = customizableEdges26;
-            btnDelete.Size = new Size(290, 36);
-            btnDelete.TabIndex = 22;
-            btnDelete.Text = "HỦY ĐƠN";
-            btnDelete.Click += btnDelete_Click;
-            // 
-            // btnSave
-            // 
-            btnSave.BorderRadius = 5;
-            btnSave.CustomizableEdges = customizableEdges27;
-            btnSave.FillColor = Color.FromArgb(0, 126, 249);
-            btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(22, 1169);
-            btnSave.Name = "btnSave";
-            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges28;
-            btnSave.Size = new Size(290, 36);
-            btnSave.TabIndex = 23;
-            btnSave.Text = "LƯU THAY ĐỔI";
-            btnSave.Click += btnSave_Click;
-            // 
-            // btnCancel
-            // 
-            btnCancel.BorderRadius = 5;
-            btnCancel.CustomizableEdges = customizableEdges29;
-            btnCancel.FillColor = Color.FromArgb(108, 117, 125);
-            btnCancel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCancel.ForeColor = Color.White;
-            btnCancel.Location = new Point(15, 1233);
-            btnCancel.Name = "btnCancel";
-            btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges30;
-            btnCancel.Size = new Size(290, 36);
-            btnCancel.TabIndex = 24;
-            btnCancel.Text = "BỎ QUA";
-            btnCancel.Click += btnCancel_Click;
-            // 
-            // pnlGridCard
-            // 
-            pnlGridCard.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            pnlGridCard.BackColor = Color.Transparent;
-            pnlGridCard.BorderRadius = 10;
-            pnlGridCard.Controls.Add(lblGridTitle);
-            pnlGridCard.Controls.Add(btnSearch);
-            pnlGridCard.Controls.Add(btnRefresh);
-            pnlGridCard.Controls.Add(tabOrderContainer);
-            pnlGridCard.CustomizableEdges = customizableEdges37;
-            pnlGridCard.FillColor = Color.White;
-            pnlGridCard.Location = new Point(349, 20);
-            pnlGridCard.Name = "pnlGridCard";
-            pnlGridCard.Padding = new Padding(15);
-            pnlGridCard.ShadowDecoration.CustomizableEdges = customizableEdges38;
-            pnlGridCard.Size = new Size(1921, 1406);
-            pnlGridCard.TabIndex = 10;
-            // 
-            // lblGridTitle
-            // 
-            lblGridTitle.AutoSize = true;
-            lblGridTitle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
-            lblGridTitle.ForeColor = Color.FromArgb(0, 126, 249);
-            lblGridTitle.Location = new Point(15, 10);
-            lblGridTitle.Name = "lblGridTitle";
-            lblGridTitle.Size = new Size(414, 48);
-            lblGridTitle.TabIndex = 0;
-            lblGridTitle.Text = "DANH SÁCH HÓA ĐƠN";
-            // 
-            // btnSearch
-            // 
-            btnSearch.BorderRadius = 5;
-            btnSearch.CustomizableEdges = customizableEdges33;
-            btnSearch.FillColor = Color.FromArgb(0, 126, 249);
-            btnSearch.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnSearch.ForeColor = Color.White;
-            btnSearch.Location = new Point(18, 40);
-            btnSearch.Name = "btnSearch";
-            btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges34;
-            btnSearch.Size = new Size(100, 36);
-            btnSearch.TabIndex = 12;
-            btnSearch.Text = "TÌM KIẾM";
-            btnSearch.Click += btnSearch_Click;
-            // 
-            // btnRefresh
-            // 
-            btnRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnRefresh.BorderRadius = 5;
-            btnRefresh.CustomizableEdges = customizableEdges35;
-            btnRefresh.FillColor = Color.FromArgb(108, 117, 125);
-            btnRefresh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnRefresh.ForeColor = Color.White;
-            btnRefresh.Location = new Point(1806, 45);
-            btnRefresh.Name = "btnRefresh";
-            btnRefresh.ShadowDecoration.CustomizableEdges = customizableEdges36;
-            btnRefresh.Size = new Size(100, 36);
-            btnRefresh.TabIndex = 13;
-            btnRefresh.Text = "LÀM MỚI";
-            btnRefresh.Click += btnRefresh_Click;
-            // 
-            // tabOrderContainer
-            // 
-            tabOrderContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            tabOrderContainer.Controls.Add(tabOrderList);
-            tabOrderContainer.Controls.Add(tabOrderDetail);
-            tabOrderContainer.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
-            tabOrderContainer.Location = new Point(18, 89);
-            tabOrderContainer.Name = "tabOrderContainer";
-            tabOrderContainer.SelectedIndex = 0;
-            tabOrderContainer.Size = new Size(1888, 1307);
-            tabOrderContainer.TabIndex = 14;
-            // 
-            // tabOrderList
-            // 
-            tabOrderList.Controls.Add(dgvOrders);
-            tabOrderList.Location = new Point(10, 58);
-            tabOrderList.Name = "tabOrderList";
-            tabOrderList.Padding = new Padding(3);
-            tabOrderList.Size = new Size(1868, 1239);
-            tabOrderList.TabIndex = 0;
-            tabOrderList.Text = "Danh sách đơn hàng";
-            tabOrderList.UseVisualStyleBackColor = true;
-            // 
-            // dgvOrders
-            // 
-            dgvOrders.AllowUserToAddRows = false;
-            dgvOrders.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle1.BackColor = Color.White;
-            dgvOrders.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = Color.FromArgb(0, 126, 249);
-            dataGridViewCellStyle2.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
-            dataGridViewCellStyle2.ForeColor = Color.White;
-            dataGridViewCellStyle2.SelectionBackColor = Color.FromArgb(0, 126, 249);
-            dataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
-            dgvOrders.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            dgvOrders.ColumnHeadersHeight = 35;
-            dgvOrders.Columns.AddRange(new DataGridViewColumn[] { colMaHoaDon, colTenKhachHang, colTenNguoiDung, colTongTien, colGiamGia, colHinhThucThanhToan, colTrangThai, colNgayTao, colLoaiHoaDon, colLyDoHuy });
-            dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = Color.White;
-            dataGridViewCellStyle3.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
-            dataGridViewCellStyle3.ForeColor = Color.FromArgb(71, 69, 94);
-            dataGridViewCellStyle3.SelectionBackColor = Color.FromArgb(231, 229, 255);
-            dataGridViewCellStyle3.SelectionForeColor = Color.FromArgb(71, 69, 94);
-            dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
-            dgvOrders.DefaultCellStyle = dataGridViewCellStyle3;
-            dgvOrders.Dock = DockStyle.Fill;
-            dgvOrders.GridColor = Color.FromArgb(231, 229, 255);
-            dgvOrders.Location = new Point(3, 3);
-            dgvOrders.Name = "dgvOrders";
-            dgvOrders.ReadOnly = true;
-            dgvOrders.RowHeadersVisible = false;
-            dgvOrders.RowHeadersWidth = 92;
-            dgvOrders.RowTemplate.Height = 30;
-            dgvOrders.Size = new Size(1862, 1233);
-            dgvOrders.TabIndex = 14;
-            dgvOrders.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
-            dgvOrders.ThemeStyle.AlternatingRowsStyle.Font = null;
-            dgvOrders.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
-            dgvOrders.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.Empty;
-            dgvOrders.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
-            dgvOrders.ThemeStyle.BackColor = Color.White;
-            dgvOrders.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
-            dgvOrders.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(0, 126, 249);
-            dgvOrders.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvOrders.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            dgvOrders.ThemeStyle.HeaderStyle.ForeColor = Color.White;
-            dgvOrders.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvOrders.ThemeStyle.HeaderStyle.Height = 35;
-            dgvOrders.ThemeStyle.ReadOnly = true;
-            dgvOrders.ThemeStyle.RowsStyle.BackColor = Color.White;
-            dgvOrders.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvOrders.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F);
-            dgvOrders.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(71, 69, 94);
-            dgvOrders.ThemeStyle.RowsStyle.Height = 30;
-            dgvOrders.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
-            dgvOrders.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
-            dgvOrders.CellClick += dgvOrders_CellClick;
-            // 
-            // colMaHoaDon
-            // 
-            colMaHoaDon.HeaderText = "Mã Hóa Đơn";
-            colMaHoaDon.MinimumWidth = 11;
-            colMaHoaDon.Name = "colMaHoaDon";
-            colMaHoaDon.ReadOnly = true;
-            // 
-            // colTenKhachHang
-            // 
-            colTenKhachHang.HeaderText = "Khách Hàng";
-            colTenKhachHang.MinimumWidth = 11;
-            colTenKhachHang.Name = "colTenKhachHang";
-            colTenKhachHang.ReadOnly = true;
-            // 
-            // colTenNguoiDung
-            // 
-            colTenNguoiDung.HeaderText = "Nhân Viên Tạo";
-            colTenNguoiDung.MinimumWidth = 11;
-            colTenNguoiDung.Name = "colTenNguoiDung";
-            colTenNguoiDung.ReadOnly = true;
-            // 
-            // colTongTien
-            // 
-            colTongTien.HeaderText = "Tổng Tiền";
-            colTongTien.MinimumWidth = 11;
-            colTongTien.Name = "colTongTien";
-            colTongTien.ReadOnly = true;
-            // 
-            // colGiamGia
-            // 
-            colGiamGia.HeaderText = "Giảm Giá";
-            colGiamGia.MinimumWidth = 11;
-            colGiamGia.Name = "colGiamGia";
-            colGiamGia.ReadOnly = true;
-            // 
-            // colHinhThucThanhToan
-            // 
-            colHinhThucThanhToan.HeaderText = "Thanh Toán";
-            colHinhThucThanhToan.MinimumWidth = 11;
-            colHinhThucThanhToan.Name = "colHinhThucThanhToan";
-            colHinhThucThanhToan.ReadOnly = true;
-            // 
-            // colTrangThai
-            // 
-            colTrangThai.HeaderText = "Trạng Thái";
-            colTrangThai.MinimumWidth = 11;
-            colTrangThai.Name = "colTrangThai";
-            colTrangThai.ReadOnly = true;
-            // 
-            // colNgayTao
-            // 
-            colNgayTao.HeaderText = "Ngày Tạo";
-            colNgayTao.MinimumWidth = 11;
-            colNgayTao.Name = "colNgayTao";
-            colNgayTao.ReadOnly = true;
-            // 
-            // colLoaiHoaDon
-            // 
-            colLoaiHoaDon.HeaderText = "Loại Đơn Hàng";
-            colLoaiHoaDon.MinimumWidth = 11;
-            colLoaiHoaDon.Name = "colLoaiHoaDon";
-            colLoaiHoaDon.ReadOnly = true;
-            // 
-            // colLyDoHuy
-            // 
-            colLyDoHuy.HeaderText = "Lý Do Hủy";
-            colLyDoHuy.MinimumWidth = 11;
-            colLyDoHuy.Name = "colLyDoHuy";
-            colLyDoHuy.ReadOnly = true;
-            // 
-            // tabOrderDetail
-            // 
-            tabOrderDetail.Controls.Add(dgvOrderDetails);
-            tabOrderDetail.Location = new Point(10, 58);
-            tabOrderDetail.Name = "tabOrderDetail";
-            tabOrderDetail.Padding = new Padding(3);
-            tabOrderDetail.Size = new Size(1868, 1239);
-            tabOrderDetail.TabIndex = 1;
-            tabOrderDetail.Text = "Chi tiết đơn hàng";
-            tabOrderDetail.UseVisualStyleBackColor = true;
-            // 
-            // dgvOrderDetails
-            // 
-            dgvOrderDetails.AllowUserToAddRows = false;
-            dgvOrderDetails.AllowUserToDeleteRows = false;
-            dgvOrderDetails.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            dgvOrderDetails.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
-            dgvOrderDetails.ColumnHeadersHeight = 35;
-            dgvOrderDetails.Columns.AddRange(new DataGridViewColumn[] { colDetailMaSP, colDetailTenSP, colDetailSoLuong, colDetailDonGia, colDetailThanhTien });
-            dgvOrderDetails.DefaultCellStyle = dataGridViewCellStyle3;
-            dgvOrderDetails.Dock = DockStyle.Fill;
-            dgvOrderDetails.GridColor = Color.FromArgb(231, 229, 255);
-            dgvOrderDetails.Location = new Point(3, 3);
-            dgvOrderDetails.Name = "dgvOrderDetails";
-            dgvOrderDetails.ReadOnly = true;
-            dgvOrderDetails.RowHeadersVisible = false;
-            dgvOrderDetails.RowHeadersWidth = 92;
-            dgvOrderDetails.RowTemplate.Height = 30;
-            dgvOrderDetails.Size = new Size(1862, 1233);
-            dgvOrderDetails.TabIndex = 0;
-            dgvOrderDetails.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
-            dgvOrderDetails.ThemeStyle.AlternatingRowsStyle.Font = null;
-            dgvOrderDetails.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
-            dgvOrderDetails.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.Empty;
-            dgvOrderDetails.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
-            dgvOrderDetails.ThemeStyle.BackColor = Color.White;
-            dgvOrderDetails.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
-            dgvOrderDetails.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(0, 126, 249);
-            dgvOrderDetails.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvOrderDetails.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9.75F, FontStyle.Bold);
-            dgvOrderDetails.ThemeStyle.HeaderStyle.ForeColor = Color.White;
-            dgvOrderDetails.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvOrderDetails.ThemeStyle.HeaderStyle.Height = 35;
-            dgvOrderDetails.ThemeStyle.ReadOnly = true;
-            dgvOrderDetails.ThemeStyle.RowsStyle.BackColor = Color.White;
-            dgvOrderDetails.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvOrderDetails.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F);
-            dgvOrderDetails.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(71, 69, 94);
-            dgvOrderDetails.ThemeStyle.RowsStyle.Height = 30;
-            dgvOrderDetails.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
-            dgvOrderDetails.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
-            // 
-            // colDetailMaSP
-            // 
-            colDetailMaSP.HeaderText = "Mã SP";
-            colDetailMaSP.MinimumWidth = 11;
-            colDetailMaSP.Name = "colDetailMaSP";
-            colDetailMaSP.ReadOnly = true;
-            // 
-            // colDetailTenSP
-            // 
-            colDetailTenSP.HeaderText = "Sản phẩm";
-            colDetailTenSP.MinimumWidth = 11;
-            colDetailTenSP.Name = "colDetailTenSP";
-            colDetailTenSP.ReadOnly = true;
-            // 
-            // colDetailSoLuong
-            // 
-            colDetailSoLuong.HeaderText = "Số lượng";
-            colDetailSoLuong.MinimumWidth = 11;
-            colDetailSoLuong.Name = "colDetailSoLuong";
-            colDetailSoLuong.ReadOnly = true;
-            // 
-            // colDetailDonGia
-            // 
-            colDetailDonGia.HeaderText = "Đơn giá";
-            colDetailDonGia.MinimumWidth = 11;
-            colDetailDonGia.Name = "colDetailDonGia";
-            colDetailDonGia.ReadOnly = true;
-            // 
-            // colDetailThanhTien
-            // 
-            colDetailThanhTien.HeaderText = "Thành tiền";
-            colDetailThanhTien.MinimumWidth = 11;
-            colDetailThanhTien.Name = "colDetailThanhTien";
-            colDetailThanhTien.ReadOnly = true;
-            // 
+                        // 
             // pnlPOSTop
             // 
             pnlPOSTop.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
@@ -942,34 +233,6 @@
             pnlPOSTop.Size = new Size(941, 60);
             pnlPOSTop.TabIndex = 0;
             // 
-            // btnStockInSearch
-            // 
-            btnStockInSearch.BorderRadius = 5;
-            btnStockInSearch.CustomizableEdges = customizableEdges39;
-            btnStockInSearch.FillColor = Color.FromArgb(0, 126, 249);
-            btnStockInSearch.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnStockInSearch.ForeColor = Color.White;
-            btnStockInSearch.Location = new Point(751, 17);
-            btnStockInSearch.Name = "btnStockInSearch";
-            btnStockInSearch.ShadowDecoration.CustomizableEdges = customizableEdges40;
-            btnStockInSearch.Size = new Size(75, 30);
-            btnStockInSearch.TabIndex = 3;
-            btnStockInSearch.Text = "TÌM KIẾM";
-            // 
-            // btnStockInRefresh
-            // 
-            btnStockInRefresh.BorderRadius = 5;
-            btnStockInRefresh.CustomizableEdges = customizableEdges41;
-            btnStockInRefresh.FillColor = Color.FromArgb(108, 117, 125);
-            btnStockInRefresh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnStockInRefresh.ForeColor = Color.White;
-            btnStockInRefresh.Location = new Point(836, 17);
-            btnStockInRefresh.Name = "btnStockInRefresh";
-            btnStockInRefresh.ShadowDecoration.CustomizableEdges = customizableEdges42;
-            btnStockInRefresh.Size = new Size(75, 30);
-            btnStockInRefresh.TabIndex = 4;
-            btnStockInRefresh.Text = "LÀM MỚI";
-            // 
             // lblPOSTitle
             // 
             lblPOSTitle.AutoSize = true;
@@ -977,7 +240,7 @@
             lblPOSTitle.ForeColor = Color.FromArgb(0, 126, 249);
             lblPOSTitle.Location = new Point(15, 17);
             lblPOSTitle.Name = "lblPOSTitle";
-            lblPOSTitle.Size = new Size(306, 52);
+            lblPOSTitle.Size = new Size(144, 25);
             lblPOSTitle.TabIndex = 0;
             lblPOSTitle.Text = "MÃ HÓA ĐƠN: ";
             // 
@@ -995,6 +258,7 @@
             btnPOSSearch.Size = new Size(75, 30);
             btnPOSSearch.TabIndex = 1;
             btnPOSSearch.Text = "TÌM KIẾM";
+            btnPOSSearch.Click += btnPOSSearch_Click;
             // 
             // btnPOSRefresh
             // 
@@ -1010,6 +274,7 @@
             btnPOSRefresh.Size = new Size(75, 30);
             btnPOSRefresh.TabIndex = 2;
             btnPOSRefresh.Text = "LÀM MỚI";
+            btnPOSRefresh.Click += btnPOSRefresh_Click;
             // 
             // pnlChonLeft
             // 
@@ -1033,7 +298,7 @@
             lblChonLeftTitle.ForeColor = Color.FromArgb(0, 126, 249);
             lblChonLeftTitle.Location = new Point(15, 15);
             lblChonLeftTitle.Name = "lblChonLeftTitle";
-            lblChonLeftTitle.Size = new Size(498, 45);
+            lblChonLeftTitle.Size = new Size(226, 20);
             lblChonLeftTitle.TabIndex = 0;
             lblChonLeftTitle.Text = "1. CHỌN SẢN PHẨM CẦN BÁN";
             // 
@@ -1052,10 +317,10 @@
             // tabListProducts
             // 
             tabListProducts.Controls.Add(dgvProductsSelection);
-            tabListProducts.Location = new Point(10, 58);
+            tabListProducts.Location = new Point(4, 26);
             tabListProducts.Name = "tabListProducts";
             tabListProducts.Padding = new Padding(3);
-            tabListProducts.Size = new Size(531, 438);
+            tabListProducts.Size = new Size(543, 476);
             tabListProducts.TabIndex = 0;
             tabListProducts.Text = "Danh sách sản phẩm";
             tabListProducts.UseVisualStyleBackColor = true;
@@ -1075,9 +340,8 @@
             dgvProductsSelection.Name = "dgvProductsSelection";
             dgvProductsSelection.ReadOnly = true;
             dgvProductsSelection.RowHeadersVisible = false;
-            dgvProductsSelection.RowHeadersWidth = 92;
             dgvProductsSelection.RowTemplate.Height = 28;
-            dgvProductsSelection.Size = new Size(525, 432);
+            dgvProductsSelection.Size = new Size(537, 470);
             dgvProductsSelection.TabIndex = 0;
             dgvProductsSelection.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvProductsSelection.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -1100,35 +364,33 @@
             dgvProductsSelection.ThemeStyle.RowsStyle.Height = 28;
             dgvProductsSelection.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dgvProductsSelection.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            dgvProductsSelection.CellClick += dgvProductsSelection_CellClick;
             // 
             // colSelMaSP
             // 
             colSelMaSP.HeaderText = "Mã SP";
-            colSelMaSP.MinimumWidth = 11;
             colSelMaSP.Name = "colSelMaSP";
             colSelMaSP.ReadOnly = true;
             // 
             // colSelTenSP
             // 
             colSelTenSP.HeaderText = "Tên Sản Phẩm";
-            colSelTenSP.MinimumWidth = 11;
             colSelTenSP.Name = "colSelTenSP";
             colSelTenSP.ReadOnly = true;
             // 
             // colSelGiaBan
             // 
             colSelGiaBan.HeaderText = "Giá bán";
-            colSelGiaBan.MinimumWidth = 11;
             colSelGiaBan.Name = "colSelGiaBan";
             colSelGiaBan.ReadOnly = true;
             // 
             // tabProductDetail
             // 
             tabProductDetail.Controls.Add(pnlProductDetailCard);
-            tabProductDetail.Location = new Point(10, 58);
+            tabProductDetail.Location = new Point(4, 26);
             tabProductDetail.Name = "tabProductDetail";
             tabProductDetail.Padding = new Padding(3);
-            tabProductDetail.Size = new Size(531, 438);
+            tabProductDetail.Size = new Size(922, 1441);
             tabProductDetail.TabIndex = 1;
             tabProductDetail.Text = "Chi tiết sản phẩm";
             tabProductDetail.UseVisualStyleBackColor = true;
@@ -1146,7 +408,7 @@
             pnlProductDetailCard.Location = new Point(3, 3);
             pnlProductDetailCard.Name = "pnlProductDetailCard";
             pnlProductDetailCard.ShadowDecoration.CustomizableEdges = customizableEdges52;
-            pnlProductDetailCard.Size = new Size(525, 432);
+            pnlProductDetailCard.Size = new Size(916, 1435);
             pnlProductDetailCard.TabIndex = 0;
             // 
             // picProductDetail
@@ -1183,7 +445,7 @@
             lblProductDetailDesc.Font = new Font("Segoe UI", 10F);
             lblProductDetailDesc.Location = new Point(240, 20);
             lblProductDetailDesc.Name = "lblProductDetailDesc";
-            lblProductDetailDesc.Size = new Size(601, 200);
+            lblProductDetailDesc.Size = new Size(992, 200);
             lblProductDetailDesc.TabIndex = 1;
             lblProductDetailDesc.Text = "Chi tiết mặt hàng: Máy tính Casio chính hãng chất lượng cao bán chạy nhất.";
             // 
@@ -1215,6 +477,244 @@
             pnlChonRight.ShadowDecoration.CustomizableEdges = customizableEdges74;
             pnlChonRight.Size = new Size(345, 554);
             pnlChonRight.TabIndex = 2;
+            // 
+            // lblChonRightTitle
+            // 
+            lblChonRightTitle.AutoSize = true;
+            lblChonRightTitle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
+            lblChonRightTitle.ForeColor = Color.FromArgb(0, 126, 249);
+            lblChonRightTitle.Location = new Point(15, 15);
+            lblChonRightTitle.Name = "lblChonRightTitle";
+            lblChonRightTitle.Size = new Size(194, 20);
+            lblChonRightTitle.TabIndex = 0;
+            lblChonRightTitle.Text = "2. GIỎ HÀNG & THÔNG TIN";
+            // 
+            // dgvCurrentDetails
+            // 
+            dgvCurrentDetails.AllowUserToAddRows = false;
+            dgvCurrentDetails.AllowUserToDeleteRows = false;
+            dataGridViewCellStyle4.BackColor = Color.White;
+            dgvCurrentDetails.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dgvCurrentDetails.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = Color.FromArgb(0, 126, 249);
+            dataGridViewCellStyle5.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            dataGridViewCellStyle5.ForeColor = Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(0, 126, 249);
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
+            dgvCurrentDetails.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dgvCurrentDetails.ColumnHeadersHeight = 30;
+            dgvCurrentDetails.Columns.AddRange(new DataGridViewColumn[] { colCurMaSP, colCurTenSP, colCurSoLuong, colCurDonGia, colCurThanhTien });
+            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = Color.White;
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            dataGridViewCellStyle6.ForeColor = Color.FromArgb(71, 69, 94);
+            dataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(231, 229, 255);
+            dataGridViewCellStyle6.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
+            dgvCurrentDetails.DefaultCellStyle = dataGridViewCellStyle6;
+            dgvCurrentDetails.GridColor = Color.FromArgb(231, 229, 255);
+            dgvCurrentDetails.Location = new Point(15, 45);
+            dgvCurrentDetails.Name = "dgvCurrentDetails";
+            dgvCurrentDetails.ReadOnly = true;
+            dgvCurrentDetails.RowHeadersVisible = false;
+            dgvCurrentDetails.RowTemplate.Height = 28;
+            dgvCurrentDetails.Size = new Size(315, 172);
+            dgvCurrentDetails.TabIndex = 5;
+            dgvCurrentDetails.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
+            dgvCurrentDetails.ThemeStyle.AlternatingRowsStyle.Font = null;
+            dgvCurrentDetails.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
+            dgvCurrentDetails.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.Empty;
+            dgvCurrentDetails.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
+            dgvCurrentDetails.ThemeStyle.BackColor = Color.White;
+            dgvCurrentDetails.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
+            dgvCurrentDetails.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(0, 126, 249);
+            dgvCurrentDetails.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
+            dgvCurrentDetails.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dgvCurrentDetails.ThemeStyle.HeaderStyle.ForeColor = Color.White;
+            dgvCurrentDetails.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            dgvCurrentDetails.ThemeStyle.HeaderStyle.Height = 30;
+            dgvCurrentDetails.ThemeStyle.ReadOnly = true;
+            dgvCurrentDetails.ThemeStyle.RowsStyle.BackColor = Color.White;
+            dgvCurrentDetails.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
+            dgvCurrentDetails.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F);
+            dgvCurrentDetails.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(71, 69, 94);
+            dgvCurrentDetails.ThemeStyle.RowsStyle.Height = 28;
+            dgvCurrentDetails.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
+            dgvCurrentDetails.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            // 
+            // colCurMaSP
+            // 
+            colCurMaSP.HeaderText = "Mã SP";
+            colCurMaSP.Name = "colCurMaSP";
+            colCurMaSP.ReadOnly = true;
+            // 
+            // colCurTenSP
+            // 
+            colCurTenSP.HeaderText = "Tên";
+            colCurTenSP.Name = "colCurTenSP";
+            colCurTenSP.ReadOnly = true;
+            // 
+            // colCurSoLuong
+            // 
+            colCurSoLuong.HeaderText = "SL";
+            colCurSoLuong.Name = "colCurSoLuong";
+            colCurSoLuong.ReadOnly = true;
+            // 
+            // colCurDonGia
+            // 
+            colCurDonGia.HeaderText = "Đơn Giá";
+            colCurDonGia.Name = "colCurDonGia";
+            colCurDonGia.ReadOnly = true;
+            // 
+            // colCurThanhTien
+            // 
+            colCurThanhTien.HeaderText = "Thành Tiền";
+            colCurThanhTien.Name = "colCurThanhTien";
+            colCurThanhTien.ReadOnly = true;
+            // 
+            // lblSelMaSP
+            // 
+            lblSelMaSP.AutoSize = true;
+            lblSelMaSP.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblSelMaSP.ForeColor = Color.FromArgb(64, 64, 64);
+            lblSelMaSP.Location = new Point(15, 220);
+            lblSelMaSP.Name = "lblSelMaSP";
+            lblSelMaSP.Size = new Size(82, 15);
+            lblSelMaSP.TabIndex = 1;
+            lblSelMaSP.Text = "Mã sản phẩm:";
+            // 
+            // txtSelMaSP
+            // 
+            txtSelMaSP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSelMaSP.BorderRadius = 5;
+            txtSelMaSP.CustomizableEdges = customizableEdges65;
+            txtSelMaSP.DefaultText = "";
+            txtSelMaSP.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            txtSelMaSP.Font = new Font("Segoe UI", 9F);
+            txtSelMaSP.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtSelMaSP.Location = new Point(15, 235);
+            txtSelMaSP.Name = "txtSelMaSP";
+            txtSelMaSP.PlaceholderText = "ChÆ°a chá»n...";
+            txtSelMaSP.ReadOnly = true;
+            txtSelMaSP.SelectedText = "";
+            txtSelMaSP.ShadowDecoration.CustomizableEdges = customizableEdges66;
+            txtSelMaSP.Size = new Size(315, 30);
+            txtSelMaSP.TabIndex = 2;
+            // 
+            // lblSelTenSP
+            // 
+            lblSelTenSP.AutoSize = true;
+            lblSelTenSP.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblSelTenSP.ForeColor = Color.FromArgb(64, 64, 64);
+            lblSelTenSP.Location = new Point(15, 270);
+            lblSelTenSP.Name = "lblSelTenSP";
+            lblSelTenSP.Size = new Size(85, 15);
+            lblSelTenSP.TabIndex = 3;
+            lblSelTenSP.Text = "Tên sản phẩm:";
+            // 
+            // txtSelTenSP
+            // 
+            txtSelTenSP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSelTenSP.BorderRadius = 5;
+            txtSelTenSP.CustomizableEdges = customizableEdges67;
+            txtSelTenSP.DefaultText = "";
+            txtSelTenSP.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            txtSelTenSP.Font = new Font("Segoe UI", 9F);
+            txtSelTenSP.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtSelTenSP.Location = new Point(15, 285);
+            txtSelTenSP.Name = "txtSelTenSP";
+            txtSelTenSP.PlaceholderText = "TÃªn sáº£n pháº©m...";
+            txtSelTenSP.ReadOnly = true;
+            txtSelTenSP.SelectedText = "";
+            txtSelTenSP.ShadowDecoration.CustomizableEdges = customizableEdges68;
+            txtSelTenSP.Size = new Size(315, 30);
+            txtSelTenSP.TabIndex = 4;
+            // 
+            // lblSelSoLuong
+            // 
+            lblSelSoLuong.AutoSize = true;
+            lblSelSoLuong.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblSelSoLuong.ForeColor = Color.FromArgb(64, 64, 64);
+            lblSelSoLuong.Location = new Point(15, 320);
+            lblSelSoLuong.Name = "lblSelSoLuong";
+            lblSelSoLuong.Size = new Size(60, 15);
+            lblSelSoLuong.TabIndex = 5;
+            lblSelSoLuong.Text = "Số lượng:";
+            // 
+            // txtSelSoLuong
+            // 
+            txtSelSoLuong.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSelSoLuong.BorderRadius = 5;
+            txtSelSoLuong.CustomizableEdges = customizableEdges69;
+            txtSelSoLuong.DefaultText = "";
+            txtSelSoLuong.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            txtSelSoLuong.Font = new Font("Segoe UI", 9F);
+            txtSelSoLuong.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtSelSoLuong.Location = new Point(15, 335);
+            txtSelSoLuong.Name = "txtSelSoLuong";
+            txtSelSoLuong.PlaceholderText = "Nháº­p sá»‘ lÆ°á»£ng...";
+            txtSelSoLuong.SelectedText = "";
+            txtSelSoLuong.ShadowDecoration.CustomizableEdges = customizableEdges70;
+            txtSelSoLuong.Size = new Size(315, 30);
+            txtSelSoLuong.TabIndex = 6;
+            // 
+            // lblSelGiaNhap
+            // 
+            lblSelGiaNhap.AutoSize = true;
+            lblSelGiaNhap.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblSelGiaNhap.ForeColor = Color.FromArgb(64, 64, 64);
+            lblSelGiaNhap.Location = new Point(15, 370);
+            lblSelGiaNhap.Name = "lblSelGiaNhap";
+            lblSelGiaNhap.Size = new Size(53, 15);
+            lblSelGiaNhap.TabIndex = 7;
+            lblSelGiaNhap.Text = "Đơn giá:";
+            // 
+            // txtSelGiaNhap
+            // 
+            txtSelGiaNhap.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtSelGiaNhap.BorderRadius = 5;
+            txtSelGiaNhap.CustomizableEdges = customizableEdges71;
+            txtSelGiaNhap.DefaultText = "";
+            txtSelGiaNhap.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            txtSelGiaNhap.Font = new Font("Segoe UI", 9F);
+            txtSelGiaNhap.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtSelGiaNhap.Location = new Point(15, 385);
+            txtSelGiaNhap.Name = "txtSelGiaNhap";
+            txtSelGiaNhap.PlaceholderText = "Nháº­p Ä‘Æ¡n giÃ¡...";
+            txtSelGiaNhap.SelectedText = "";
+            txtSelGiaNhap.ShadowDecoration.CustomizableEdges = customizableEdges72;
+            txtSelGiaNhap.Size = new Size(315, 30);
+            txtSelGiaNhap.TabIndex = 8;
+            // 
+            // lblTotalAmount
+            // 
+            lblTotalAmount.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            lblTotalAmount.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            lblTotalAmount.ForeColor = Color.FromArgb(0, 126, 249);
+            lblTotalAmount.Location = new Point(15, 420);
+            lblTotalAmount.Name = "lblTotalAmount";
+            lblTotalAmount.Size = new Size(315, 25);
+            lblTotalAmount.TabIndex = 9;
+            lblTotalAmount.Text = "TỔNG TIỀN TẠM TÍNH: 0 đ";
+            // 
+            // txtProductSearch
+            // 
+            txtProductSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtProductSearch.BorderRadius = 5;
+            txtProductSearch.CustomizableEdges = customizableEdges33;
+            txtProductSearch.DefaultText = "";
+            txtProductSearch.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
+            txtProductSearch.Font = new Font("Segoe UI", 9F);
+            txtProductSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
+            txtProductSearch.Location = new Point(330, 15);
+            txtProductSearch.Name = "txtProductSearch";
+            txtProductSearch.PlaceholderText = "Nháº­p thÃ´ng tin sáº£n pháº©m cáº§n tÃ¬m...";
+            txtProductSearch.SelectedText = "";
+            txtProductSearch.ShadowDecoration.CustomizableEdges = customizableEdges34;
+            txtProductSearch.Size = new Size(430, 30);
+            txtProductSearch.TabIndex = 15;
             // 
             // guna2Button3
             // 
@@ -1291,267 +791,49 @@
             btnBackToReceipt.TabIndex = 26;
             btnBackToReceipt.Text = "LƯU THAY ĐỔI";
             // 
-            // lblChonRightTitle
+            // btnStockInSearch
             // 
-            lblChonRightTitle.AutoSize = true;
-            lblChonRightTitle.Font = new Font("Segoe UI", 11F, FontStyle.Bold);
-            lblChonRightTitle.ForeColor = Color.FromArgb(0, 126, 249);
-            lblChonRightTitle.Location = new Point(15, 15);
-            lblChonRightTitle.Name = "lblChonRightTitle";
-            lblChonRightTitle.Size = new Size(421, 45);
-            lblChonRightTitle.TabIndex = 0;
-            lblChonRightTitle.Text = "2. GIỎ HÀNG & THÔNG TIN";
+            btnStockInSearch.BorderRadius = 5;
+            btnStockInSearch.CustomizableEdges = customizableEdges39;
+            btnStockInSearch.FillColor = Color.FromArgb(0, 126, 249);
+            btnStockInSearch.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnStockInSearch.ForeColor = Color.White;
+            btnStockInSearch.Location = new Point(751, 17);
+            btnStockInSearch.Name = "btnStockInSearch";
+            btnStockInSearch.ShadowDecoration.CustomizableEdges = customizableEdges40;
+            btnStockInSearch.Size = new Size(75, 30);
+            btnStockInSearch.TabIndex = 3;
+            btnStockInSearch.Text = "TÌM KIẾM";
             // 
-            // dgvCurrentDetails
+            // btnStockInRefresh
             // 
-            dgvCurrentDetails.AllowUserToAddRows = false;
-            dgvCurrentDetails.AllowUserToDeleteRows = false;
-            dataGridViewCellStyle4.BackColor = Color.White;
-            dgvCurrentDetails.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
-            dgvCurrentDetails.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = Color.FromArgb(0, 126, 249);
-            dataGridViewCellStyle5.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
-            dataGridViewCellStyle5.ForeColor = Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(0, 126, 249);
-            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = DataGridViewTriState.True;
-            dgvCurrentDetails.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
-            dgvCurrentDetails.ColumnHeadersHeight = 30;
-            dgvCurrentDetails.Columns.AddRange(new DataGridViewColumn[] { colCurMaSP, colCurTenSP, colCurSoLuong, colCurDonGia, colCurThanhTien });
-            dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = Color.White;
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
-            dataGridViewCellStyle6.ForeColor = Color.FromArgb(71, 69, 94);
-            dataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(231, 229, 255);
-            dataGridViewCellStyle6.SelectionForeColor = Color.FromArgb(71, 69, 94);
-            dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
-            dgvCurrentDetails.DefaultCellStyle = dataGridViewCellStyle6;
-            dgvCurrentDetails.GridColor = Color.FromArgb(231, 229, 255);
-            dgvCurrentDetails.Location = new Point(15, 45);
-            dgvCurrentDetails.Name = "dgvCurrentDetails";
-            dgvCurrentDetails.ReadOnly = true;
-            dgvCurrentDetails.RowHeadersVisible = false;
-            dgvCurrentDetails.RowHeadersWidth = 92;
-            dgvCurrentDetails.RowTemplate.Height = 28;
-            dgvCurrentDetails.Size = new Size(315, 172);
-            dgvCurrentDetails.TabIndex = 5;
-            dgvCurrentDetails.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
-            dgvCurrentDetails.ThemeStyle.AlternatingRowsStyle.Font = null;
-            dgvCurrentDetails.ThemeStyle.AlternatingRowsStyle.ForeColor = Color.Empty;
-            dgvCurrentDetails.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = Color.Empty;
-            dgvCurrentDetails.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
-            dgvCurrentDetails.ThemeStyle.BackColor = Color.White;
-            dgvCurrentDetails.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
-            dgvCurrentDetails.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(0, 126, 249);
-            dgvCurrentDetails.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
-            dgvCurrentDetails.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            dgvCurrentDetails.ThemeStyle.HeaderStyle.ForeColor = Color.White;
-            dgvCurrentDetails.ThemeStyle.HeaderStyle.HeaightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
-            dgvCurrentDetails.ThemeStyle.HeaderStyle.Height = 30;
-            dgvCurrentDetails.ThemeStyle.ReadOnly = true;
-            dgvCurrentDetails.ThemeStyle.RowsStyle.BackColor = Color.White;
-            dgvCurrentDetails.ThemeStyle.RowsStyle.BorderStyle = DataGridViewCellBorderStyle.SingleHorizontal;
-            dgvCurrentDetails.ThemeStyle.RowsStyle.Font = new Font("Segoe UI", 9F);
-            dgvCurrentDetails.ThemeStyle.RowsStyle.ForeColor = Color.FromArgb(71, 69, 94);
-            dgvCurrentDetails.ThemeStyle.RowsStyle.Height = 28;
-            dgvCurrentDetails.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
-            dgvCurrentDetails.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
+            btnStockInRefresh.BorderRadius = 5;
+            btnStockInRefresh.CustomizableEdges = customizableEdges41;
+            btnStockInRefresh.FillColor = Color.FromArgb(108, 117, 125);
+            btnStockInRefresh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            btnStockInRefresh.ForeColor = Color.White;
+            btnStockInRefresh.Location = new Point(836, 17);
+            btnStockInRefresh.Name = "btnStockInRefresh";
+            btnStockInRefresh.ShadowDecoration.CustomizableEdges = customizableEdges42;
+            btnStockInRefresh.Size = new Size(75, 30);
+            btnStockInRefresh.TabIndex = 4;
+            btnStockInRefresh.Text = "LÀM MỚI";
             // 
-            // colCurMaSP
+            // frmPOS
             // 
-            colCurMaSP.HeaderText = "Mã SP";
-            colCurMaSP.MinimumWidth = 11;
-            colCurMaSP.Name = "colCurMaSP";
-            colCurMaSP.ReadOnly = true;
-            // 
-            // colCurTenSP
-            // 
-            colCurTenSP.HeaderText = "Tên";
-            colCurTenSP.MinimumWidth = 11;
-            colCurTenSP.Name = "colCurTenSP";
-            colCurTenSP.ReadOnly = true;
-            // 
-            // colCurSoLuong
-            // 
-            colCurSoLuong.HeaderText = "SL";
-            colCurSoLuong.MinimumWidth = 11;
-            colCurSoLuong.Name = "colCurSoLuong";
-            colCurSoLuong.ReadOnly = true;
-            // 
-            // colCurDonGia
-            // 
-            colCurDonGia.HeaderText = "Đơn Giá";
-            colCurDonGia.MinimumWidth = 11;
-            colCurDonGia.Name = "colCurDonGia";
-            colCurDonGia.ReadOnly = true;
-            // 
-            // colCurThanhTien
-            // 
-            colCurThanhTien.HeaderText = "Thành Tiền";
-            colCurThanhTien.MinimumWidth = 11;
-            colCurThanhTien.Name = "colCurThanhTien";
-            colCurThanhTien.ReadOnly = true;
-            // 
-            // lblSelMaSP
-            // 
-            lblSelMaSP.AutoSize = true;
-            lblSelMaSP.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblSelMaSP.ForeColor = Color.FromArgb(64, 64, 64);
-            lblSelMaSP.Location = new Point(15, 220);
-            lblSelMaSP.Name = "lblSelMaSP";
-            lblSelMaSP.Size = new Size(195, 37);
-            lblSelMaSP.TabIndex = 1;
-            lblSelMaSP.Text = "Mã sản phẩm:";
-            // 
-            // txtSelMaSP
-            // 
-            txtSelMaSP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtSelMaSP.BorderRadius = 5;
-            txtSelMaSP.CustomizableEdges = customizableEdges65;
-            txtSelMaSP.DefaultText = "";
-            txtSelMaSP.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtSelMaSP.Font = new Font("Segoe UI", 9F);
-            txtSelMaSP.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSelMaSP.Location = new Point(15, 235);
-            txtSelMaSP.Margin = new Padding(6, 7, 6, 7);
-            txtSelMaSP.Name = "txtSelMaSP";
-            txtSelMaSP.PlaceholderText = "ChÆ°a chá»\u008dn...";
-            txtSelMaSP.ReadOnly = true;
-            txtSelMaSP.SelectedText = "";
-            txtSelMaSP.ShadowDecoration.CustomizableEdges = customizableEdges66;
-            txtSelMaSP.Size = new Size(315, 30);
-            txtSelMaSP.TabIndex = 2;
-            // 
-            // lblSelTenSP
-            // 
-            lblSelTenSP.AutoSize = true;
-            lblSelTenSP.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblSelTenSP.ForeColor = Color.FromArgb(64, 64, 64);
-            lblSelTenSP.Location = new Point(15, 270);
-            lblSelTenSP.Name = "lblSelTenSP";
-            lblSelTenSP.Size = new Size(199, 37);
-            lblSelTenSP.TabIndex = 3;
-            lblSelTenSP.Text = "Tên sản phẩm:";
-            // 
-            // txtSelTenSP
-            // 
-            txtSelTenSP.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtSelTenSP.BorderRadius = 5;
-            txtSelTenSP.CustomizableEdges = customizableEdges67;
-            txtSelTenSP.DefaultText = "";
-            txtSelTenSP.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtSelTenSP.Font = new Font("Segoe UI", 9F);
-            txtSelTenSP.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSelTenSP.Location = new Point(15, 285);
-            txtSelTenSP.Margin = new Padding(6, 7, 6, 7);
-            txtSelTenSP.Name = "txtSelTenSP";
-            txtSelTenSP.PlaceholderText = "TÃªn sáº£n pháº©m...";
-            txtSelTenSP.ReadOnly = true;
-            txtSelTenSP.SelectedText = "";
-            txtSelTenSP.ShadowDecoration.CustomizableEdges = customizableEdges68;
-            txtSelTenSP.Size = new Size(315, 30);
-            txtSelTenSP.TabIndex = 4;
-            // 
-            // lblSelSoLuong
-            // 
-            lblSelSoLuong.AutoSize = true;
-            lblSelSoLuong.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblSelSoLuong.ForeColor = Color.FromArgb(64, 64, 64);
-            lblSelSoLuong.Location = new Point(15, 320);
-            lblSelSoLuong.Name = "lblSelSoLuong";
-            lblSelSoLuong.Size = new Size(139, 37);
-            lblSelSoLuong.TabIndex = 5;
-            lblSelSoLuong.Text = "Số lượng:";
-            // 
-            // txtSelSoLuong
-            // 
-            txtSelSoLuong.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtSelSoLuong.BorderRadius = 5;
-            txtSelSoLuong.CustomizableEdges = customizableEdges69;
-            txtSelSoLuong.DefaultText = "";
-            txtSelSoLuong.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtSelSoLuong.Font = new Font("Segoe UI", 9F);
-            txtSelSoLuong.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSelSoLuong.Location = new Point(15, 335);
-            txtSelSoLuong.Margin = new Padding(6, 7, 6, 7);
-            txtSelSoLuong.Name = "txtSelSoLuong";
-            txtSelSoLuong.PlaceholderText = "Nháº­p sá»‘ lÆ°á»£ng...";
-            txtSelSoLuong.SelectedText = "";
-            txtSelSoLuong.ShadowDecoration.CustomizableEdges = customizableEdges70;
-            txtSelSoLuong.Size = new Size(315, 30);
-            txtSelSoLuong.TabIndex = 6;
-            // 
-            // lblSelGiaNhap
-            // 
-            lblSelGiaNhap.AutoSize = true;
-            lblSelGiaNhap.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            lblSelGiaNhap.ForeColor = Color.FromArgb(64, 64, 64);
-            lblSelGiaNhap.Location = new Point(15, 370);
-            lblSelGiaNhap.Name = "lblSelGiaNhap";
-            lblSelGiaNhap.Size = new Size(124, 37);
-            lblSelGiaNhap.TabIndex = 7;
-            lblSelGiaNhap.Text = "Đơn giá:";
-            // 
-            // txtSelGiaNhap
-            // 
-            txtSelGiaNhap.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtSelGiaNhap.BorderRadius = 5;
-            txtSelGiaNhap.CustomizableEdges = customizableEdges71;
-            txtSelGiaNhap.DefaultText = "";
-            txtSelGiaNhap.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtSelGiaNhap.Font = new Font("Segoe UI", 9F);
-            txtSelGiaNhap.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtSelGiaNhap.Location = new Point(15, 385);
-            txtSelGiaNhap.Margin = new Padding(6, 7, 6, 7);
-            txtSelGiaNhap.Name = "txtSelGiaNhap";
-            txtSelGiaNhap.PlaceholderText = "Nháº­p Ä‘Æ¡n giÃ¡...";
-            txtSelGiaNhap.SelectedText = "";
-            txtSelGiaNhap.ShadowDecoration.CustomizableEdges = customizableEdges72;
-            txtSelGiaNhap.Size = new Size(315, 30);
-            txtSelGiaNhap.TabIndex = 8;
-            // 
-            // lblTotalAmount
-            // 
-            lblTotalAmount.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            lblTotalAmount.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
-            lblTotalAmount.ForeColor = Color.FromArgb(0, 126, 249);
-            lblTotalAmount.Location = new Point(15, 420);
-            lblTotalAmount.Name = "lblTotalAmount";
-            lblTotalAmount.Size = new Size(315, 25);
-            lblTotalAmount.TabIndex = 9;
-            lblTotalAmount.Text = "TỔNG TIỀN TẠM TÍNH: 0 đ";
-            // 
-            // txtProductSearch
-            // 
-            txtProductSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            txtProductSearch.BorderRadius = 5;
-            txtProductSearch.CustomizableEdges = customizableEdges33;
-            txtProductSearch.DefaultText = "";
-            txtProductSearch.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtProductSearch.Font = new Font("Segoe UI", 9F);
-            txtProductSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtProductSearch.Location = new Point(330, 15);
-            txtProductSearch.Margin = new Padding(6, 7, 6, 7);
-            txtProductSearch.Name = "txtProductSearch";
-            txtProductSearch.PlaceholderText = "Nháº­p thÃ´ng tin sáº£n pháº©m cáº§n tÃ¬m...";
-            txtProductSearch.SelectedText = "";
-            txtProductSearch.ShadowDecoration.CustomizableEdges = customizableEdges34;
-            txtProductSearch.Size = new Size(430, 30);
-            txtProductSearch.TabIndex = 15;
-            // 
-            // ucOrderManagement
-            // 
-            AutoScaleDimensions = new SizeF(15F, 37F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 242, 245);
-            Controls.Add(pnlInputCard);
-            Controls.Add(pnlGridCard);
+            Controls.Add(pnlPOSTop);
+            Controls.Add(pnlChonLeft);
+            Controls.Add(pnlChonRight);
             Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            Name = "ucOrderManagement";
+            Name = "frmPOS";
             Padding = new Padding(10);
-            Size = new Size(2311, 1492);
-            Load += ucOrderManagement_Load;
+            Size = new Size(1000, 700);
+            Load += frmPOS_Load;
+            tabMain.ResumeLayout(false);
+            tabPhieuXuat.ResumeLayout(false);
             pnlInputCard.ResumeLayout(false);
             pnlInputCard.PerformLayout();
             pnlGridCard.ResumeLayout(false);
@@ -1561,6 +843,7 @@
             ((System.ComponentModel.ISupportInitialize)dgvOrders).EndInit();
             tabOrderDetail.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dgvOrderDetails).EndInit();
+            tabChonSanPham.ResumeLayout(false);
             pnlPOSTop.ResumeLayout(false);
             pnlPOSTop.PerformLayout();
             pnlChonLeft.ResumeLayout(false);
@@ -1681,6 +964,7 @@
         private Guna.UI2.WinForms.Guna2Button btnStockInRefresh;
     }
 }
+
 
 
 

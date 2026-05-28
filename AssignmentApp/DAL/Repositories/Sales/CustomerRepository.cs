@@ -25,8 +25,8 @@ namespace AssignmentApp.DAL.Repositories.Sales
         public async Task<int> AddAsync(Customer c)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = @"INSERT INTO KhachHang (MaKhachHang, TenKhachHang, SoDienThoai, DiemTichLuy, NgayTao) 
-                           VALUES (@MaKhachHang, @TenKhachHang, @SoDienThoai, @DiemTichLuy, @NgayTao)";
+            string sql = @"INSERT INTO KhachHang (MaKhachHang, TenKhachHang, SoDienThoai, Email, DiaChi, NgayTao) 
+                           VALUES (@MaKhachHang, @TenKhachHang, @SoDienThoai, @Email, @DiaChi, @NgayTao)";
             return await DbContext.Conn.ExecuteAsync(sql, c);
         }
 
@@ -34,7 +34,7 @@ namespace AssignmentApp.DAL.Repositories.Sales
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
             string sql = @"UPDATE KhachHang 
-                           SET TenKhachHang = @TenKhachHang, SoDienThoai = @SoDienThoai, DiemTichLuy = @DiemTichLuy 
+                           SET TenKhachHang = @TenKhachHang, SoDienThoai = @SoDienThoai, Email = @Email, DiaChi = @DiaChi 
                            WHERE MaKhachHang = @MaKhachHang";
             return await DbContext.Conn.ExecuteAsync(sql, c);
         }

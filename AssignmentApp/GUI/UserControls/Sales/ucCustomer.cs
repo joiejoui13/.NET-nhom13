@@ -10,148 +10,31 @@ namespace AssignmentApp.GUI.UserControls.Sales
 {
     public partial class ucCustomer : UserControl
     {
-        public class MockCustomer
-        {
-            public int MaKhachHang { get; set; }
-            public string TenKhachHang { get; set; } = "";
-            public string SoDienThoai { get; set; } = "";
-            public string Email { get; set; } = "";
-            public string DiaChi { get; set; } = "";
-            public DateTime NgayTao { get; set; }
-        }
-
-        private List<MockCustomer> mockCustomers = new List<MockCustomer>();
-        private MockCustomer? selectedCustomer = null;
+        private CustomerRepository repo = new CustomerRepository();
+        private List<Customer> customers = new List<Customer>();
+        private Customer? selectedCustomer = null;
         private bool isEditing = false;
         private bool isAddingNew = false;
 
         public ucCustomer()
         {
             InitializeComponent();
-            _customerService = new CustomerService(new CustomerRepository());
+            pnlGridCard.SizeChanged += (s, e) => 
+            {
+                dgvCustomers.Width = pnlGridCard.Width - 67;
+                dgvCustomers.Height = pnlGridCard.Height - 158;
+            };
         }
 
         private async void ucCustomer_Load(object sender, EventArgs e)
         {
-            await LoadData();
-        }
-
-        private async System.Threading.Tasks.Task LoadData()
-        {
-            try
+            dgvCustomers.AutoGenerateColumns = false;
+            dgvCustomers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            foreach (DataGridViewColumn col in dgvCustomers.Columns)
             {
-                var customers = await _customerService.GetAllCustomersAsync();
-                dgvCustomers.DataSource = customers;
-
-                // Format DataGridView
-                if (dgvCustomers.Columns["MaKhachHang"] != null)
-                    dgvCustomers.Columns["MaKhachHang"].HeaderText = "Mã KH";
-                if (dgvCustomers.Columns["TenKhachHang"] != null)
-                    dgvCustomers.Columns["TenKhachHang"].HeaderText = "Tên Khách Hàng";
-                if (dgvCustomers.Columns["SoDienThoai"] != null)
-                    dgvCustomers.Columns["SoDienThoai"].HeaderText = "Số Điện Thoại";
-                if (dgvCustomers.Columns["DiemTichLuy"] != null)
-                    dgvCustomers.Columns["DiemTichLuy"].HeaderText = "Điểm Tích Lũy";
-                if (dgvCustomers.Columns["NgayTao"] != null)
-                    dgvCustomers.Columns["NgayTao"].HeaderText = "Ngày Tạo";
+                col.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi tải dữ liệu: " + ex.Message);
-            }
-        }
-
-        private void dgvCustomers_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                DataGridViewRow row = dgvCustomers.Rows[e.RowIndex];
-                txtMaKH.Text = row.Cells["MaKhachHang"].Value?.ToString();
-                txtTenKH.Text = row.Cells["TenKhachHang"].Value?.ToString();
-                txtSDT.Text = row.Cells["SoDienThoai"].Value?.ToString();
-                txtDiem.Text = row.Cells["DiemTichLuy"].Value?.ToString();
-            }
-        }
-
-        private async void btnAdd_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtTenKH.Text))
-            {
-                MessageBox.Show("Vui lòng nhập tên khách hàng.");
-                return;
-            }
-
-            int diem = 0;
-            int.TryParse(txtDiem.Text, out diem);
-
-            Customer newCustomer = new Customer
-            {
-                TenKhachHang = txtTenKH.Text.Trim(),
-                SoDienThoai = txtSDT.Text.Trim(),
-                DiemTichLuy = diem
-            };
-
-            bool result = await _customerService.AddCustomerAsync(newCustomer);
-            if (result)
-            {
-                MessageBox.Show("Thêm mới thành công!");
-                btnRefresh_Click(null, null);
-            }
-            else
-            {
-                MessageBox.Show("Thêm mới thất bại.");
-            }
-        }
-
-        private async void btnUpdate_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrWhiteSpace(txtMaKH.Text))
-            {
-                MessageBox.Show("Vui lòng chọn khách hàng cần cập nhật.");
-                return;
-            }
-
-            int diem = 0;
-            int.TryParse(txtDiem.Text, out diem);
-
-            Customer updateCustomer = new Customer
-            {
-                MaKhachHang = txtMaKH.Text,
-                TenKhachHang = txtTenKH.Text.Trim(),
-                SoDienThoai = txtSDT.Text.Trim(),
-                DiemTichLuy = diem
-            };
-
-            bool result = await _customerService.UpdateCustomerAsync(updateCustomer);
-            if (result)
-            {
-                MessageBox.Show("Cập nhật thành công!");
-                btnRefresh_Click(null, null);
-            }
-            else
-            {
-                MessageBox.Show("Cập nhật thất bại.");
-            }
-        }
-
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            txtMaKH.Clear();
-            txtTenKH.Clear();
-            txtSDT.Clear();
-            txtDiem.Clear();
-            _ = LoadData();
-        }
-
-        private void pnlTop_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void ucCustomer_Load(object sender, EventArgs e)
-        {
-            InitializeMockData();
-            LoadCustomersGrid();
+            await LoadCustomersGridAsync();
             SetEditState(false);
             if (dgvCustomers.Rows.Count > 0)
             {
@@ -159,46 +42,17 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
         }
 
-        private void InitializeMockData()
-        {
-            if (mockCustomers.Count > 0) return;
-
-            mockCustomers.Add(new MockCustomer
-            {
-                MaKhachHang = 1,
-                TenKhachHang = "Nguyễn Văn A",
-                SoDienThoai = "0987654321",
-                Email = "nguyenvana@gmail.com",
-                DiaChi = "123 Đường Lê Lợi, Quận 1, TP. HCM",
-                NgayTao = DateTime.Now.AddMonths(-3)
-            });
-
-            mockCustomers.Add(new MockCustomer
-            {
-                MaKhachHang = 2,
-                TenKhachHang = "Trần Thị B",
-                SoDienThoai = "0912345678",
-                Email = "tranthib@yahoo.com",
-                DiaChi = "456 Đường Nguyễn Huệ, Quận 3, TP. HCM",
-                NgayTao = DateTime.Now.AddMonths(-2)
-            });
-
-            mockCustomers.Add(new MockCustomer
-            {
-                MaKhachHang = 3,
-                TenKhachHang = "Lê Văn C",
-                SoDienThoai = "0909090909",
-                Email = "levanc@outlook.com",
-                DiaChi = "789 Đường Điện Biên Phủ, Bình Thạnh, TP. HCM",
-                NgayTao = DateTime.Now.AddMonths(-1)
-            });
-        }
-
-        private void LoadCustomersGrid(List<MockCustomer>? dataSource = null)
+        private async Task LoadCustomersGridAsync(IEnumerable<Customer>? dataSource = null)
         {
             dgvCustomers.Rows.Clear();
-            var list = dataSource ?? mockCustomers;
-            foreach (var customer in list)
+            if (dataSource == null)
+            {
+                var data = await repo.GetAllAsync();
+                customers = data.ToList();
+                dataSource = customers;
+            }
+            
+            foreach (var customer in dataSource)
             {
                 dgvCustomers.Rows.Add(
                     customer.MaKhachHang,
@@ -218,8 +72,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvCustomers.ClearSelection();
             dgvCustomers.Rows[rowIndex].Selected = true;
 
-            int customerId = Convert.ToInt32(dgvCustomers.Rows[rowIndex].Cells[0].Value);
-            selectedCustomer = mockCustomers.FirstOrDefault(c => c.MaKhachHang == customerId);
+            string customerId = dgvCustomers.Rows[rowIndex].Cells[0].Value?.ToString() ?? "";
+            selectedCustomer = customers.FirstOrDefault(c => c.MaKhachHang == customerId);
 
             if (selectedCustomer != null)
             {
@@ -227,7 +81,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
         }
 
-        private void PopulateCustomerDetails(MockCustomer customer)
+        private void PopulateCustomerDetails(Customer customer)
         {
             txtMaKhachHang.Text = customer.MaKhachHang.ToString();
             txtTenKhachHang.Text = customer.TenKhachHang;
@@ -255,16 +109,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnDelete.Visible = true;
             btnSave.Visible = true;
             btnCancel.Visible = true;
-
-            // Position them statically side-by-side
-            btnAdd.Location = new Point(15, 510);
-            btnEdit.Location = new Point(115, 510);
-            btnDelete.Location = new Point(215, 510);
-
-            btnSave.Location = new Point(15, 555);
-            btnSave.Size = new Size(140, 36);
-            btnCancel.Location = new Point(165, 555);
-            btnCancel.Size = new Size(140, 36);
 
             btnAdd.Enabled = !editing;
             btnEdit.Enabled = !editing;
@@ -295,11 +139,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             isAddingNew = true;
             ClearInputs();
-            
-            // Generate temporary new ID for visualization
-            int nextId = mockCustomers.Count > 0 ? mockCustomers.Max(c => c.MaKhachHang) + 1 : 1;
-            txtMaKhachHang.Text = nextId.ToString();
-            
+
+            txtMaKhachHang.Text = "Tự động tạo";
+
             SetEditState(true);
             txtTenKhachHang.Focus();
         }
@@ -316,7 +158,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtTenKhachHang.Focus();
         }
 
-        private void btnDelete_Click(object? sender, EventArgs e)
+        private async void btnDelete_Click(object? sender, EventArgs e)
         {
             if (selectedCustomer == null)
             {
@@ -327,9 +169,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             var confirmResult = MessageBox.Show($"Bạn có chắc chắn muốn xóa khách hàng '{selectedCustomer.TenKhachHang}' không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {
-                mockCustomers.Remove(selectedCustomer);
+                await repo.DeleteAsync(selectedCustomer.MaKhachHang);
                 MessageBox.Show("Xóa khách hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadCustomersGrid();
+                await LoadCustomersGridAsync();
                 if (dgvCustomers.Rows.Count > 0)
                 {
                     SelectCustomerRow(0);
@@ -342,10 +184,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
         }
 
-        private void btnRefresh_Click(object? sender, EventArgs e)
+        private async void btnRefresh_Click(object? sender, EventArgs e)
         {
             ClearInputs();
-            LoadCustomersGrid();
+            await LoadCustomersGridAsync();
             SetEditState(false);
             if (dgvCustomers.Rows.Count > 0)
             {
@@ -371,7 +213,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
         }
 
-        private void btnSearch_Click(object? sender, EventArgs e)
+        private async void btnSearch_Click(object? sender, EventArgs e)
         {
             // Search criteria can be entered in TenKhachHang or SoDienThoai textboxes
             string nameKeyword = txtTenKhachHang.Text.Trim().ToLower();
@@ -383,7 +225,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
-            var filtered = mockCustomers.Where(c =>
+            var filtered = customers.Where(c =>
             {
                 bool match = true;
                 if (!string.IsNullOrEmpty(nameKeyword))
@@ -392,12 +234,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 }
                 if (!string.IsNullOrEmpty(phoneKeyword))
                 {
-                    match = match && c.SoDienThoai.Contains(phoneKeyword);
+                    match = match && (!string.IsNullOrEmpty(c.SoDienThoai) && c.SoDienThoai.Contains(phoneKeyword));
                 }
                 return match;
             }).ToList();
 
-            LoadCustomersGrid(filtered);
+            await LoadCustomersGridAsync(filtered);
 
             if (dgvCustomers.Rows.Count > 0)
             {
@@ -411,7 +253,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
         }
 
-        private void btnSave_Click(object? sender, EventArgs e)
+        private async void btnSave_Click(object? sender, EventArgs e)
         {
             string name = txtTenKhachHang.Text.Trim();
             string phone = txtSoDienThoai.Text.Trim();
@@ -434,8 +276,21 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             if (isAddingNew)
             {
-                int newId = mockCustomers.Count > 0 ? mockCustomers.Max(c => c.MaKhachHang) + 1 : 1;
-                var newCustomer = new MockCustomer
+                string newId = "KH001";
+                if (customers.Any())
+                {
+                    var maxNum = customers
+                        .Where(c => c.MaKhachHang != null && c.MaKhachHang.StartsWith("KH"))
+                        .Select(c => {
+                            int.TryParse(c.MaKhachHang.Substring(2), out int n);
+                            return n;
+                        })
+                        .DefaultIfEmpty(0)
+                        .Max();
+                    newId = "KH" + (maxNum + 1).ToString("D3");
+                }
+
+                var newCustomer = new Customer
                 {
                     MaKhachHang = newId,
                     TenKhachHang = name,
@@ -444,9 +299,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     DiaChi = address,
                     NgayTao = DateTime.Now
                 };
-                mockCustomers.Add(newCustomer);
-                selectedCustomer = newCustomer;
+                await repo.AddAsync(newCustomer);
                 MessageBox.Show("Thêm mới khách hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                selectedCustomer = newCustomer;
             }
             else
             {
@@ -456,23 +311,33 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     selectedCustomer.SoDienThoai = phone;
                     selectedCustomer.Email = email;
                     selectedCustomer.DiaChi = address;
+                    await repo.UpdateAsync(selectedCustomer);
                     MessageBox.Show("Cập nhật thông tin khách hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
 
             isAddingNew = false;
             SetEditState(false);
-            LoadCustomersGrid();
+            
+            await LoadCustomersGridAsync();
 
-            // Re-select row
             if (selectedCustomer != null)
             {
-                int index = mockCustomers.IndexOf(selectedCustomer);
-                if (index >= 0 && index < dgvCustomers.Rows.Count)
+                var rowToSelect = customers.FirstOrDefault(c => c.TenKhachHang == name && c.SoDienThoai == phone);
+                if (rowToSelect != null)
                 {
-                    SelectCustomerRow(index);
+                    int index = customers.IndexOf(rowToSelect);
+                    if (index >= 0 && index < dgvCustomers.Rows.Count)
+                    {
+                        SelectCustomerRow(index);
+                    }
                 }
             }
+        }
+
+        private void lblSoDienThoai_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

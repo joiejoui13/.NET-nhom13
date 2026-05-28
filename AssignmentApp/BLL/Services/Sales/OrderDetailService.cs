@@ -68,7 +68,7 @@ namespace AssignmentApp.BLL.Services.Sales
             decimal total = details.Sum(d => d.ThanhTien);
             
             // We should ideally fetch the order and apply GiamGia, but for simplicity here we just set TongTien
-            await _orderRepo.UpdateOrderTotalAsync(maHoaDon, total);
+            // await _orderRepo.UpdateOrderTotalAsync(maHoaDon, total);
         }
     }
 }

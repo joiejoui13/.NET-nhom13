@@ -55,28 +55,38 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dgvPromotion.Columns[4].HeaderText = "Ngày Kết Thúc";
             dgvPromotion.Columns[5].HeaderText = "Trạng Thái";
 
-            // Căn chỉnh độ rộng và vị trí chữ (cho thẳng hàng, dễ nhìn)
+            // Định dạng lề và kích thước để không bị mất chữ
+            dgvPromotion.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+
             dgvPromotion.Columns[0].Width = 80;
+            dgvPromotion.Columns[0].MinimumWidth = 80;
             dgvPromotion.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             
-            dgvPromotion.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; // Tên KM cho giãn hết cỡ
+            dgvPromotion.Columns[1].MinimumWidth = 200;
+            dgvPromotion.Columns[1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; // Tên KM cho giãn tự động
             
             dgvPromotion.Columns[2].Width = 90;
+            dgvPromotion.Columns[2].MinimumWidth = 90;
             dgvPromotion.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             
-            dgvPromotion.Columns[3].Width = 120;
+            dgvPromotion.Columns[3].Width = 150;
+            dgvPromotion.Columns[3].MinimumWidth = 150;
             dgvPromotion.Columns[3].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             
-            dgvPromotion.Columns[4].Width = 120;
+            dgvPromotion.Columns[4].Width = 150;
+            dgvPromotion.Columns[4].MinimumWidth = 150;
             dgvPromotion.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             
             dgvPromotion.Columns[5].Width = 120;
+            dgvPromotion.Columns[5].MinimumWidth = 120;
             dgvPromotion.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            // Làm cho Header (tiêu đề cột) dễ nhìn hơn: Chữ to hơn chút, rõ ràng hơn
+            // Làm cho Header và Row chuẩn hóa giống ucUserManagement
+            dgvPromotion.RowTemplate.Height = 40;
+            dgvPromotion.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F);
             dgvPromotion.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            dgvPromotion.ColumnHeadersHeight = 40; // Nới chiều cao Header ra cho thoáng
-            dgvPromotion.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False; // Ngăn không cho chữ tự động rớt dòng
+            dgvPromotion.ColumnHeadersHeight = 40; 
+            dgvPromotion.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
 
             // Không cho phép thêm mới dữ liệu trực tiếp trên lưới
             dgvPromotion.AllowUserToAddRows = false;

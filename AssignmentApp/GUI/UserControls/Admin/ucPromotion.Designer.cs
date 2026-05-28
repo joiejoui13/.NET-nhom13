@@ -138,7 +138,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblMaKhuyenMai.AutoSize = true;
             lblMaKhuyenMai.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblMaKhuyenMai.ForeColor = Color.FromArgb(64, 64, 64);
-            lblMaKhuyenMai.Location = new Point(15, 45);
+            lblMaKhuyenMai.Location = new Point(15, 40);
             lblMaKhuyenMai.Name = "lblMaKhuyenMai";
             lblMaKhuyenMai.Size = new Size(120, 20);
             lblMaKhuyenMai.TabIndex = 1;
@@ -152,7 +152,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtMaKhuyenMai.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtMaKhuyenMai.Font = new Font("Segoe UI", 9F);
             txtMaKhuyenMai.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtMaKhuyenMai.Location = new Point(15, 65);
+            txtMaKhuyenMai.Location = new Point(15, 60);
             txtMaKhuyenMai.Margin = new Padding(3, 4, 3, 4);
             txtMaKhuyenMai.Name = "txtMaKhuyenMai";
             txtMaKhuyenMai.PlaceholderText = "Mã khuyến mãi...";
@@ -166,7 +166,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblTenKhuyenMai.AutoSize = true;
             lblTenKhuyenMai.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblTenKhuyenMai.ForeColor = Color.FromArgb(64, 64, 64);
-            lblTenKhuyenMai.Location = new Point(15, 105);
+            lblTenKhuyenMai.Location = new Point(15, 95);
             lblTenKhuyenMai.Name = "lblTenKhuyenMai";
             lblTenKhuyenMai.Size = new Size(123, 20);
             lblTenKhuyenMai.TabIndex = 2;
@@ -180,7 +180,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtTenKhuyenMai.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtTenKhuyenMai.Font = new Font("Segoe UI", 9F);
             txtTenKhuyenMai.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtTenKhuyenMai.Location = new Point(15, 125);
+            txtTenKhuyenMai.Location = new Point(15, 115);
             txtTenKhuyenMai.Margin = new Padding(3, 4, 3, 4);
             txtTenKhuyenMai.Name = "txtTenKhuyenMai";
             txtTenKhuyenMai.PlaceholderText = "Tên khuyến mãi...";
@@ -194,7 +194,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblPhanTramGiamGia.AutoSize = true;
             lblPhanTramGiamGia.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblPhanTramGiamGia.ForeColor = Color.FromArgb(64, 64, 64);
-            lblPhanTramGiamGia.Location = new Point(15, 165);
+            lblPhanTramGiamGia.Location = new Point(15, 150);
             lblPhanTramGiamGia.Name = "lblPhanTramGiamGia";
             lblPhanTramGiamGia.Size = new Size(154, 20);
             lblPhanTramGiamGia.TabIndex = 3;
@@ -208,7 +208,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtPhanTramGiamGia.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtPhanTramGiamGia.Font = new Font("Segoe UI", 9F);
             txtPhanTramGiamGia.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtPhanTramGiamGia.Location = new Point(15, 185);
+            txtPhanTramGiamGia.Location = new Point(15, 170);
             txtPhanTramGiamGia.Margin = new Padding(3, 4, 3, 4);
             txtPhanTramGiamGia.Name = "txtPhanTramGiamGia";
             txtPhanTramGiamGia.PlaceholderText = "Ví dụ: 10, 20...";
@@ -222,7 +222,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblNgayBatDau.AutoSize = true;
             lblNgayBatDau.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblNgayBatDau.ForeColor = Color.FromArgb(64, 64, 64);
-            lblNgayBatDau.Location = new Point(15, 225);
+            lblNgayBatDau.Location = new Point(15, 205);
             lblNgayBatDau.Name = "lblNgayBatDau";
             lblNgayBatDau.Size = new Size(107, 20);
             lblNgayBatDau.TabIndex = 4;
@@ -236,7 +236,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dtNgayBatDau.FillColor = Color.FromArgb(240, 242, 245);
             dtNgayBatDau.Font = new Font("Segoe UI", 9F);
             dtNgayBatDau.Format = DateTimePickerFormat.Short;
-            dtNgayBatDau.Location = new Point(15, 245);
+            dtNgayBatDau.Location = new Point(15, 225);
             dtNgayBatDau.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtNgayBatDau.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtNgayBatDau.Name = "dtNgayBatDau";
@@ -250,7 +250,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblNgayHetHan.AutoSize = true;
             lblNgayHetHan.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblNgayHetHan.ForeColor = Color.FromArgb(64, 64, 64);
-            lblNgayHetHan.Location = new Point(15, 285);
+            lblNgayHetHan.Location = new Point(15, 260);
             lblNgayHetHan.Name = "lblNgayHetHan";
             lblNgayHetHan.Size = new Size(107, 20);
             lblNgayHetHan.TabIndex = 5;
@@ -264,7 +264,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dtNgayHetHan.FillColor = Color.FromArgb(240, 242, 245);
             dtNgayHetHan.Font = new Font("Segoe UI", 9F);
             dtNgayHetHan.Format = DateTimePickerFormat.Short;
-            dtNgayHetHan.Location = new Point(15, 305);
+            dtNgayHetHan.Location = new Point(15, 280);
             dtNgayHetHan.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtNgayHetHan.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtNgayHetHan.Name = "dtNgayHetHan";
@@ -278,7 +278,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblMoTaKhuyenMai.AutoSize = true;
             lblMoTaKhuyenMai.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblMoTaKhuyenMai.ForeColor = Color.FromArgb(64, 64, 64);
-            lblMoTaKhuyenMai.Location = new Point(15, 345);
+            lblMoTaKhuyenMai.Location = new Point(15, 315);
             lblMoTaKhuyenMai.Name = "lblMoTaKhuyenMai";
             lblMoTaKhuyenMai.Size = new Size(54, 20);
             lblMoTaKhuyenMai.TabIndex = 6;
@@ -292,7 +292,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtMoTaKhuyenMai.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtMoTaKhuyenMai.Font = new Font("Segoe UI", 9F);
             txtMoTaKhuyenMai.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtMoTaKhuyenMai.Location = new Point(15, 365);
+            txtMoTaKhuyenMai.Location = new Point(15, 335);
             txtMoTaKhuyenMai.Margin = new Padding(3, 4, 3, 4);
             txtMoTaKhuyenMai.Multiline = true;
             txtMoTaKhuyenMai.Name = "txtMoTaKhuyenMai";
@@ -307,7 +307,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblTrangThai.AutoSize = true;
             lblTrangThai.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblTrangThai.ForeColor = Color.FromArgb(64, 64, 64);
-            lblTrangThai.Location = new Point(15, 435);
+            lblTrangThai.Location = new Point(15, 410);
             lblTrangThai.Name = "lblTrangThai";
             lblTrangThai.Size = new Size(84, 20);
             lblTrangThai.TabIndex = 7;
@@ -326,7 +326,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             cboTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
             cboTrangThai.ItemHeight = 30;
             cboTrangThai.Items.AddRange(new object[] { "Hoạt động", "Không hoạt động" });
-            cboTrangThai.Location = new Point(15, 455);
+            cboTrangThai.Location = new Point(15, 430);
             cboTrangThai.Name = "cboTrangThai";
             cboTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges14;
             cboTrangThai.Size = new Size(290, 36);
@@ -573,7 +573,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // 
             // ucPromotion
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 242, 245);
             Controls.Add(pnlInputCard);

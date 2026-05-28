@@ -1,6 +1,6 @@
 using BCrypt.Net;
 
-namespace AssignmentApp.BLL.Security
+namespace AssignmentApp.BLL.Utils
 {
     public static class PasswordHasher
     {
@@ -13,11 +13,12 @@ namespace AssignmentApp.BLL.Security
         {
             try
             {
-                // For this assignment, if DB uses plaintext passwords, compare directly
-                return enteredPassword == hashedDbPassword;
+                // Sử dụng thư viện BCrypt để so sánh mật khẩu nhập vào và mật khẩu đã băm trong DB
+                return BCrypt.Net.BCrypt.Verify(enteredPassword, hashedDbPassword);
             }
             catch (SaltParseException)
             {
+                // Bắt lỗi nếu mật khẩu trong DB không phải là chuỗi băm hợp lệ của BCrypt
                 return false;
             }
         }

@@ -1,21 +1,23 @@
 using System;
 using System.Windows.Forms;
 using Guna.UI2.WinForms;
-using AssignmentApp.BLL.Services.Security;
+using AssignmentApp.BLL.Services.Main;
 using AssignmentApp.BLL.Session;
 using AssignmentApp.DAL.Core;
+using Microsoft.Extensions.DependencyInjection;
 using AssignmentApp.GUI.Forms;
 
 namespace AssignmentApp.GUI
 {
     public partial class frmAuth : Base.frmBase
     {
-        private readonly AuthService _authService;
+        private readonly IAuthService _authService;
 
-        public frmAuth()
+        public frmAuth(IAuthService authService)
         {
             InitializeComponent();
-            _authService = new AuthService();
+            _authService = authService;
+            this.AcceptButton = btnLogin; // Khi ấn Enter sẽ tự động kích hoạt nút Login
         }
 
         private void AuthForm_Load(object sender, EventArgs e)
@@ -23,12 +25,12 @@ namespace AssignmentApp.GUI
             if (DbContext.Ketnoi())
             {
                 lblConnect.Text = "SERVER CONNECTION: SECURE";
-                lblConnect.ForeColor = System.Drawing.Color.FromArgb(0, 112, 112);
+                lblConnect.FillColor = System.Drawing.Color.FromArgb(192, 255, 192);
             }
             else
             {
                 lblConnect.Text = "SERVER CONNECTION: FAILED";
-                lblConnect.ForeColor = System.Drawing.Color.FromArgb(255, 0, 0);
+                lblConnect.FillColor = System.Drawing.Color.FromArgb(255, 192, 192);
             }
         }
         private void label1_Click(object sender, EventArgs e)
@@ -50,10 +52,10 @@ namespace AssignmentApp.GUI
         {
             string user = txtUser.Text.Trim();
             string pass = txtPass.Text.Trim();
-            
+
             if (string.IsNullOrEmpty(user) || string.IsNullOrEmpty(pass))
             {
-                MessageBox.Show("Vui lòng nhập đầy đủ tài khoản và mật khẩu!");
+                AssignmentApp.GUI.Utils.MsgBox.Show(this, "Vui lòng nhập đầy đủ tài khoản và mật khẩu!", "Yêu cầu", Guna.UI2.WinForms.MessageDialogButtons.OK, Guna.UI2.WinForms.MessageDialogIcon.Warning);
                 return;
             }
 
@@ -71,27 +73,28 @@ namespace AssignmentApp.GUI
                     UserSession.CurrentUser = userDto;
                     UserSession.LoginTime = DateTime.Now;
 
-                    if (userDto.VaiTro == "SALES" || userDto.VaiTro == "ADMIN" || userDto.VaiTro == "WAREHOUSE")
+                    string role = userDto.VaiTro?.Trim().ToUpper();
+                    if (role == "SALES" || role == "ADMIN" || role == "WAREHOUSE")
                     {
-                        MessageBox.Show($"Đăng nhập thành công với quyền {userDto.VaiTro}!");
-                        this.Hide(); 
-                        frmMain main = new frmMain(); 
+                        AssignmentApp.GUI.Utils.MsgBox.Show(this, $"Đăng nhập thành công với quyền {role}!", "Thành công", Guna.UI2.WinForms.MessageDialogButtons.OK, Guna.UI2.WinForms.MessageDialogIcon.Information);
+                        this.Hide();
+                        frmMain main = Program.ServiceProvider.GetRequiredService<frmMain>();
                         main.ShowDialog();
-                        this.Close(); 
+                        this.Close();
                     }
                     else
                     {
-                        MessageBox.Show("Vai trò không hợp lệ!");
+                        AssignmentApp.GUI.Utils.MsgBox.Show(this, "Vai trò không hợp lệ!", "Lỗi", Guna.UI2.WinForms.MessageDialogButtons.OK, Guna.UI2.WinForms.MessageDialogIcon.Error);
                     }
                 }
                 else
                 {
-                    MessageBox.Show("Sai tài khoản hoặc mật khẩu!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    AssignmentApp.GUI.Utils.MsgBox.Show(this, "Sai tài khoản hoặc mật khẩu!", "Lỗi", Guna.UI2.WinForms.MessageDialogButtons.OK, Guna.UI2.WinForms.MessageDialogIcon.Error);
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Đã xảy ra lỗi kết nối: " + ex.Message, "Lỗi hệ thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                AssignmentApp.GUI.Utils.MsgBox.Show(this, "Đã xảy ra lỗi kết nối: " + ex.Message, "Lỗi hệ thống", Guna.UI2.WinForms.MessageDialogButtons.OK, Guna.UI2.WinForms.MessageDialogIcon.Error);
             }
             finally
             {
@@ -104,6 +107,33 @@ namespace AssignmentApp.GUI
         {
             txtUser.Text = "";
             txtPass.Text = "";
+        }
+
+        private void btnCancel_DoubleClick(object sender, EventArgs e)
+        {
+            var result = AssignmentApp.GUI.Utils.MsgBox.Show(this, "Bạn có muốn thoát không?", "Thông báo", Guna.UI2.WinForms.MessageDialogButtons.YesNo, Guna.UI2.WinForms.MessageDialogIcon.Question);
+            if (result == System.Windows.Forms.DialogResult.Yes)
+                Application.Exit();
+        }
+        //ProcessCmdKey là một phương thức ảo (Virtual Method) được định nghĩa sẵn bởi Microsoft sâu bên trong lớp cha System.Windows.Forms.Form (Form cơ bản của hệ thống).
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            // Nhấn mũi tên Lên -> Nhảy lên ô Username
+            if (keyData == Keys.Up)
+            {
+                txtUser.Focus();
+                txtUser.SelectAll(); // Bôi đen để gõ đè nhanh
+                return true; // Đã xử lý xong phím này
+            }
+            // Nhấn mũi tên Xuống -> Nhảy xuống ô Password
+            else if (keyData == Keys.Down)
+            {
+                txtPass.Focus();
+                txtPass.SelectAll(); // Bôi đen để gõ đè nhanh
+                return true; // Đã xử lý xong phím này
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

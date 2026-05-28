@@ -14,8 +14,8 @@ namespace AssignmentApp.DAL.Repositories.Main
                 DbContext.Ketnoi();
             }
 
-            // Fetch user info specifically for authentication
-            string sql = "SELECT MaNguoiDung, TenNguoiDung, SoDienThoai, Email, MatKhau, VaiTro, TrangThai, NgayTao FROM NguoiDung WHERE MaNguoiDung = @MaNguoiDung";
+            // Fetch user info specifically for authentication. Cho phép đăng nhập bằng Email
+            string sql = "SELECT MaNguoiDung, TenNguoiDung, SoDienThoai, Email, MatKhau, VaiTro, TrangThai, NgayTao FROM NguoiDung WHERE Email = @MaNguoiDung OR TRY_CAST(MaNguoiDung AS NVARCHAR(50)) = @MaNguoiDung";
             return await DbContext.Conn.QuerySingleOrDefaultAsync<User>(sql, new { MaNguoiDung = manguoidung });
         }
     }

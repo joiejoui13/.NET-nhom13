@@ -129,7 +129,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblInputTitle.ForeColor = Color.FromArgb(0, 126, 249);
             lblInputTitle.Location = new Point(15, 10);
             lblInputTitle.Name = "lblInputTitle";
-            lblInputTitle.Size = new Size(203, 21);
+            lblInputTitle.Size = new Size(256, 28);
             lblInputTitle.TabIndex = 0;
             lblInputTitle.Text = "THÔNG TIN KHUYẾN MÃI";
             // 
@@ -140,7 +140,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblMaKhuyenMai.ForeColor = Color.FromArgb(64, 64, 64);
             lblMaKhuyenMai.Location = new Point(15, 45);
             lblMaKhuyenMai.Name = "lblMaKhuyenMai";
-            lblMaKhuyenMai.Size = new Size(94, 15);
+            lblMaKhuyenMai.Size = new Size(120, 20);
             lblMaKhuyenMai.TabIndex = 1;
             lblMaKhuyenMai.Text = "Mã khuyến mãi:";
             // 
@@ -153,6 +153,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtMaKhuyenMai.Font = new Font("Segoe UI", 9F);
             txtMaKhuyenMai.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtMaKhuyenMai.Location = new Point(15, 65);
+            txtMaKhuyenMai.Margin = new Padding(3, 4, 3, 4);
             txtMaKhuyenMai.Name = "txtMaKhuyenMai";
             txtMaKhuyenMai.PlaceholderText = "Mã khuyến mãi...";
             txtMaKhuyenMai.SelectedText = "";
@@ -167,7 +168,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblTenKhuyenMai.ForeColor = Color.FromArgb(64, 64, 64);
             lblTenKhuyenMai.Location = new Point(15, 105);
             lblTenKhuyenMai.Name = "lblTenKhuyenMai";
-            lblTenKhuyenMai.Size = new Size(97, 15);
+            lblTenKhuyenMai.Size = new Size(123, 20);
             lblTenKhuyenMai.TabIndex = 2;
             lblTenKhuyenMai.Text = "Tên khuyến mãi:";
             // 
@@ -180,6 +181,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtTenKhuyenMai.Font = new Font("Segoe UI", 9F);
             txtTenKhuyenMai.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtTenKhuyenMai.Location = new Point(15, 125);
+            txtTenKhuyenMai.Margin = new Padding(3, 4, 3, 4);
             txtTenKhuyenMai.Name = "txtTenKhuyenMai";
             txtTenKhuyenMai.PlaceholderText = "Tên khuyến mãi...";
             txtTenKhuyenMai.SelectedText = "";
@@ -194,7 +196,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblPhanTramGiamGia.ForeColor = Color.FromArgb(64, 64, 64);
             lblPhanTramGiamGia.Location = new Point(15, 165);
             lblPhanTramGiamGia.Name = "lblPhanTramGiamGia";
-            lblPhanTramGiamGia.Size = new Size(118, 15);
+            lblPhanTramGiamGia.Size = new Size(154, 20);
             lblPhanTramGiamGia.TabIndex = 3;
             lblPhanTramGiamGia.Text = "Phần trăm giảm (%):";
             // 
@@ -207,6 +209,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtPhanTramGiamGia.Font = new Font("Segoe UI", 9F);
             txtPhanTramGiamGia.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtPhanTramGiamGia.Location = new Point(15, 185);
+            txtPhanTramGiamGia.Margin = new Padding(3, 4, 3, 4);
             txtPhanTramGiamGia.Name = "txtPhanTramGiamGia";
             txtPhanTramGiamGia.PlaceholderText = "Ví dụ: 10, 20...";
             txtPhanTramGiamGia.SelectedText = "";
@@ -221,7 +224,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblNgayBatDau.ForeColor = Color.FromArgb(64, 64, 64);
             lblNgayBatDau.Location = new Point(15, 225);
             lblNgayBatDau.Name = "lblNgayBatDau";
-            lblNgayBatDau.Size = new Size(83, 15);
+            lblNgayBatDau.Size = new Size(107, 20);
             lblNgayBatDau.TabIndex = 4;
             lblNgayBatDau.Text = "Ngày bắt đầu:";
             // 
@@ -249,7 +252,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblNgayHetHan.ForeColor = Color.FromArgb(64, 64, 64);
             lblNgayHetHan.Location = new Point(15, 285);
             lblNgayHetHan.Name = "lblNgayHetHan";
-            lblNgayHetHan.Size = new Size(83, 15);
+            lblNgayHetHan.Size = new Size(107, 20);
             lblNgayHetHan.TabIndex = 5;
             lblNgayHetHan.Text = "Ngày hết hạn:";
             // 
@@ -277,7 +280,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblMoTaKhuyenMai.ForeColor = Color.FromArgb(64, 64, 64);
             lblMoTaKhuyenMai.Location = new Point(15, 345);
             lblMoTaKhuyenMai.Name = "lblMoTaKhuyenMai";
-            lblMoTaKhuyenMai.Size = new Size(42, 15);
+            lblMoTaKhuyenMai.Size = new Size(54, 20);
             lblMoTaKhuyenMai.TabIndex = 6;
             lblMoTaKhuyenMai.Text = "Mô tả:";
             // 
@@ -290,6 +293,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtMoTaKhuyenMai.Font = new Font("Segoe UI", 9F);
             txtMoTaKhuyenMai.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtMoTaKhuyenMai.Location = new Point(15, 365);
+            txtMoTaKhuyenMai.Margin = new Padding(3, 4, 3, 4);
             txtMoTaKhuyenMai.Multiline = true;
             txtMoTaKhuyenMai.Name = "txtMoTaKhuyenMai";
             txtMoTaKhuyenMai.PlaceholderText = "Nhập mô tả khuyến mãi...";
@@ -305,7 +309,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblTrangThai.ForeColor = Color.FromArgb(64, 64, 64);
             lblTrangThai.Location = new Point(15, 435);
             lblTrangThai.Name = "lblTrangThai";
-            lblTrangThai.Size = new Size(65, 15);
+            lblTrangThai.Size = new Size(84, 20);
             lblTrangThai.TabIndex = 7;
             lblTrangThai.Text = "Trạng thái:";
             // 
@@ -330,13 +334,13 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // 
             // btnAdd
             // 
+            btnAdd.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnAdd.BorderRadius = 5;
             btnAdd.CustomizableEdges = customizableEdges15;
             btnAdd.FillColor = Color.FromArgb(0, 126, 249);
             btnAdd.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnAdd.ForeColor = Color.White;
             btnAdd.Location = new Point(15, 510);
-            btnAdd.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnAdd.Name = "btnAdd";
             btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges16;
             btnAdd.Size = new Size(90, 36);
@@ -346,13 +350,13 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // 
             // btnEdit
             // 
+            btnEdit.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnEdit.BorderRadius = 5;
             btnEdit.CustomizableEdges = customizableEdges17;
             btnEdit.FillColor = Color.FromArgb(0, 126, 249);
             btnEdit.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnEdit.ForeColor = Color.White;
             btnEdit.Location = new Point(115, 510);
-            btnEdit.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnEdit.Name = "btnEdit";
             btnEdit.ShadowDecoration.CustomizableEdges = customizableEdges18;
             btnEdit.Size = new Size(90, 36);
@@ -362,13 +366,13 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // 
             // btnDelete
             // 
+            btnDelete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDelete.BorderRadius = 5;
             btnDelete.CustomizableEdges = customizableEdges19;
             btnDelete.FillColor = Color.FromArgb(244, 67, 54);
             btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnDelete.ForeColor = Color.White;
             btnDelete.Location = new Point(215, 510);
-            btnDelete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDelete.Name = "btnDelete";
             btnDelete.ShadowDecoration.CustomizableEdges = customizableEdges20;
             btnDelete.Size = new Size(90, 36);
@@ -378,13 +382,13 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // 
             // btnSave
             // 
+            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSave.BorderRadius = 5;
             btnSave.CustomizableEdges = customizableEdges21;
             btnSave.FillColor = Color.FromArgb(0, 126, 249);
             btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSave.ForeColor = Color.White;
             btnSave.Location = new Point(15, 560);
-            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSave.Name = "btnSave";
             btnSave.ShadowDecoration.CustomizableEdges = customizableEdges22;
             btnSave.Size = new Size(290, 40);
@@ -394,13 +398,13 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // 
             // btnCancel
             // 
+            btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnCancel.BorderRadius = 5;
             btnCancel.CustomizableEdges = customizableEdges23;
             btnCancel.FillColor = Color.FromArgb(108, 117, 125);
             btnCancel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancel.ForeColor = Color.White;
             btnCancel.Location = new Point(15, 610);
-            btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnCancel.Name = "btnCancel";
             btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges24;
             btnCancel.Size = new Size(290, 35);
@@ -433,7 +437,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblGridTitle.ForeColor = Color.FromArgb(0, 126, 249);
             lblGridTitle.Location = new Point(15, 10);
             lblGridTitle.Name = "lblGridTitle";
-            lblGridTitle.Size = new Size(209, 21);
+            lblGridTitle.Size = new Size(262, 28);
             lblGridTitle.TabIndex = 0;
             lblGridTitle.Text = "DANH SÁCH KHUYẾN MÃI";
             // 
@@ -494,12 +498,13 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dgvPromotion.DefaultCellStyle = dataGridViewCellStyle3;
             dgvPromotion.GridColor = Color.FromArgb(231, 229, 255);
-            dgvPromotion.Location = new Point(15, 95);
+            dgvPromotion.Location = new Point(15, 105);
             dgvPromotion.Name = "dgvPromotion";
             dgvPromotion.ReadOnly = true;
             dgvPromotion.RowHeadersVisible = false;
+            dgvPromotion.RowHeadersWidth = 51;
             dgvPromotion.RowTemplate.Height = 30;
-            dgvPromotion.Size = new Size(590, 550);
+            dgvPromotion.Size = new Size(587, 540);
             dgvPromotion.TabIndex = 17;
             dgvPromotion.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvPromotion.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -527,42 +532,48 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // colMaKhuyenMai
             // 
             colMaKhuyenMai.HeaderText = "Mã KM";
+            colMaKhuyenMai.MinimumWidth = 6;
             colMaKhuyenMai.Name = "colMaKhuyenMai";
             colMaKhuyenMai.ReadOnly = true;
             // 
             // colTenKhuyenMai
             // 
             colTenKhuyenMai.HeaderText = "Tên Khuyến Mãi";
+            colTenKhuyenMai.MinimumWidth = 6;
             colTenKhuyenMai.Name = "colTenKhuyenMai";
             colTenKhuyenMai.ReadOnly = true;
             // 
             // colPhanTramGiamGia
             // 
             colPhanTramGiamGia.HeaderText = "% Giảm";
+            colPhanTramGiamGia.MinimumWidth = 6;
             colPhanTramGiamGia.Name = "colPhanTramGiamGia";
             colPhanTramGiamGia.ReadOnly = true;
             // 
             // colNgayBatDau
             // 
             colNgayBatDau.HeaderText = "Ngày Bắt Đầu";
+            colNgayBatDau.MinimumWidth = 6;
             colNgayBatDau.Name = "colNgayBatDau";
             colNgayBatDau.ReadOnly = true;
             // 
             // colNgayHetHan
             // 
             colNgayHetHan.HeaderText = "Ngày Hết Hạn";
+            colNgayHetHan.MinimumWidth = 6;
             colNgayHetHan.Name = "colNgayHetHan";
             colNgayHetHan.ReadOnly = true;
             // 
             // colTrangThai
             // 
             colTrangThai.HeaderText = "Trạng Thái";
+            colTrangThai.MinimumWidth = 6;
             colTrangThai.Name = "colTrangThai";
             colTrangThai.ReadOnly = true;
             // 
             // ucPromotion
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 242, 245);
             Controls.Add(pnlInputCard);

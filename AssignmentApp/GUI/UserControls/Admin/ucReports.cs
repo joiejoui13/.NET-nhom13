@@ -22,27 +22,36 @@ namespace AssignmentApp.GUI.UserControls.Admin
             this.Load += ucReports_Load;
         }
 
-        private async void ucReports_Load(object sender, EventArgs e)
+        // 5.3.2. Viết thủ tục Form_Load của ucReports
+        private void ucReports_Load(object sender, EventArgs e)
         {
+            // Bước 1: Thiết lập giá trị mặc định cho bộ lọc
             cboPeriod.SelectedIndex = 1; // Default to "Tháng"
             dtpStartDate.Value = new DateTime(2026, 1, 1);
             dtpEndDate.Value = new DateTime(2026, 12, 31);
             
-            await LoadReportDataAsync();
+            // Bước 2: Tự động tải dữ liệu báo cáo lần đầu
+            LoadReportData();
         }
 
-        private async void btnSearch_Click(object sender, EventArgs e)
+        // 5.3.3. Viết thủ tục btnTimkiem_Click (Nút Lọc Báo Cáo)
+        private void btnSearch_Click(object sender, EventArgs e)
         {
-            await LoadReportDataAsync();
+            // Tải lại báo cáo dựa trên khoảng thời gian mới
+            LoadReportData();
         }
 
-        private async void btnRefresh_Click(object sender, EventArgs e)
+        // 5.3.4. Viết thủ tục btnHienthi_Click (Nút Làm Mới)
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
-            await LoadReportDataAsync();
+            // Đặt lại các giá trị hoặc chỉ tải lại dữ liệu mới nhất
+            LoadReportData();
         }
 
+        // 5.3.5. Viết thủ tục xuất báo cáo Excel (btnSave_Click)
         private void btnSave_Click(object sender, EventArgs e)
         {
+            // Bước 1: Mở hộp thoại chọn nơi lưu file
             using (SaveFileDialog sfd = new SaveFileDialog())
             {
                 sfd.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
@@ -51,14 +60,15 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 {
                     try
                     {
+                        // Bước 2: Tạo file và ghi định dạng UTF-8 để không lỗi font tiếng Việt
                         using (var sw = new System.IO.StreamWriter(sfd.FileName, false, System.Text.Encoding.UTF8))
                         {
-                            // BOM for UTF-8 compatibility with Excel
-                            sw.Write('\uFEFF');
+                            sw.Write('\uFEFF'); // Ký tự BOM giúp Excel nhận diện UTF-8
 
-                            // Write headers
+                            // Bước 3: Ghi dòng tiêu đề cột
                             sw.WriteLine("Mã Hóa Đơn,Khách Hàng,Nhân Viên,Ngày Lập,Tổng Tiền,Thanh Toán");
                             
+                            // Bước 4: Duyệt qua từng dòng trong bảng và ghi dữ liệu
                             foreach (DataGridViewRow row in dgvReports.Rows)
                             {
                                 if (row.IsNewRow) continue;
@@ -73,6 +83,8 @@ namespace AssignmentApp.GUI.UserControls.Admin
                                 var tien = moneyVal is decimal money ? money.ToString("F2") : (moneyVal?.ToString() ?? "");
                                 
                                 var tt = row.Cells["HinhThucThanhToan"].Value?.ToString() ?? "";
+                                
+                                // Ghi dữ liệu, cách nhau bằng dấu phẩy
                                 sw.WriteLine($"\"{ma}\",\"{kh}\",\"{nv}\",\"{ngay}\",\"{tien}\",\"{tt}\"");
                             }
                         }
@@ -86,31 +98,43 @@ namespace AssignmentApp.GUI.UserControls.Admin
             }
         }
 
-        private async Task LoadReportDataAsync()
+        // 5.3.6. Viết thủ tục LoadReportData (Xử lý biểu đồ và dữ liệu)
+        private void LoadReportData()
         {
             try
             {
+                // Bước 1: Lấy các mốc thời gian lọc từ giao diện
                 var start = dtpStartDate.Value;
                 var end = dtpEndDate.Value;
                 var period = cboPeriod.SelectedItem?.ToString() ?? "Tháng";
 
-                // 1. KPI Cards
-                decimal revenue = await _repo.GetRevenueAsync(start, end);
+                // Bước 2: Nạp dữ liệu cho các Thẻ Tổng Quan (KPI Cards)
+                decimal revenue = _repo.GetRevenue(start, end);
                 lblRevenueValue.Text = revenue.ToString("N0") + " ₫";
 
-                int orders = await _repo.GetOrderCountAsync(start, end);
+                int orders = _repo.GetOrderCount(start, end);
                 lblOrdersValue.Text = orders.ToString("N0");
 
-                int products = await _repo.GetTotalProductsSoldAsync(start, end);
+                int products = _repo.GetTotalProductsSold(start, end);
                 lblProductsValue.Text = products.ToString("N0");
 
-                // 2. Cartesian Chart - Revenue Trend
-                var trend = await _repo.GetRevenueTrendAsync(start, end, period);
+                // Bước 3: Vẽ Biểu đồ đường (Line) và Cột (Bar) - Xu hướng doanh thu và Đơn hàng
+                var trend = _repo.GetRevenueTrend(start, end, period);
                 var dates = trend.Select(x => x.Period).ToArray();
                 var revenues = trend.Select(x => (double)x.Revenue).ToArray();
+                var ordersCounts = trend.Select(x => x.OrdersCount).ToArray();
 
                 cartesianChart1.Series = new ISeries[]
                 {
+                    // Bar Chart (Biểu đồ cột) cho Số lượng đơn hàng
+                    new ColumnSeries<int>
+                    {
+                        Values = ordersCounts,
+                        Name = "Số đơn hàng",
+                        Fill = new SolidColorPaint(SKColors.DarkOrange),
+                        ScalesYAt = 1 // Dùng trục Y thứ 2 (bên phải)
+                    },
+                    // Line Chart (Biểu đồ đường) cho Doanh thu
                     new LineSeries<double>
                     {
                         Values = revenues,
@@ -118,7 +142,8 @@ namespace AssignmentApp.GUI.UserControls.Admin
                         Fill = new SolidColorPaint(SKColors.CornflowerBlue.WithAlpha(50)),
                         Stroke = new SolidColorPaint(SKColors.CornflowerBlue, 3),
                         GeometrySize = 8,
-                        GeometryStroke = new SolidColorPaint(SKColors.CornflowerBlue, 3)
+                        GeometryStroke = new SolidColorPaint(SKColors.CornflowerBlue, 3),
+                        ScalesYAt = 0 // Dùng trục Y thứ 1 (bên trái)
                     }
                 };
 
@@ -134,47 +159,47 @@ namespace AssignmentApp.GUI.UserControls.Admin
 
                 cartesianChart1.YAxes = new Axis[]
                 {
-                    new Axis
+                    new Axis // Trục Y bên trái (Doanh thu)
                     {
                         Labeler = val => val.ToString("N0") + " ₫",
                         SeparatorsPaint = new SolidColorPaint(new SKColor(220, 220, 220))
+                    },
+                    new Axis // Trục Y bên phải (Số đơn hàng)
+                    {
+                        Labeler = val => val.ToString("N0") + " Đơn",
+                        Position = LiveChartsCore.Measure.AxisPosition.End,
+                        ShowSeparatorLines = false
                     }
                 };
 
-                // 3. Pie Chart - Top 5 Selling Products
-                var topProducts = await _repo.GetTopProductsAsync(start, end, 5);
+                // Bước 4: Vẽ Biểu đồ tròn - Top 5 Sản phẩm bán chạy nhất
+                var topProducts = _repo.GetTopProducts(start, end, 5);
                 var productSeries = new List<ISeries>();
                 foreach (var p in topProducts)
                 {
                     productSeries.Add(new PieSeries<double>
                     {
                         Values = new double[] { p.SoLuongBan },
-                        Name = p.TenSanPham,
-                        DataLabelsPaint = new SolidColorPaint(SKColors.White),
-                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                        DataLabelsFormatter = point => $"{point.Coordinate.PrimaryValue} SP"
+                        Name = p.TenSanPham
                     });
                 }
                 pieChartProducts.Series = productSeries;
 
-                // 4. Pie Chart - Order Statuses / Delivery Statuses
-                var orderStatus = await _repo.GetOrderStatusDistributionAsync(start, end);
+                // Bước 5: Vẽ Biểu đồ tròn - Phân bổ Trạng thái đơn hàng
+                var orderStatus = _repo.GetOrderStatusDistribution(start, end);
                 var statusSeries = new List<ISeries>();
                 foreach (var s in orderStatus)
                 {
                     statusSeries.Add(new PieSeries<double>
                     {
                         Values = new double[] { s.SoLuong },
-                        Name = s.TrangThai,
-                        DataLabelsPaint = new SolidColorPaint(SKColors.White),
-                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                        DataLabelsFormatter = point => $"{point.Coordinate.PrimaryValue} Đơn"
+                        Name = s.TrangThai
                     });
                 }
                 pieChartStatus.Series = statusSeries;
 
-                // 5. Data Grid Detail
-                var sales = (await _repo.GetSalesReportAsync(start, end)).ToList();
+                // Bước 6: Đổ dữ liệu chi tiết các hóa đơn xuống DataGridView
+                var sales = _repo.GetSalesReport(start, end).ToList();
                 dgvReports.DataSource = sales;
 
                 if (dgvReports.Columns.Count > 0)
@@ -195,7 +220,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             }
         }
 
-        // Stubs for CRUD event handlers to satisfy the Designer
+        // 5.3.7. Các sự kiện trống để ngăn Designer báo lỗi
         private void btnAdd_Click(object sender, EventArgs e) { }
         private void btnEdit_Click(object sender, EventArgs e) { }
         private void btnDelete_Click(object sender, EventArgs e) { }

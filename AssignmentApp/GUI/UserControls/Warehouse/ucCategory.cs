@@ -1,25 +1,19 @@
+using AssignmentApp.DAL.Core;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Windows.Forms;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using Microsoft.Data.SqlClient;
+using System.Data;
+
 
 namespace AssignmentApp.GUI.UserControls.Warehouse
 {
     public partial class ucCategory : UserControl
     {
-        public class MockCategory
-        {
-            public int MaDanhMuc { get; set; }
-            public string TenDanhMuc { get; set; } = "";
-            public string MoTa { get; set; } = "";
-            public string TrangThai { get; set; } = "Hoạt động";
-            public DateTime NgayTao { get; set; }
-        }
-
-        private List<MockCategory> mockCategories = new List<MockCategory>();
-        private MockCategory? selectedCategory = null;
-        private bool isEditing = false;
-        private bool isAddingNew = false;
+        DataTable dtDanhMuc;
 
         public ucCategory()
         {
@@ -28,297 +22,399 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
         private void ucCategory_Load(object sender, EventArgs e)
         {
-            InitializeMockData();
-            LoadCategoriesGrid();
-            SetEditState(false);
-            if (dgvDanhMuc.Rows.Count > 0)
+            btnAdd.Enabled = true;
+            btnEdit.Enabled = true;
+            btnDelete.Enabled = true;
+            btnSave.Enabled = false;
+            btnCancel.Enabled = false;
+            Load_DataGridView();
+        }
+        private void Load_DataGridView()
+        {
+            string sql = @"SELECT MaDanhMuc, TenDanhMuc, MoTa,
+                   TrangThai, NgayTao, NgayCapNhat
+                   FROM DanhMuc";
+
+            if (DbContext.Conn.State == ConnectionState.Closed)
             {
-                SelectCategoryRow(0);
+                DbContext.Ketnoi();
             }
+
+            SqlDataAdapter da =
+          new SqlDataAdapter(sql, (SqlConnection)DbContext.Conn);
+
+            dtDanhMuc = new DataTable();
+            da.Fill(dtDanhMuc);
+            dgvDanhMuc.AutoGenerateColumns = false;
+            dgvDanhMuc.DataSource = dtDanhMuc;
+            dgvDanhMuc.Columns["colNgayTao"].DefaultCellStyle.Format =
+                "dd/MM/yyyy HH:mm";
+
+            dgvDanhMuc.Columns["colNgayCapNhat"].DefaultCellStyle.Format =
+                "dd/MM/yyyy HH:mm";
+
+            dgvDanhMuc.AllowUserToAddRows = false;
+
+            dgvDanhMuc.EditMode =
+                DataGridViewEditMode.EditProgrammatically;
         }
 
-        private void InitializeMockData()
-        {
-            if (mockCategories.Count > 0) return;
-
-            mockCategories.Add(new MockCategory
-            {
-                MaDanhMuc = 1,
-                TenDanhMuc = "Sách & Vở",
-                MoTa = "Các loại sách giáo khoa, sách tham khảo và vở viết",
-                TrangThai = "Hoạt động",
-                NgayTao = DateTime.Now.AddMonths(-5)
-            });
-
-            mockCategories.Add(new MockCategory
-            {
-                MaDanhMuc = 2,
-                TenDanhMuc = "Dụng cụ học tập",
-                MoTa = "Bút, thước, tẩy, hộp bút, compa, màu vẽ",
-                TrangThai = "Hoạt động",
-                NgayTao = DateTime.Now.AddMonths(-4)
-            });
-
-            mockCategories.Add(new MockCategory
-            {
-                MaDanhMuc = 3,
-                TenDanhMuc = "Thiết bị văn phòng",
-                MoTa = "Máy tính bỏ túi, giấy in, băng keo, dập ghim",
-                TrangThai = "Ngưng hoạt động",
-                NgayTao = DateTime.Now.AddMonths(-3)
-            });
-        }
-
-        private void LoadCategoriesGrid(List<MockCategory>? dataSource = null)
-        {
-            dgvDanhMuc.Rows.Clear();
-            var list = dataSource ?? mockCategories;
-            foreach (var cat in list)
-            {
-                dgvDanhMuc.Rows.Add(
-                    cat.MaDanhMuc,
-                    cat.TenDanhMuc,
-                    cat.MoTa,
-                    cat.TrangThai,
-                    cat.NgayTao.ToString("dd/MM/yyyy")
-                );
-            }
-        }
-
-        private void SelectCategoryRow(int rowIndex)
-        {
-            if (rowIndex < 0 || rowIndex >= dgvDanhMuc.Rows.Count) return;
-
-            dgvDanhMuc.ClearSelection();
-            dgvDanhMuc.Rows[rowIndex].Selected = true;
-
-            int catId = Convert.ToInt32(dgvDanhMuc.Rows[rowIndex].Cells[0].Value);
-            selectedCategory = mockCategories.FirstOrDefault(c => c.MaDanhMuc == catId);
-
-            if (selectedCategory != null)
-            {
-                PopulateCategoryDetails(selectedCategory);
-            }
-        }
-
-        private void PopulateCategoryDetails(MockCategory cat)
-        {
-            txtMaDanhMuc.Text = cat.MaDanhMuc.ToString();
-            txtTenDanhMuc.Text = cat.TenDanhMuc;
-            txtMoTa.Text = cat.MoTa;
-            cboTrangThai.Text = cat.TrangThai;
-        }
-
-        private void SetEditState(bool editing)
-        {
-            isEditing = editing;
-
-            // Mã DM is identity/auto-generated
-            txtMaDanhMuc.ReadOnly = true;
-
-            // Other fields
-            txtTenDanhMuc.ReadOnly = !editing;
-            txtMoTa.ReadOnly = !editing;
-            cboTrangThai.Enabled = editing;
-
-            // Make all buttons visible at all times
-            btnAdd.Visible = true;
-            btnEdit.Visible = true;
-            btnDelete.Visible = true;
-            btnSave.Visible = true;
-            btnCancel.Visible = true;
-
-            // Position them statically side-by-side
-            btnAdd.Location = new Point(15, 510);
-            btnEdit.Location = new Point(115, 510);
-            btnDelete.Location = new Point(215, 510);
-
-            btnSave.Location = new Point(15, 555);
-            btnSave.Size = new Size(140, 36);
-            btnCancel.Location = new Point(165, 555);
-            btnCancel.Size = new Size(140, 36);
-
-            btnAdd.Enabled = !editing;
-            btnEdit.Enabled = !editing;
-            btnDelete.Enabled = !editing;
-
-            btnSave.Enabled = editing;
-            btnCancel.Enabled = editing;
-        }
-
-        private void ClearInputs()
+        private void ResetValues()
         {
             txtMaDanhMuc.Text = "";
             txtTenDanhMuc.Text = "";
             txtMoTa.Text = "";
-            cboTrangThai.SelectedIndex = 0; // default "Hoạt động"
+            cboTrangThai.SelectedIndex = -1;
         }
+
 
         private void dgvDanhMuc_CellClick(object? sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && !isEditing)
-            {
-                SelectCategoryRow(e.RowIndex);
-            }
+
         }
 
         private void btnAdd_Click(object? sender, EventArgs e)
         {
-            isAddingNew = true;
-            ClearInputs();
-
-            int nextId = mockCategories.Count > 0 ? mockCategories.Max(c => c.MaDanhMuc) + 1 : 1;
-            txtMaDanhMuc.Text = nextId.ToString();
-
-            SetEditState(true);
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
+            btnSave.Enabled = true;
+            btnCancel.Enabled = true;
+            btnAdd.Enabled = false;
+            ResetValues();
+            txtMaDanhMuc.Enabled = false;
             txtTenDanhMuc.Focus();
         }
 
         private void btnEdit_Click(object? sender, EventArgs e)
         {
-            if (selectedCategory == null)
+            string sql;
+
+            if (dtDanhMuc.Rows.Count == 0)
             {
-                MessageBox.Show("Vui lòng chọn một danh mục để chỉnh sửa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Không còn dữ liệu!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            isAddingNew = false;
-            SetEditState(true);
-            txtTenDanhMuc.Focus();
+
+            if (txtMaDanhMuc.Text.Trim() == "")
+            {
+                MessageBox.Show("Bạn chưa chọn danh mục nào!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (txtTenDanhMuc.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập tên danh mục!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTenDanhMuc.Focus();
+                return;
+            }
+
+            if (txtMoTa.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập mô tả!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtMoTa.Focus();
+                return;
+            }
+
+            if (cboTrangThai.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải chọn trạng thái!", "Thông báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cboTrangThai.Focus();
+                return;
+            }
+
+            sql = $@"
+        UPDATE DanhMuc
+        SET 
+            TenDanhMuc = N'{txtTenDanhMuc.Text.Trim()}',
+            MoTa = N'{txtMoTa.Text.Trim()}',
+            TrangThai = N'{cboTrangThai.Text}',
+            NgayCapNhat = GETDATE()
+        WHERE MaDanhMuc = {txtMaDanhMuc.Text}";
+
+            SqlCommand cmd = new SqlCommand(sql, (SqlConnection)DbContext.Conn);
+            cmd.ExecuteNonQuery();
+
+            MessageBox.Show("Sửa danh mục thành công!", "Thông báo",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            Load_DataGridView();
+
+            ResetValues();
+
+            btnAdd.Enabled = true;
+            btnDelete.Enabled = true;
+            btnSave.Enabled = false;
+            btnCancel.Enabled = false;
         }
 
         private void btnDelete_Click(object? sender, EventArgs e)
         {
-            if (selectedCategory == null)
+            string sql;
+
+            if (dtDanhMuc.Rows.Count == 0)
             {
-                MessageBox.Show("Vui lòng chọn một danh mục để xóa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Không còn dữ liệu!", "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
                 return;
             }
 
-            var confirmResult = MessageBox.Show($"Bạn có chắc chắn muốn xóa danh mục '{selectedCategory.TenDanhMuc}' không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (confirmResult == DialogResult.Yes)
+            if (txtMaDanhMuc.Text.Trim() == "")
             {
-                mockCategories.Remove(selectedCategory);
-                MessageBox.Show("Xóa danh mục thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadCategoriesGrid();
-                if (dgvDanhMuc.Rows.Count > 0)
-                {
-                    SelectCategoryRow(0);
-                }
-                else
-                {
-                    selectedCategory = null;
-                    ClearInputs();
-                }
+                MessageBox.Show("Bạn chưa chọn danh mục nào!", "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return;
+            }
+
+            if (MessageBox.Show(
+                "Bạn có muốn xóa danh mục này không?",
+                "Thông báo",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Question) == DialogResult.OK)
+            {
+                sql = $@"DELETE FROM DanhMuc
+                 WHERE MaDanhMuc = {txtMaDanhMuc.Text}";
+
+                SqlCommand cmd =
+                    new SqlCommand(sql, (SqlConnection)DbContext.Conn);
+
+                cmd.ExecuteNonQuery();
+
+                MessageBox.Show("Xóa danh mục thành công!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                Load_DataGridView();
+
+                ResetValues();
             }
         }
 
         private void btnRefresh_Click(object? sender, EventArgs e)
         {
-            ClearInputs();
-            LoadCategoriesGrid();
-            SetEditState(false);
-            if (dgvDanhMuc.Rows.Count > 0)
-            {
-                SelectCategoryRow(0);
-            }
+            ResetValues();
+
+            Load_DataGridView();
+
+            btnAdd.Enabled = true;
+            btnEdit.Enabled = true;
+            btnDelete.Enabled = true;
+
+            btnSave.Enabled = false;
+            btnCancel.Enabled = false;
+
+            txtMaDanhMuc.Enabled = false;
+
+            MessageBox.Show("Đã làm mới dữ liệu!",
+                "Thông báo",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
 
         private void btnCancel_Click(object? sender, EventArgs e)
         {
-            isAddingNew = false;
-            SetEditState(false);
-            if (selectedCategory != null)
-            {
-                PopulateCategoryDetails(selectedCategory);
-            }
-            else if (dgvDanhMuc.Rows.Count > 0)
-            {
-                SelectCategoryRow(0);
-            }
-            else
-            {
-                ClearInputs();
-            }
+            ResetValues();
+
+            btnCancel.Enabled = false;
+            btnAdd.Enabled = true;
+            btnDelete.Enabled = true;
+            btnEdit.Enabled = true;
+            btnSave.Enabled = false;
+
+            txtMaDanhMuc.Enabled = false;
+
+            Load_DataGridView();
         }
 
         private void btnSearch_Click(object? sender, EventArgs e)
         {
-            // Search by name keyword in txtTenDanhMuc
-            string keyword = txtTenDanhMuc.Text.Trim().ToLower();
+            string sql;
 
-            if (string.IsNullOrEmpty(keyword))
+            if (txtTenDanhMuc.Text.Trim() == "")
             {
-                MessageBox.Show("Vui lòng nhập Tên danh mục vào ô nhập thông tin để tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+                MessageBox.Show("Bạn hãy nhập tên danh mục cần tìm!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
 
-            var filtered = mockCategories.Where(c => c.TenDanhMuc.ToLower().Contains(keyword)).ToList();
-            LoadCategoriesGrid(filtered);
-
-            if (dgvDanhMuc.Rows.Count > 0)
-            {
-                SelectCategoryRow(0);
-            }
-            else
-            {
-                selectedCategory = null;
-                ClearInputs();
-                MessageBox.Show("Không tìm thấy danh mục phù hợp!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        private void btnSave_Click(object? sender, EventArgs e)
-        {
-            string name = txtTenDanhMuc.Text.Trim();
-            string desc = txtMoTa.Text.Trim();
-            string status = cboTrangThai.Text;
-
-            if (string.IsNullOrEmpty(name))
-            {
-                MessageBox.Show("Tên danh mục không được để trống!", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtTenDanhMuc.Focus();
                 return;
             }
 
-            if (isAddingNew)
+            sql = $@"
+        SELECT MaDanhMuc, TenDanhMuc, MoTa,
+               TrangThai, NgayTao, NgayCapNhat
+        FROM DanhMuc
+        WHERE TenDanhMuc LIKE N'%{txtTenDanhMuc.Text.Trim()}%'";
+
+            if (DbContext.Conn.State == ConnectionState.Closed)
             {
-                int newId = mockCategories.Count > 0 ? mockCategories.Max(c => c.MaDanhMuc) + 1 : 1;
-                var newCat = new MockCategory
-                {
-                    MaDanhMuc = newId,
-                    TenDanhMuc = name,
-                    MoTa = desc,
-                    TrangThai = status,
-                    NgayTao = DateTime.Now
-                };
-                mockCategories.Add(newCat);
-                selectedCategory = newCat;
-                MessageBox.Show("Thêm mới danh mục thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                if (selectedCategory != null)
-                {
-                    selectedCategory.TenDanhMuc = name;
-                    selectedCategory.MoTa = desc;
-                    selectedCategory.TrangThai = status;
-                    MessageBox.Show("Cập nhật danh mục thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
+                DbContext.Ketnoi();
             }
 
-            isAddingNew = false;
-            SetEditState(false);
-            LoadCategoriesGrid();
+            SqlDataAdapter da =
+                new SqlDataAdapter(sql, (SqlConnection)DbContext.Conn);
 
-            // Re-select row
-            if (selectedCategory != null)
+            DataTable dtSearch = new DataTable();
+
+            da.Fill(dtSearch);
+
+            if (dtSearch.Rows.Count == 0)
             {
-                int index = mockCategories.IndexOf(selectedCategory);
-                if (index >= 0 && index < dgvDanhMuc.Rows.Count)
-                {
-                    SelectCategoryRow(index);
-                }
+                MessageBox.Show("Không tìm thấy danh mục nào!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                return;
             }
+
+            dgvDanhMuc.DataSource = dtSearch;
+
+            MessageBox.Show("Đã tìm thấy " + dtSearch.Rows.Count +
+                " danh mục!",
+                "Thông báo",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
+
+        private void btnSave_Click(object? sender, EventArgs e)
+        {
+            string sql;
+
+         
+            if (txtTenDanhMuc.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập tên danh mục!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                txtTenDanhMuc.Focus();
+                return;
+            }
+
+         
+            if (txtMoTa.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập mô tả!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                txtMoTa.Focus();
+                return;
+            }
+
+         
+            if (cboTrangThai.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải chọn trạng thái!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                cboTrangThai.Focus();
+                return;
+            }
+
+           
+            sql = @"SELECT TenDanhMuc
+            FROM DanhMuc
+            WHERE TenDanhMuc = N'" +
+                    txtTenDanhMuc.Text.Trim() + "'";
+
+            SqlCommand cmdCheck =
+                new SqlCommand(sql, (SqlConnection)DbContext.Conn);
+
+            SqlDataReader reader = cmdCheck.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                reader.Close();
+
+                MessageBox.Show("Tên danh mục đã tồn tại!",
+                    "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning);
+
+                txtTenDanhMuc.Focus();
+                return;
+            }
+
+            reader.Close();
+
+           
+            sql = @"INSERT INTO DanhMuc
+            (TenDanhMuc, MoTa, TrangThai, NgayTao)
+            VALUES
+            (N'" + txtTenDanhMuc.Text.Trim() +
+                    "', N'" + txtMoTa.Text.Trim() +
+                    "', N'" + cboTrangThai.Text.Trim() +
+                    "', GETDATE())";
+
+            SqlCommand cmd =
+                new SqlCommand(sql, (SqlConnection)DbContext.Conn);
+
+            cmd.ExecuteNonQuery();
+
+            MessageBox.Show("Thêm danh mục thành công!",
+                "Thông báo",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+
+            Load_DataGridView();
+
+            ResetValues();
+
+            btnAdd.Enabled = true;
+            btnEdit.Enabled = true;
+            btnDelete.Enabled = true;
+
+            btnSave.Enabled = false;
+            btnCancel.Enabled = false;
+        }
+
+        private void dgvDanhMuc_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (btnAdd.Enabled == false)
+            {
+                MessageBox.Show("Đang ở chế độ thêm mới!", "Thông báo", 
+                    MessageBoxButtons.OK, 
+                    MessageBoxIcon.Information);
+                txtMaDanhMuc.Focus();
+                return;
+            }
+            if (dtDanhMuc.Rows.Count == 0)
+            {
+                MessageBox.Show("Không có dữ liệu!", "Thông báo",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+                return;
+            }
+
+            txtMaDanhMuc.Text = dgvDanhMuc.CurrentRow.Cells["colMaDanhMuc"].Value.ToString();
+
+            txtTenDanhMuc.Text = dgvDanhMuc.CurrentRow.Cells["colTenDanhMuc"].Value.ToString();
+
+            txtMoTa.Text = dgvDanhMuc.CurrentRow.Cells["colMoTa"].Value.ToString();
+
+            cboTrangThai.Text = dgvDanhMuc.CurrentRow.Cells["colTrangThai"].Value.ToString();
+
+            btnEdit.Enabled = true;
+            btnDelete.Enabled = true;
+            btnCancel.Enabled = true;
+        }
+
     }
 }
+
+  
+

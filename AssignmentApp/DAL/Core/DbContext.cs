@@ -14,6 +14,7 @@ namespace AssignmentApp.DAL.Core
         {
             try
             {
+                // Connection string do người dùng cung cấp
                 connstring = @"Data Source=LAPTOP-TEEPQA0B\SQLEXPRESS;Initial Catalog=CKNet;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
                 Conn = new SqlConnection(connstring);
                 
@@ -47,6 +48,24 @@ namespace AssignmentApp.DAL.Core
             return table;
         }
 
+        // Check whether a given column exists in a table in the current database.
+        public static bool ColumnExists(string tableName, string columnName)
+        {
+            if (Conn == null)
+                throw new InvalidOperationException("Database connection is not initialized.");
+
+            const string sql = @"SELECT COUNT(*) FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @table AND COLUMN_NAME = @column";
+            using (SqlCommand cmd = new SqlCommand(sql, Conn))
+            {
+                cmd.Parameters.AddWithValue("@table", tableName);
+                cmd.Parameters.AddWithValue("@column", columnName);
+                object result = cmd.ExecuteScalar();
+                if (result == null || result == DBNull.Value)
+                    return false;
+                return Convert.ToInt32(result) > 0;
+            }
+        }
+
         public static bool CheckKey(string sql)
         {
             SqlDataAdapter Mydata = new SqlDataAdapter(sql, Conn);
@@ -66,6 +85,21 @@ namespace AssignmentApp.DAL.Core
                 catch (System.Exception ex)
                 {
                     MessageBox.Show(ex.ToString());
+                }
+            }
+        }
+
+        public static void RunSqlDel(string sql)
+        {
+            using (SqlCommand cmd = new SqlCommand(sql, Conn))
+            {
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (System.Exception)
+                {
+                    MessageBox.Show("Dữ liệu đang được dùng, không thể xóa...", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
             }
         }

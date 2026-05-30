@@ -214,9 +214,9 @@ SET IDENTITY_INSERT KhachHang OFF;
 -- 4. NguoiDung 
 SET IDENTITY_INSERT NguoiDung ON;
 INSERT INTO NguoiDung (MaNguoiDung, TenNguoiDung, SoDienThoai, Email, MatKhau, VaiTro, TrangThai, NgayTao) VALUES
-(1, N'Quản Lý Cửa Hàng', '0901000111', 'admin@vpp.com', 'hashed_pass', 'ADMIN', N'Hoạt động', GETDATE()),
-(2, N'Thu Ngân 1', '0901000222', 'thungan@vpp.com', 'hashed_pass', 'SALES', N'Hoạt động', GETDATE()),
-(3, N'Thủ Kho 1', '0901000333', 'kho@vpp.com', 'hashed_pass', 'WAREHOUSE', N'Hoạt động', GETDATE());
+(1, N'Quản Lý Cửa Hàng', '0901000111', 'admin@vpp.com', '$2a$10$gTYwCN66/tBRoCr3.TXa1.v1iyvwIF7GRBqxzv7G.AHLMt/owXrp.', 'ADMIN', N'Hoạt động', GETDATE()),
+(2, N'Thu Ngân 1', '0901000222', 'thungan@vpp.com', '$2a$10$gTYwCN66/tBRoCr3.TXa1.v1iyvwIF7GRBqxzv7G.AHLMt/owXrp.', 'SALES', N'Hoạt động', GETDATE()),
+(3, N'Thủ Kho 1', '0901000333', 'kho@vpp.com', '$2a$10$gTYwCN66/tBRoCr3.TXa1.v1iyvwIF7GRBqxzv7G.AHLMt/owXrp.', 'WAREHOUSE', N'Hoạt động', GETDATE());
 SET IDENTITY_INSERT NguoiDung OFF;
 
 -- 5. SanPham (Gắn kèm Thương Hiệu để Search LIKE)

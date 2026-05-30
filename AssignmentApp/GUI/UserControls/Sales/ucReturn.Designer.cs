@@ -204,6 +204,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             tabMain.Size = new Size(1143, 934);
             tabMain.SizeMode = TabSizeMode.Fixed;
             tabMain.TabIndex = 0;
+            tabMain.SelectedIndexChanged += tabMain_SelectedIndexChanged;
             // 
             // tabPhieuTra
             // 
@@ -833,7 +834,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             tabSelectionContainer.SelectedIndex = 0;
             tabSelectionContainer.Size = new Size(677, 742);
             tabSelectionContainer.TabIndex = 2;
-            tabSelectionContainer.SelectedIndexChanged += tabSelectionContainer_SelectedIndexChanged;
             // 
             // tabListProducts
             // 
@@ -1040,7 +1040,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvCurrentDetails.AllowUserToDeleteRows = false;
             dataGridViewCellStyle7.BackColor = Color.White;
             dgvCurrentDetails.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
-            dgvCurrentDetails.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dgvCurrentDetails.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle8.BackColor = Color.FromArgb(28, 30, 38);
             dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -1092,6 +1092,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // colCurMaSP
             // 
+            colCurMaSP.DataPropertyName = "colCurMaSP";
             colCurMaSP.HeaderText = "Mã";
             colCurMaSP.MinimumWidth = 8;
             colCurMaSP.Name = "colCurMaSP";
@@ -1099,6 +1100,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // colCurTenSP
             // 
+            colCurTenSP.DataPropertyName = "colCurTenSP";
             colCurTenSP.HeaderText = "Tên";
             colCurTenSP.MinimumWidth = 8;
             colCurTenSP.Name = "colCurTenSP";
@@ -1106,6 +1108,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // colCurSoLuong
             // 
+            colCurSoLuong.DataPropertyName = "colCurSoLuong";
             colCurSoLuong.HeaderText = "SL";
             colCurSoLuong.MinimumWidth = 8;
             colCurSoLuong.Name = "colCurSoLuong";
@@ -1113,7 +1116,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // colCurDonGia
             // 
-            colCurDonGia.DataPropertyName = "DonGia";
+            colCurDonGia.DataPropertyName = "colCurDonGia";
             colCurDonGia.HeaderText = "Đơn Giá";
             colCurDonGia.MinimumWidth = 8;
             colCurDonGia.Name = "colCurDonGia";
@@ -1121,6 +1124,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // colCurTinhTrang
             // 
+            colCurTinhTrang.DataPropertyName = "colCurTinhTrang";
             colCurTinhTrang.HeaderText = "Tình Trạng";
             colCurTinhTrang.MinimumWidth = 8;
             colCurTinhTrang.Name = "colCurTinhTrang";
@@ -1128,6 +1132,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // colCurThanhTien
             // 
+            colCurThanhTien.DataPropertyName = "colCurThanhTien";
             colCurThanhTien.HeaderText = "T.Tiền";
             colCurThanhTien.MinimumWidth = 8;
             colCurThanhTien.Name = "colCurThanhTien";

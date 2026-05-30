@@ -15,6 +15,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
         DataTable dtCart;
         DataTable dtInvoiceDetails;
 
+        // Các biến lưu trạng thái của Phiếu trả đang chọn ở Tab 1
+        private int currentMaTraHang = -1;
+        private int currentMaHoaDon = -1;
+        private string currentTrangThai = "";
+
         public ucReturn()
         {
             InitializeComponent();
@@ -125,176 +130,185 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtMaHoaDon.Text = "";
             txtLyDo.Text = "";
             txtTongTienHoan.Text = "0";
+            txtTongTienHoan.Enabled = false; // Ngăn không cho tự nhập
             dtpNgayTra.Value = DateTime.Now;
             cboTrangThai.SelectedIndex = -1;
             cboLoaiGiaoDich.SelectedIndex = -1;
 
             lblKhachHang.Text = "Khách hàng: (Trống)";
             lblNhanVien.Text = "Nhân viên: (Trống)";
+            
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
+
+            // Reset biến toàn cục
+            currentMaTraHang = -1;
+            currentMaHoaDon = -1;
+            currentTrangThai = "";
         }
         private void btnAdd_Click(object? sender, EventArgs e)
         {
-            string sql;
-
-            if (txtMaHoaDon.Text.Trim().Length == 0)
-            {
-                MessageBox.Show("Bạn phải nhập mã hóa đơn!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtMaHoaDon.Focus();
-                return;
-            }
-
-            if (txtLyDo.Text.Trim().Length == 0)
-            {
-                MessageBox.Show("Bạn phải nhập lý do trả hàng!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtLyDo.Focus();
-                return;
-            }
-
-            if (cboTrangThai.Text.Trim().Length == 0)
-            {
-                MessageBox.Show("Bạn phải chọn trạng thái!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cboTrangThai.Focus();
-                return;
-            }
-
-            if (cboLoaiGiaoDich.Text.Trim().Length == 0)
-            {
-                MessageBox.Show("Bạn phải chọn loại giao dịch!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cboLoaiGiaoDich.Focus();
-                return;
-            }
-
-            sql = "SELECT MaHoaDon FROM TraHang WHERE MaHoaDon = N'"
-                + txtMaHoaDon.Text.Trim() + "'";
-
-            SqlCommand cmdCheck = new SqlCommand(sql, (SqlConnection)DbContext.Conn);
-            SqlDataReader reader = cmdCheck.ExecuteReader();
-
-            if (reader.HasRows)
-            {
-                reader.Close();
-                MessageBox.Show("Hóa đơn này đã có phiếu trả!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtMaHoaDon.Focus();
-                return;
-            }
-
-            reader.Close();
-
-            sql = @"INSERT INTO TraHang 
-            (MaHoaDon, MaNguoiDung, LyDo, TongTienHoan, NgayTra, TrangThai, LoaiGiaoDich)
-             VALUES
-             (" + txtMaHoaDon.Text.Trim() + @",1,
-             N'" + txtLyDo.Text.Trim() + @"',
-             " + txtTongTienHoan.Text.Replace(" đ", "").Replace(",", "") + @",
-             '" + dtpNgayTra.Value.ToString("yyyy-MM-dd HH:mm:ss") + @"',
-             N'" + cboTrangThai.Text + @"',
-             N'" + cboLoaiGiaoDich.Text + @"')";
-
-            SqlCommand cmd = new SqlCommand(sql, (SqlConnection)DbContext.Conn);
-            cmd.ExecuteNonQuery();
-
-
-            Load_DataGridView();
-
-
+            // Bước 1: Xóa trắng form
             ResetValues();
+            
+            // Bước 2: Thiết lập trạng thái nút bấm
+            btnSave.Enabled = true;
+            btnCancel.Enabled = true;
+            btnAdd.Enabled = false;
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
 
-            MessageBox.Show("Thêm phiếu trả hàng thành công!", "Thông báo",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
+            // Bước 3: Đưa trỏ chuột vào vị trí sẵn sàng nhập
+            txtMaHoaDon.Enabled = true; // Cho phép nhập mã hóa đơn
+            txtMaHoaDon.Focus();
+            
+            cboTrangThai.Text = "Chờ xử lý";
         }
 
         private void btnDelete_Click(object? sender, EventArgs e)
         {
-            string sql;
-
-            if (dtReturn.Rows.Count == 0)
+            if (dtReturn.Rows.Count == 0 || txtMaHoaDon.Text.Trim() == "")
             {
-                MessageBox.Show("Không còn dữ liệu!", "Thông báo");
+                MessageBox.Show("Bạn chưa chọn phiếu trả nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            if (txtMaHoaDon.Text.Trim() == "")
+            if (MessageBox.Show("Bạn có chắc chắn muốn hủy phiếu trả này?", "Cảnh báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
-                MessageBox.Show("Bạn chưa chọn phiếu trả!", "Thông báo");
-                return;
-            }
+                if (!int.TryParse(txtMaHoaDon.Text.Trim(), out int maHoaDon)) return;
 
-            if (MessageBox.Show("Bạn có muốn xóa phiếu trả này không?",
-                "Xác nhận",
-                MessageBoxButtons.OKCancel,
-                MessageBoxIcon.Question) == DialogResult.OK)
-            {
-                sql = $@"DELETE FROM TraHang 
-                 WHERE MaHoaDon = N'{txtMaHoaDon.Text}'";
+                if (DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
 
+                string sql = "UPDATE TraHang SET TrangThai = N'Đã hủy' WHERE MaHoaDon = @MaHoaDon";
                 SqlCommand cmd = new SqlCommand(sql, (SqlConnection)DbContext.Conn);
-                cmd.ExecuteNonQuery();
-
-                MessageBox.Show("Xóa thành công!", "Thông báo");
-
+                cmd.Parameters.AddWithValue("@MaHoaDon", maHoaDon);
+                
+                try { cmd.ExecuteNonQuery(); } catch { }
+                
                 Load_DataGridView();
                 ResetValues();
+                
+                btnEdit.Enabled = false;
+                btnDelete.Enabled = false;
+                btnCancel.Enabled = false;
+                txtMaHoaDon.Enabled = false;
             }
         }
 
         private void btnSave_Click(object? sender, EventArgs e)
         {
-            string sql;
-
+            // Bước 1: Kiểm tra dữ liệu
             if (txtMaHoaDon.Text.Trim() == "")
             {
-                MessageBox.Show("Phải nhập mã hóa đơn!", "Thông báo");
+                MessageBox.Show("Phải nhập mã hóa đơn!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtMaHoaDon.Focus();
                 return;
             }
-
+            if (!int.TryParse(txtMaHoaDon.Text.Trim(), out int maHoaDon))
+            {
+                MessageBox.Show("Mã hóa đơn phải là số nguyên!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtMaHoaDon.Focus();
+                return;
+            }
             if (txtLyDo.Text.Trim() == "")
             {
-                MessageBox.Show("Phải nhập lý do!", "Thông báo");
+                MessageBox.Show("Phải nhập lý do!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtLyDo.Focus();
                 return;
             }
+            if (cboTrangThai.Text.Trim() == "")
+            {
+                MessageBox.Show("Phải chọn trạng thái!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cboTrangThai.Focus();
+                return;
+            }
+            if (cboLoaiGiaoDich.Text.Trim() == "")
+            {
+                MessageBox.Show("Phải chọn loại giao dịch!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cboLoaiGiaoDich.Focus();
+                return;
+            }
 
-            sql = @"INSERT INTO TraHang
-        (MaHoaDon, LyDo, TongTienHoan, NgayTra, TrangThai, LoaiGiaoDich)
-        VALUES
-        (N'" + txtMaHoaDon.Text.Trim() +
-                "', N'" + txtLyDo.Text.Trim() +
-                "', " + txtTongTienHoan.Text.Replace("đ", "").Replace(",", "") +
-                ", '" + dtpNgayTra.Value.ToString("yyyy-MM-dd HH:mm:ss") +
-                "', N'" + cboTrangThai.Text +
-                "', N'" + cboLoaiGiaoDich.Text + "')";
+            if (DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
 
+            // Kiểm tra mã hóa đơn có tồn tại trong bảng HoaDon không
+            string sqlCheckHD = "SELECT MaHoaDon FROM HoaDon WHERE MaHoaDon = @MaHoaDon";
+            SqlCommand cmdCheckHD = new SqlCommand(sqlCheckHD, (SqlConnection)DbContext.Conn);
+            cmdCheckHD.Parameters.AddWithValue("@MaHoaDon", maHoaDon);
+            SqlDataReader readerHD = cmdCheckHD.ExecuteReader();
+            if (!readerHD.HasRows)
+            {
+                readerHD.Close();
+                MessageBox.Show("Mã hóa đơn này không tồn tại trong hệ thống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtMaHoaDon.Focus();
+                return;
+            }
+            readerHD.Close();
+
+            // Bước 2: Xử lý tiền
+            string tongTienStr = txtTongTienHoan.Text.Trim();
+            if (tongTienStr == "") tongTienStr = "0";
+            tongTienStr = tongTienStr.Replace(" đ", "").Replace("đ", "").Replace(",", "").Replace(".", "");
+            if (!decimal.TryParse(tongTienStr, out decimal tongTien)) tongTien = 0;
+
+            // Bước 3: Tạo SQL và Thực thi
+            string sql = @"INSERT INTO TraHang (MaHoaDon, MaNguoiDung, LyDo, TongTienHoan, NgayTra, TrangThai, LoaiGiaoDich)
+                           VALUES (@MaHoaDon, @MaNguoiDung, @LyDo, @TongTienHoan, @NgayTra, @TrangThai, @LoaiGiaoDich)";
             SqlCommand cmd = new SqlCommand(sql, (SqlConnection)DbContext.Conn);
-            cmd.ExecuteNonQuery();
+            cmd.Parameters.AddWithValue("@MaHoaDon", maHoaDon);
+            cmd.Parameters.AddWithValue("@MaNguoiDung", 1); // Theo logic cũ
+            cmd.Parameters.AddWithValue("@LyDo", txtLyDo.Text.Trim());
+            cmd.Parameters.AddWithValue("@TongTienHoan", tongTien);
+            cmd.Parameters.AddWithValue("@NgayTra", dtpNgayTra.Value);
+            cmd.Parameters.AddWithValue("@TrangThai", cboTrangThai.Text.Trim());
+            cmd.Parameters.AddWithValue("@LoaiGiaoDich", cboLoaiGiaoDich.Text.Trim());
 
-            MessageBox.Show("Thêm phiếu trả thành công!", "Thông báo");
+            try
+            {
+                cmd.ExecuteNonQuery();
+                MessageBox.Show("Thêm phiếu trả thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi cơ sở dữ liệu: " + ex.Message, "Lỗi SQL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             Load_DataGridView();
             ResetValues();
+
+            // Bước 4: Reset nút
+            btnAdd.Enabled = true;
+            btnDelete.Enabled = false;
+            btnEdit.Enabled = false;
+            btnCancel.Enabled = false;
+            btnSave.Enabled = false;
+            txtMaHoaDon.Enabled = false;
         }
 
         private void btnCancel_Click(object? sender, EventArgs e)
         {
             ResetValues();
-            Load_DataGridView();
+            btnCancel.Enabled = false;
+            btnAdd.Enabled = true;
+            btnDelete.Enabled = false;
+            btnEdit.Enabled = false;
+            btnSave.Enabled = false;
+            txtMaHoaDon.Enabled = false;
         }
 
         private void btnSearch_Click(object? sender, EventArgs e)
         {
+            txtMaHoaDon.Enabled = true;
+
             if (txtMaHoaDon.Text.Trim() == "")
             {
-                MessageBox.Show("Nhập mã hóa đơn để tìm!", "Thông báo");
+                MessageBox.Show("Hãy nhập mã hóa đơn để tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtMaHoaDon.Focus();
                 return;
             }
 
-            string sql = @"
+            string sql = $@"
             SELECT 
               th.MaTraHang,
               th.MaHoaDon,
@@ -309,40 +323,85 @@ namespace AssignmentApp.GUI.UserControls.Sales
               JOIN NguoiDung nd ON th.MaNguoiDung = nd.MaNguoiDung
               JOIN HoaDon hd ON th.MaHoaDon = hd.MaHoaDon
               JOIN KhachHang kh ON hd.MaKhachHang = kh.MaKhachHang
-              WHERE th.MaHoaDon LIKE @mahd";
+              WHERE th.MaHoaDon LIKE '%{txtMaHoaDon.Text.Trim()}%'";
 
-            if (DbContext.Conn.State == ConnectionState.Closed)
-            {
-                DbContext.Ketnoi();
-            }
-
-            SqlDataAdapter da = new SqlDataAdapter(sql, (SqlConnection)DbContext.Conn);
-
-            da.SelectCommand.Parameters.AddWithValue("@mahd", "%" + txtMaHoaDon.Text.Trim() + "%");
-
-            DataTable dtSearch = new DataTable();
-            da.Fill(dtSearch);
+            DataTable dtSearch = DbContext.GetDataToTable(sql);
 
             if (dtSearch.Rows.Count == 0)
-            {
-                MessageBox.Show("Không tìm thấy!", "Thông báo");
-                return;
-            }
+                MessageBox.Show("Không tìm thấy kết quả nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            else
+                MessageBox.Show($"Tìm thấy {dtSearch.Rows.Count} phiếu trả!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             dgvReturns.DataSource = dtSearch;
+            ResetValues();
+            
+            btnCancel.Enabled = true;
         }
 
         private void btnRefresh_Click(object? sender, EventArgs e)
         {
-            ResetValues();
             Load_DataGridView();
-
-            MessageBox.Show("Đã làm mới dữ liệu!", "Thông báo");
+            ResetValues();
+            
+            btnCancel.Enabled = false;
+            btnAdd.Enabled = true;
+            btnDelete.Enabled = false;
+            btnEdit.Enabled = false;
+            btnSave.Enabled = false;
+            txtMaHoaDon.Enabled = false;
         }
 
         private void dgvReturns_CellClick(object? sender, DataGridViewCellEventArgs e)
         {
+            if (btnAdd.Enabled == false)
+            {
+                MessageBox.Show("Đang ở chế độ thêm mới!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtMaHoaDon.Focus();
+                return;
+            }
+            if (dgvReturns.Rows.Count == 0 || e.RowIndex < 0)
+            {
+                return;
+            }
 
+            txtMaHoaDon.Text = dgvReturns.CurrentRow.Cells["colMaHoaDon"].Value.ToString();
+            txtLyDo.Text = dgvReturns.CurrentRow.Cells["colLyDo"].Value.ToString();
+            txtTongTienHoan.Text = dgvReturns.CurrentRow.Cells["colTongTienHoan"].Value.ToString();
+            dtpNgayTra.Value = Convert.ToDateTime(dgvReturns.CurrentRow.Cells["colNgayTra"].Value);
+
+            string trangThai = dgvReturns.CurrentRow.Cells["colTrangThai"].Value.ToString().Trim();
+            string loaiGD = dgvReturns.CurrentRow.Cells["colLoaiGiaoDich"].Value.ToString().Trim();
+
+            // Lưu vào biến toàn cục
+            if (int.TryParse(dgvReturns.CurrentRow.Cells["colMaTraHang"].Value?.ToString(), out int mt))
+                currentMaTraHang = mt;
+            if (int.TryParse(txtMaHoaDon.Text, out int mh))
+                currentMaHoaDon = mh;
+            currentTrangThai = trangThai;
+
+            cboTrangThai.Text = trangThai;
+            cboLoaiGiaoDich.Text = loaiGD;
+
+            int rowIndex = e.RowIndex;
+            if (rowIndex >= 0 && dtReturn != null && rowIndex < dtReturn.Rows.Count)
+            {
+                lblNhanVien.Text = "Nhân viên: " + dtReturn.Rows[rowIndex]["NhanVien"].ToString();
+                lblKhachHang.Text = "Khách hàng: " + dtReturn.Rows[rowIndex]["KhachHang"].ToString();
+            }
+
+            if (trangThai == "Đã hoàn thành" || trangThai == "Đã hủy")
+            {
+                btnEdit.Enabled = false;
+                btnDelete.Enabled = false;
+            }
+            else
+            {
+                btnEdit.Enabled = true;
+                btnDelete.Enabled = true;
+            }
+            
+            btnCancel.Enabled = true;
+            txtMaHoaDon.Enabled = false;
         }
 
         private void txtMaHoaDon_Leave(object sender, EventArgs e)
@@ -624,49 +683,118 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlReturnTop.Tag = null;
         }
 
-        private void tabSelectionContainer_SelectedIndexChanged(object? sender, EventArgs e)
+        private void LoadInvoiceDetails(int maHoaDon)
         {
+            string sql = $@"SELECT cthd.MaSanPham, sp.TenSanPham, cthd.SoLuong, cthd.DonGia, sp.MoTa, sp.Anh 
+                    FROM ChiTietHoaDon cthd
+                    INNER JOIN SanPham sp ON cthd.MaSanPham = sp.MaSanPham
+                    WHERE cthd.MaHoaDon = {maHoaDon}";
 
+            if (DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
+
+            SqlDataAdapter da = new SqlDataAdapter(sql, (SqlConnection)DbContext.Conn);
+            dtInvoiceDetails = new DataTable();
+            da.Fill(dtInvoiceDetails);
+
+            dgvProductsSelection.AutoGenerateColumns = false;
+            dgvProductsSelection.DataSource = dtInvoiceDetails;
+            pnlReturnTop.Tag = maHoaDon.ToString();
+        }
+
+        private void LoadReturnDetails(int maTraHang)
+        {
+            if (dtCart == null) KhoiTaoGioHangTamtinh();
+            dtCart.Rows.Clear();
+
+            string sql = $@"SELECT ctth.MaSanPham, sp.TenSanPham, ctth.SoLuong, sp.GiaBan AS DonGia, ctth.TinhTrang, ctth.TienHoan 
+                    FROM ChiTietTraHang ctth
+                    INNER JOIN SanPham sp ON ctth.MaSanPham = sp.MaSanPham
+                    WHERE ctth.MaTraHang = {maTraHang}";
+
+            if (DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
+
+            SqlCommand cmd = new SqlCommand(sql, (SqlConnection)DbContext.Conn);
+            SqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                DataRow newRow = dtCart.NewRow();
+                newRow["colCurMaSP"] = reader["MaSanPham"];
+                newRow["colCurTenSP"] = reader["TenSanPham"];
+                newRow["colCurSoLuong"] = reader["SoLuong"];
+                newRow["colCurDonGia"] = reader["DonGia"];
+                newRow["colCurTinhTrang"] = reader["TinhTrang"];
+                newRow["colCurThanhTien"] = reader["TienHoan"];
+                dtCart.Rows.Add(newRow);
+            }
+            reader.Close();
+            TinhTongTienHoanTra();
+        }
+
+        private void tabMain_SelectedIndexChanged(object? sender, EventArgs e)
+        {
+            if (tabMain.SelectedTab == tabChonSanPham)
+            {
+                if (currentMaTraHang == -1)
+                {
+                    MessageBox.Show("Vui lòng chọn một phiếu trả hàng ở tab Thông tin phiếu trả trước!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    tabMain.SelectedTab = tabPhieuTra;
+                    return;
+                }
+
+                LoadInvoiceDetails(currentMaHoaDon);
+                LoadReturnDetails(currentMaTraHang);
+
+                if (currentTrangThai == "Đã hoàn thành" || currentTrangThai == "Đã hủy")
+                {
+                    btnAddToCart.Enabled = false;
+                    btnRemoveFromCart.Enabled = false;
+                    btnSuaCT.Enabled = false;
+                    btnLuuCT.Enabled = false;
+                    MessageBox.Show($"Phiếu trả này đang ở trạng thái '{currentTrangThai}', bạn không thể chỉnh sửa chi tiết.", "Chỉ xem", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    btnAddToCart.Enabled = true;
+                    btnRemoveFromCart.Enabled = true;
+                    btnSuaCT.Enabled = true;
+                    btnLuuCT.Enabled = true;
+                }
+            }
         }
 
         private void btnBackToReceipt_Click(object? sender, EventArgs e)
         {
-            if (dtCart.Rows.Count == 0)
+            if (currentMaTraHang == -1)
             {
-                MessageBox.Show("Giỏ hàng hoàn trả đang trống! Không thể lưu.", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Chưa chọn phiếu trả hàng nào để cập nhật!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (pnlReturnTop.Tag == null) return;
-            int maHoaDonGoc = Convert.ToInt32(pnlReturnTop.Tag);
-
-            if (DbContext.Conn.State == ConnectionState.Closed)
-            {
-                DbContext.Ketnoi();
-            }
+            if (DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
 
             SqlTransaction transaction = ((SqlConnection)DbContext.Conn).BeginTransaction();
 
             try
             {
+                // 1. Tính tổng tiền
                 decimal tongTienHoan = 0;
                 foreach (DataRow r in dtCart.Rows)
                 {
                     tongTienHoan += Convert.ToDecimal(r["colCurThanhTien"]);
                 }
 
-                int maNhanVien = 1;
+                // 2. Cập nhật tổng tiền vào TraHang
+                string sqlUpdateTraHang = $"UPDATE TraHang SET TongTienHoan = @tongTien WHERE MaTraHang = {currentMaTraHang}";
+                SqlCommand cmdUpdate = new SqlCommand(sqlUpdateTraHang, (SqlConnection)DbContext.Conn, transaction);
+                cmdUpdate.Parameters.AddWithValue("@tongTien", tongTienHoan);
+                cmdUpdate.ExecuteNonQuery();
 
-            
-                string sqlInsertTraHang = $@"INSERT INTO TraHang (MaHoaDon, MaNguoiDung, NgayTra, TongTienHoan, LyDo)
-                                     VALUES ({maHoaDonGoc}, {maNhanVien}, GETDATE(), {tongTienHoan}, N'Khách trả hàng theo yêu cầu');
-                                     SELECT SCOPE_IDENTITY();";
+                // 3. Xóa chi tiết cũ
+                string sqlDeleteChiTiet = $"DELETE FROM ChiTietTraHang WHERE MaTraHang = {currentMaTraHang}";
+                SqlCommand cmdDelete = new SqlCommand(sqlDeleteChiTiet, (SqlConnection)DbContext.Conn, transaction);
+                cmdDelete.ExecuteNonQuery();
 
-                SqlCommand cmdTraHang = new SqlCommand(sqlInsertTraHang, (SqlConnection)DbContext.Conn, transaction);
-                int maTraHangMoi = Convert.ToInt32(cmdTraHang.ExecuteScalar());
-
-               
+                // 4. Thêm chi tiết mới
                 foreach (DataRow row in dtCart.Rows)
                 {
                     int maSP = Convert.ToInt32(row["colCurMaSP"]);
@@ -674,47 +802,27 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     decimal thanhTienDong = Convert.ToDecimal(row["colCurThanhTien"]);
                     string tinhTrang = row["colCurTinhTrang"].ToString();
 
-                  
                     string sqlInsertChiTiet = $@"INSERT INTO ChiTietTraHang (MaTraHang, MaSanPham, SoLuong, TienHoan, TinhTrang)
-                                         VALUES ({maTraHangMoi}, {maSP}, {soLuongTra}, {thanhTienDong}, N'{tinhTrang}')";
+                                         VALUES ({currentMaTraHang}, {maSP}, {soLuongTra}, @thanhTienDong, N'{tinhTrang}')";
                     SqlCommand cmdChiTiet = new SqlCommand(sqlInsertChiTiet, (SqlConnection)DbContext.Conn, transaction);
+                    cmdChiTiet.Parameters.AddWithValue("@thanhTienDong", thanhTienDong);
                     cmdChiTiet.ExecuteNonQuery();
-
-                   
-                    string sqlTonKho = $"SELECT SoLuongTon FROM SanPham WHERE MaSanPham = {maSP}";
-                    SqlCommand cmdTonKho = new SqlCommand(sqlTonKho, (SqlConnection)DbContext.Conn, transaction);
-                    int tonKhoHienTai = Convert.ToInt32(cmdTonKho.ExecuteScalar());
-                    int tonKhoSau = tonKhoHienTai + soLuongTra;
-
-             
-                    string sqlUpdateKho = $"UPDATE SanPham SET SoLuongTon = {tonKhoSau} WHERE MaSanPham = {maSP}";
-                    SqlCommand cmdUpdateKho = new SqlCommand(sqlUpdateKho, (SqlConnection)DbContext.Conn, transaction);
-                    cmdUpdateKho.ExecuteNonQuery();
-
-                   
-                    string sqlInsertLichSu = $@"INSERT INTO LichSuNhapKho 
-                                        (MaSanPham, Thoigian, ThayDoi, SoLuongTruoc, SoLuongSau, LoaiGiaoDich, MaThamChieu, TrangThai)
-                                        VALUES ({maSP}, GETDATE(), {soLuongTra}, {tonKhoHienTai}, {tonKhoSau}, N'Trả hàng', {maTraHangMoi}, N'Hoàn tất')";
-                    SqlCommand cmdLichSu = new SqlCommand(sqlInsertLichSu, (SqlConnection)DbContext.Conn, transaction);
-                    cmdLichSu.ExecuteNonQuery();
                 }
 
-        
                 transaction.Commit();
-                MessageBox.Show("Xử lý và lưu đơn hàng hoàn trả thành công!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-        
-                btnCancel_Click(sender, e);
+                MessageBox.Show("Cập nhật chi tiết phiếu trả hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
+                // Trở về tab 1 và load lại dữ liệu
+                Load_DataGridView();
+                tabSelectionContainer.SelectedTab = tabPhieuTra;
             }
             catch (Exception ex)
             {
-             
                 transaction.Rollback();
-                MessageBox.Show("Có lỗi xảy ra trong quá trình lưu dữ liệu: " + ex.Message, "Lỗi hệ thống",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Có lỗi xảy ra trong quá trình lưu dữ liệu: " + ex.Message, "Lỗi hệ thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
 
         private void btnSelectProduct_Click(object? sender, EventArgs e)
         {
@@ -724,113 +832,129 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private void dgvReturns_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
-            if (btnAdd.Enabled == false)
-            {
-                MessageBox.Show("Đang ở chế độ thêm mới!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                txtMaHoaDon.Focus();
-                return;
-            }
-
-            if (dgvReturns.Rows.Count == 0)
-            {
-                MessageBox.Show("Không có dữ liệu!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            txtMaHoaDon.Text = dgvReturns.CurrentRow.Cells["colMaHoaDon"].Value.ToString();
-            txtLyDo.Text = dgvReturns.CurrentRow.Cells["colLyDo"].Value.ToString();
-            txtTongTienHoan.Text = dgvReturns.CurrentRow.Cells["colTongTienHoan"].Value.ToString();
-
-            string trangThai = dgvReturns.CurrentRow.Cells["colTrangThai"].Value.ToString().Trim();
-            string loaiGD = dgvReturns.CurrentRow.Cells["colLoaiGiaoDich"].Value.ToString().Trim();
-
-            cboTrangThai.SelectedIndex = -1;
-            foreach (var item in cboTrangThai.Items)
-                if (item.ToString().Trim() == trangThai)
-                { cboTrangThai.SelectedItem = item; break; }
-
-            cboLoaiGiaoDich.SelectedIndex = -1;
-            foreach (var item in cboLoaiGiaoDich.Items)
-                if (item.ToString().Trim() == loaiGD)
-                { cboLoaiGiaoDich.SelectedItem = item; break; }
-
-            dtpNgayTra.Value = Convert.ToDateTime(dgvReturns.CurrentRow.Cells["colNgayTra"].Value);
-
-            int rowIndex = e.RowIndex;
-            if (rowIndex >= 0 && rowIndex < dtReturn.Rows.Count)
-            {
-                lblNhanVien.Text = "Nhân viên: " + dtReturn.Rows[rowIndex]["NhanVien"].ToString();
-                lblKhachHang.Text = "Khách hàng: " + dtReturn.Rows[rowIndex]["KhachHang"].ToString();
-            }
-
-
-            btnEdit.Enabled = true;
-            btnDelete.Enabled = true;
-            btnCancel.Enabled = true;
         }
 
         private void tabPhieuTra_Click(object sender, EventArgs e)
         {
             btnAdd.Enabled = true;
-            btnEdit.Enabled = true;
-            btnDelete.Enabled = true;
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
             btnSave.Enabled = false;
             btnCancel.Enabled = false;
+            txtMaHoaDon.Enabled = false;
             Load_DataGridView();
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            string sql;
-
-            if (dtReturn.Rows.Count == 0)
+            // Bước 1: Kiểm tra chọn dữ liệu
+            if (dtReturn == null || dtReturn.Rows.Count == 0 || txtMaHoaDon.Text.Trim() == "")
             {
-                MessageBox.Show("Không còn dữ liệu!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Bạn chưa chọn phiếu trả nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+            if (!int.TryParse(txtMaHoaDon.Text.Trim(), out int maHoaDon)) return;
 
-            if (txtMaHoaDon.Text.Trim() == "")
+            if (txtLyDo.Text.Trim() == "")
             {
-                MessageBox.Show("Bạn chưa chọn phiếu trả!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-
-            if (txtLyDo.Text.Trim().Length == 0)
-            {
-                MessageBox.Show("Bạn phải nhập lý do trả!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Bạn phải nhập lý do trả!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtLyDo.Focus();
                 return;
             }
 
-            if (cboTrangThai.Text.Trim().Length == 0)
+            if (cboTrangThai.Text.Trim() == "")
             {
-                MessageBox.Show("Bạn phải chọn trạng thái!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Bạn phải chọn trạng thái!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cboTrangThai.Focus();
                 return;
             }
 
-            sql = $@"
-             UPDATE TraHang SET
-             LyDo = N'{txtLyDo.Text.Trim()}',
-             TongTienHoan = {txtTongTienHoan.Text.Replace("đ", "").Replace(",", "")},
-             NgayTra = '{dtpNgayTra.Value:yyyy-MM-dd HH:mm:ss}',
-             TrangThai = N'{cboTrangThai.Text}',
-             LoaiGiaoDich = N'{cboLoaiGiaoDich.Text}'
-             WHERE MaHoaDon = N'{txtMaHoaDon.Text}'";
+            if (currentMaTraHang == -1)
+            {
+                MessageBox.Show("Vui lòng chọn phiếu trả cụ thể từ danh sách!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
 
-            SqlCommand cmd = new SqlCommand(sql, (SqlConnection)DbContext.Conn);
-            cmd.ExecuteNonQuery();
+            if (DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
 
-            MessageBox.Show("Sửa phiếu trả thành công!", "Thông báo");
+            // Bước 2: Xử lý tiền
+            string tongTienStr = txtTongTienHoan.Text.Trim();
+            if (tongTienStr == "") tongTienStr = "0";
+            tongTienStr = tongTienStr.Replace(" đ", "").Replace("đ", "").Replace(",", "").Replace(".", "");
+            if (!decimal.TryParse(tongTienStr, out decimal tongTien)) tongTien = 0;
 
+            SqlTransaction transaction = ((SqlConnection)DbContext.Conn).BeginTransaction();
+
+            try
+            {
+                // Bước 3: Tạo SQL UPDATE
+                string sql = @"UPDATE TraHang SET
+                               LyDo = @LyDo,
+                               TongTienHoan = @TongTienHoan,
+                               NgayTra = @NgayTra,
+                               TrangThai = @TrangThai,
+                               LoaiGiaoDich = @LoaiGiaoDich
+                               WHERE MaTraHang = @MaTraHang";
+
+                SqlCommand cmd = new SqlCommand(sql, (SqlConnection)DbContext.Conn, transaction);
+                cmd.Parameters.AddWithValue("@LyDo", txtLyDo.Text.Trim());
+                cmd.Parameters.AddWithValue("@TongTienHoan", tongTien);
+                cmd.Parameters.AddWithValue("@NgayTra", dtpNgayTra.Value);
+                cmd.Parameters.AddWithValue("@TrangThai", cboTrangThai.Text.Trim());
+                cmd.Parameters.AddWithValue("@LoaiGiaoDich", cboLoaiGiaoDich.Text.Trim());
+                cmd.Parameters.AddWithValue("@MaTraHang", currentMaTraHang);
+                cmd.ExecuteNonQuery();
+
+                // Bước 4: Kiểm tra cập nhật Tồn Kho nếu trạng thái chuyển sang Đã hoàn thành
+                if (cboTrangThai.Text.Trim() == "Đã hoàn thành" && currentTrangThai != "Đã hoàn thành")
+                {
+                    string sqlCT = $"SELECT MaSanPham, SoLuong FROM ChiTietTraHang WHERE MaTraHang = {currentMaTraHang}";
+                    SqlCommand cmdCT = new SqlCommand(sqlCT, (SqlConnection)DbContext.Conn, transaction);
+                    SqlDataReader readerCT = cmdCT.ExecuteReader();
+                    DataTable dtCT = new DataTable();
+                    dtCT.Load(readerCT);
+                    readerCT.Close();
+
+                    foreach (DataRow row in dtCT.Rows)
+                    {
+                        int maSP = Convert.ToInt32(row["MaSanPham"]);
+                        int soLuongTra = Convert.ToInt32(row["SoLuong"]);
+
+                        string sqlTonKho = $"SELECT SoLuongTon FROM SanPham WHERE MaSanPham = {maSP}";
+                        SqlCommand cmdTonKho = new SqlCommand(sqlTonKho, (SqlConnection)DbContext.Conn, transaction);
+                        int tonKhoHienTai = Convert.ToInt32(cmdTonKho.ExecuteScalar());
+                        int tonKhoSau = tonKhoHienTai + soLuongTra;
+
+                        string sqlUpdateKho = $"UPDATE SanPham SET SoLuongTon = {tonKhoSau} WHERE MaSanPham = {maSP}";
+                        SqlCommand cmdUpdateKho = new SqlCommand(sqlUpdateKho, (SqlConnection)DbContext.Conn, transaction);
+                        cmdUpdateKho.ExecuteNonQuery();
+
+                        string sqlInsertLichSu = $@"INSERT INTO LichSuNhapKho 
+                                            (MaSanPham, Thoigian, ThayDoi, SoLuongTruoc, SoLuongSau, LoaiGiaoDich, MaThamChieu, TrangThai)
+                                            VALUES ({maSP}, GETDATE(), {soLuongTra}, {tonKhoHienTai}, {tonKhoSau}, N'Trả hàng', {currentMaTraHang}, N'Hoàn tất')";
+                        SqlCommand cmdLichSu = new SqlCommand(sqlInsertLichSu, (SqlConnection)DbContext.Conn, transaction);
+                        cmdLichSu.ExecuteNonQuery();
+                    }
+                }
+
+                transaction.Commit();
+                MessageBox.Show("Cập nhật phiếu trả thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception ex)
+            {
+                transaction.Rollback();
+                MessageBox.Show("Lỗi cơ sở dữ liệu: " + ex.Message, "Lỗi SQL", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            
             Load_DataGridView();
             ResetValues();
+
+            // Bước 4: Khóa nút
+            btnCancel.Enabled = false;
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
+            txtMaHoaDon.Enabled = false;
         }
 
         private void txtMaHoaDon_TextChanged(object sender, EventArgs e)

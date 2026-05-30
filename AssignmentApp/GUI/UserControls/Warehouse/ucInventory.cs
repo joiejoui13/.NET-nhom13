@@ -222,67 +222,64 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             UpdateComputedStock();
         }
 
-        // 5.2.5. Viết thủ tục DataGridView_Click
+        // 5.2.5. Viết thủ tục DataGridView_CellClick
         private void dgvLichSu_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (btnAdd.Enabled == false)
+            if (e.RowIndex >= 0)
             {
-                MessageBox.Show("Đang ở chế độ thêm mới!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                txtSoLuongThayDoi.Focus();
-                return;
+                // Thoát chế độ tìm kiếm nếu đang bật
+                if (txtMaLichSu.Enabled == true)
+                {
+                    txtMaLichSu.Enabled = false;
+                    btnAdd.Enabled = true;
+                }
+
+                DataGridViewRow row = dgvLichSu.Rows[e.RowIndex];
+
+                txtMaLichSu.Text = row.Cells["colMaLichSu"].Value?.ToString() ?? "";
+                txtMaThamChieu.Text = row.Cells["colMaThamChieu"].Value?.ToString() ?? "";
+                
+                // Xử lý nạp Sản phẩm vào ComboBox
+                if (row.Cells["colMaSanPham"].Value != null)
+                {
+                    cboSanPham.SelectedValue = row.Cells["colMaSanPham"].Value;
+                }
+                
+                txtSoLuongThayDoi.Text = row.Cells["colSoLuongThayDoi"].Value?.ToString() ?? "";
+                txtSoLuongTruoc.Text = row.Cells["colSoLuongTruoc"].Value?.ToString() ?? "";
+                txtSoLuongSau.Text = row.Cells["colSoLuongSau"].Value?.ToString() ?? "";
+                cboLoaiThayDoi.Text = row.Cells["colLoai"].Value?.ToString() ?? "";
+                cboTrangThai.Text = row.Cells["colTrangThai"].Value?.ToString() ?? "";
+
+                ToggleInputs(true);
+                
+                btnEdit.Enabled = true;
+                btnDelete.Enabled = true;
+                btnCancel.Enabled = true;
+                
+                btnAdd.Enabled = false;
+                btnSave.Enabled = false;
             }
-            if (dgvLichSu.Rows.Count == 0)
-            {
-                MessageBox.Show("Không có dữ liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            if (dgvLichSu.CurrentRow == null) return;
-
-            DataGridViewRow row = dgvLichSu.CurrentRow;
-
-            txtMaLichSu.Text = row.Cells["colMaLichSu"].Value?.ToString() ?? "";
-            txtMaThamChieu.Text = row.Cells["colMaThamChieu"].Value?.ToString() ?? "";
-            
-            // Xử lý nạp Sản phẩm vào ComboBox
-            if (row.Cells["colMaSanPham"].Value != null)
-            {
-                cboSanPham.SelectedValue = row.Cells["colMaSanPham"].Value;
-            }
-            else
-            {
-                cboSanPham.SelectedIndex = -1;
-            }
-
-            // Xử lý lấy số lượng thay đổi làm sạch dấu '+'
-            string rawChange = row.Cells["colSoLuongThayDoi"].Value?.ToString() ?? "";
-            txtSoLuongThayDoi.Text = rawChange.Replace("+", "");
-
-            txtSoLuongTruoc.Text = row.Cells["colSoLuongTruoc"].Value?.ToString() ?? "";
-            txtSoLuongSau.Text = row.Cells["colSoLuongSau"].Value?.ToString() ?? "";
-            cboLoaiThayDoi.Text = row.Cells["colLoai"].Value?.ToString() ?? "";
-            cboTrangThai.Text = row.Cells["colTrangThai"].Value?.ToString() ?? "";
-
-            ToggleInputs(true);
-
-            // Mở nút Sửa, Xóa, Bỏ qua
-            btnEdit.Enabled = true;
-            btnDelete.Enabled = true;
-            btnCancel.Enabled = true;
         }
 
         // 5.2.6. Viết thủ tục btnAdd_Click (Nút Thêm mới)
         private void btnAdd_Click(object sender, EventArgs e)
         {
             ResetValues();
-
-            btnSave.Enabled = true;       // Cho phép Lưu
-            btnCancel.Enabled = true;     // Cho phép Hủy
-            btnAdd.Enabled = false;       // Khóa Thêm
-            btnEdit.Enabled = false;      // Khóa Sửa
-            btnDelete.Enabled = false;    // Khóa Xóa
-
+            
             txtMaLichSu.Enabled = false;
+            txtMaLichSu.Text = "Tự động sinh";
+            cboTrangThai.Text = "Đang hoạt động";
+            
             ToggleInputs(true);
+            
+            btnSave.Enabled = true;
+            btnCancel.Enabled = true;
+            
+            btnAdd.Enabled = false;
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
+
             cboSanPham.Focus();
         }
 
@@ -358,12 +355,14 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // Tải lại Grid và đưa các nút về trạng thái mặc định
             Load_DataGridView();
             ResetValues();
+            ToggleInputs(false);
 
             btnAdd.Enabled = true;
             btnDelete.Enabled = false;
             btnEdit.Enabled = false;
             btnCancel.Enabled = false;
             btnSave.Enabled = false;
+            txtMaLichSu.Enabled = false;
         }
 
         // 5.2.8. Viết thủ tục btnEdit_Click (Nút Sửa bản ghi)
@@ -469,7 +468,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             DbContext.RunSql(sqlApplyNew);
 
             // 3.4 Cập nhật thông tin chi tiết điều chỉnh kho
-            string sqlUpdateLog = $@"UPDATE LichSuNhapKho SET 
+            string sqlUpdateHistory = $@"UPDATE LichSuNhapKho SET 
                                     MaSanPham = {newMaSP}, 
                                     ThayDoi = {newThayDoi}, 
                                     SoLuongTruoc = {latestTruoc}, 
@@ -478,18 +477,19 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                                     MaThamChieu = {newRefId}, 
                                     TrangThai = N'{cboTrangThai.Text}' 
                                     WHERE MaLichSu = {currentMaLichSu}";
-            DbContext.RunSql(sqlUpdateLog);
+            DbContext.RunSql(sqlUpdateHistory);
 
-            MessageBox.Show("Cập nhật bản ghi điều chỉnh và đồng bộ tồn kho thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show("Cập nhật bản ghi điều chỉnh và tồn kho thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             Load_DataGridView();
             ResetValues();
-
             ToggleInputs(false);
 
             btnCancel.Enabled = false;
             btnEdit.Enabled = false;
             btnDelete.Enabled = false;
+            btnAdd.Enabled = true;
+            txtMaLichSu.Enabled = false;
         }
 
         // 5.2.9. Viết thủ tục btnDelete_Click (Nút Xóa bản ghi)
@@ -538,24 +538,26 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 return;
             }
 
-            if (MessageBox.Show("Bạn có chắc chắn muốn xóa bản ghi này? Số lượng tồn kho của sản phẩm sẽ được tự động hoàn trả.", "Xác nhận xóa", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            if (MessageBox.Show("Bạn có chắc chắn muốn hủy bản ghi này? Số lượng tồn kho của sản phẩm sẽ được tự động hoàn trả.", "Xác nhận hủy", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
                 // Bước 1: Thu hồi số lượng thay đổi trong bảng SanPham
                 string sqlRevertStock = $"UPDATE SanPham SET SoLuongTon = SoLuongTon - {oldThayDoi} WHERE MaSanPham = {oldMaSP}";
                 DbContext.RunSql(sqlRevertStock);
 
-                // Bước 2: Xóa bản ghi lịch sử kho
-                string sqlDelete = $"DELETE FROM LichSuNhapKho WHERE MaLichSu = {currentMaLichSu}";
-                DbContext.RunSqlDel(sqlDelete);
+                // Bước 2: Hủy bản ghi lịch sử kho (Soft delete)
+                string sqlDelete = $"UPDATE LichSuNhapKho SET TrangThai = N'Đã hủy' WHERE MaLichSu = {currentMaLichSu}";
+                DbContext.RunSql(sqlDelete);
 
-                MessageBox.Show("Xóa bản ghi điều chỉnh kho và hoàn trả tồn kho thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Hủy bản ghi điều chỉnh kho và hoàn trả tồn kho thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 Load_DataGridView();
                 ResetValues();
+                ToggleInputs(false);
 
                 btnEdit.Enabled = false;
                 btnDelete.Enabled = false;
                 btnCancel.Enabled = false;
+                btnAdd.Enabled = true;
             }
         }
 
@@ -578,69 +580,66 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         // 5.2.11. Viết thủ tục btnSearch_Click (Nút Tìm kiếm)
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            // Bật trường nhập Mã lịch sử để người dùng có thể gõ tìm
-            txtMaLichSu.Enabled = true;
-            ToggleInputs(true);
-
-            // Kiểm tra các điều kiện tìm kiếm xem có trống không
-            if (txtMaLichSu.Text.Trim() == "" && txtMaThamChieu.Text.Trim() == "" && cboSanPham.SelectedIndex == -1 && cboLoaiThayDoi.SelectedIndex == -1 && cboTrangThai.Text == "")
+            // Lần 1: Kích hoạt chế độ tìm kiếm
+            if (txtMaLichSu.Enabled == false)
             {
-                MessageBox.Show("Hãy nhập một điều kiện tìm kiếm!!! (Ví dụ: Mã LS, Mã tham chiếu, Sản phẩm, Loại, hoặc Trạng thái)", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ResetValues();
+                ToggleInputs(true);
+                txtMaLichSu.Enabled = true;
+
+                btnCancel.Enabled = true;
+                btnAdd.Enabled = false;
+                btnEdit.Enabled = false;
+                btnDelete.Enabled = false;
+                btnSave.Enabled = false;
+
+                MessageBox.Show("Chế độ tìm kiếm đã bật! Vui lòng nhập thông tin cần tìm kiếm vào các ô dữ liệu rồi ấn Tìm kiếm lần nữa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtMaLichSu.Focus();
                 return;
             }
 
-            // Bắt đầu ghép câu lệnh SQL tìm kiếm lịch sử
+            // Lần 2: Bắt đầu tìm kiếm
+            string idTerm = txtMaLichSu.Text.Trim();
+            string refTerm = txtMaThamChieu.Text.Trim();
+            
             string sql = @"SELECT l.MaLichSu, l.MaSanPham, s.TenSanPham, l.ThayDoi, l.SoLuongTruoc, l.SoLuongSau, l.LoaiGiaoDich, l.MaThamChieu, l.TrangThai, l.Thoigian 
                            FROM LichSuNhapKho l 
                            LEFT JOIN SanPham s ON l.MaSanPham = s.MaSanPham
                            WHERE 1=1";
 
-            // Nếu nhập Mã lịch sử
-            if (txtMaLichSu.Text.Trim() != "")
-            {
-                sql += $" AND l.MaLichSu = {txtMaLichSu.Text.Trim()}";
-            }
+            if (!string.IsNullOrEmpty(idTerm))
+                sql += $" AND l.MaLichSu = {idTerm}";
 
-            // Nếu nhập Mã tham chiếu
-            if (txtMaThamChieu.Text.Trim() != "")
-            {
-                sql += $" AND l.MaThamChieu = {txtMaThamChieu.Text.Trim()}";
-            }
+            if (!string.IsNullOrEmpty(refTerm))
+                sql += $" AND l.MaThamChieu = {refTerm}";
 
-            // Nếu chọn Sản phẩm
             if (cboSanPham.SelectedValue != null && cboSanPham.SelectedIndex != -1)
-            {
                 sql += $" AND l.MaSanPham = {cboSanPham.SelectedValue}";
-            }
 
-            // Nếu chọn Loại giao dịch
             if (cboLoaiThayDoi.SelectedIndex != -1 && !string.IsNullOrEmpty(cboLoaiThayDoi.Text))
-            {
                 sql += $" AND l.LoaiGiaoDich = N'{cboLoaiThayDoi.Text}'";
-            }
 
-            // Nếu chọn Trạng thái
             if (cboTrangThai.SelectedIndex != -1 && !string.IsNullOrEmpty(cboTrangThai.Text))
-            {
                 sql += $" AND l.TrangThai = N'{cboTrangThai.Text}'";
-            }
 
             sql += " ORDER BY l.Thoigian DESC";
 
             DataTable tblSearch = DbContext.GetDataToTable(sql);
-            if (tblSearch.Rows.Count == 0)
+
+            if (tblSearch.Rows.Count > 0)
             {
-                MessageBox.Show("Không có bản ghi thỏa mãn điều kiện!!!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ResetValues();
+                MessageBox.Show($"Tìm thấy {tblSearch.Rows.Count} bản ghi thỏa mãn điều kiện!!!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show($"Có {tblSearch.Rows.Count} bản ghi thỏa mãn điều kiện!!!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ResetValues();
+                MessageBox.Show("Không tìm thấy bản ghi nào khớp với các tiêu chí tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             Load_DataGridView(tblSearch);
-            ResetValues();
-
-            btnCancel.Enabled = true; // Mở nút Bỏ qua để có thể quay về bảng gốc
+            
+            btnCancel.Enabled = true;
         }
 
         // 5.2.12. Viết thủ tục btnRefresh_Click (Nút Làm mới)

@@ -184,7 +184,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             tabMain.Controls.Add(tabPhieuNhap);
             tabMain.Controls.Add(tabChonSanPham);
-            tabMain.Dock = DockStyle.Fill;
+            tabMain.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabMain.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
             tabMain.ItemSize = new Size(220, 35);
             tabMain.Location = new Point(10, 10);

@@ -20,12 +20,23 @@ namespace AssignmentApp.GUI.UserControls.Admin
             
             ResetValues();
             txtMaNguoiDung.Enabled = false; // Mã tự sinh nên khóa lại
+            ToggleInputs(false);
             
             btnAdd.Enabled = true;
             btnEdit.Enabled = false;
             btnDelete.Enabled = false;
             btnSave.Enabled = false;
             btnCancel.Enabled = false;
+        }
+
+        private void ToggleInputs(bool isEnabled)
+        {
+            txtTenNguoiDung.Enabled = isEnabled;
+            txtSoDienThoai.Enabled = isEnabled;
+            txtEmail.Enabled = isEnabled;
+            txtMatKhau.Enabled = isEnabled;
+            cboVaiTro.Enabled = isEnabled;
+            cboTrangThai.Enabled = isEnabled;
         }
 
         // 5.2.3. Viết thủ tục Load_DataGridView
@@ -113,55 +124,60 @@ namespace AssignmentApp.GUI.UserControls.Admin
         // 5.2.5. Viết thủ tục DataGridView_Click
         private void dgvUsers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (btnAdd.Enabled == false)
+            if (e.RowIndex >= 0)
             {
-                MessageBox.Show("Đang ở chế độ thêm mới!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                txtTenNguoiDung.Focus();
-                return;
-            }
-            if (dgvUsers.Rows.Count == 0)
-            {
-                MessageBox.Show("Không có dữ liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+                // Thoát chế độ tìm kiếm nếu đang bật
+                if (txtMaNguoiDung.Enabled == true)
+                {
+                    txtMaNguoiDung.Enabled = false;
+                    btnAdd.Enabled = true;
+                }
 
-            // Đổ dữ liệu lên TextBox dựa vào số thứ tự cột (0 đến 6)
-            txtMaNguoiDung.Text = dgvUsers.CurrentRow.Cells[0].Value.ToString();
-            txtTenNguoiDung.Text = dgvUsers.CurrentRow.Cells[1].Value.ToString();
-            txtSoDienThoai.Text = dgvUsers.CurrentRow.Cells[2].Value.ToString();
-            txtEmail.Text = dgvUsers.CurrentRow.Cells[3].Value.ToString();
-            cboVaiTro.Text = dgvUsers.CurrentRow.Cells[4].Value.ToString();
-            cboTrangThai.Text = dgvUsers.CurrentRow.Cells[5].Value.ToString();
-            // Lưu ý: Không hiển thị mật khẩu ngược lên ô txtMatKhau để bảo mật
-            txtMatKhau.Text = ""; 
-            
-            btnEdit.Enabled = true;
-            btnDelete.Enabled = true;
-            btnCancel.Enabled = true;
+                // Đổ dữ liệu lên TextBox dựa vào số thứ tự cột (0 đến 6)
+                txtMaNguoiDung.Text = dgvUsers.Rows[e.RowIndex].Cells[0].Value.ToString();
+                txtTenNguoiDung.Text = dgvUsers.Rows[e.RowIndex].Cells[1].Value.ToString();
+                txtSoDienThoai.Text = dgvUsers.Rows[e.RowIndex].Cells[2].Value.ToString();
+                txtEmail.Text = dgvUsers.Rows[e.RowIndex].Cells[3].Value.ToString();
+                cboVaiTro.Text = dgvUsers.Rows[e.RowIndex].Cells[4].Value.ToString();
+                cboTrangThai.Text = dgvUsers.Rows[e.RowIndex].Cells[5].Value.ToString();
+                
+                // Lưu ý: Không hiển thị mật khẩu ngược lên ô txtMatKhau để bảo mật
+                txtMatKhau.Text = ""; 
+                
+                ToggleInputs(true);
+                
+                btnEdit.Enabled = true;
+                btnDelete.Enabled = true;
+                btnCancel.Enabled = true;
+                
+                btnAdd.Enabled = false;
+                btnSave.Enabled = false;
+            }
         }
 
         // 5.2.6. Viết thủ tục btnThem_Click (Nút Thêm mới)
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            // Bước 1: Xóa trắng form
             ResetValues();
             
-            // Bước 2: Thiết lập trạng thái nút bấm
+            txtMaNguoiDung.Enabled = false; 
+            txtMaNguoiDung.Text = "Tự động sinh";
+            
+            ToggleInputs(true);
+            
             btnSave.Enabled = true;
             btnCancel.Enabled = true;
+            
             btnAdd.Enabled = false;
             btnEdit.Enabled = false;
             btnDelete.Enabled = false;
 
-            // Bước 3: Đưa trỏ chuột vào vị trí sẵn sàng nhập
-            txtMaNguoiDung.Enabled = false; 
             txtTenNguoiDung.Focus();
         }
 
         // 5.2.7. Viết thủ tục btnLuu_Click (Nút Lưu)
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // Bước 1: Kiểm tra dữ liệu
             if (txtTenNguoiDung.Text.Trim().Length == 0)
             {
                 MessageBox.Show("Vui lòng nhập tên người dùng", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -175,32 +191,30 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 return;
             }
 
-            // (Ghi chú: Đáng lẽ mật khẩu phải được băm (hash) qua PasswordHasher, 
-            // nhưng ở đây tạm lưu thẳng giống cách làm phổ biến trong các bài hướng dẫn cơ bản)
-            
-            // Bước 2: Tạo SQL
             string sql = $@"INSERT INTO NguoiDung(TenNguoiDung, SoDienThoai, Email, MatKhau, VaiTro, TrangThai, NgayTao) 
                             VALUES(N'{txtTenNguoiDung.Text}', '{txtSoDienThoai.Text}', '{txtEmail.Text}', 
                                    '{txtMatKhau.Text}', N'{cboVaiTro.Text}', N'{cboTrangThai.Text}', GETDATE())";
                   
-            // Bước 3: Thực thi
             DbContext.RunSql(sql);
+            
+            MessageBox.Show("Thêm người dùng mới thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
             Load_DataGridView();
             ResetValues();
+            ToggleInputs(false);
             
-            // Bước 4: Reset nút
             btnAdd.Enabled = true;
             btnDelete.Enabled = false;
             btnEdit.Enabled = false;
             btnCancel.Enabled = false;
             btnSave.Enabled = false;
+            txtMaNguoiDung.Enabled = false;
         }
 
         // 5.2.8. Viết thủ tục btnSua_Click (Nút Sửa)
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            // Bước 1: Kiểm tra chọn dữ liệu
-            if (dgvUsers.Rows.Count == 0 || txtMaNguoiDung.Text == "")
+            if (dgvUsers.Rows.Count == 0 || txtMaNguoiDung.Text == "" || txtMaNguoiDung.Text == "Tự động sinh")
             {
                 MessageBox.Show("Bạn chưa chọn bản ghi nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -212,7 +226,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 return;
             }
 
-            // Bước 2: Tạo SQL UPDATE. Nếu ô Mật khẩu có gõ chữ mới thì mới Update mật khẩu
             string sql = $@"UPDATE NguoiDung SET 
                             TenNguoiDung = N'{txtTenNguoiDung.Text}', 
                             SoDienThoai = '{txtSoDienThoai.Text}', 
@@ -227,37 +240,43 @@ namespace AssignmentApp.GUI.UserControls.Admin
             
             sql += $" WHERE MaNguoiDung = {txtMaNguoiDung.Text}";
 
-            // Bước 3: Thực thi
             DbContext.RunSql(sql);
+            
+            MessageBox.Show("Cập nhật thông tin người dùng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
             Load_DataGridView();
             ResetValues();
+            ToggleInputs(false);
             
-            // Bước 4: Khóa nút
             btnCancel.Enabled = false;
             btnEdit.Enabled = false;
             btnDelete.Enabled = false;
+            btnAdd.Enabled = true;
+            txtMaNguoiDung.Enabled = false;
         }
 
         // 5.2.9. Viết thủ tục btnXoa_Click (Nút Xóa)
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (dgvUsers.Rows.Count == 0 || txtMaNguoiDung.Text == "")
+            if (dgvUsers.Rows.Count == 0 || txtMaNguoiDung.Text == "" || txtMaNguoiDung.Text == "Tự động sinh")
             {
                 MessageBox.Show("Bạn chưa chọn bản ghi nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            if (MessageBox.Show("Bạn có chắc chắn muốn xóa người dùng này?", "Cảnh báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            if (MessageBox.Show("Bạn có chắc chắn muốn khóa người dùng này?", "Cảnh báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
-                string sql = $"DELETE NguoiDung WHERE MaNguoiDung = {txtMaNguoiDung.Text}";
+                string sql = $"UPDATE NguoiDung SET TrangThai = N'Khóa' WHERE MaNguoiDung = {txtMaNguoiDung.Text}";
                 
-                DbContext.RunSqlDel(sql);
+                DbContext.RunSql(sql);
                 Load_DataGridView();
                 ResetValues();
+                ToggleInputs(false);
                 
                 btnEdit.Enabled = false;
                 btnDelete.Enabled = false;
                 btnCancel.Enabled = false;
+                btnAdd.Enabled = true;
             }
         }
 
@@ -265,6 +284,8 @@ namespace AssignmentApp.GUI.UserControls.Admin
         private void btnCancel_Click(object sender, EventArgs e)
         {
             ResetValues();
+            ToggleInputs(false);
+            
             btnCancel.Enabled = false;
             btnAdd.Enabled = true;
             btnDelete.Enabled = false;
@@ -276,33 +297,65 @@ namespace AssignmentApp.GUI.UserControls.Admin
         // 5.2.11. Viết thủ tục btnTimkiem_Click (Nút Tìm kiếm)
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            txtMaNguoiDung.Enabled = true; 
-
-            if (txtMaNguoiDung.Text == "" && txtTenNguoiDung.Text == "" && txtSoDienThoai.Text == "")
+            // Lần 1: Kích hoạt chế độ tìm kiếm
+            if (txtMaNguoiDung.Enabled == false)
             {
-                MessageBox.Show("Hãy nhập mã, tên hoặc số điện thoại để tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                ResetValues();
+                ToggleInputs(true);
+                txtMaNguoiDung.Enabled = true;
+
+                btnCancel.Enabled = true;
+                btnAdd.Enabled = false;
+                btnEdit.Enabled = false;
+                btnDelete.Enabled = false;
+                btnSave.Enabled = false;
+
+                MessageBox.Show("Chế độ tìm kiếm đã bật! Vui lòng nhập thông tin cần tìm kiếm vào các ô dữ liệu rồi ấn Tìm kiếm lần nữa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtMaNguoiDung.Focus();
                 return;
-            } 
+            }
+
+            // Lần 2: Bắt đầu tìm kiếm
+            string idTerm = txtMaNguoiDung.Text.Trim();
+            string nameTerm = txtTenNguoiDung.Text.Trim();
+            string phoneTerm = txtSoDienThoai.Text.Trim();
+            string emailTerm = txtEmail.Text.Trim();
+            string roleTerm = cboVaiTro.Text;
+            string statusTerm = cboTrangThai.Text;
 
             string sql = "SELECT MaNguoiDung, TenNguoiDung, SoDienThoai, Email, VaiTro, TrangThai, NgayTao FROM NguoiDung WHERE 1=1";
             
-            if (txtMaNguoiDung.Text != "")
-                sql += $" AND MaNguoiDung = {txtMaNguoiDung.Text}";
+            if (!string.IsNullOrEmpty(idTerm))
+                sql += $" AND MaNguoiDung = {idTerm}";
                 
-            if (txtTenNguoiDung.Text != "")
-                sql += $" AND TenNguoiDung LIKE N'%{txtTenNguoiDung.Text}%'";
+            if (!string.IsNullOrEmpty(nameTerm))
+                sql += $" AND TenNguoiDung LIKE N'%{nameTerm}%'";
                 
-            if (txtSoDienThoai.Text != "")
-                sql += $" AND SoDienThoai LIKE '%{txtSoDienThoai.Text}%'";
+            if (!string.IsNullOrEmpty(phoneTerm))
+                sql += $" AND SoDienThoai LIKE '%{phoneTerm}%'";
+                
+            if (!string.IsNullOrEmpty(emailTerm))
+                sql += $" AND Email LIKE '%{emailTerm}%'";
+                
+            if (!string.IsNullOrEmpty(roleTerm))
+                sql += $" AND VaiTro = N'{roleTerm}'";
+                
+            if (!string.IsNullOrEmpty(statusTerm))
+                sql += $" AND TrangThai = N'{statusTerm}'";
 
             DataTable tblND = DbContext.GetDataToTable(sql);
-            if (tblND.Rows.Count == 0)
-                MessageBox.Show("Không tìm thấy kết quả nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            else
-                MessageBox.Show($"Tìm thấy {tblND.Rows.Count} người dùng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-           
             dgvUsers.DataSource = tblND;
-            ResetValues();
+
+            if (tblND.Rows.Count > 0)
+            {
+                ResetValues();
+                MessageBox.Show($"Tìm thấy {tblND.Rows.Count} người dùng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                ResetValues();
+                MessageBox.Show("Không tìm thấy kết quả nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
             
             btnCancel.Enabled = true;
         }
@@ -312,12 +365,14 @@ namespace AssignmentApp.GUI.UserControls.Admin
         {
             Load_DataGridView();
             ResetValues();
+            ToggleInputs(false);
             
             btnCancel.Enabled = false;
             btnAdd.Enabled = true;
             btnDelete.Enabled = false;
             btnEdit.Enabled = false;
             btnSave.Enabled = false;
+            txtMaNguoiDung.Enabled = false;
         }
 
         private void dgvUsers_CellContentClick(object sender, DataGridViewCellEventArgs e)

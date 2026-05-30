@@ -69,36 +69,33 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
         private void dgvDanhMuc_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Kiểm tra xem có phải đang ở chế độ Thêm mới không (Nút Thêm khóa và Mã Danh Mục cũng khóa)
-            if (btnAdd.Enabled == false && txtMaDanhMuc.Enabled == false)
+            if (e.RowIndex >= 0)
             {
-                MessageBox.Show("Đang ở chế độ thêm mới!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                txtTenDanhMuc.Focus();
-                return;
+                // Thoát chế độ tìm kiếm nếu đang ở chế độ tìm kiếm
+                if (txtMaDanhMuc.Enabled == true)
+                {
+                    txtMaDanhMuc.Enabled = false;
+                    btnAdd.Enabled = true;
+                }
+
+                // Gán dữ liệu vào Textbox
+                DataGridViewRow row = dgvDanhMuc.Rows[e.RowIndex];
+                txtMaDanhMuc.Text = row.Cells[0].Value.ToString();
+                txtTenDanhMuc.Text = row.Cells[1].Value.ToString();
+                txtMoTa.Text = row.Cells[2].Value.ToString();
+                cboTrangThai.Text = row.Cells[3].Value.ToString();
+                
+                // Mở khóa các ô nhập liệu
+                ToggleInputs(true);
+                
+                // Bật tắt các nút
+                btnEdit.Enabled = true;
+                btnDelete.Enabled = true;
+                btnCancel.Enabled = true;
+                
+                btnAdd.Enabled = false;
+                btnSave.Enabled = false;
             }
-            
-            if (dgvDanhMuc.Rows.Count == 0 || e.RowIndex < 0)
-            {
-                return;
-            }
-
-            // Thoát chế độ tìm kiếm nếu đang ở chế độ tìm kiếm (Mã Danh Mục đang mở)
-            if (txtMaDanhMuc.Enabled == true)
-            {
-                txtMaDanhMuc.Enabled = false;
-                btnAdd.Enabled = true;
-            }
-
-            txtMaDanhMuc.Text = dgvDanhMuc.CurrentRow.Cells["colMaDanhMuc"].Value.ToString();
-            txtTenDanhMuc.Text = dgvDanhMuc.CurrentRow.Cells["colTenDanhMuc"].Value.ToString();
-            txtMoTa.Text = dgvDanhMuc.CurrentRow.Cells["colMoTa"].Value.ToString();
-            cboTrangThai.Text = dgvDanhMuc.CurrentRow.Cells["colTrangThai"].Value.ToString();
-
-            ToggleInputs(true);
-
-            btnEdit.Enabled = true;
-            btnDelete.Enabled = true;
-            btnCancel.Enabled = true;
         }
 
         private void btnAdd_Click(object sender, EventArgs e)

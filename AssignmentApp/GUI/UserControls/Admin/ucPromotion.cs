@@ -21,12 +21,23 @@ namespace AssignmentApp.GUI.UserControls.Admin
             // Trạng thái ban đầu khi mới mở Form:
             ResetValues();
             txtMaKhuyenMai.Enabled = false; // Mã tự sinh nên khóa lại
+            ToggleInputs(false);
             
             btnAdd.Enabled = true;          // Cho phép Thêm
             btnEdit.Enabled = false;        // Chưa chọn dòng nào thì không cho Sửa
             btnDelete.Enabled = false;      // Chưa chọn dòng nào thì không cho Xóa
             btnSave.Enabled = false;        // Chưa làm gì thì không cho Lưu
             btnCancel.Enabled = false;      // Chưa làm gì thì không cho Hủy
+        }
+
+        private void ToggleInputs(bool isEnabled)
+        {
+            txtTenKhuyenMai.Enabled = isEnabled;
+            txtPhanTramGiamGia.Enabled = isEnabled;
+            txtMoTaKhuyenMai.Enabled = isEnabled;
+            dtNgayBatDau.Enabled = isEnabled;
+            dtNgayHetHan.Enabled = isEnabled;
+            cboTrangThai.Enabled = isEnabled;
         }
 
         // 5.2.3. Viết thủ tục Load_DataGridView
@@ -109,73 +120,120 @@ namespace AssignmentApp.GUI.UserControls.Admin
         // 5.2.5. Viết thủ tục DataGridView_Click
         private void dgvPromotion_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (btnAdd.Enabled == false)
+            if (e.RowIndex >= 0)
             {
-                MessageBox.Show("Đang ở chế độ thêm mới!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                txtTenKhuyenMai.Focus();
-                return;
+                // Thoát chế độ tìm kiếm nếu đang ở chế độ tìm kiếm
+                if (txtMaKhuyenMai.Enabled == true)
+                {
+                    txtMaKhuyenMai.Enabled = false;
+                    btnAdd.Enabled = true;
+                }
+
+                // Đổ dữ liệu từ DataGridView lên TextBox
+                string id = dgvPromotion.Rows[e.RowIndex].Cells[0].Value.ToString();
+                txtMaKhuyenMai.Text = id;
+                txtTenKhuyenMai.Text = dgvPromotion.Rows[e.RowIndex].Cells[1].Value.ToString();
+                txtPhanTramGiamGia.Text = dgvPromotion.Rows[e.RowIndex].Cells[2].Value.ToString();
+                dtNgayBatDau.Value = Convert.ToDateTime(dgvPromotion.Rows[e.RowIndex].Cells[3].Value);
+                dtNgayHetHan.Value = Convert.ToDateTime(dgvPromotion.Rows[e.RowIndex].Cells[4].Value);
+                cboTrangThai.Text = dgvPromotion.Rows[e.RowIndex].Cells[5].Value.ToString();
+                
+                // Lấy Mô tả khuyến mãi (vì cột này không hiện trên lưới)
+                string sqlDesc = $"SELECT MoTaKhuyenMai FROM KhuyenMai WHERE MaKhuyenMai = {id}";
+                txtMoTaKhuyenMai.Text = DbContext.GetFieldValues(sqlDesc);
+                
+                ToggleInputs(true);
+                
+                btnEdit.Enabled = true;
+                btnDelete.Enabled = true;
+                btnCancel.Enabled = true;
+                
+                btnAdd.Enabled = false;
+                btnSave.Enabled = false;
             }
-            if (dgvPromotion.Rows.Count == 0)
-            {
-                MessageBox.Show("Không có dữ liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            // Đổ dữ liệu từ DataGridView lên TextBox bằng chỉ số cột (tránh lỗi sai tên cột)
-            txtMaKhuyenMai.Text = dgvPromotion.CurrentRow.Cells[0].Value.ToString();
-            txtTenKhuyenMai.Text = dgvPromotion.CurrentRow.Cells[1].Value.ToString();
-            txtPhanTramGiamGia.Text = dgvPromotion.CurrentRow.Cells[2].Value.ToString();
-            dtNgayBatDau.Value = Convert.ToDateTime(dgvPromotion.CurrentRow.Cells[3].Value);
-            dtNgayHetHan.Value = Convert.ToDateTime(dgvPromotion.CurrentRow.Cells[4].Value);
-            cboTrangThai.Text = dgvPromotion.CurrentRow.Cells[5].Value.ToString();
-            
-            btnEdit.Enabled = true;
-            btnDelete.Enabled = true;
-            btnCancel.Enabled = true;
         }
 
         // 5.2.6. Viết thủ tục btnThem_Click (Nút Thêm mới)
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            // Bước 1: Xóa trắng các ô nhập liệu
             ResetValues();
             
-            // Bước 2: Bật/Tắt các nút bấm cho phù hợp với chế độ Thêm
-            btnSave.Enabled = true;       // Cho phép bấm Lưu
-            btnCancel.Enabled = true;     // Cho phép bấm Hủy (Bỏ qua)
-            btnAdd.Enabled = false;       // Đang thêm thì ẩn nút Thêm đi
-            btnEdit.Enabled = false;      // Không cho phép Sửa
-            btnDelete.Enabled = false;    // Không cho phép Xóa
+            txtMaKhuyenMai.Enabled = false;
+            txtMaKhuyenMai.Text = "Tự động sinh";
+            cboTrangThai.Text = "Hoạt động";
+            
+            ToggleInputs(true);
+            
+            btnSave.Enabled = true;
+            btnCancel.Enabled = true;
+            
+            btnAdd.Enabled = false;
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
 
-            // Bước 3: Đưa con trỏ chuột nhấp nháy vào ô Tên Khuyến Mãi
-            txtMaKhuyenMai.Enabled = false; // Mã tự tăng nên không được nhập
             txtTenKhuyenMai.Focus();
+        }
+
+        private bool ValidatePromotionInputs(out string name, out float percent, out string desc, out string startDate, out string endDate, out string status)
+        {
+            name = txtTenKhuyenMai.Text.Trim();
+            desc = txtMoTaKhuyenMai.Text.Trim();
+            status = cboTrangThai.Text;
+            startDate = dtNgayBatDau.Value.ToString("yyyy-MM-dd");
+            endDate = dtNgayHetHan.Value.ToString("yyyy-MM-dd");
+            percent = 0;
+
+            if (string.IsNullOrEmpty(name))
+            {
+                MessageBox.Show("Bạn phải nhập tên khuyến mãi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTenKhuyenMai.Focus();
+                return false;
+            }
+
+            string phanTram = txtPhanTramGiamGia.Text.Trim();
+            if (string.IsNullOrEmpty(phanTram)) phanTram = "0";
+            if (!float.TryParse(phanTram, out percent) || percent < 0 || percent > 100)
+            {
+                MessageBox.Show("Phần trăm giảm giá phải là số từ 0 đến 100!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtPhanTramGiamGia.Focus();
+                return false;
+            }
+
+            if (dtNgayBatDau.Value > dtNgayHetHan.Value)
+            {
+                MessageBox.Show("Ngày bắt đầu không được lớn hơn ngày kết thúc!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                dtNgayBatDau.Focus();
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(status))
+            {
+                MessageBox.Show("Vui lòng chọn trạng thái!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cboTrangThai.Focus();
+                return false;
+            }
+            
+            return true;
         }
 
         // 5.2.7. Viết thủ tục btnLuu_Click (Nút Lưu thay đổi)
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // Bước 1: Kiểm tra dữ liệu đầu vào
-            if (txtTenKhuyenMai.Text.Trim().Length == 0)
-            {
-                MessageBox.Show("Bạn phải nhập tên khuyến mãi", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTenKhuyenMai.Focus();
+            if (!ValidatePromotionInputs(out string name, out float percent, out string desc, out string startDate, out string endDate, out string status))
                 return;
-            }
             
-            // Xử lý nếu % giảm giá để trống
-            string phanTram = txtPhanTramGiamGia.Text.Trim();
-            if (string.IsNullOrEmpty(phanTram)) phanTram = "0";
-            
-            // Bước 2: Tạo câu lệnh SQL INSERT (Không truyền MaKhuyenMai vì DB tự động sinh mã)
             string sql = $@"INSERT INTO KhuyenMai(TenKhuyenMai, PhanTramGiamGia, NgayBatDau, NgayKetThuc, MoTaKhuyenMai, TrangThai) 
-                            VALUES(N'{txtTenKhuyenMai.Text}', {phanTram}, '{dtNgayBatDau.Value:yyyy-MM-dd}', '{dtNgayHetHan.Value:yyyy-MM-dd}', N'{txtMoTaKhuyenMai.Text}', N'{cboTrangThai.Text}')";
+                            VALUES(N'{name}', {percent}, '{startDate}', '{endDate}', N'{desc}', N'{status}')";
                   
-            // Bước 3: Thực thi và tải lại bảng
             DbContext.RunSql(sql);
+            
+            MessageBox.Show("Thêm mới khuyến mãi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
             Load_DataGridView();
             ResetValues();
             
-            // Bước 4: Chuyển các nút về trạng thái ban đầu
+            ToggleInputs(false);
+            
             btnAdd.Enabled = true;
             btnDelete.Enabled = false;
             btnEdit.Enabled = false;
@@ -187,78 +245,63 @@ namespace AssignmentApp.GUI.UserControls.Admin
         // 5.2.8. Viết thủ tục btnSua_Click (Nút Sửa)
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            // Bước 1: Kiểm tra xem có dữ liệu để sửa không
-            if (dgvPromotion.Rows.Count == 0)
+            if (dgvPromotion.Rows.Count == 0 || string.IsNullOrEmpty(txtMaKhuyenMai.Text) || txtMaKhuyenMai.Text == "Tự động sinh")
             {
-                MessageBox.Show("Không còn dữ liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Vui lòng chọn một khuyến mãi trong danh sách để chỉnh sửa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if (txtMaKhuyenMai.Text == "")
-            {
-                MessageBox.Show("Bạn chưa chọn bản ghi nào để sửa", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            if (txtTenKhuyenMai.Text.Trim().Length == 0)
-            {
-                MessageBox.Show("Bạn phải nhập tên khuyến mãi", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTenKhuyenMai.Focus();
-                return;
-            }
-            
-            // Nếu người dùng lỡ xóa trắng % giảm giá thì mặc định là 0
-            string phanTram = txtPhanTramGiamGia.Text.Trim();
-            if (string.IsNullOrEmpty(phanTram)) phanTram = "0";
 
-            // Bước 2: Tạo câu lệnh SQL UPDATE
+            if (!ValidatePromotionInputs(out string name, out float percent, out string desc, out string startDate, out string endDate, out string status))
+                return;
+
             string sql = $@"UPDATE KhuyenMai SET 
-                            TenKhuyenMai = N'{txtTenKhuyenMai.Text}', 
-                            PhanTramGiamGia = {phanTram}, 
-                            NgayBatDau = '{dtNgayBatDau.Value:yyyy-MM-dd}', 
-                            NgayKetThuc = '{dtNgayHetHan.Value:yyyy-MM-dd}', 
-                            TrangThai = N'{cboTrangThai.Text}' 
+                            TenKhuyenMai = N'{name}', 
+                            PhanTramGiamGia = {percent}, 
+                            NgayBatDau = '{startDate}', 
+                            NgayKetThuc = '{endDate}', 
+                            MoTaKhuyenMai = N'{desc}',
+                            TrangThai = N'{status}' 
                             WHERE MaKhuyenMai = {txtMaKhuyenMai.Text}";
 
-            // Bước 3: Thực thi câu lệnh và tải lại bảng
             DbContext.RunSql(sql);
+            
+            MessageBox.Show("Cập nhật thông tin khuyến mãi thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
             Load_DataGridView();
             ResetValues();
             
-            // Bước 4: Khóa lại các nút
+            ToggleInputs(false);
+            
             btnCancel.Enabled = false;
             btnEdit.Enabled = false;
             btnDelete.Enabled = false;
+            btnAdd.Enabled = true;
+            txtMaKhuyenMai.Enabled = false;
         }
 
         // 5.2.9. Viết thủ tục btnXoa_Click (Nút Xóa)
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            // Bước 1: Kiểm tra xem có dữ liệu không
-            if (dgvPromotion.Rows.Count == 0)
-            {
-                MessageBox.Show("Không còn dữ liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            if (txtMaKhuyenMai.Text == "")
+            if (dgvPromotion.Rows.Count == 0 || string.IsNullOrEmpty(txtMaKhuyenMai.Text) || txtMaKhuyenMai.Text == "Tự động sinh")
             {
                 MessageBox.Show("Bạn chưa chọn bản ghi nào để xóa", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            // Bước 2: Hỏi lại người dùng cho chắc chắn
-            if (MessageBox.Show("Bạn có muốn xóa không?", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            if (MessageBox.Show("Bạn có chắc chắn muốn xóa (chuyển trạng thái sang Không hoạt động) khuyến mãi này không?", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
-                // Bước 3: Tạo câu lệnh SQL DELETE
-                string sql = $"DELETE KhuyenMai WHERE MaKhuyenMai = {txtMaKhuyenMai.Text}";
+                string sql = $"UPDATE KhuyenMai SET TrangThai = N'Không hoạt động' WHERE MaKhuyenMai = {txtMaKhuyenMai.Text}";
                 
-                // Thực thi và tải lại dữ liệu
-                DbContext.RunSqlDel(sql);
+                DbContext.RunSql(sql);
                 Load_DataGridView();
                 ResetValues();
                 
-                // Khóa lại các nút
+                ToggleInputs(false);
+                
                 btnEdit.Enabled = false;
                 btnDelete.Enabled = false;
                 btnCancel.Enabled = false;
+                btnAdd.Enabled = true;
             }
         }
 
@@ -266,9 +309,11 @@ namespace AssignmentApp.GUI.UserControls.Admin
         private void btnCancel_Click(object sender, EventArgs e)
         {
             ResetValues();
+            ToggleInputs(false);
+            
             btnCancel.Enabled = false;
             btnAdd.Enabled = true;
-            btnDelete.Enabled = false; // Hủy thì không có bản ghi nào được chọn
+            btnDelete.Enabled = false;
             btnEdit.Enabled = false;
             btnSave.Enabled = false;
             txtMaKhuyenMai.Enabled = false;
@@ -277,62 +322,70 @@ namespace AssignmentApp.GUI.UserControls.Admin
         // 5.2.11. Viết thủ tục btnTimkiem_Click (Nút Tìm kiếm)
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            // Mở khóa ô Mã Khuyến Mãi để người dùng có thể gõ mã vào tìm kiếm
-            txtMaKhuyenMai.Enabled = true; 
-
-            // Bước 1: Kiểm tra xem có ô nào được nhập dữ liệu chưa
-            if (txtMaKhuyenMai.Text == "" && txtTenKhuyenMai.Text == "" && cboTrangThai.Text == "")
+            // Lần 1: Kích hoạt chế độ tìm kiếm
+            if (txtMaKhuyenMai.Enabled == false && btnAdd.Enabled == true)
             {
-                MessageBox.Show("Hãy nhập một điều kiện tìm kiếm!!! (Ví dụ: Tên, Mã hoặc Trạng thái)", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            } 
+                ResetValues();
+                ToggleInputs(true);
+                txtMaKhuyenMai.Enabled = true;
 
-            // Bước 2: Bắt đầu ghép câu lệnh SQL (chọn đúng 6 cột như lúc nạp lên Grid)
+                btnCancel.Enabled = true;
+                btnAdd.Enabled = false;
+                btnEdit.Enabled = false;
+                btnDelete.Enabled = false;
+                btnSave.Enabled = false;
+
+                MessageBox.Show("Chế độ tìm kiếm đã bật! Vui lòng nhập thông tin cần tìm kiếm vào các ô dữ liệu rồi ấn Tìm kiếm lần nữa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtMaKhuyenMai.Focus();
+                return;
+            }
+
+            // Lần 2: Bắt đầu tìm kiếm
+            string idTerm = txtMaKhuyenMai.Text.Trim();
+            string nameTerm = txtTenKhuyenMai.Text.Trim();
+            string statusTerm = cboTrangThai.Text;
+
             string sql = "SELECT MaKhuyenMai, TenKhuyenMai, PhanTramGiamGia, NgayBatDau, NgayKetThuc, TrangThai FROM KhuyenMai WHERE 1=1";
             
-            // Nếu người dùng có gõ Mã Khuyến Mãi
-            if (txtMaKhuyenMai.Text != "")
-                sql += $" AND MaKhuyenMai LIKE '%{txtMaKhuyenMai.Text}%'";
+            if (!string.IsNullOrEmpty(idTerm))
+                sql += $" AND MaKhuyenMai LIKE '%{idTerm}%'";
                 
-            // Nếu người dùng có gõ Tên Khuyến Mãi
-            if (txtTenKhuyenMai.Text != "")
-                sql += $" AND TenKhuyenMai LIKE N'%{txtTenKhuyenMai.Text}%'";
+            if (!string.IsNullOrEmpty(nameTerm))
+                sql += $" AND TenKhuyenMai LIKE N'%{nameTerm}%'";
                 
-            // Nếu người dùng có chọn Trạng Thái
-            if (cboTrangThai.Text != "")
-                sql += $" AND TrangThai LIKE N'%{cboTrangThai.Text}%'";
+            if (!string.IsNullOrEmpty(statusTerm))
+                sql += $" AND TrangThai = N'{statusTerm}'";
 
-            // Bước 3: Lấy dữ liệu và kiểm tra kết quả
             DataTable tblKM = DbContext.GetDataToTable(sql);
-            if (tblKM.Rows.Count == 0)
+            dgvPromotion.DataSource = tblKM;
+
+            if (tblKM.Rows.Count > 0)
             {
-                MessageBox.Show("Không có bản ghi thỏa mãn điều kiện!!!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ResetValues();
+                MessageBox.Show($"Tìm thấy {tblKM.Rows.Count} bản ghi thỏa mãn điều kiện!!!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show($"Có {tblKM.Rows.Count} bản ghi thỏa mãn điều kiện!!!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ResetValues();
+                MessageBox.Show("Không tìm thấy bản ghi nào khớp với các tiêu chí tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-           
-            // Bước 4: Đổ kết quả tìm được lên lưới DataGridView
-            dgvPromotion.DataSource = tblKM;
-            ResetValues();
             
-            btnCancel.Enabled = true; // Mở nút Bỏ qua để người dùng có thể Reset lại bảng gốc
+            btnCancel.Enabled = true;
         }
 
         // 5.2.12. Viết thủ tục btnHienthi_Click (Nút Làm mới)
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            // Tải lại toàn bộ dữ liệu gốc
             Load_DataGridView();
             ResetValues();
+            ToggleInputs(false);
             
-            // Đưa các nút về trạng thái mặc định
             btnCancel.Enabled = false;
             btnAdd.Enabled = true;
             btnDelete.Enabled = false;
             btnEdit.Enabled = false;
             btnSave.Enabled = false;
+            txtMaKhuyenMai.Enabled = false;
         }
     }
 }

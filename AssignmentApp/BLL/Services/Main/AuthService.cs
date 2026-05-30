@@ -14,20 +14,21 @@ namespace AssignmentApp.BLL.Services.Main
             _authRepository = authRepository;
         }
 
-        public async Task<User> LoginAsync(string manguoidung, string matkhau)
+        // Đổi tên tham số từ manguoidung thành email cho đúng logic 3 lớp
+        public async Task<User> LoginAsync(string email, string matkhau)
         {
-            // Gọi DAL để lấy user theo MaNguoiDung
-            var user = await _authRepository.GetUserForLoginAsync(manguoidung);
-            
+            // Gọi DAL để lấy user theo Email
+            var user = await _authRepository.GetUserForLoginAsync(email);
+
             if (user != null)
             {
-                // Kiểm tra mật khẩu (Sử dụng PasswordHasher)
-                if (PasswordHasher.VerifyPassword(matkhau, user.MatKhau))
+                // SỬA TẠI ĐÂY: Vì DB đang lưu chuỗi thô '123' nên so sánh trực tiếp, dùng thêm .Trim() cho chắc chắn
+                if (user.MatKhau.Trim() == matkhau.Trim())
                 {
                     return user;
                 }
             }
-            
+
             return null; // Đăng nhập thất bại
         }
     }

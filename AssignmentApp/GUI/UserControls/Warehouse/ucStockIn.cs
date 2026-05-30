@@ -69,7 +69,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
 
             // Đưa các nút và các trường thông tin về trạng thái khóa
-            SetEditState(false);
+            
         }
 
         // 5.2.2. Lấy thông tin tài khoản người dùng hoạt động
@@ -187,39 +187,64 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             if (e.RowIndex >= 0 && !isEditing)
             {
                 SelectReceiptRow(e.RowIndex);
+                
+                if (txtMaPhieuNhap.Enabled == true) { txtMaPhieuNhap.Enabled = false; btnSearch.Enabled = true; }
+
+                btnAdd.Enabled = false;
+                btnEdit.Enabled = true;
+                btnDelete.Enabled = true;
+                btnSave.Enabled = false;
+                btnCancel.Enabled = true;
             }
         }
 
-        // 5.2.6. Thay đổi trạng thái khóa/mở các ô nhập liệu
-        private void SetEditState(bool editing)
+        
+        private void ResetTab1State()
         {
-            isEditing = editing;
+            isEditing = false;
+            isAddingNew = false;
+            
+            txtMaPhieuNhap.Text = "";
+            dtNgayNhap.Value = DateTime.Now;
+            cboTrangThai.SelectedIndex = -1;
+            txtNguoiDung.Text = "";
 
-            // Header fields
-            txtMaPhieuNhap.ReadOnly = !isAddingNew;
-            dtNgayNhap.Enabled = editing;
-            cboTrangThai.Enabled = editing;
+            txtMaPhieuNhap.ReadOnly = true;
+            txtMaPhieuNhap.Enabled = false; // T?t ch? d? tìm ki?m
+            dtNgayNhap.Enabled = false;
+            cboTrangThai.Enabled = false;
 
-            // Make all buttons visible at all times
-            btnAdd.Visible = true;
-            btnEdit.Visible = true;
-            btnDelete.Visible = true;
-            btnSave.Visible = true;
-            btnCancel.Visible = true;
-
-            // Định vị trí và kích thước đã được xử lý bên file Designer.cs (Anchor/Dock)
-            // Không ghi đè ở runtime để đảm bảo giao diện responsive chính xác.
-
-            // Bật/tắt nút theo trạng thái sửa đổi
-            btnAdd.Enabled = !editing;
-            btnEdit.Enabled = !editing && (dgvDetails.Rows.Count > 0);
-            btnDelete.Enabled = !editing && (dgvDetails.Rows.Count > 0);
-
-            btnSave.Enabled = editing;
-            btnCancel.Enabled = editing;
+            btnAdd.Enabled = true;
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
+            btnSave.Enabled = false;
+            btnCancel.Enabled = false;
+            btnSearch.Enabled = true;
+            btnRefresh.Enabled = true;
+            
+            dgvDetails.ClearSelection();
+            currentDetails.Clear();
         }
 
-        // ========================================================
+        private void ResetTab2State()
+        {
+            btnAddToCart.Enabled = true;
+            guna2Button4.Enabled = false; // S?a
+            btnRemoveFromCart.Enabled = false; // Xóa
+            guna2Button3.Enabled = false; // B? qua
+            
+            // Nút Luu (btnBackToReceipt) sáng n?u gi? có hàng
+            btnBackToReceipt.Enabled = (currentDetails.Count > 0);
+            
+            txtSelMaSP.Text = "";
+            txtSelTenSP.Text = "";
+            txtSelSoLuong.Text = "";
+            txtSelGiaNhap.Text = "";
+            lblTotalAmount.Text = "T?NG TI?N T?M TÍNH: 0 d";
+            dgvCurrentDetails.ClearSelection();
+        }
+
+// ========================================================
         // TAB 1 EVENTS (PHIẾU NHẬP)
         // ========================================================
 
@@ -243,7 +268,17 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
                 currentDetails.Clear();
 
-                SetEditState(true);
+                btnAdd.Enabled = false;
+                btnEdit.Enabled = false;
+                btnDelete.Enabled = false;
+                btnSave.Enabled = true;
+                btnCancel.Enabled = true;
+
+                txtMaPhieuNhap.ReadOnly = true;
+                dtNgayNhap.Enabled = true;
+                cboTrangThai.Enabled = true;
+
+                ResetTab2State();
 
                 // Chuyển sang Tab 2 ngay lập tức để chọn sản phẩm vào giỏ hàng
                 btnChooseProducts_Click(this, EventArgs.Empty);
@@ -269,7 +304,17 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
 
             isAddingNew = false;
-            SetEditState(true);
+            btnAdd.Enabled = false;
+                btnEdit.Enabled = false;
+                btnDelete.Enabled = false;
+                btnSave.Enabled = true;
+                btnCancel.Enabled = true;
+
+                txtMaPhieuNhap.ReadOnly = true;
+                dtNgayNhap.Enabled = true;
+                cboTrangThai.Enabled = true;
+
+                ResetTab2State();
 
             // Chuyển sang Tab 2 để thay đổi giỏ hàng sản phẩm nhập
             btnChooseProducts_Click(this, EventArgs.Empty);
@@ -307,19 +352,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                     MessageBox.Show("Xóa phiếu nhập khỏi hệ thống thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     LoadReceiptsGrid();
 
-                    if (dgvDetails.Rows.Count > 0)
-                    {
-                        SelectReceiptRow(0);
-                    }
-                    else
-                    {
-                        txtMaPhieuNhap.Text = "";
-                        txtNguoiDung.Text = "";
-                        cboTrangThai.SelectedIndex = -1;
-                        currentDetails.Clear();
-                    }
-
-                    SetEditState(false);
+                    ResetTab1State();
+                    ResetTab2State();
                 }
                 catch (Exception ex)
                 {
@@ -419,7 +453,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
 
             isAddingNew = false;
-            SetEditState(false);
+            
             LoadReceiptsGrid();
 
             // Chọn lại dòng vừa xử lý
@@ -485,7 +519,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         private void btnCancel_Click(object sender, EventArgs e)
         {
             isAddingNew = false;
-            SetEditState(false);
+            
             if (dgvDetails.SelectedRows.Count > 0)
             {
                 SelectReceiptRow(dgvDetails.SelectedRows[0].Index);
@@ -531,7 +565,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             {
                 SelectReceiptRow(0);
             }
-            SetEditState(false);
+            
         }
 
         // 5.2.14. Bấm nút CHỌN SẢN PHẨM để mở Tab 2

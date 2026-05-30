@@ -6,9 +6,9 @@ GO
 -- ========================================================
 IF OBJECT_ID('ChiTietDoiHang', 'U') IS NOT NULL DROP TABLE ChiTietDoiHang;
 IF OBJECT_ID('DoiHang', 'U') IS NOT NULL DROP TABLE DoiHang;
+IF OBJECT_ID('GiaoHang', 'U') IS NOT NULL DROP TABLE GiaoHang;
 IF OBJECT_ID('ChiTietTraHang', 'U') IS NOT NULL DROP TABLE ChiTietTraHang;
 IF OBJECT_ID('TraHang', 'U') IS NOT NULL DROP TABLE TraHang;
-IF OBJECT_ID('GiaoHang', 'U') IS NOT NULL DROP TABLE GiaoHang;
 IF OBJECT_ID('ChiTietHoaDon', 'U') IS NOT NULL DROP TABLE ChiTietHoaDon;
 IF OBJECT_ID('HoaDon', 'U') IS NOT NULL DROP TABLE HoaDon;
 IF OBJECT_ID('ChiTietNhapHang', 'U') IS NOT NULL DROP TABLE ChiTietNhapHang;
@@ -139,17 +139,6 @@ CREATE TABLE ChiTietHoaDon (
     FOREIGN KEY (MaSanPham) REFERENCES SanPham(MaSanPham)
 );
 
-CREATE TABLE GiaoHang (
-    MaGiaoHang INT IDENTITY(1,1) PRIMARY KEY,
-    MaHoaDon INT,
-    MaTraHang INT,
-    DiaChiGiao NVARCHAR(255),
-    TrangThai NVARCHAR(50),
-    NgayGiao DATETIME,
-    FOREIGN KEY (MaHoaDon) REFERENCES HoaDon(MaHoaDon),
-    FOREIGN KEY (MaTraHang) REFERENCES TraHang(MaTraHang)
-);
-
 CREATE TABLE TraHang (
     MaTraHang INT IDENTITY(1,1) PRIMARY KEY,
     MaHoaDon INT,
@@ -172,6 +161,17 @@ CREATE TABLE ChiTietTraHang (
     TinhTrang NVARCHAR(250),
     FOREIGN KEY (MaTraHang) REFERENCES TraHang(MaTraHang),
     FOREIGN KEY (MaSanPham) REFERENCES SanPham(MaSanPham)
+);
+
+CREATE TABLE GiaoHang (
+    MaGiaoHang INT IDENTITY(1,1) PRIMARY KEY,
+    MaHoaDon INT,
+    MaTraHang INT,
+    DiaChiGiao NVARCHAR(255),
+    TrangThai NVARCHAR(50),
+    NgayGiao DATETIME,
+    FOREIGN KEY (MaHoaDon) REFERENCES HoaDon(MaHoaDon),
+    FOREIGN KEY (MaTraHang) REFERENCES TraHang(MaTraHang)
 );
 GO
 
@@ -210,9 +210,9 @@ SET IDENTITY_INSERT KhachHang OFF;
 -- 4. NguoiDung 
 SET IDENTITY_INSERT NguoiDung ON;
 INSERT INTO NguoiDung (MaNguoiDung, TenNguoiDung, SoDienThoai, Email, MatKhau, VaiTro, TrangThai, NgayTao) VALUES
-(1, N'Quản Lý Cửa Hàng', '0901000111', 'admin@vpp.com', 'hashed_pass', 'ADMIN', N'Hoạt động', GETDATE()),
-(2, N'Thu Ngân 1', '0901000222', 'thungan@vpp.com', 'hashed_pass', 'SALES', N'Hoạt động', GETDATE()),
-(3, N'Thủ Kho 1', '0901000333', 'kho@vpp.com', 'hashed_pass', 'WAREHOUSE', N'Hoạt động', GETDATE());
+(1, N'Quản Lý Cửa Hàng', '0901000111', 'admin@vpp.com', '$2a$11$JlSR7XZXFD4o/ThNmdaxneFJIduprCk4pf0T9I9x/a8xh.A/oOEHm', 'ADMIN', N'Hoạt động', GETDATE()),
+(2, N'Thu Ngân 1', '0901000222', 'thungan@vpp.com', '$2a$11$JlSR7XZXFD4o/ThNmdaxneFJIduprCk4pf0T9I9x/a8xh.A/oOEHm', 'SALES', N'Hoạt động', GETDATE()),
+(3, N'Thủ Kho 1', '0901000333', 'kho@vpp.com', '$2a$11$JlSR7XZXFD4o/ThNmdaxneFJIduprCk4pf0T9I9x/a8xh.A/oOEHm', 'WAREHOUSE', N'Hoạt động', GETDATE());
 SET IDENTITY_INSERT NguoiDung OFF;
 
 -- 5. SanPham (Gắn kèm Thương Hiệu để Search LIKE)
@@ -276,8 +276,8 @@ SET IDENTITY_INSERT GiaoHang OFF;
 
 -- 10. TraHang & ChiTietTraHang (Lỗi sản phẩm)
 SET IDENTITY_INSERT TraHang ON;
-INSERT INTO TraHang (MaTraHang, MaHoaDon,MaTraHang, MaNguoiDung, LyDo, TongTienHoan, TrangThai, LoaiGiaoDich, NgayTra) VALUES
-(1, 1, Null, 2, N'Máy tính phím bấm bị kẹt', 680000, N'Hoàn tất', N'Đổi 1:1', GETDATE());
+INSERT INTO TraHang (MaTraHang, MaHoaDon, MaNguoiDung, LyDo, TongTienHoan, TrangThai, LoaiGiaoDich, NgayTra) VALUES
+(1, 1, 2, N'Máy tính phím bấm bị kẹt', 680000, N'Hoàn tất', N'Đổi 1:1', GETDATE());
 SET IDENTITY_INSERT TraHang OFF;
 
 SET IDENTITY_INSERT ChiTietTraHang ON;

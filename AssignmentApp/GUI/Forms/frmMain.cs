@@ -81,9 +81,16 @@ namespace AssignmentApp.GUI.Forms
 
         private void LoadUserControl(UserControl uc)
         {
-            pnlContainer.Controls.Clear();
-            uc.Dock = DockStyle.Fill;
-            pnlContainer.Controls.Add(uc);
+            try
+            {
+                pnlContainer.Controls.Clear();
+                uc.Dock = DockStyle.Fill;
+                pnlContainer.Controls.Add(uc);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể tải trang này: " + ex.Message);
+            }
         }
         // ==========================================
         // EVENTS CHO MENU ADMIN
@@ -111,8 +118,13 @@ namespace AssignmentApp.GUI.Forms
         // ==========================================
         private void btnSales_Orders_Click(object sender, EventArgs e)
         {
-            HighlightButton(sender);
-            LoadUserControl(new ucOrderManagement(defaultToPOS: false));
+            try {
+                HighlightButton(sender);
+                LoadUserControl(new ucOrderManagement());
+            } catch (Exception ex) {
+                System.IO.File.WriteAllText("bug_order.txt", ex.ToString());
+                MessageBox.Show("Lỗi khởi tạo ucOrderManagement, đã lưu vào bug_order.txt: " + ex.Message);
+            }
         }
 
         private void btnSales_Delivery_Click(object sender, EventArgs e)

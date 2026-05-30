@@ -1,4 +1,4 @@
-namespace AssignmentApp.GUI.UserControls.Admin
+﻿namespace AssignmentApp.GUI.UserControls.Admin
 {
     partial class ucUserManagement
     {

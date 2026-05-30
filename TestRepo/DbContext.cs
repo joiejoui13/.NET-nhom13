@@ -14,7 +14,7 @@ namespace AssignmentApp.DAL.Core
         {
             try
             {
-                connstring = @"Data Source=DESKTOP-JL31SN2;Initial Catalog=CKNet;Integrated Security=True;Encrypt=True;Trust Server Certificate=True;MultipleActiveResultSets=True";
+                connstring = @"Data Source=DESKTOP-JL31SN2;Initial Catalog=CKNet;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
                 Conn = new SqlConnection(connstring);
                 
                 if (Conn.State != ConnectionState.Open)

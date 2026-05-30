@@ -1,4 +1,6 @@
-using System;
+import codecs
+
+content = '''using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,7 +9,6 @@ using System.Drawing;
 using AssignmentApp.DAL.Repositories.Sales;
 using AssignmentApp.DAL.Repositories.Warehouse;
 using AssignmentApp.DTO;
-using Dapper;
 
 namespace AssignmentApp.GUI.UserControls.Sales
 {
@@ -15,10 +16,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
     {
         private OrderRepository _orderRepo = new OrderRepository();
         private ProductRepository _productRepo = new ProductRepository();
-
+        
         private List<Order> _orders = new List<Order>();
         private List<Product> _products = new List<Product>();
-
+        
         private Order selectedOrder = null;
         private bool isEditing = false;
         private bool isAddingNew = false;
@@ -35,28 +36,21 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private async void ucOrderManagement_Load(object sender, EventArgs e)
         {
-            try
+            await InitializeProductsAsync();
+            await LoadOrdersGridAsync();
+
+            SetEditState(false);
+
+            if (dgvOrders.Rows.Count > 0)
             {
-                await InitializeProductsAsync();
-                await LoadOrdersGridAsync();
-
-                SetEditState(false);
-
-                if (dgvOrders.Rows.Count > 0)
-                {
-                    SelectOrderRow(0);
-                }
-
-                if (defaultToPOS && tabMain != null && tabChonSanPham != null)
-                {
-                    tabMain.SelectedTab = tabChonSanPham;
-                    LoadProductsSelectionGrid();
-                    LoadCurrentDetailsGrid();
-                }
+                SelectOrderRow(0);
             }
-            catch (Exception ex)
+
+            if (defaultToPOS && tabMain != null && tabChonSanPham != null)
             {
-                MessageBox.Show("Lỗi tải trang ucOrderManagement: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                tabMain.SelectedTab = tabChonSanPham;
+                LoadProductsSelectionGrid();
+                LoadCurrentDetailsGrid();
             }
         }
 
@@ -68,12 +62,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private async Task LoadOrdersGridAsync(List<Order> dataSource = null)
         {
-            try
-            {
+            try {
                 dgvOrders.Rows.Clear();
                 var list = dataSource;
-                if (list == null)
-                {
+                if (list == null) {
                     var items = await _orderRepo.GetAllAsync();
                     list = items.ToList();
                     _orders = list;
@@ -84,19 +76,17 @@ namespace AssignmentApp.GUI.UserControls.Sales
                         order.MaHoaDon,
                         order.TenKhachHang ?? order.MaKhachHang,
                         order.TenNguoiDung ?? order.MaNguoiDung,
-                        order.TongTien.ToString("N0") + " đ",
-                        order.GiamGia.ToString("N0") + " đ",
+                        order.TongTien.ToString("N0") + " d",
+                        order.GiamGia.ToString("N0") + " d",
                         order.HinhThucThanhToan,
                         order.TrangThai,
                         order.NgayTao.ToString("dd/MM/yyyy HH:mm"),
-                        order.LoaiHoaDon ?? "Đơn bán hàng",
-                        order.LyDoHuy ?? ""
+                        "�on b�n h�ng", // LoaiHoaDon hardcoded for now or use actual logic
+                        "" // LyDoHuy
                     );
                 }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi tải danh sách hóa đơn: " + ex.Message);
+            } catch (Exception ex) {
+                MessageBox.Show("L?i t?i danh s�ch h�a don: " + ex.Message);
             }
         }
 
@@ -119,17 +109,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private async Task PopulateOrderDetailsAsync(Order order)
         {
             txtMaHoaDon.Text = order.MaHoaDon;
-            cboLoaiHoaDon.Text = order.LoaiHoaDon ?? "Đơn bán hàng";
-            txtMaKhachHang.Text = order.TenKhachHang ?? order.MaKhachHang;
-            txtMaKhachHang.Tag = order.MaKhachHang;
-            txtTenNguoiDung.Text = order.TenNguoiDung ?? order.MaNguoiDung;
-            txtTenNguoiDung.Tag = order.MaNguoiDung;
-            txtTongTien.Text = order.TongTien.ToString("N0") + " đ";
-            txtGiamGia.Text = order.GiamGia.ToString("N0") + " đ";
+            cboLoaiHoaDon.Text = "�on b�n h�ng";
+            txtMaKhachHang.Text = order.MaKhachHang;
+            txtTenNguoiDung.Text = order.MaNguoiDung;
+            txtTongTien.Text = order.TongTien.ToString("N0") + " d";
+            txtGiamGia.Text = order.GiamGia.ToString("N0") + " d";
             txtHinhThucThanhToan.Text = order.HinhThucThanhToan;
             txtNgayTao.Text = order.NgayTao.ToString("dd/MM/yyyy HH:mm");
             cboTrangThai.Text = order.TrangThai;
-            txtLyDoHuy.Text = order.LyDoHuy ?? "";
+            txtLyDoHuy.Text = "";
 
             // Load Details Grid from DB
             dgvOrderDetails.Rows.Clear();
@@ -140,8 +128,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     item.MaSanPham,
                     item.TenSanPham,
                     item.SoLuong,
-                    item.DonGia.ToString("N0") + " đ",
-                    item.ThanhTien.ToString("N0") + " đ"
+                    item.DonGia.ToString("N0") + " d",
+                    item.ThanhTien.ToString("N0") + " d"
                 );
             }
 
@@ -157,7 +145,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboLoaiHoaDon.Enabled = editing;
             cboTrangThai.Enabled = editing;
 
-            txtLyDoHuy.ReadOnly = !editing || cboTrangThai.Text != "Đã huỷ";
+            txtLyDoHuy.ReadOnly = !editing || cboTrangThai.Text != "�� hu?";
 
             btnAdd.Visible = true;
             btnEdit.Visible = true;
@@ -165,7 +153,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnSave.Visible = true;
             btnCancel.Visible = true;
 
-            // Bỏ thay đổi tọa độ cứng để AutoScale của WinForms hoạt động đúng với thiết kế
+            btnAdd.Location = new Point(15, 460);
+            btnEdit.Location = new Point(115, 460);
+            btnDelete.Location = new Point(215, 460);
+            btnSave.Location = new Point(15, 510);
+            btnSave.Size = new Size(140, 36);
+            btnCancel.Location = new Point(165, 510);
+            btnCancel.Size = new Size(140, 36);
 
             btnAdd.Enabled = !editing;
             btnEdit.Enabled = !editing;
@@ -180,7 +174,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             if (isEditing)
             {
-                bool isCanceled = cboTrangThai.Text == "Đã huỷ";
+                bool isCanceled = cboTrangThai.Text == "�� hu?";
                 txtLyDoHuy.ReadOnly = !isCanceled;
                 if (!isCanceled) txtLyDoHuy.Text = "";
                 else txtLyDoHuy.Focus();
@@ -208,9 +202,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             txtMaHoaDon.Text = "";
             txtMaKhachHang.Text = "";
-            txtMaKhachHang.Tag = null;
             txtTenNguoiDung.Text = "";
-            txtTenNguoiDung.Tag = null;
             txtTongTien.Text = "";
             txtGiamGia.Text = "";
             txtHinhThucThanhToan.Text = "";
@@ -226,18 +218,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
             isAddingNew = true;
             isEditing = true;
 
-            txtMaHoaDon.Text = "Tự động";
-            txtMaKhachHang.Text = "Khách bán lẻ";
-            txtMaKhachHang.Tag = "KH001";
-            txtTenNguoiDung.Text = "Thu Ngân 1";
-            txtTenNguoiDung.Tag = "ND001";
+            txtMaHoaDon.Text = "T? d?ng";
+            txtMaKhachHang.Text = "KH001";
+            txtTenNguoiDung.Text = "ND001";
             txtNgayTao.Text = DateTime.Now.ToString("dd/MM/yyyy HH:mm");
-            cboLoaiHoaDon.Text = "Đơn bán hàng";
-            cboTrangThai.Text = "Đã hoàn thành";
+            cboLoaiHoaDon.Text = "�on b�n h�ng";
+            cboTrangThai.Text = "�� ho�n th�nh";
             txtLyDoHuy.Text = "";
-            txtTongTien.Text = "0 đ";
-            txtGiamGia.Text = "0 đ";
-            txtHinhThucThanhToan.Text = "Tiền mặt";
+            txtTongTien.Text = "0 d";
+            txtGiamGia.Text = "0 d";
+            txtHinhThucThanhToan.Text = "Ti?n m?t";
 
             currentDetails.Clear();
 
@@ -255,13 +245,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             if (selectedOrder == null)
             {
-                MessageBox.Show("Vui lòng chọn một đơn hàng để chỉnh sửa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui l�ng ch?n m?t don h�ng d? ch?nh s?a!", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (selectedOrder.TrangThai == "Đã hoàn thành" || selectedOrder.TrangThai == "Đã huỷ")
+            if (selectedOrder.TrangThai == "�� ho�n th�nh" || selectedOrder.TrangThai == "�� hu?")
             {
-                MessageBox.Show("Không thể chỉnh sửa đơn hàng đã hoàn thành hoặc đã huỷ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Kh�ng th? ch?nh s?a don h�ng d� ho�n th�nh ho?c d� hu?!", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -282,27 +272,23 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private async void btnDelete_Click(object sender, EventArgs e)
         {
             if (selectedOrder == null) return;
-            if (selectedOrder.TrangThai == "Đã huỷ" || selectedOrder.TrangThai == "Đã hoàn thành")
+            if (selectedOrder.TrangThai == "�� hu?" || selectedOrder.TrangThai == "�� ho�n th�nh")
             {
-                MessageBox.Show("Không thể hủy đơn hàng này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Kh�ng th? h?y don h�ng n�y!", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var confirmResult = MessageBox.Show("Bạn có chắc chắn muốn hủy đơn hàng này không? Tồn kho sẽ được hoàn trả.", "Xác nhận hủy đơn", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var confirmResult = MessageBox.Show("B?n c� ch?c ch?n mu?n h?y don h�ng n�y kh�ng? T?n kho s? du?c ho�n tr?.", "X�c nh?n h?y don", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {
-                try
-                {
+                try {
                     bool res = await _orderRepo.DeleteOrderTransactionAsync(selectedOrder.MaHoaDon);
-                    if (res)
-                    {
-                        MessageBox.Show("Đã hủy đơn hàng thành công!");
+                    if (res) {
+                        MessageBox.Show("�� h?y don h�ng th�nh c�ng!");
                         await LoadOrdersGridAsync();
                     }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi: " + ex.Message);
+                } catch(Exception ex) {
+                    MessageBox.Show("L?i: " + ex.Message);
                 }
             }
         }
@@ -313,54 +299,40 @@ namespace AssignmentApp.GUI.UserControls.Sales
             {
                 if (currentDetails.Count == 0)
                 {
-                    MessageBox.Show("Đơn hàng phải có ít nhất một sản phẩm!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("�on h�ng ph?i c� �t nh?t m?t s?n ph?m!", "L?i", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                try
-                {
+                try {
                     var newOrder = new Order
                     {
-                        MaKhachHang = txtMaKhachHang.Tag?.ToString() ?? "KH001",
-                        MaNguoiDung = txtTenNguoiDung.Tag?.ToString() ?? "ND001",
+                        MaKhachHang = txtMaKhachHang.Text,
+                        MaNguoiDung = txtTenNguoiDung.Text,
                         TongTien = currentDetails.Sum(d => d.ThanhTien),
                         GiamGia = 0,
                         HinhThucThanhToan = txtHinhThucThanhToan.Text,
                         TrangThai = cboTrangThai.Text,
-                        NgayTao = DateTime.Now,
-                        LoaiHoaDon = cboLoaiHoaDon.Text,
-                        LyDoHuy = ""
+                        NgayTao = DateTime.Now
                     };
 
                     int id = await _orderRepo.AddAsync(newOrder);
                     string generatedMaHoaDon = id.ToString(); // Or fetch properly
 
-                    foreach (var d in currentDetails)
-                    {
+                    foreach(var d in currentDetails) {
                         d.MaHoaDon = generatedMaHoaDon;
                         await _orderRepo.AddDetailAsync(d);
                     }
 
-                    // UPDATE STOCK manually if needed, wait! DeleteOrderTransaction restores it, 
-                    // AddDetail should technically reduce it if not done by Repo.
-                    foreach (var d in currentDetails)
-                    {
-                        var updateStockSql = "UPDATE SanPham SET SoLuongTon = SoLuongTon - @SoLuong WHERE MaSanPham = @MaSanPham";
-                        await AssignmentApp.DAL.Core.DbContext.Conn.ExecuteAsync(updateStockSql, new { SoLuong = d.SoLuong, MaSanPham = d.MaSanPham });
-                    }
-
-                    MessageBox.Show("Tạo đơn hàng mới thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi lưu hóa đơn: " + ex.Message);
+                    MessageBox.Show("T?o don h�ng m?i th�nh c�ng!", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                } catch(Exception ex) {
+                    MessageBox.Show("L?i luu h�a don: " + ex.Message);
                     return;
                 }
             }
             else
             {
                 // Update order not fully supported in repo yet, skipping or assuming handled
-                MessageBox.Show("Tính năng cập nhật chưa được hỗ trợ hoàn toàn ở Repo!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("T�nh nang c?p nh?t chua du?c h? tr? ho�n to�n ? Repo!", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             isAddingNew = false;
@@ -390,7 +362,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 dgvProductsSelection.Rows.Add(
                     prod.MaSanPham,
                     prod.TenSanPham,
-                    prod.GiaBan.ToString("N0") + " đ"
+                    prod.GiaBan.ToString("N0") + " d"
                 );
             }
         }
@@ -471,37 +443,37 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     item.MaSanPham,
                     item.TenSanPham,
                     item.SoLuong.ToString("N0"),
-                    item.DonGia.ToString("N0") + " đ",
-                    item.ThanhTien.ToString("N0") + " đ"
+                    item.DonGia.ToString("N0") + " d",
+                    item.ThanhTien.ToString("N0") + " d"
                 );
             }
-            lblTotalAmount.Text = $"TỔNG TIỀN TẠM TÍNH: {total.ToString("N0")} đ";
+            lblTotalAmount.Text = $"T?NG TI?N T?M T�NH: {total.ToString("N0")} d";
         }
 
         private void btnAddToCart_Click(object sender, EventArgs e)
         {
             if (!isEditing)
             {
-                MessageBox.Show("Vui lòng nhấn nút THÊM hoặc SỬA ở Tab 1 trước khi chỉnh sửa sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui l�ng nh?n n�t TH�M ho?c S?A ? Tab 1 tru?c khi ch?nh s?a s?n ph?m!", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             string id = txtSelMaSP.Text;
             if (string.IsNullOrEmpty(id))
             {
-                MessageBox.Show("Vui lòng chọn một sản phẩm từ danh sách trước!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui l�ng ch?n m?t s?n ph?m t? danh s�ch tru?c!", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (!int.TryParse(txtSelSoLuong.Text, out int qty) || qty <= 0)
             {
-                MessageBox.Show("Số lượng phải là số nguyên dương lớn hơn 0!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("S? lu?ng ph?i l� s? nguy�n duong l?n hon 0!", "L?i nh?p li?u", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             if (!decimal.TryParse(txtSelGiaNhap.Text, out decimal price) || price < 0)
             {
-                MessageBox.Show("Đơn giá phải lớn hơn hoặc bằng 0!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("�on gi� ph?i l?n hon ho?c b?ng 0!", "L?i nh?p li?u", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -575,10 +547,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private void pnlPOSTop_Paint(object sender, PaintEventArgs e) { }
         private void txtSelMaSP_TextChanged(object sender, EventArgs e) { }
         private void lblNgayTao_Click(object sender, EventArgs e) { }
-
-        private void txtMaHoaDon_TextChanged(object sender, EventArgs e)
-        {
-
-        }
     }
 }
+'''
+with codecs.open('AssignmentApp/GUI/UserControls/Sales/ucOrderManagement.cs', 'w', 'utf-8-sig') as f:
+    f.write(content)

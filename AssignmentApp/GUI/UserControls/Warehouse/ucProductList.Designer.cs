@@ -1,4 +1,4 @@
-namespace AssignmentApp.GUI.UserControls.Warehouse
+﻿namespace AssignmentApp.GUI.UserControls.Warehouse
 {
     partial class ucProductList
     {

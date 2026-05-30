@@ -1,4 +1,4 @@
-namespace AssignmentApp.GUI.Forms
+﻿namespace AssignmentApp.GUI.Forms
 {
     partial class frmMain
     {

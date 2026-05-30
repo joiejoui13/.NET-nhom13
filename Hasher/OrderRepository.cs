@@ -10,28 +10,10 @@ namespace AssignmentApp.DAL.Repositories.Sales
 {
     public class OrderRepository
     {
-        public async Task<int> AddAsync(Order o)
-        {
-            if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = @"INSERT INTO HoaDon (MaKhachHang, MaNguoiDung, MaKhuyenMai, TongTien, TrangThai, NgayTao, PhuongThucThanhToan, LoaiHoaDon, LyDoHuy) 
-                           VALUES (@MaKhachHang, @MaNguoiDung, @MaKhuyenMai, @TongTien, @TrangThai, @NgayTao, @HinhThucThanhToan, @LoaiHoaDon, @LyDoHuy);
-                           SELECT CAST(SCOPE_IDENTITY() as int);";
-            return await DbContext.Conn.ExecuteScalarAsync<int>(sql, o);
-        }
-
-        public async Task<int> AddDetailAsync(OrderDetail d)
-        {
-            if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = @"INSERT INTO ChiTietHoaDon (MaHoaDon, MaSanPham, SoLuong, DonGia, ThanhTien) 
-                           VALUES (@MaHoaDon, @MaSanPham, @SoLuong, @DonGia, @ThanhTien);
-                           SELECT CAST(SCOPE_IDENTITY() as int);";
-            return await DbContext.Conn.ExecuteScalarAsync<int>(sql, d);
-        }
-
         public async Task<IEnumerable<Order>> GetAllAsync()
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = @"SELECT h.*, h.PhuongThucThanhToan AS HinhThucThanhToan, k.TenKhachHang, n.TenNguoiDung 
+            string sql = @"SELECT h.*, k.TenKhachHang, n.TenNguoiDung 
                            FROM HoaDon h
                            LEFT JOIN KhachHang k ON h.MaKhachHang = k.MaKhachHang
                            LEFT JOIN NguoiDung n ON h.MaNguoiDung = n.MaNguoiDung
@@ -42,7 +24,7 @@ namespace AssignmentApp.DAL.Repositories.Sales
         public async Task<IEnumerable<Order>> SearchAsync(string keyword)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = @"SELECT h.*, h.PhuongThucThanhToan AS HinhThucThanhToan, k.TenKhachHang, n.TenNguoiDung 
+            string sql = @"SELECT h.*, k.TenKhachHang, n.TenNguoiDung 
                            FROM HoaDon h
                            LEFT JOIN KhachHang k ON h.MaKhachHang = k.MaKhachHang
                            LEFT JOIN NguoiDung n ON h.MaNguoiDung = n.MaNguoiDung

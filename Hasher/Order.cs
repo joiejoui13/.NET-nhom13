@@ -14,8 +14,6 @@ namespace AssignmentApp.DTO
         public string? HinhThucThanhToan { get; set; }
         public string TrangThai { get; set; } = "Chờ xử lý";
         public DateTime NgayTao { get; set; }
-        public string? LoaiHoaDon { get; set; }
-        public string? LyDoHuy { get; set; }
 
         // Helper properties
         public string? TenKhachHang { get; set; }

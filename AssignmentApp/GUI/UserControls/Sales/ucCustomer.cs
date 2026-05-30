@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -19,7 +19,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         public ucCustomer()
         {
             InitializeComponent();
-            pnlGridCard.SizeChanged += (s, e) => 
+            pnlGridCard.SizeChanged += (s, e) =>
             {
                 dgvCustomers.Width = pnlGridCard.Width - 67;
                 dgvCustomers.Height = pnlGridCard.Height - 158;
@@ -51,7 +51,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 customers = data.ToList();
                 dataSource = customers;
             }
-            
+
             foreach (var customer in dataSource)
             {
                 dgvCustomers.Rows.Add(
@@ -94,7 +94,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             isEditing = editing;
 
-            // Mã KH is always read-only because it is identity/auto-generated
+            // MÃ£ KH is always read-only because it is identity/auto-generated
             txtMaKhachHang.ReadOnly = true;
 
             // Other fields are editable only when editing
@@ -140,7 +140,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             isAddingNew = true;
             ClearInputs();
 
-            txtMaKhachHang.Text = "Tự động tạo";
+            txtMaKhachHang.Text = "Tá»± Ä‘á»™ng táº¡o";
 
             SetEditState(true);
             txtTenKhachHang.Focus();
@@ -150,7 +150,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             if (selectedCustomer == null)
             {
-                MessageBox.Show("Vui lòng chọn một khách hàng để chỉnh sửa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lÃ²ng chá»n má»™t khÃ¡ch hÃ ng Ä‘á»ƒ chá»‰nh sá»­a!", "ThÃ´ng bÃ¡o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             isAddingNew = false;
@@ -162,15 +162,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             if (selectedCustomer == null)
             {
-                MessageBox.Show("Vui lòng chọn một khách hàng để xóa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lÃ²ng chá»n má»™t khÃ¡ch hÃ ng Ä‘á»ƒ xÃ³a!", "ThÃ´ng bÃ¡o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            var confirmResult = MessageBox.Show($"Bạn có chắc chắn muốn xóa khách hàng '{selectedCustomer.TenKhachHang}' không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var confirmResult = MessageBox.Show($"Báº¡n cÃ³ cháº¯c cháº¯n muá»‘n xÃ³a khÃ¡ch hÃ ng '{selectedCustomer.TenKhachHang}' khÃ´ng?", "XÃ¡c nháº­n xÃ³a", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {
                 await repo.DeleteAsync(selectedCustomer.MaKhachHang);
-                MessageBox.Show("Xóa khách hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("XÃ³a khÃ¡ch hÃ ng thÃ nh cÃ´ng!", "ThÃ´ng bÃ¡o", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 await LoadCustomersGridAsync();
                 if (dgvCustomers.Rows.Count > 0)
                 {
@@ -221,7 +221,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             if (string.IsNullOrEmpty(nameKeyword) && string.IsNullOrEmpty(phoneKeyword))
             {
-                MessageBox.Show("Vui lòng nhập Tên hoặc Số điện thoại vào ô thông tin để tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Vui lÃ²ng nháº­p TÃªn hoáº·c Sá»‘ Ä‘iá»‡n thoáº¡i vÃ o Ã´ thÃ´ng tin Ä‘á»ƒ tÃ¬m kiáº¿m!", "ThÃ´ng bÃ¡o", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
@@ -249,7 +249,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             {
                 selectedCustomer = null;
                 ClearInputs();
-                MessageBox.Show("Không tìm thấy khách hàng phù hợp!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("KhÃ´ng tÃ¬m tháº¥y khÃ¡ch hÃ ng phÃ¹ há»£p!", "ThÃ´ng bÃ¡o", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -262,14 +262,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             if (string.IsNullOrEmpty(name))
             {
-                MessageBox.Show("Tên khách hàng không được để trống!", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("TÃªn khÃ¡ch hÃ ng khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng!", "Lá»—i xÃ¡c thá»±c", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtTenKhachHang.Focus();
                 return;
             }
 
             if (string.IsNullOrEmpty(phone))
             {
-                MessageBox.Show("Số điện thoại không được để trống!", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Sá»‘ Ä‘iá»‡n thoáº¡i khÃ´ng Ä‘Æ°á»£c Ä‘á»ƒ trá»‘ng!", "Lá»—i xÃ¡c thá»±c", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtSoDienThoai.Focus();
                 return;
             }
@@ -281,7 +281,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 {
                     var maxNum = customers
                         .Where(c => c.MaKhachHang != null && c.MaKhachHang.StartsWith("KH"))
-                        .Select(c => {
+                        .Select(c =>
+                        {
                             int.TryParse(c.MaKhachHang.Substring(2), out int n);
                             return n;
                         })
@@ -300,7 +301,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     NgayTao = DateTime.Now
                 };
                 await repo.AddAsync(newCustomer);
-                MessageBox.Show("Thêm mới khách hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("ThÃªm má»›i khÃ¡ch hÃ ng thÃ nh cÃ´ng!", "ThÃ´ng bÃ¡o", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 selectedCustomer = newCustomer;
             }
             else
@@ -312,13 +313,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     selectedCustomer.Email = email;
                     selectedCustomer.DiaChi = address;
                     await repo.UpdateAsync(selectedCustomer);
-                    MessageBox.Show("Cập nhật thông tin khách hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Cáº­p nháº­t thÃ´ng tin khÃ¡ch hÃ ng thÃ nh cÃ´ng!", "ThÃ´ng bÃ¡o", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
 
             isAddingNew = false;
             SetEditState(false);
-            
+
             await LoadCustomersGridAsync();
 
             if (selectedCustomer != null)
@@ -336,6 +337,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
         private void lblSoDienThoai_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lblInputTitle_Click(object sender, EventArgs e)
         {
 
         }

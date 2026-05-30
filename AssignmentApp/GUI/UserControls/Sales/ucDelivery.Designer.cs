@@ -1,4 +1,4 @@
-namespace AssignmentApp.GUI.UserControls.Sales
+﻿namespace AssignmentApp.GUI.UserControls.Sales
 {
     partial class ucDelivery
     {

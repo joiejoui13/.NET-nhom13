@@ -1,4 +1,4 @@
-namespace AssignmentApp.GUI.UserControls.Sales
+﻿namespace AssignmentApp.GUI.UserControls.Sales
 {
     partial class ucCustomer
     {
@@ -120,6 +120,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblInputTitle.Size = new Size(473, 48);
             lblInputTitle.TabIndex = 0;
             lblInputTitle.Text = "THÔNG TIN KHÁCH HÀNG";
+            lblInputTitle.Click += lblInputTitle_Click;
             // 
             // lblMaKhachHang
             // 
@@ -143,7 +144,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtMaKhachHang.Location = new Point(19, 155);
             txtMaKhachHang.Margin = new Padding(6, 7, 6, 7);
             txtMaKhachHang.Name = "txtMaKhachHang";
-            txtMaKhachHang.PlaceholderText = "Nhập mã khách hàng...";
+            txtMaKhachHang.PlaceholderText = "Nhập mã khách hàng....";
             txtMaKhachHang.SelectedText = "";
             txtMaKhachHang.ShadowDecoration.CustomizableEdges = customizableEdges2;
             txtMaKhachHang.Size = new Size(469, 79);
@@ -171,7 +172,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtTenKhachHang.Location = new Point(15, 285);
             txtTenKhachHang.Margin = new Padding(6, 7, 6, 7);
             txtTenKhachHang.Name = "txtTenKhachHang";
-            txtTenKhachHang.PlaceholderText = "Nhập tên khách hàng...";
+            txtTenKhachHang.PlaceholderText = "Nhập tên khách hàng.....";
             txtTenKhachHang.SelectedText = "";
             txtTenKhachHang.ShadowDecoration.CustomizableEdges = customizableEdges4;
             txtTenKhachHang.Size = new Size(473, 76);
@@ -200,7 +201,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSoDienThoai.Location = new Point(19, 411);
             txtSoDienThoai.Margin = new Padding(6, 7, 6, 7);
             txtSoDienThoai.Name = "txtSoDienThoai";
-            txtSoDienThoai.PlaceholderText = "Nhập số điện thoại...";
+            txtSoDienThoai.PlaceholderText = "Nhập số điện thoại.....";
             txtSoDienThoai.SelectedText = "";
             txtSoDienThoai.ShadowDecoration.CustomizableEdges = customizableEdges6;
             txtSoDienThoai.Size = new Size(469, 77);
@@ -228,7 +229,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtEmail.Location = new Point(15, 539);
             txtEmail.Margin = new Padding(6, 7, 6, 7);
             txtEmail.Name = "txtEmail";
-            txtEmail.PlaceholderText = "Nhập email...";
+            txtEmail.PlaceholderText = "Nhập email....";
             txtEmail.SelectedText = "";
             txtEmail.ShadowDecoration.CustomizableEdges = customizableEdges8;
             txtEmail.Size = new Size(473, 78);
@@ -323,7 +324,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnSave.ShadowDecoration.CustomizableEdges = customizableEdges18;
             btnSave.Size = new Size(463, 86);
             btnSave.TabIndex = 8;
-            btnSave.Text = "LƯU THAY ĐỔI";
+            btnSave.Text = "LƯU";
             btnSave.Click += btnSave_Click;
             // 
             // btnCancel
@@ -383,7 +384,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges24;
             btnSearch.Size = new Size(202, 72);
             btnSearch.TabIndex = 12;
-            btnSearch.Text = "TÌM KIẾM";
+            btnSearch.Text = "Tìm Kiếm";
             btnSearch.Click += btnSearch_Click;
             // 
             // btnRefresh
@@ -461,6 +462,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // colMaKhachHang
             // 
+            colMaKhachHang.FillWeight = 92.99544F;
             colMaKhachHang.HeaderText = "Mã KH";
             colMaKhachHang.MinimumWidth = 11;
             colMaKhachHang.Name = "colMaKhachHang";
@@ -468,13 +470,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // colTenKhachHang
             // 
-            colTenKhachHang.HeaderText = "Tên Khách Hàng";
+            colTenKhachHang.FillWeight = 93.1615753F;
+            colTenKhachHang.HeaderText = "Tên Khách hàng";
             colTenKhachHang.MinimumWidth = 11;
             colTenKhachHang.Name = "colTenKhachHang";
             colTenKhachHang.ReadOnly = true;
             // 
             // colSoDienThoai
             // 
+            colSoDienThoai.FillWeight = 100.994247F;
             colSoDienThoai.HeaderText = "Số Điện Thoại";
             colSoDienThoai.MinimumWidth = 11;
             colSoDienThoai.Name = "colSoDienThoai";
@@ -482,6 +486,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // colEmail
             // 
+            colEmail.FillWeight = 110.0702F;
             colEmail.HeaderText = "Email";
             colEmail.MinimumWidth = 11;
             colEmail.Name = "colEmail";
@@ -489,6 +494,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // colDiaChi
             // 
+            colDiaChi.FillWeight = 120.586792F;
             colDiaChi.HeaderText = "Địa Chỉ";
             colDiaChi.MinimumWidth = 11;
             colDiaChi.Name = "colDiaChi";
@@ -496,6 +502,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // colNgayTao
             // 
+            colNgayTao.FillWeight = 82.19179F;
             colNgayTao.HeaderText = "Ngày Tạo";
             colNgayTao.MinimumWidth = 11;
             colNgayTao.Name = "colNgayTao";
@@ -546,12 +553,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private Guna.UI2.WinForms.Guna2Button btnSearch;
         private Guna.UI2.WinForms.Guna2Button btnRefresh;
         private Guna.UI2.WinForms.Guna2DataGridView dgvCustomers;
-
-        private System.Windows.Forms.DataGridViewTextBoxColumn colMaKhachHang;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colTenKhachHang;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colSoDienThoai;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colEmail;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDiaChi;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colNgayTao;
+        private DataGridViewTextBoxColumn colMaKhachHang;
+        private DataGridViewTextBoxColumn colTenKhachHang;
+        private DataGridViewTextBoxColumn colSoDienThoai;
+        private DataGridViewTextBoxColumn colEmail;
+        private DataGridViewTextBoxColumn colDiaChi;
+        private DataGridViewTextBoxColumn colNgayTao;
     }
 }

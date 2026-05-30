@@ -1,4 +1,4 @@
-namespace AssignmentApp.GUI.Base
+﻿namespace AssignmentApp.GUI.Base
 {
     partial class ucBase
     {

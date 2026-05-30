@@ -1,4 +1,4 @@
-using System; // Cung cấp các class cơ bản của C# (như Exception, Console,...)
+using System; 
 using System.Collections.Generic; // Cung cấp List<T>, IEnumerable<T> (dùng để chứa danh sách Khuyến mãi)
 using System.Linq; // Cung cấp các hàm xử lý mảng/danh sách nhanh (như .ToList(), .Where())
 using System.Text; // Dùng khi cần xử lý chuỗi phức tạp (StringBuilder)
@@ -12,16 +12,5 @@ namespace AssignmentApp.BLL.Services.Admin
 {
     public class PromotionService
     {
-        private readonly PromotionRepository _promotionRepository;
-
-        public PromotionService()
-        {
-            _promotionRepository = new PromotionRepository();
-        }
-
-        public async Task<IEnumerable<Promotion>> GetAllPromotionsAsync()
-        {
-            return await _promotionRepository.GetAllAsync();
-        }
     }
 }

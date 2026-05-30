@@ -1,7 +1,7 @@
 using System;
-using System.Data; // Thêm thư viện này để dùng DataTable
+using System.Data;                                     // Thêm thư viện này để dùng DataTable
 using System.Windows.Forms;
-using AssignmentApp.DAL.Core; // Để gọi class DbContext (Tương đương class Functions của bạn)
+using AssignmentApp.DAL.Core;                         // Để gọi class DbContext (Tương đương class Functions của bạn)
 
 namespace AssignmentApp.GUI.UserControls.Admin
 {

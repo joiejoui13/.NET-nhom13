@@ -1,22 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using AssignmentApp.DAL.Core; // Import DbContext để dùng trực tiếp Database
 
 namespace AssignmentApp.GUI.UserControls.Warehouse
 {
     public partial class ucStockIn : UserControl
     {
-        public class MockProduct
-        {
-            public int MaSanPham { get; set; }
-            public string TenSanPham { get; set; } = "";
-            public string DanhMuc { get; set; } = "";
-            public double GiaNhap { get; set; }
-        }
-
-        public class MockStockInDetail
+        public class StockInDetailModel
         {
             public int MaSanPham { get; set; }
             public string TenSanPham { get; set; } = "";
@@ -25,35 +20,35 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             public double ThanhTien => SoLuong * GiaNhap;
         }
 
-        public class MockStockInReceipt
-        {
-            public int MaPhieuNhap { get; set; }
-            public string NguoiTao { get; set; } = "";
-            public DateTime NgayNhap { get; set; }
-            public string TrangThai { get; set; } = "Chờ xử lý";
-            public List<MockStockInDetail> Details { get; set; } = new List<MockStockInDetail>();
-        }
-
-        private List<MockProduct> mockProducts = new List<MockProduct>();
-        private List<MockStockInReceipt> mockReceipts = new List<MockStockInReceipt>();
-        private MockStockInReceipt? selectedReceipt = null;
-
-        // Items currently in the grid during add/edit
-        private List<MockStockInDetail> currentDetails = new List<MockStockInDetail>();
+        private List<StockInDetailModel> currentDetails = new List<StockInDetailModel>();
         private bool isEditing = false;
         private bool isAddingNew = false;
+        private int activeUserId = 1;      // Mặc định người dùng hệ thống là Admin
+        private string activeUserName = "Admin";
 
         public ucStockIn()
         {
             InitializeComponent();
         }
 
+        // 5.2.1. Sự kiện ucStockIn_Load khi tải Control
         private void ucStockIn_Load(object sender, EventArgs e)
         {
-            InitializeProducts();
-            InitializeMockReceipts();
+            // Kết nối Database nếu chưa kết nối
+            if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed)
+            {
+                DbContext.Ketnoi();
+            }
 
-            // Dynamic header customization to show receipts instead of products
+            // Tải thông tin người dùng đang đăng nhập (hoặc mặc định) từ Database
+            LoadActiveUser();
+
+            // Thiết lập ComboBox Trạng thái phiếu nhập
+            cboTrangThai.Items.Clear();
+            cboTrangThai.Items.AddRange(new object[] { "Chờ xử lý", "Đã hoàn thành", "Đã hủy" });
+            cboTrangThai.SelectedIndex = 0;
+
+            // Đặt tiêu đề lưới hiển thị danh sách phiếu nhập
             lblGridTitle.Text = "DANH SÁCH PHIẾU NHẬP";
             dgvDetails.Columns[0].HeaderText = "Mã Phiếu Nhập";
             dgvDetails.Columns[1].HeaderText = "Người Nhập";
@@ -61,80 +56,87 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvDetails.Columns[3].HeaderText = "Trạng Thái";
             dgvDetails.Columns[4].HeaderText = "Tổng Tiền";
 
-            // Wire up cell click dynamically
+            // Wire up cell click dynamically giống mock code
             dgvDetails.CellClick += dgvDetails_CellClick;
 
-            // Load all receipts in Tab 1 master grid
+            // Tải lưới danh sách phiếu nhập
             LoadReceiptsGrid();
 
-            // Select default receipt
-            if (mockReceipts.Count > 0)
+            // Chọn dòng đầu tiên nếu có dữ liệu
+            if (dgvDetails.Rows.Count > 0)
             {
                 SelectReceiptRow(0);
             }
 
+            // Đưa các nút và các trường thông tin về trạng thái khóa
             SetEditState(false);
         }
 
-        private void InitializeProducts()
+        // 5.2.2. Lấy thông tin tài khoản người dùng hoạt động
+        private void LoadActiveUser()
         {
-            mockProducts.Clear();
-            mockProducts.Add(new MockProduct { MaSanPham = 1, TenSanPham = "Máy tính Casio FX-580VN X", DanhMuc = "Máy tính cầm tay", GiaNhap = 600000 });
-            mockProducts.Add(new MockProduct { MaSanPham = 2, TenSanPham = "Vở kẻ ngang Hồng Hà 72 trang", DanhMuc = "Sổ - Vở", GiaNhap = 6000 });
-            mockProducts.Add(new MockProduct { MaSanPham = 3, TenSanPham = "Bút bi Thiên Long TL-027 Xanh", DanhMuc = "Bút các loại", GiaNhap = 3500 });
-            mockProducts.Add(new MockProduct { MaSanPham = 4, TenSanPham = "Giấy in Double A A4 70gsm", DanhMuc = "Giấy in - photo", GiaNhap = 70000 });
-            mockProducts.Add(new MockProduct { MaSanPham = 5, TenSanPham = "Bút máy Hồng Hà Nét Hoa", DanhMuc = "Bút các loại", GiaNhap = 40000 });
-            mockProducts.Add(new MockProduct { MaSanPham = 6, TenSanPham = "Sổ da cao cấp A5", DanhMuc = "Sổ - Vở", GiaNhap = 50000 });
-            mockProducts.Add(new MockProduct { MaSanPham = 7, TenSanPham = "Bìa còng Thiên Long 7cm", DanhMuc = "Bìa - File hồ sơ", GiaNhap = 25000 });
-            mockProducts.Add(new MockProduct { MaSanPham = 8, TenSanPham = "Thước kẻ học sinh Deli 20cm", DanhMuc = "Dụng cụ học sinh", GiaNhap = 4000 });
-            mockProducts.Add(new MockProduct { MaSanPham = 9, TenSanPham = "Kéo văn phòng SDI", DanhMuc = "Đồ dùng văn phòng", GiaNhap = 15000 });
-        }
-
-        private void InitializeMockReceipts()
-        {
-            if (mockReceipts.Count > 0) return;
-
-            var r1 = new MockStockInReceipt
+            try
             {
-                MaPhieuNhap = 101,
-                NguoiTao = "Nguyễn Văn Kho",
-                NgayNhap = DateTime.Now.AddDays(-5),
-                TrangThai = "Đã hoàn thành"
-            };
-            r1.Details.Add(new MockStockInDetail { MaSanPham = 1, TenSanPham = "Máy tính Casio FX-580VN X", SoLuong = 50, GiaNhap = 600000 });
-            r1.Details.Add(new MockStockInDetail { MaSanPham = 2, TenSanPham = "Vở kẻ ngang Hồng Hà 72 trang", SoLuong = 500, GiaNhap = 6000 });
-
-            var r2 = new MockStockInReceipt
+                string sqlUser = "SELECT TOP 1 MaNguoiDung, TenNguoiDung FROM NguoiDung";
+                DataTable tblUser = DbContext.GetDataToTable(sqlUser);
+                if (tblUser.Rows.Count > 0)
+                {
+                    activeUserId = Convert.ToInt32(tblUser.Rows[0]["MaNguoiDung"]);
+                    activeUserName = tblUser.Rows[0]["TenNguoiDung"]?.ToString() ?? "Admin";
+                }
+            }
+            catch
             {
-                MaPhieuNhap = 102,
-                NguoiTao = "Trần Quản Lý",
-                NgayNhap = DateTime.Now.AddDays(-2),
-                TrangThai = "Chờ xử lý"
-            };
-            r2.Details.Add(new MockStockInDetail { MaSanPham = 3, TenSanPham = "Bút bi Thiên Long TL-027 Xanh", SoLuong = 1000, GiaNhap = 3500 });
-            r2.Details.Add(new MockStockInDetail { MaSanPham = 4, TenSanPham = "Giấy in Double A A4 70gsm", SoLuong = 100, GiaNhap = 70000 });
-
-            mockReceipts.Add(r1);
-            mockReceipts.Add(r2);
-        }
-
-        private void LoadReceiptsGrid(List<MockStockInReceipt>? dataSource = null)
-        {
-            dgvDetails.Rows.Clear();
-            var list = dataSource ?? mockReceipts;
-            foreach (var r in list)
-            {
-                double total = r.Details.Sum(d => d.ThanhTien);
-                dgvDetails.Rows.Add(
-                    r.MaPhieuNhap,
-                    r.NguoiTao,
-                    r.NgayNhap.ToString("dd/MM/yyyy HH:mm"),
-                    r.TrangThai,
-                    total.ToString("N0") + " đ"
-                );
+                activeUserId = 1;
+                activeUserName = "Admin";
             }
         }
 
+        // 5.2.3. Tải danh sách phiếu nhập lên DataGridView dgvDetails
+        private void LoadReceiptsGrid(DataTable customTable = null)
+        {
+            dgvDetails.Rows.Clear();
+            DataTable tbl;
+            if (customTable != null)
+            {
+                tbl = customTable;
+            }
+            else
+            {
+                string sql = @"SELECT p.MaPhieuNhap, n.TenNguoiDung, p.NgayNhap, p.TrangThai, p.TongTien 
+                               FROM PhieuNhap p 
+                               LEFT JOIN NguoiDung n ON p.MaNguoiDung = n.MaNguoiDung
+                               ORDER BY p.NgayNhap DESC";
+                tbl = DbContext.GetDataToTable(sql);
+            }
+
+            // Tải dữ liệu thủ công vào lưới dgvDetails giống hệt cấu trúc của mock code ban đầu
+            foreach (DataRow r in tbl.Rows)
+            {
+                int id = Convert.ToInt32(r["MaPhieuNhap"]);
+                string user = r["TenNguoiDung"]?.ToString() ?? "Admin";
+                DateTime date = r["NgayNhap"] != DBNull.Value ? Convert.ToDateTime(r["NgayNhap"]) : DateTime.Now;
+                string status = r["TrangThai"]?.ToString() ?? "Chờ xử lý";
+                double total = r["TongTien"] != DBNull.Value ? Convert.ToDouble(r["TongTien"]) : 0;
+
+                dgvDetails.Rows.Add(
+                    id,
+                    user,
+                    date.ToString("dd/MM/yyyy HH:mm"),
+                    status,
+                    total.ToString("N0") + " đ"
+                );
+            }
+
+            // Căn chỉnh giao diện đẹp đẽ giống các UserControl khác
+            dgvDetails.RowTemplate.Height = 40;
+            dgvDetails.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
+            dgvDetails.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            dgvDetails.ColumnHeadersHeight = 40;
+            dgvDetails.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
+        }
+
+        // 5.2.4. Chọn dòng hiển thị chi tiết phiếu nhập
         private void SelectReceiptRow(int rowIndex)
         {
             if (rowIndex < 0 || rowIndex >= dgvDetails.Rows.Count) return;
@@ -143,26 +145,44 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvDetails.Rows[rowIndex].Selected = true;
 
             int receiptId = Convert.ToInt32(dgvDetails.Rows[rowIndex].Cells[0].Value);
-            selectedReceipt = mockReceipts.FirstOrDefault(r => r.MaPhieuNhap == receiptId);
 
-            if (selectedReceipt != null)
+            string sql = $@"SELECT p.MaPhieuNhap, n.TenNguoiDung, p.NgayNhap, p.TrangThai 
+                           FROM PhieuNhap p 
+                           LEFT JOIN NguoiDung n ON p.MaNguoiDung = n.MaNguoiDung 
+                           WHERE p.MaPhieuNhap = {receiptId}";
+            DataTable tbl = DbContext.GetDataToTable(sql);
+
+            if (tbl.Rows.Count > 0)
             {
-                txtMaPhieuNhap.Text = selectedReceipt.MaPhieuNhap.ToString();
-                txtNguoiDung.Text = selectedReceipt.NguoiTao;
-                dtNgayNhap.Value = selectedReceipt.NgayNhap;
-                cboTrangThai.Text = selectedReceipt.TrangThai;
+                DataRow r = tbl.Rows[0];
+                txtMaPhieuNhap.Text = r["MaPhieuNhap"].ToString();
+                txtNguoiDung.Text = r["TenNguoiDung"]?.ToString() ?? "Admin";
+                dtNgayNhap.Value = r["NgayNhap"] != DBNull.Value ? Convert.ToDateTime(r["NgayNhap"]) : DateTime.Now;
+                cboTrangThai.Text = r["TrangThai"]?.ToString() ?? "Chờ xử lý";
 
-                currentDetails = selectedReceipt.Details.Select(d => new MockStockInDetail
+                // Tải chi tiết sản phẩm thuộc phiếu nhập từ Database
+                string sqlDet = $@"SELECT c.MaSanPham, s.TenSanPham, c.SoLuong, c.DonGia 
+                                   FROM ChiTietNhapHang c 
+                                   LEFT JOIN SanPham s ON c.MaSanPham = s.MaSanPham 
+                                   WHERE c.MaPhieuNhap = {receiptId}";
+                DataTable tblDet = DbContext.GetDataToTable(sqlDet);
+
+                currentDetails.Clear();
+                foreach (DataRow rDet in tblDet.Rows)
                 {
-                    MaSanPham = d.MaSanPham,
-                    TenSanPham = d.TenSanPham,
-                    SoLuong = d.SoLuong,
-                    GiaNhap = d.GiaNhap
-                }).ToList();
+                    currentDetails.Add(new StockInDetailModel
+                    {
+                        MaSanPham = Convert.ToInt32(rDet["MaSanPham"]),
+                        TenSanPham = rDet["TenSanPham"]?.ToString() ?? "Sản phẩm ẩn",
+                        SoLuong = Convert.ToInt32(rDet["SoLuong"]),
+                        GiaNhap = Convert.ToDouble(rDet["DonGia"])
+                    });
+                }
             }
         }
 
-        private void dgvDetails_CellClick(object? sender, DataGridViewCellEventArgs e)
+        // 5.2.5. Xử lý click dòng trên lưới phiếu nhập
+        private void dgvDetails_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && !isEditing)
             {
@@ -170,6 +190,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
         }
 
+        // 5.2.6. Thay đổi trạng thái khóa/mở các ô nhập liệu
         private void SetEditState(bool editing)
         {
             isEditing = editing;
@@ -186,7 +207,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             btnSave.Visible = true;
             btnCancel.Visible = true;
 
-            // Position them statically side-by-side
+            // Định vị trí các nút bấm tĩnh giống mock code
             btnAdd.Location = new Point(15, 470);
             btnEdit.Location = new Point(115, 470);
             btnDelete.Location = new Point(215, 470);
@@ -196,41 +217,34 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             btnCancel.Location = new Point(165, 515);
             btnCancel.Size = new Size(140, 36);
 
+            // Bật/tắt nút theo trạng thái sửa đổi
             btnAdd.Enabled = !editing;
-            btnEdit.Enabled = !editing;
-            btnDelete.Enabled = !editing;
+            btnEdit.Enabled = !editing && (dgvDetails.Rows.Count > 0);
+            btnDelete.Enabled = !editing && (dgvDetails.Rows.Count > 0);
 
             btnSave.Enabled = editing;
             btnCancel.Enabled = editing;
-
-            if (editing)
-            {
-                btnAdd.Enabled = false;
-                btnEdit.Enabled = false;
-                btnDelete.Enabled = false;
-            }
-            else
-            {
-                btnAdd.Enabled = true;
-                btnEdit.Enabled = selectedReceipt != null;
-                btnDelete.Enabled = selectedReceipt != null;
-            }
         }
 
         // ========================================================
-        // TAB 1 EVENTS
+        // TAB 1 EVENTS (PHIẾU NHẬP)
         // ========================================================
 
-        private void btnAdd_Click(object? sender, EventArgs e)
+        // 5.2.7. Bấm nút THÊM MỚI phiếu nhập
+        private void btnAdd_Click(object sender, EventArgs e)
         {
             if (!isEditing)
             {
-                // Enter Add Receipt mode
                 isAddingNew = true;
                 isEditing = true;
 
-                txtMaPhieuNhap.Text = (mockReceipts.Count > 0 ? mockReceipts.Max(r => r.MaPhieuNhap) + 1 : 101).ToString();
-                txtNguoiDung.Text = "Nguyễn Văn Kho";
+                // Tự sinh mã phiếu tạm thời bằng max mã hiện tại + 1
+                string sqlMax = "SELECT MAX(MaPhieuNhap) FROM PhieuNhap";
+                string maxStr = DbContext.GetFieldValues(sqlMax);
+                int nextId = !string.IsNullOrEmpty(maxStr) ? Convert.ToInt32(maxStr) + 1 : 101;
+
+                txtMaPhieuNhap.Text = "Tự động sinh";
+                txtNguoiDung.Text = activeUserName;
                 dtNgayNhap.Value = DateTime.Now;
                 cboTrangThai.Text = "Chờ xử lý";
 
@@ -238,207 +252,303 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
                 SetEditState(true);
 
-                // Auto switch to Tab 2 to pick products after preparing the receipt header
+                // Chuyển sang Tab 2 ngay lập tức để chọn sản phẩm vào giỏ hàng
                 btnChooseProducts_Click(this, EventArgs.Empty);
             }
         }
 
-        private void btnEdit_Click(object? sender, EventArgs e)
+        // 5.2.8. Bấm nút SỬA thông tin phiếu nhập
+        private void btnEdit_Click(object sender, EventArgs e)
         {
-            if (selectedReceipt == null) return;
-            if (selectedReceipt.TrangThai == "Đã hoàn thành" || selectedReceipt.TrangThai == "Đã hủy")
+            if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) || txtMaPhieuNhap.Text == "Tự động sinh") return;
+
+            int receiptId = Convert.ToInt32(txtMaPhieuNhap.Text);
+            
+            // Không cho sửa phiếu nhập đã hoàn thành hoặc đã hủy
+            string sqlCheck = $"SELECT TrangThai FROM PhieuNhap WHERE MaPhieuNhap = {receiptId}";
+            string currentStatus = DbContext.GetFieldValues(sqlCheck);
+
+            if (currentStatus == "Đã hoàn thành" || currentStatus == "Đã hủy")
             {
-                MessageBox.Show("Không thể chỉnh sửa phiếu nhập đã hoàn thành hoặc đã hủy!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Nghiệp vụ kế toán: Không được phép sửa chữa phiếu nhập kho đã 'Đã hoàn thành' hoặc 'Đã hủy'!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             isAddingNew = false;
             SetEditState(true);
 
-            // Auto switch to Tab 2 for editing products list
+            // Chuyển sang Tab 2 để thay đổi giỏ hàng sản phẩm nhập
             btnChooseProducts_Click(this, EventArgs.Empty);
         }
 
-        private void btnDelete_Click(object? sender, EventArgs e)
+        // 5.2.9. Bấm nút XÓA phiếu nhập hoàn toàn
+        private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (selectedReceipt == null) return;
+            if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) || txtMaPhieuNhap.Text == "Tự động sinh") return;
 
-            var confirmResult = MessageBox.Show($"Xác nhận xóa phiếu nhập #{selectedReceipt.MaPhieuNhap}?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            int receiptId = Convert.ToInt32(txtMaPhieuNhap.Text);
+
+            string sqlCheck = $"SELECT TrangThai FROM PhieuNhap WHERE MaPhieuNhap = {receiptId}";
+            string currentStatus = DbContext.GetFieldValues(sqlCheck);
+
+            if (currentStatus == "Đã hoàn thành")
+            {
+                MessageBox.Show("Nghiệp vụ kế toán: Không được phép xóa phiếu nhập kho 'Đã hoàn thành'!\nHãy chuyển trạng thái sang 'Đã hủy' để bảo toàn dữ liệu tồn kho.", "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var confirmResult = MessageBox.Show($"Bạn có chắc chắn muốn xóa hoàn toàn phiếu nhập #{receiptId} khỏi hệ thống?", "Xác nhận xóa phiếu nhập", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {
-                mockReceipts.Remove(selectedReceipt);
-                MessageBox.Show("Xóa phiếu nhập thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                LoadReceiptsGrid();
-
-                if (mockReceipts.Count > 0)
+                try
                 {
-                    SelectReceiptRow(0);
-                }
-                else
-                {
-                    selectedReceipt = null;
-                    txtMaPhieuNhap.Text = "";
-                    txtNguoiDung.Text = "";
-                    cboTrangThai.SelectedIndex = -1;
-                    currentDetails.Clear();
-                }
+                    // Xóa chi tiết phiếu trước do ràng buộc khóa ngoại
+                    string sqlDelDetails = $"DELETE FROM ChiTietNhapHang WHERE MaPhieuNhap = {receiptId}";
+                    DbContext.RunSql(sqlDelDetails);
 
-                SetEditState(false);
+                    // Xóa phiếu nhập chính
+                    string sqlDelMaster = $"DELETE FROM PhieuNhap WHERE MaPhieuNhap = {receiptId}";
+                    DbContext.RunSqlDel(sqlDelMaster);
+
+                    MessageBox.Show("Xóa phiếu nhập khỏi hệ thống thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    LoadReceiptsGrid();
+
+                    if (dgvDetails.Rows.Count > 0)
+                    {
+                        SelectReceiptRow(0);
+                    }
+                    else
+                    {
+                        txtMaPhieuNhap.Text = "";
+                        txtNguoiDung.Text = "";
+                        cboTrangThai.SelectedIndex = -1;
+                        currentDetails.Clear();
+                    }
+
+                    SetEditState(false);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi xóa dữ liệu: " + ex.Message, "Lỗi hệ thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
-        private void btnSave_Click(object? sender, EventArgs e)
+        // 5.2.10. Bấm nút LƯU thay đổi phiếu nhập
+        private void btnSave_Click(object sender, EventArgs e)
         {
             if (currentDetails.Count == 0)
             {
-                MessageBox.Show("Phiếu nhập phải có ít nhất một sản phẩm! Hãy chọn sản phẩm ở Tab 2.", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Phiếu nhập kho phải chứa ít nhất 1 sản phẩm! Hãy chọn sản phẩm ở Tab 2.", "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            double totalAmount = currentDetails.Sum(d => d.ThanhTien);
+            string status = cboTrangThai.Text;
+            string dateFormatted = dtNgayNhap.Value.ToString("yyyy-MM-dd HH:mm:ss");
 
             if (isAddingNew)
             {
-                if (!int.TryParse(txtMaPhieuNhap.Text, out int id))
+                // Thêm mới phiếu chính (PhieuNhap)
+                string sqlInsertMaster = $@"INSERT INTO PhieuNhap (MaNguoiDung, TongTien, TrangThai, NgayNhap) 
+                                            VALUES ({activeUserId}, {totalAmount}, N'{status}', '{dateFormatted}')";
+                DbContext.RunSql(sqlInsertMaster);
+
+                // Lấy mã phiếu vừa tự sinh ra
+                string sqlMax = "SELECT MAX(MaPhieuNhap) FROM PhieuNhap";
+                string maxStr = DbContext.GetFieldValues(sqlMax);
+                int newId = !string.IsNullOrEmpty(maxStr) ? Convert.ToInt32(maxStr) : 101;
+
+                // Thêm các chi tiết phiếu nhập (ChiTietNhapHang)
+                foreach (var d in currentDetails)
                 {
-                    MessageBox.Show("Mã phiếu nhập phải là số!", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    txtMaPhieuNhap.Focus();
-                    return;
+                    string sqlInsertDetail = $@"INSERT INTO ChiTietNhapHang (MaPhieuNhap, MaSanPham, SoLuong, DonGia) 
+                                                VALUES ({newId}, {d.MaSanPham}, {d.SoLuong}, {d.GiaNhap})";
+                    DbContext.RunSql(sqlInsertDetail);
                 }
 
-                if (mockReceipts.Any(r => r.MaPhieuNhap == id))
-                {
-                    MessageBox.Show("Mã phiếu nhập đã tồn tại!", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    txtMaPhieuNhap.Focus();
-                    return;
-                }
-
-                var newReceipt = new MockStockInReceipt
-                {
-                    MaPhieuNhap = id,
-                    NguoiTao = txtNguoiDung.Text,
-                    NgayNhap = dtNgayNhap.Value,
-                    TrangThai = cboTrangThai.Text,
-                    Details = currentDetails.Select(d => new MockStockInDetail
-                    {
-                        MaSanPham = d.MaSanPham,
-                        TenSanPham = d.TenSanPham,
-                        SoLuong = d.SoLuong,
-                        GiaNhap = d.GiaNhap
-                    }).ToList()
-                };
-
-                mockReceipts.Add(newReceipt);
-                selectedReceipt = newReceipt;
-
+                // Nếu lưu ở trạng thái ĐÃ HOÀN THÀNH -> Tăng số lượng tồn kho sản phẩm + Tạo lịch sử nhập kho
                 string invFeedback = "";
-                if (newReceipt.TrangThai == "Đã hoàn thành")
+                if (status == "Đã hoàn thành")
                 {
-                    invFeedback = "\n[TỒN KHO] Số lượng tồn kho của các sản phẩm đã được cộng tăng tương ứng!";
+                    UpdateProductInventoryAndLog(newId, currentDetails);
+                    invFeedback = "\n[KHO HÀNG] Đã tự động cập nhật cộng tăng số lượng tồn kho của các sản phẩm!";
                 }
 
-                MessageBox.Show("Thêm mới phiếu nhập thành công!" + invFeedback, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Thêm mới phiếu nhập kho thành công!" + invFeedback, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                if (selectedReceipt != null)
+                // Sửa phiếu cũ
+                int receiptId = Convert.ToInt32(txtMaPhieuNhap.Text);
+
+                // Kiểm tra trạng thái cũ trước khi cập nhật
+                string sqlOldStatus = $"SELECT TrangThai FROM PhieuNhap WHERE MaPhieuNhap = {receiptId}";
+                string oldStatus = DbContext.GetFieldValues(sqlOldStatus);
+
+                // Cập nhật thông tin phiếu chính
+                string sqlUpdateMaster = $@"UPDATE PhieuNhap 
+                                            SET NgayNhap = '{dateFormatted}', 
+                                                TrangThai = N'{status}', 
+                                                TongTien = {totalAmount} 
+                                            WHERE MaPhieuNhap = {receiptId}";
+                DbContext.RunSql(sqlUpdateMaster);
+
+                // Xóa chi tiết cũ để chèn lại giỏ hàng mới
+                string sqlDelOldDetails = $"DELETE FROM ChiTietNhapHang WHERE MaPhieuNhap = {receiptId}";
+                DbContext.RunSql(sqlDelOldDetails);
+
+                // Chèn lại giỏ hàng mới
+                foreach (var d in currentDetails)
                 {
-                    string oldStatus = selectedReceipt.TrangThai;
-                    selectedReceipt.NgayNhap = dtNgayNhap.Value;
-                    selectedReceipt.TrangThai = cboTrangThai.Text;
-                    selectedReceipt.Details = currentDetails.Select(d => new MockStockInDetail
-                    {
-                        MaSanPham = d.MaSanPham,
-                        TenSanPham = d.TenSanPham,
-                        SoLuong = d.SoLuong,
-                        GiaNhap = d.GiaNhap
-                    }).ToList();
-
-                    string invFeedback = "";
-                    if (oldStatus != "Đã hoàn thành" && selectedReceipt.TrangThai == "Đã hoàn thành")
-                    {
-                        invFeedback = "\n[TỒN KHO] Phiếu nhập được chuyển sang 'Đã hoàn thành'. Tồn kho đã được cộng thêm!";
-                    }
-                    else if (oldStatus == "Đã hoàn thành" && selectedReceipt.TrangThai == "Đã hủy")
-                    {
-                        invFeedback = "\n[TỒN KHO] Phiếu nhập bị HỦY. Tồn kho đã được hoàn tác trừ lại!";
-                    }
-
-                    MessageBox.Show("Cập nhật phiếu nhập thành công!" + invFeedback, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    string sqlInsertDetail = $@"INSERT INTO ChiTietNhapHang (MaPhieuNhap, MaSanPham, SoLuong, DonGia) 
+                                                VALUES ({receiptId}, {d.MaSanPham}, {d.SoLuong}, {d.GiaNhap})";
+                    DbContext.RunSql(sqlInsertDetail);
                 }
+
+                // Xử lý chuyển đổi trạng thái tồn kho
+                string invFeedback = "";
+                if (oldStatus != "Đã hoàn thành" && status == "Đã hoàn thành")
+                {
+                    // Chuyển từ Chờ xử lý -> Hoàn thành => Cộng tăng kho hàng
+                    UpdateProductInventoryAndLog(receiptId, currentDetails);
+                    invFeedback = "\n[KHO HÀNG] Phiếu nhập chuyển sang 'Đã hoàn thành'. Tồn kho sản phẩm được cộng tăng!";
+                }
+                else if (oldStatus == "Đã hoàn thành" && status == "Đã hủy")
+                {
+                    // Hoàn tác tồn kho: Trừ bớt lại kho hàng do phiếu bị HỦY
+                    RevertProductInventoryAndLog(receiptId, currentDetails);
+                    invFeedback = "\n[KHO HÀNG] Phiếu nhập bị HỦY hoàn toàn. Đã trừ hoàn tác lại tồn kho sản phẩm tương ứng!";
+                }
+
+                MessageBox.Show("Cập nhật thông tin phiếu nhập thành công!" + invFeedback, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
             isAddingNew = false;
             SetEditState(false);
-            
             LoadReceiptsGrid();
 
-            if (selectedReceipt != null)
+            // Chọn lại dòng vừa xử lý
+            if (txtMaPhieuNhap.Text != "Tự động sinh")
             {
-                int index = mockReceipts.IndexOf(selectedReceipt);
-                if (index >= 0)
+                int targetId = Convert.ToInt32(txtMaPhieuNhap.Text);
+                for (int i = 0; i < dgvDetails.Rows.Count; i++)
                 {
-                    SelectReceiptRow(index);
+                    if (Convert.ToInt32(dgvDetails.Rows[i].Cells[0].Value) == targetId)
+                    {
+                        SelectReceiptRow(i);
+                        break;
+                    }
                 }
             }
         }
 
-        private void btnCancel_Click(object? sender, EventArgs e)
+        // 5.2.10.1. Tăng tồn kho sản phẩm và ghi chép LichSuNhapKho
+        private void UpdateProductInventoryAndLog(int receiptId, List<StockInDetailModel> details)
+        {
+            foreach (var item in details)
+            {
+                // Lấy tồn kho trước
+                string sqlBefore = $"SELECT SoLuongTon FROM SanPham WHERE MaSanPham = {item.MaSanPham}";
+                string beforeStr = DbContext.GetFieldValues(sqlBefore);
+                int before = !string.IsNullOrEmpty(beforeStr) ? Convert.ToInt32(beforeStr) : 0;
+                int after = before + item.SoLuong;
+
+                // Cập nhật tồn mới trong bảng SanPham
+                string sqlUpdate = $"UPDATE SanPham SET SoLuongTon = {after} WHERE MaSanPham = {item.MaSanPham}";
+                DbContext.RunSql(sqlUpdate);
+
+                // Ghi nhận vào LichSuNhapKho để hiển thị đồng bộ bên Tab Lịch Sử Kho
+                string sqlLog = $@"INSERT INTO LichSuNhapKho (MaSanPham, Thoigian, ThayDoi, SoLuongTruoc, SoLuongSau, LoaiGiaoDich, MaThamChieu, TrangThai) 
+                                   VALUES ({item.MaSanPham}, GETDATE(), {item.SoLuong}, {before}, {after}, N'Nhập kho', {receiptId}, N'Hoàn thành')";
+                DbContext.RunSql(sqlLog);
+            }
+        }
+
+        // 5.2.10.2. Hoàn tác trừ tồn kho sản phẩm và ghi chép LichSuNhapKho do HỦY PHIẾU
+        private void RevertProductInventoryAndLog(int receiptId, List<StockInDetailModel> details)
+        {
+            foreach (var item in details)
+            {
+                // Lấy tồn kho trước
+                string sqlBefore = $"SELECT SoLuongTon FROM SanPham WHERE MaSanPham = {item.MaSanPham}";
+                string beforeStr = DbContext.GetFieldValues(sqlBefore);
+                int before = !string.IsNullOrEmpty(beforeStr) ? Convert.ToInt32(beforeStr) : 0;
+                int after = Math.Max(0, before - item.SoLuong); // Tránh bị âm kho
+
+                // Cập nhật tồn mới trong bảng SanPham
+                string sqlUpdate = $"UPDATE SanPham SET SoLuongTon = {after} WHERE MaSanPham = {item.MaSanPham}";
+                DbContext.RunSql(sqlUpdate);
+
+                // Ghi nhận vào LichSuNhapKho hoàn tác
+                string sqlLog = $@"INSERT INTO LichSuNhapKho (MaSanPham, Thoigian, ThayDoi, SoLuongTruoc, SoLuongSau, LoaiGiaoDich, MaThamChieu, TrangThai) 
+                                   VALUES ({item.MaSanPham}, GETDATE(), -{item.SoLuong}, {before}, {after}, N'Nhập kho', {receiptId}, N'Hủy bỏ')";
+                DbContext.RunSql(sqlLog);
+            }
+        }
+
+        // 5.2.11. Bấm nút BỎ QUA sửa đổi
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             isAddingNew = false;
             SetEditState(false);
-            if (selectedReceipt != null)
+            if (dgvDetails.SelectedRows.Count > 0)
             {
-                int index = mockReceipts.IndexOf(selectedReceipt);
-                if (index >= 0)
-                {
-                    SelectReceiptRow(index);
-                }
+                SelectReceiptRow(dgvDetails.SelectedRows[0].Index);
+            }
+            else if (dgvDetails.Rows.Count > 0)
+            {
+                SelectReceiptRow(0);
             }
         }
 
-        private void btnSearch_Click(object? sender, EventArgs e)
+        // 5.2.12. Tìm kiếm phiếu nhập theo mã trên Tab 1
+        private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (!int.TryParse(txtMaPhieuNhap.Text, out int searchId))
+            if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) || txtMaPhieuNhap.Text == "Tự động sinh")
             {
-                MessageBox.Show("Vui lòng nhập Mã phiếu nhập (dạng số) cần tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Vui lòng nhập Mã phiếu nhập (dạng số) vào ô để tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            var receipt = mockReceipts.FirstOrDefault(r => r.MaPhieuNhap == searchId);
-            if (receipt != null)
+            string searchVal = txtMaPhieuNhap.Text.Trim();
+            string sql = $@"SELECT p.MaPhieuNhap, n.TenNguoiDung, p.NgayNhap, p.TrangThai, p.TongTien 
+                           FROM PhieuNhap p 
+                           LEFT JOIN NguoiDung n ON p.MaNguoiDung = n.MaNguoiDung
+                           WHERE p.MaPhieuNhap = {searchVal}";
+            
+            DataTable tblSearch = DbContext.GetDataToTable(sql);
+            if (tblSearch.Rows.Count > 0)
             {
-                int index = mockReceipts.IndexOf(receipt);
-                if (index >= 0)
-                {
-                    SelectReceiptRow(index);
-                }
-                SetEditState(false);
+                LoadReceiptsGrid(tblSearch);
+                SelectReceiptRow(0);
             }
             else
             {
-                MessageBox.Show("Không tìm thấy phiếu nhập có mã này!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Không tìm thấy phiếu nhập nào có mã vừa nhập!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
-        private void btnRefresh_Click(object? sender, EventArgs e)
+        // 5.2.13. Làm mới danh sách phiếu nhập
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
             LoadReceiptsGrid();
-            if (mockReceipts.Count > 0)
+            if (dgvDetails.Rows.Count > 0)
             {
                 SelectReceiptRow(0);
             }
             SetEditState(false);
         }
 
-        private void btnChooseProducts_Click(object? sender, EventArgs e)
+        // 5.2.14. Bấm nút CHỌN SẢN PHẨM để mở Tab 2
+        private void btnChooseProducts_Click(object sender, EventArgs e)
         {
-            // Switch to Tab 2
             tabMain.SelectedTab = tabChonSanPham;
 
-            // Clear input TextBoxes first
+            // Xóa form chọn
             btnResetCartForm_Click(this, EventArgs.Empty);
 
-            // Load selection lists
+            // Nạp lưới lựa chọn sản phẩm và giỏ hàng hiện tại
             LoadProductsSelectionGrid();
             LoadCurrentDetailsGrid();
         }
@@ -447,53 +557,93 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         // TAB 2 EVENTS (PRODUCT SELECTION)
         // ========================================================
 
-        private void LoadProductsSelectionGrid(List<MockProduct>? dataSource = null)
+        // 5.2.15. Tải danh sách sản phẩm để chọn (Tab 2 bên trái)
+        private void LoadProductsSelectionGrid(DataTable customTable = null)
         {
             dgvProductsSelection.Rows.Clear();
-            var list = dataSource ?? mockProducts;
-            foreach (var prod in list)
+            DataTable tbl;
+            if (customTable != null)
             {
+                tbl = customTable;
+            }
+            else
+            {
+                string sql = "SELECT MaSanPham, TenSanPham, GiaNhap FROM SanPham WHERE TrangThai = N'Đang bán' ORDER BY TenSanPham ASC";
+                tbl = DbContext.GetDataToTable(sql);
+            }
+
+            foreach (DataRow r in tbl.Rows)
+            {
+                int id = Convert.ToInt32(r["MaSanPham"]);
+                string name = r["TenSanPham"]?.ToString() ?? "";
+                double price = r["GiaNhap"] != DBNull.Value ? Convert.ToDouble(r["GiaNhap"]) : 0;
+
                 dgvProductsSelection.Rows.Add(
-                    prod.MaSanPham,
-                    prod.TenSanPham,
-                    prod.GiaNhap.ToString("N0") + " đ"
+                    id,
+                    name,
+                    price.ToString("N0") + " đ"
                 );
             }
+
+            // Tối ưu giao diện lưới
+            dgvProductsSelection.RowTemplate.Height = 35;
+            dgvProductsSelection.ColumnHeadersHeight = 35;
         }
 
-        private void txtProductSearch_TextChanged(object? sender, EventArgs e)
+        // 5.2.16. Xử lý gõ tìm kiếm nhanh sản phẩm trên Tab 2
+        private void txtProductSearch_TextChanged(object sender, EventArgs e)
         {
             FilterProducts();
         }
 
         private void FilterProducts()
         {
-            string keyword = txtProductSearch.Text.Trim().ToLower();
+            string keyword = txtProductSearch.Text.Trim();
+            string sql = "SELECT MaSanPham, TenSanPham, GiaNhap FROM SanPham WHERE TrangThai = N'Đang bán'";
 
-            var filtered = mockProducts.Where(p =>
-                string.IsNullOrEmpty(keyword) ||
-                p.MaSanPham.ToString() == keyword ||
-                p.TenSanPham.ToLower().Contains(keyword)
-            ).ToList();
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                sql += $" AND (TenSanPham LIKE N'%{keyword}%' OR MoTa LIKE N'%{keyword}%')";
+            }
+            sql += " ORDER BY TenSanPham ASC";
 
-            LoadProductsSelectionGrid(filtered);
+            DataTable tblFiltered = DbContext.GetDataToTable(sql);
+            LoadProductsSelectionGrid(tblFiltered);
         }
 
-        private void dgvProductsSelection_CellClick(object? sender, DataGridViewCellEventArgs e)
+        // 5.2.17. Chọn sản phẩm từ lưới danh mục bên trái
+        private void dgvProductsSelection_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
                 string rawId = dgvProductsSelection.Rows[e.RowIndex].Cells[0].Value?.ToString() ?? "";
                 if (int.TryParse(rawId, out int id))
                 {
-                    var prod = mockProducts.FirstOrDefault(p => p.MaSanPham == id);
-                    if (prod != null)
-                    {
-                        txtSelMaSP.Text = prod.MaSanPham.ToString();
-                        txtSelTenSP.Text = prod.TenSanPham;
-                        txtSelGiaNhap.Text = prod.GiaNhap.ToString();
+                    string sql = $@"SELECT s.MaSanPham, s.TenSanPham, s.GiaNhap, s.MoTa, s.Anh, d.TenDanhMuc 
+                                   FROM SanPham s 
+                                   LEFT JOIN DanhMuc d ON s.MaDanhMuc = d.MaDanhMuc 
+                                   WHERE s.MaSanPham = {id}";
+                    DataTable tbl = DbContext.GetDataToTable(sql);
 
-                        // Check if already in cart to display its quantity
+                    if (tbl.Rows.Count > 0)
+                    {
+                        DataRow r = tbl.Rows[0];
+                        txtSelMaSP.Text = r["MaSanPham"].ToString();
+                        txtSelTenSP.Text = r["TenSanPham"]?.ToString() ?? "";
+                        txtSelGiaNhap.Text = r["GiaNhap"]?.ToString() ?? "0";
+
+                        // Điền mô tả và nạp ảnh an toàn tránh lock file
+                        string desc = r["MoTa"]?.ToString() ?? "";
+                        string catName = r["TenDanhMuc"]?.ToString() ?? "Không rõ";
+                        lblProductDetailDesc.Text = $"Mã sản phẩm: {id}\n" +
+                                                    $"Danh mục: {catName}\n" +
+                                                    $"Giá nhập đề xuất: {Convert.ToDouble(r["GiaNhap"]):N0} VNĐ\n" +
+                                                    $"Mô tả: {desc}";
+
+                        string imagePath = r["Anh"]?.ToString() ?? "";
+                        LoadDetailProductImage(imagePath);
+
+                        // Nếu sản phẩm đã được thêm vào giỏ hàng từ trước -> hiện số lượng hiện tại
                         var existing = currentDetails.FirstOrDefault(d => d.MaSanPham == id);
                         if (existing != null)
                         {
@@ -505,6 +655,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                             txtSelSoLuong.Text = "1";
                         }
 
+                        // Chuyển sang Tab chi tiết sản phẩm để người dùng xem hình ảnh sản phẩm
                         tabSelectionContainer.SelectedTab = tabProductDetail;
 
                         txtSelSoLuong.Focus();
@@ -514,7 +665,34 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
         }
 
-        private void dgvCurrentDetails_CellClick(object? sender, DataGridViewCellEventArgs e)
+        // 5.2.17.1. Thủ tục nạp ảnh sản phẩm bên Tab 2 tránh lock file
+        private void LoadDetailProductImage(string imagePath)
+        {
+            if (picProductDetail.Image != null)
+            {
+                picProductDetail.Image.Dispose();
+                picProductDetail.Image = null;
+            }
+
+            if (!string.IsNullOrEmpty(imagePath) && File.Exists(imagePath))
+            {
+                try
+                {
+                    byte[] bytes = File.ReadAllBytes(imagePath);
+                    using (MemoryStream ms = new MemoryStream(bytes))
+                    {
+                        picProductDetail.Image = Image.FromStream(ms);
+                    }
+                }
+                catch
+                {
+                    picProductDetail.Image = null;
+                }
+            }
+        }
+
+        // 5.2.18. Chọn sản phẩm từ lưới GIỎ HÀNG bên phải
+        private void dgvCurrentDetails_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
@@ -536,6 +714,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
         }
 
+        // 5.2.19. Nạp dữ liệu giỏ hàng hiện tại lên lưới bên phải
         private void LoadCurrentDetailsGrid()
         {
             dgvCurrentDetails.Rows.Clear();
@@ -551,34 +730,40 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                     item.ThanhTien.ToString("N0") + " đ"
                 );
             }
+
             lblTotalAmount.Text = $"TỔNG TIỀN TẠM TÍNH: {total.ToString("N0")} đ";
+
+            // Định dạng lưới giỏ hàng
+            dgvCurrentDetails.RowTemplate.Height = 35;
+            dgvCurrentDetails.ColumnHeadersHeight = 35;
         }
 
-        private void btnAddToCart_Click(object? sender, EventArgs e)
+        // 5.2.20. Bấm nút THÊM sản phẩm vào giỏ hàng
+        private void btnAddToCart_Click(object sender, EventArgs e)
         {
             if (!isEditing)
             {
-                MessageBox.Show("Vui lòng nhấn nút THÊM hoặc SỬA ở Tab 1 trước khi chỉnh sửa sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhấn nút THÊM hoặc SỬA phiếu nhập ở Tab 1 trước khi thêm sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             string rawId = txtSelMaSP.Text;
             if (string.IsNullOrEmpty(rawId) || !int.TryParse(rawId, out int id))
             {
-                MessageBox.Show("Vui lòng chọn một sản phẩm từ danh sách trước!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn một sản phẩm từ danh sách bên trái trước!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (!int.TryParse(txtSelSoLuong.Text, out int qty) || qty <= 0)
             {
-                MessageBox.Show("Số lượng phải là số nguyên dương lớn hơn 0!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Số lượng nhập kho phải là số nguyên dương lớn hơn 0!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtSelSoLuong.Focus();
                 return;
             }
 
             if (!double.TryParse(txtSelGiaNhap.Text, out double price) || price < 0)
             {
-                MessageBox.Show("Giá nhập phải lớn hơn hoặc bằng 0!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Giá nhập hàng kho phải là số thực không âm!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtSelGiaNhap.Focus();
                 return;
             }
@@ -591,7 +776,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
             else
             {
-                currentDetails.Add(new MockStockInDetail
+                currentDetails.Add(new StockInDetailModel
                 {
                     MaSanPham = id,
                     TenSanPham = txtSelTenSP.Text,
@@ -604,18 +789,19 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             btnResetCartForm_Click(this, EventArgs.Empty);
         }
 
-        private void btnRemoveFromCart_Click(object? sender, EventArgs e)
+        // 5.2.21. Bấm nút XÓA sản phẩm khỏi giỏ hàng
+        private void btnRemoveFromCart_Click(object sender, EventArgs e)
         {
             if (!isEditing)
             {
-                MessageBox.Show("Vui lòng nhấn nút THÊM hoặc SỬA ở Tab 1 trước khi chỉnh sửa sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhấn nút THÊM hoặc SỬA phiếu nhập ở Tab 1 trước khi sửa giỏ hàng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             string rawId = txtSelMaSP.Text;
             if (string.IsNullOrEmpty(rawId) || !int.TryParse(rawId, out int id))
             {
-                MessageBox.Show("Vui lòng chọn sản phẩm cần xóa khỏi phiếu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn sản phẩm cần xóa khỏi giỏ hàng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -628,11 +814,12 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
             else
             {
-                MessageBox.Show("Sản phẩm này chưa được thêm vào phiếu nhập!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Sản phẩm này hiện tại chưa có trong danh sách phiếu nhập!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
-        private void btnResetCartForm_Click(object? sender, EventArgs e)
+        // 5.2.22. Reset ô nhập liệu chi tiết
+        private void btnResetCartForm_Click(object sender, EventArgs e)
         {
             txtSelMaSP.Text = "";
             txtSelTenSP.Text = "";
@@ -640,65 +827,43 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtSelGiaNhap.Text = "";
         }
 
-        private void btnStockInSearch_Click(object? sender, EventArgs e)
+        // 5.2.23. Bấm nút tìm kiếm sản phẩm trên Tab 2
+        private void btnStockInSearch_Click(object sender, EventArgs e)
         {
-            string maSp = txtSelMaSP.Text.Trim().ToLower();
-            string tenSp = txtSelTenSP.Text.Trim().ToLower();
-
-            if (string.IsNullOrEmpty(maSp) && string.IsNullOrEmpty(tenSp))
-            {
-                LoadProductsSelectionGrid();
-                return;
-            }
-
-            var filtered = mockProducts.Where(p =>
-                (string.IsNullOrEmpty(maSp) || p.MaSanPham.ToString().ToLower().Contains(maSp)) &&
-                (string.IsNullOrEmpty(tenSp) || p.TenSanPham.ToLower().Contains(tenSp))
-            ).ToList();
-
-            LoadProductsSelectionGrid(filtered);
+            FilterProducts();
         }
 
-        private void btnStockInRefresh_Click(object? sender, EventArgs e)
+        // 5.2.24. Làm mới danh sách chọn sản phẩm Tab 2
+        private void btnStockInRefresh_Click(object sender, EventArgs e)
         {
-            txtSelMaSP.Text = "";
-            txtSelTenSP.Text = "";
-            txtSelSoLuong.Text = "";
-            txtSelGiaNhap.Text = "";
+            txtProductSearch.Text = "";
+            btnResetCartForm_Click(this, EventArgs.Empty);
             LoadProductsSelectionGrid();
         }
 
-        private void tabSelectionContainer_SelectedIndexChanged(object? sender, EventArgs e)
+        private void tabSelectionContainer_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabSelectionContainer.SelectedTab == tabProductDetail)
             {
-                // Optional loading of product detail visual picture or spec card
-                picProductDetail.Image = null;
+                // Mặc định không cần nạp thêm
             }
         }
 
-        private void btnSelectProduct_Click(object? sender, EventArgs e)
+        // 5.2.25. Bấm nút xác nhận CHỌN MẶT HÀNG ở Tab chi tiết ảnh
+        private void btnSelectProduct_Click(object sender, EventArgs e)
         {
             string rawId = txtSelMaSP.Text;
             if (!string.IsNullOrEmpty(rawId) && int.TryParse(rawId, out int id))
             {
-                var prod = mockProducts.FirstOrDefault(p => p.MaSanPham == id);
-                if (prod != null)
-                {
-                    txtSelMaSP.Text = prod.MaSanPham.ToString();
-                    txtSelTenSP.Text = prod.TenSanPham;
-                    txtSelGiaNhap.Text = prod.GiaNhap.ToString();
-                    txtSelSoLuong.Text = "1";
-                    tabSelectionContainer.SelectedTab = tabListProducts; // shift back to list
-                    txtSelSoLuong.Focus();
-                    txtSelSoLuong.SelectAll();
-                }
+                tabSelectionContainer.SelectedTab = tabListProducts; // Quay về lưới danh sách
+                txtSelSoLuong.Focus();
+                txtSelSoLuong.SelectAll();
             }
         }
 
-        private void btnBackToReceipt_Click(object? sender, EventArgs e)
+        // 5.2.26. Bấm nút QUAY VỀ PHIẾU NHẬP
+        private void btnBackToReceipt_Click(object sender, EventArgs e)
         {
-            // Switch back to Tab 1
             tabMain.SelectedTab = tabPhieuNhap;
         }
     }

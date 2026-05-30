@@ -613,7 +613,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // colTrangThai
             // 
-            colTrangThai.HeaderText = "Trạng Thế";
+            colTrangThai.HeaderText = "Trạng Thái";
             colTrangThai.Name = "colTrangThai";
             colTrangThai.ReadOnly = true;
             // 

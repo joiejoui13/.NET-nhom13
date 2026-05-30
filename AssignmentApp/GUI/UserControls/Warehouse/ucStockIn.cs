@@ -209,7 +209,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
             // Định vị trí và kích thước đã được xử lý bên file Designer.cs (Anchor/Dock)
             // Không ghi đè ở runtime để đảm bảo giao diện responsive chính xác.
-            
+
             // Bật/tắt nút theo trạng thái sửa đổi
             btnAdd.Enabled = !editing;
             btnEdit.Enabled = !editing && (dgvDetails.Rows.Count > 0);
@@ -253,11 +253,11 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         // 5.2.8. Bấm nút SỬA thông tin phiếu nhập
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            
+
             if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) || txtMaPhieuNhap.Text == "Tự động sinh") return;
 
             int receiptId = Convert.ToInt32(txtMaPhieuNhap.Text);
-            
+
             // Không cho sửa phiếu nhập đã hoàn thành hoặc đã hủy
             string sqlCheck = $"SELECT TrangThai FROM PhieuNhap WHERE MaPhieuNhap = {receiptId}";
             string currentStatus = DbContext.GetFieldValues(sqlCheck);
@@ -510,7 +510,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                            FROM PhieuNhap p 
                            LEFT JOIN NguoiDung n ON p.MaNguoiDung = n.MaNguoiDung
                            WHERE p.MaPhieuNhap = {searchVal}";
-            
+
             DataTable tblSearch = DbContext.GetDataToTable(sql);
             if (tblSearch.Rows.Count > 0)
             {
@@ -859,6 +859,11 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         private void btnBackToReceipt_Click(object sender, EventArgs e)
         {
             tabMain.SelectedTab = tabPhieuNhap;
+        }
+
+        private void guna2Button4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

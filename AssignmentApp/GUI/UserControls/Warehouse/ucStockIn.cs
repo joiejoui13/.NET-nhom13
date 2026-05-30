@@ -207,16 +207,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             btnSave.Visible = true;
             btnCancel.Visible = true;
 
-            // Định vị trí các nút bấm tĩnh giống mock code
-            btnAdd.Location = new Point(15, 470);
-            btnEdit.Location = new Point(115, 470);
-            btnDelete.Location = new Point(215, 470);
-
-            btnSave.Location = new Point(15, 515);
-            btnSave.Size = new Size(140, 36);
-            btnCancel.Location = new Point(165, 515);
-            btnCancel.Size = new Size(140, 36);
-
+            // Định vị trí và kích thước đã được xử lý bên file Designer.cs (Anchor/Dock)
+            // Không ghi đè ở runtime để đảm bảo giao diện responsive chính xác.
+            
             // Bật/tắt nút theo trạng thái sửa đổi
             btnAdd.Enabled = !editing;
             btnEdit.Enabled = !editing && (dgvDetails.Rows.Count > 0);

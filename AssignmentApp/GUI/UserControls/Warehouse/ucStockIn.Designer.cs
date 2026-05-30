@@ -240,7 +240,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblInputTitle.ForeColor = Color.FromArgb(0, 126, 249);
             lblInputTitle.Location = new Point(15, 10);
             lblInputTitle.Name = "lblInputTitle";
-            lblInputTitle.Size = new Size(221, 28);
+            lblInputTitle.Size = new Size(174, 21);
             lblInputTitle.TabIndex = 0;
             lblInputTitle.Text = "HÓA ĐƠN NHẬP KHO";
             // 
@@ -251,7 +251,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblMaPhieuNhap.ForeColor = Color.FromArgb(64, 64, 64);
             lblMaPhieuNhap.Location = new Point(15, 40);
             lblMaPhieuNhap.Name = "lblMaPhieuNhap";
-            lblMaPhieuNhap.Size = new Size(117, 20);
+            lblMaPhieuNhap.Size = new Size(91, 15);
             lblMaPhieuNhap.TabIndex = 1;
             lblMaPhieuNhap.Text = "Mã phiếu nhập:";
             // 
@@ -264,7 +264,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtMaPhieuNhap.Font = new Font("Segoe UI", 9F);
             txtMaPhieuNhap.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtMaPhieuNhap.Location = new Point(15, 60);
-            txtMaPhieuNhap.Margin = new Padding(3, 4, 3, 4);
             txtMaPhieuNhap.Name = "txtMaPhieuNhap";
             txtMaPhieuNhap.PlaceholderText = "Mã phiếu...";
             txtMaPhieuNhap.SelectedText = "";
@@ -279,7 +278,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblNguoiDung.ForeColor = Color.FromArgb(64, 64, 64);
             lblNguoiDung.Location = new Point(170, 40);
             lblNguoiDung.Name = "lblNguoiDung";
-            lblNguoiDung.Size = new Size(84, 20);
+            lblNguoiDung.Size = new Size(66, 15);
             lblNguoiDung.TabIndex = 3;
             lblNguoiDung.Text = "Người tạo:";
             // 
@@ -292,7 +291,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtNguoiDung.Font = new Font("Segoe UI", 9F);
             txtNguoiDung.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtNguoiDung.Location = new Point(170, 60);
-            txtNguoiDung.Margin = new Padding(3, 4, 3, 4);
             txtNguoiDung.Name = "txtNguoiDung";
             txtNguoiDung.PlaceholderText = "Người tạo...";
             txtNguoiDung.ReadOnly = true;
@@ -308,7 +306,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblNgayNhap.ForeColor = Color.FromArgb(64, 64, 64);
             lblNgayNhap.Location = new Point(15, 95);
             lblNgayNhap.Name = "lblNgayNhap";
-            lblNgayNhap.Size = new Size(89, 20);
+            lblNgayNhap.Size = new Size(68, 15);
             lblNgayNhap.TabIndex = 5;
             lblNgayNhap.Text = "Ngày nhập:";
             // 
@@ -336,7 +334,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblTrangThai.ForeColor = Color.FromArgb(64, 64, 64);
             lblTrangThai.Location = new Point(170, 95);
             lblTrangThai.Name = "lblTrangThai";
-            lblTrangThai.Size = new Size(84, 20);
+            lblTrangThai.Size = new Size(65, 15);
             lblTrangThai.TabIndex = 7;
             lblTrangThai.Text = "Trạng thái:";
             // 
@@ -454,7 +452,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             pnlGridCard.Name = "pnlGridCard";
             pnlGridCard.Padding = new Padding(15);
             pnlGridCard.ShadowDecoration.CustomizableEdges = customizableEdges26;
-            pnlGridCard.Size = new Size(608, 602);
+            pnlGridCard.Size = new Size(620, 602);
             pnlGridCard.TabIndex = 1;
             // 
             // lblGridTitle
@@ -464,7 +462,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblGridTitle.ForeColor = Color.FromArgb(0, 126, 249);
             lblGridTitle.Location = new Point(15, 10);
             lblGridTitle.Name = "lblGridTitle";
-            lblGridTitle.Size = new Size(257, 28);
+            lblGridTitle.Size = new Size(206, 21);
             lblGridTitle.TabIndex = 0;
             lblGridTitle.Text = "DANH SÁCH PHIẾU NHẬP";
             // 
@@ -491,7 +489,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             btnRefresh.FillColor = Color.FromArgb(108, 117, 125);
             btnRefresh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnRefresh.ForeColor = Color.White;
-            btnRefresh.Location = new Point(493, 45);
+            btnRefresh.Location = new Point(505, 45);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.ShadowDecoration.CustomizableEdges = customizableEdges24;
             btnRefresh.Size = new Size(100, 36);
@@ -529,9 +527,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvDetails.Name = "dgvDetails";
             dgvDetails.ReadOnly = true;
             dgvDetails.RowHeadersVisible = false;
-            dgvDetails.RowHeadersWidth = 51;
             dgvDetails.RowTemplate.Height = 30;
-            dgvDetails.Size = new Size(578, 492);
+            dgvDetails.Size = new Size(590, 492);
             dgvDetails.TabIndex = 3;
             dgvDetails.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvDetails.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -558,35 +555,30 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // colMaSanPham
             // 
             colMaSanPham.HeaderText = "Mã Phiếu Nhập";
-            colMaSanPham.MinimumWidth = 6;
             colMaSanPham.Name = "colMaSanPham";
             colMaSanPham.ReadOnly = true;
             // 
             // colTenSanPham
             // 
             colTenSanPham.HeaderText = "Người Nhập";
-            colTenSanPham.MinimumWidth = 6;
             colTenSanPham.Name = "colTenSanPham";
             colTenSanPham.ReadOnly = true;
             // 
             // colSoLuong
             // 
             colSoLuong.HeaderText = "Ngày Nhập";
-            colSoLuong.MinimumWidth = 6;
             colSoLuong.Name = "colSoLuong";
             colSoLuong.ReadOnly = true;
             // 
             // colGiaNhap
             // 
             colGiaNhap.HeaderText = "Trạng Thái";
-            colGiaNhap.MinimumWidth = 6;
             colGiaNhap.Name = "colGiaNhap";
             colGiaNhap.ReadOnly = true;
             // 
             // colThanhTien
             // 
             colThanhTien.HeaderText = "Tổng Tiền";
-            colThanhTien.MinimumWidth = 6;
             colThanhTien.Name = "colThanhTien";
             colThanhTien.ReadOnly = true;
             // 
@@ -625,7 +617,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblStockInTitle.ForeColor = Color.FromArgb(0, 126, 249);
             lblStockInTitle.Location = new Point(15, 15);
             lblStockInTitle.Name = "lblStockInTitle";
-            lblStockInTitle.Size = new Size(146, 32);
+            lblStockInTitle.Size = new Size(115, 25);
             lblStockInTitle.TabIndex = 0;
             lblStockInTitle.Text = "MÃ PHIẾU: ";
             // 
@@ -691,10 +683,10 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             tabListProducts.BackColor = Color.White;
             tabListProducts.Controls.Add(dgvProductsSelection);
-            tabListProducts.Location = new Point(4, 32);
+            tabListProducts.Location = new Point(4, 28);
             tabListProducts.Name = "tabListProducts";
             tabListProducts.Padding = new Padding(10);
-            tabListProducts.Size = new Size(561, 499);
+            tabListProducts.Size = new Size(561, 503);
             tabListProducts.TabIndex = 0;
             tabListProducts.Text = "Danh sách sản phẩm";
             // 
@@ -728,9 +720,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvProductsSelection.Name = "dgvProductsSelection";
             dgvProductsSelection.ReadOnly = true;
             dgvProductsSelection.RowHeadersVisible = false;
-            dgvProductsSelection.RowHeadersWidth = 51;
             dgvProductsSelection.RowTemplate.Height = 28;
-            dgvProductsSelection.Size = new Size(537, 473);
+            dgvProductsSelection.Size = new Size(537, 477);
             dgvProductsSelection.TabIndex = 3;
             dgvProductsSelection.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvProductsSelection.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -758,21 +749,18 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // colSelMaSP
             // 
             colSelMaSP.HeaderText = "Mã SP";
-            colSelMaSP.MinimumWidth = 6;
             colSelMaSP.Name = "colSelMaSP";
             colSelMaSP.ReadOnly = true;
             // 
             // colSelTenSP
             // 
             colSelTenSP.HeaderText = "Tên Sản Phẩm";
-            colSelTenSP.MinimumWidth = 6;
             colSelTenSP.Name = "colSelTenSP";
             colSelTenSP.ReadOnly = true;
             // 
             // colSelGiaNhap
             // 
             colSelGiaNhap.HeaderText = "Giá Nhập";
-            colSelGiaNhap.MinimumWidth = 6;
             colSelGiaNhap.Name = "colSelGiaNhap";
             colSelGiaNhap.ReadOnly = true;
             // 
@@ -780,10 +768,10 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             tabProductDetail.BackColor = Color.White;
             tabProductDetail.Controls.Add(pnlProductDetailCard);
-            tabProductDetail.Location = new Point(4, 29);
+            tabProductDetail.Location = new Point(4, 28);
             tabProductDetail.Name = "tabProductDetail";
             tabProductDetail.Padding = new Padding(10);
-            tabProductDetail.Size = new Size(561, 502);
+            tabProductDetail.Size = new Size(561, 503);
             tabProductDetail.TabIndex = 1;
             tabProductDetail.Text = "Chi tiết sản phẩm";
             // 
@@ -894,7 +882,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblChonRightTitle.ForeColor = Color.FromArgb(0, 126, 249);
             lblChonRightTitle.Location = new Point(15, 15);
             lblChonRightTitle.Name = "lblChonRightTitle";
-            lblChonRightTitle.Size = new Size(327, 28);
+            lblChonRightTitle.Size = new Size(257, 21);
             lblChonRightTitle.TabIndex = 0;
             lblChonRightTitle.Text = "2. CHI TIẾT SẢN PHẨM ĐÃ CHỌN";
             // 
@@ -943,7 +931,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvCurrentDetails.Name = "dgvCurrentDetails";
             dgvCurrentDetails.ReadOnly = true;
             dgvCurrentDetails.RowHeadersVisible = false;
-            dgvCurrentDetails.RowHeadersWidth = 51;
             dgvCurrentDetails.RowTemplate.Height = 28;
             dgvCurrentDetails.Size = new Size(332, 146);
             dgvCurrentDetails.TabIndex = 5;
@@ -973,35 +960,30 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // colCurMaSP
             // 
             colCurMaSP.HeaderText = "Mã SP";
-            colCurMaSP.MinimumWidth = 6;
             colCurMaSP.Name = "colCurMaSP";
             colCurMaSP.ReadOnly = true;
             // 
             // colCurTenSP
             // 
             colCurTenSP.HeaderText = "Tên Sản Phẩm";
-            colCurTenSP.MinimumWidth = 6;
             colCurTenSP.Name = "colCurTenSP";
             colCurTenSP.ReadOnly = true;
             // 
             // colCurSoLuong
             // 
             colCurSoLuong.HeaderText = "Số Lượng";
-            colCurSoLuong.MinimumWidth = 6;
             colCurSoLuong.Name = "colCurSoLuong";
             colCurSoLuong.ReadOnly = true;
             // 
             // colCurGiaNhap
             // 
             colCurGiaNhap.HeaderText = "Giá Nhập";
-            colCurGiaNhap.MinimumWidth = 6;
             colCurGiaNhap.Name = "colCurGiaNhap";
             colCurGiaNhap.ReadOnly = true;
             // 
             // colCurThanhTien
             // 
             colCurThanhTien.HeaderText = "Thành Tiền";
-            colCurThanhTien.MinimumWidth = 6;
             colCurThanhTien.Name = "colCurThanhTien";
             colCurThanhTien.ReadOnly = true;
             // 
@@ -1028,7 +1010,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblSelMaSP.ForeColor = Color.FromArgb(64, 64, 64);
             lblSelMaSP.Location = new Point(19, 201);
             lblSelMaSP.Name = "lblSelMaSP";
-            lblSelMaSP.Size = new Size(107, 20);
+            lblSelMaSP.Size = new Size(82, 15);
             lblSelMaSP.TabIndex = 1;
             lblSelMaSP.Text = "Mã sản phẩm:";
             // 
@@ -1074,7 +1056,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtSelMaSP.Font = new Font("Segoe UI", 9F);
             txtSelMaSP.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtSelMaSP.Location = new Point(19, 216);
-            txtSelMaSP.Margin = new Padding(3, 4, 3, 4);
             txtSelMaSP.Name = "txtSelMaSP";
             txtSelMaSP.PlaceholderText = "Chưa chọn...";
             txtSelMaSP.ReadOnly = true;
@@ -1091,7 +1072,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblSelTenSP.ForeColor = Color.FromArgb(64, 64, 64);
             lblSelTenSP.Location = new Point(19, 251);
             lblSelTenSP.Name = "lblSelTenSP";
-            lblSelTenSP.Size = new Size(110, 20);
+            lblSelTenSP.Size = new Size(85, 15);
             lblSelTenSP.TabIndex = 3;
             lblSelTenSP.Text = "Tên sản phẩm:";
             // 
@@ -1105,7 +1086,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtSelTenSP.Font = new Font("Segoe UI", 9F);
             txtSelTenSP.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtSelTenSP.Location = new Point(19, 266);
-            txtSelTenSP.Margin = new Padding(3, 4, 3, 4);
             txtSelTenSP.Name = "txtSelTenSP";
             txtSelTenSP.PlaceholderText = "Tên sản phẩm...";
             txtSelTenSP.ReadOnly = true;
@@ -1122,7 +1102,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblSelSoLuong.ForeColor = Color.FromArgb(64, 64, 64);
             lblSelSoLuong.Location = new Point(19, 301);
             lblSelSoLuong.Name = "lblSelSoLuong";
-            lblSelSoLuong.Size = new Size(75, 20);
+            lblSelSoLuong.Size = new Size(60, 15);
             lblSelSoLuong.TabIndex = 5;
             lblSelSoLuong.Text = "Số lượng:";
             // 
@@ -1136,7 +1116,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtSelSoLuong.Font = new Font("Segoe UI", 9F);
             txtSelSoLuong.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtSelSoLuong.Location = new Point(19, 316);
-            txtSelSoLuong.Margin = new Padding(3, 4, 3, 4);
             txtSelSoLuong.Name = "txtSelSoLuong";
             txtSelSoLuong.PlaceholderText = "Nhập SL...";
             txtSelSoLuong.SelectedText = "";
@@ -1152,7 +1131,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblSelGiaNhap.ForeColor = Color.FromArgb(64, 64, 64);
             lblSelGiaNhap.Location = new Point(191, 301);
             lblSelGiaNhap.Name = "lblSelGiaNhap";
-            lblSelGiaNhap.Size = new Size(75, 20);
+            lblSelGiaNhap.Size = new Size(58, 15);
             lblSelGiaNhap.TabIndex = 7;
             lblSelGiaNhap.Text = "Giá nhập:";
             // 
@@ -1166,7 +1145,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtSelGiaNhap.Font = new Font("Segoe UI", 9F);
             txtSelGiaNhap.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtSelGiaNhap.Location = new Point(191, 316);
-            txtSelGiaNhap.Margin = new Padding(3, 4, 3, 4);
             txtSelGiaNhap.Name = "txtSelGiaNhap";
             txtSelGiaNhap.PlaceholderText = "Nhập giá...";
             txtSelGiaNhap.SelectedText = "";
@@ -1182,7 +1160,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblTotalAmount.ForeColor = Color.FromArgb(22, 163, 74);
             lblTotalAmount.Location = new Point(18, 356);
             lblTotalAmount.Name = "lblTotalAmount";
-            lblTotalAmount.Size = new Size(268, 28);
+            lblTotalAmount.Size = new Size(208, 21);
             lblTotalAmount.TabIndex = 12;
             lblTotalAmount.Text = "TỔNG TIỀN TẠM TÍNH: 0 đ";
             // 
@@ -1202,7 +1180,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtProductSearch.Font = new Font("Segoe UI", 9F);
             txtProductSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtProductSearch.Location = new Point(15, 45);
-            txtProductSearch.Margin = new Padding(3, 4, 3, 4);
             txtProductSearch.Name = "txtProductSearch";
             txtProductSearch.PlaceholderText = "Tìm kiếm theo mã, tên SP...";
             txtProductSearch.SelectedText = "";
@@ -1241,7 +1218,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // ucStockIn
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 242, 245);
             Controls.Add(tabMain);

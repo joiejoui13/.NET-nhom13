@@ -268,7 +268,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtMaPhieuNhap.PlaceholderText = "Mã phiếu...";
             txtMaPhieuNhap.SelectedText = "";
             txtMaPhieuNhap.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            txtMaPhieuNhap.Size = new Size(135, 30);
+            txtMaPhieuNhap.Size = new Size(290, 30);
             txtMaPhieuNhap.TabIndex = 2;
             // 
             // lblNguoiDung
@@ -276,7 +276,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblNguoiDung.AutoSize = true;
             lblNguoiDung.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblNguoiDung.ForeColor = Color.FromArgb(64, 64, 64);
-            lblNguoiDung.Location = new Point(170, 40);
+            lblNguoiDung.Location = new Point(15, 100);
             lblNguoiDung.Name = "lblNguoiDung";
             lblNguoiDung.Size = new Size(66, 15);
             lblNguoiDung.TabIndex = 3;
@@ -290,13 +290,13 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtNguoiDung.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtNguoiDung.Font = new Font("Segoe UI", 9F);
             txtNguoiDung.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtNguoiDung.Location = new Point(170, 60);
+            txtNguoiDung.Location = new Point(15, 120);
             txtNguoiDung.Name = "txtNguoiDung";
             txtNguoiDung.PlaceholderText = "Người tạo...";
             txtNguoiDung.ReadOnly = true;
             txtNguoiDung.SelectedText = "";
             txtNguoiDung.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            txtNguoiDung.Size = new Size(135, 30);
+            txtNguoiDung.Size = new Size(290, 30);
             txtNguoiDung.TabIndex = 4;
             // 
             // lblNgayNhap
@@ -304,7 +304,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblNgayNhap.AutoSize = true;
             lblNgayNhap.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblNgayNhap.ForeColor = Color.FromArgb(64, 64, 64);
-            lblNgayNhap.Location = new Point(15, 95);
+            lblNgayNhap.Location = new Point(15, 160);
             lblNgayNhap.Name = "lblNgayNhap";
             lblNgayNhap.Size = new Size(68, 15);
             lblNgayNhap.TabIndex = 5;
@@ -318,12 +318,12 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dtNgayNhap.FillColor = Color.FromArgb(240, 242, 245);
             dtNgayNhap.Font = new Font("Segoe UI", 9F);
             dtNgayNhap.Format = DateTimePickerFormat.Short;
-            dtNgayNhap.Location = new Point(15, 115);
+            dtNgayNhap.Location = new Point(15, 180);
             dtNgayNhap.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtNgayNhap.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtNgayNhap.Name = "dtNgayNhap";
             dtNgayNhap.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            dtNgayNhap.Size = new Size(135, 30);
+            dtNgayNhap.Size = new Size(290, 30);
             dtNgayNhap.TabIndex = 6;
             dtNgayNhap.Value = new DateTime(2026, 5, 24, 0, 0, 0, 0);
             // 
@@ -332,7 +332,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblTrangThai.AutoSize = true;
             lblTrangThai.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblTrangThai.ForeColor = Color.FromArgb(64, 64, 64);
-            lblTrangThai.Location = new Point(170, 95);
+            lblTrangThai.Location = new Point(15, 228);
             lblTrangThai.Name = "lblTrangThai";
             lblTrangThai.Size = new Size(65, 15);
             lblTrangThai.TabIndex = 7;
@@ -351,10 +351,10 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             cboTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
             cboTrangThai.ItemHeight = 24;
             cboTrangThai.Items.AddRange(new object[] { "Chờ xử lý", "Đã hoàn thành", "Đã hủy" });
-            cboTrangThai.Location = new Point(170, 115);
+            cboTrangThai.Location = new Point(15, 248);
             cboTrangThai.Name = "cboTrangThai";
             cboTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            cboTrangThai.Size = new Size(135, 30);
+            cboTrangThai.Size = new Size(290, 30);
             cboTrangThai.TabIndex = 8;
             // 
             // btnAdd
@@ -768,10 +768,10 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             tabProductDetail.BackColor = Color.White;
             tabProductDetail.Controls.Add(pnlProductDetailCard);
-            tabProductDetail.Location = new Point(4, 28);
+            tabProductDetail.Location = new Point(4, 24);
             tabProductDetail.Name = "tabProductDetail";
             tabProductDetail.Padding = new Padding(10);
-            tabProductDetail.Size = new Size(561, 503);
+            tabProductDetail.Size = new Size(561, 507);
             tabProductDetail.TabIndex = 1;
             tabProductDetail.Text = "Chi tiết sản phẩm";
             // 
@@ -882,9 +882,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblChonRightTitle.ForeColor = Color.FromArgb(0, 126, 249);
             lblChonRightTitle.Location = new Point(15, 15);
             lblChonRightTitle.Name = "lblChonRightTitle";
-            lblChonRightTitle.Size = new Size(257, 21);
+            lblChonRightTitle.Size = new Size(240, 21);
             lblChonRightTitle.TabIndex = 0;
-            lblChonRightTitle.Text = "2. CHI TIẾT SẢN PHẨM ĐÃ CHỌN";
+            lblChonRightTitle.Text = "CHI TIẾT SẢN PHẨM ĐÃ CHỌN";
             // 
             // guna2Button4
             // 

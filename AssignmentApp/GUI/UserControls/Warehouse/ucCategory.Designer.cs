@@ -479,7 +479,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // ucCategory
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(240, 242, 245);
             Controls.Add(pnlInputCard);

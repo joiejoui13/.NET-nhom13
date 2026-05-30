@@ -23,6 +23,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         private List<StockInDetailModel> currentDetails = new List<StockInDetailModel>();
         private bool isEditing = false;
         private bool isAddingNew = false;
+        private bool isAddingDetail = false;
         private bool isSearching = false;
         private int activeUserId = 1;      // Mặc định người dùng hệ thống là Admin
         private string activeUserName = "Admin";
@@ -32,14 +33,22 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             InitializeComponent();
         }
 
-        // 5.2.1. Sự kiện ucStockIn_Load khi tải Control
+        // 5.2.1. Nạp dữ liệu ban đầu khi Load UserControl
         private void ucStockIn_Load(object sender, EventArgs e)
         {
+            // Tab 2 dynamic bindings
+            guna2Button3.Click += guna2Button3_Click;
+            guna2Button1.Click += btnStockInSearch_Click;
+            guna2Button2.Click += btnStockInRefresh_Click;
+            btnBackToReceipt.Text = "LƯU";
+            
             // Kết nối Database nếu chưa kết nối
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed)
             {
                 DbContext.Ketnoi();
             }
+
+            LoadProductsSelectionGrid();
 
             // Tải thông tin người dùng đang đăng nhập (hoặc mặc định) từ Database
             LoadActiveUser();
@@ -59,12 +68,15 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
             // Wire up cell click dynamically giống mock code
             dgvDetails.CellClick += dgvDetails_CellClick;
+            dgvProductsSelection.CellClick += dgvProductsSelection_CellClick;
+            dgvCurrentDetails.CellClick += dgvCurrentDetails_CellClick;
 
             // Tải lưới danh sách phiếu nhập
             LoadReceiptsGrid();
 
             // Đưa các nút và các trường thông tin về trạng thái khóa
             ResetTab1State();
+            ResetTab2State();
         }
 
         // 5.2.2. Lấy thông tin tài khoản người dùng hoạt động
@@ -247,19 +259,29 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
         private void ResetTab2State()
         {
-            btnAddToCart.Enabled = true;
-            guna2Button4.Enabled = false; // S?a
-            btnRemoveFromCart.Enabled = false; // Xóa
-            guna2Button3.Enabled = false; // B? qua
-            
-            // Nút Luu (btnBackToReceipt) sáng n?u gi? có hàng
-            btnBackToReceipt.Enabled = (currentDetails.Count > 0);
-            
+            isAddingDetail = false;
             txtSelMaSP.Text = "";
             txtSelTenSP.Text = "";
             txtSelSoLuong.Text = "";
             txtSelGiaNhap.Text = "";
-            lblTotalAmount.Text = "T?NG TI?N T?M TÍNH: 0 d";
+            
+            txtSelSoLuong.Enabled = false;
+            txtSelGiaNhap.Enabled = false;
+            
+            btnAddToCart.Enabled = true; // THÊM
+            guna2Button4.Enabled = false; // SỬA
+            btnRemoveFromCart.Enabled = false; // XÓA
+            btnBackToReceipt.Enabled = false; // LƯU
+            guna2Button3.Enabled = false; // BỎ QUA
+            
+            lblProductDetailDesc.Text = "Mã SP: --\nThông tin chi tiết về sản phẩm sẽ được cập nhật ở đây.";
+            if (picProductDetail.Image != null)
+            {
+                picProductDetail.Image.Dispose();
+                picProductDetail.Image = null;
+            }
+
+            lblTotalAmount.Text = "TỔNG TIỀN TẠM TÍNH: 0 đ";
             dgvCurrentDetails.ClearSelection();
         }
 
@@ -653,7 +675,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         // 5.2.15. Tải danh sách sản phẩm để chọn (Tab 2 bên trái)
         private void LoadProductsSelectionGrid(DataTable customTable = null)
         {
-            dgvProductsSelection.Rows.Clear();
             DataTable tbl;
             if (customTable != null)
             {
@@ -661,21 +682,28 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
             else
             {
-                string sql = "SELECT MaSanPham, TenSanPham, GiaNhap FROM SanPham WHERE TrangThai = N'Đang bán' ORDER BY TenSanPham ASC";
+                string sql = @"SELECT s.MaSanPham, s.TenSanPham, d.TenDanhMuc, s.GiaNhap, s.GiaBan, s.SoLuongTon, s.TrangThai, s.NgayTao
+                               FROM SanPham s 
+                               LEFT JOIN DanhMuc d ON s.MaDanhMuc = d.MaDanhMuc 
+                               WHERE s.TrangThai = N'Đang bán' 
+                               ORDER BY s.NgayTao DESC";
                 tbl = DbContext.GetDataToTable(sql);
             }
 
-            foreach (DataRow r in tbl.Rows)
-            {
-                int id = Convert.ToInt32(r["MaSanPham"]);
-                string name = r["TenSanPham"]?.ToString() ?? "";
-                double price = r["GiaNhap"] != DBNull.Value ? Convert.ToDouble(r["GiaNhap"]) : 0;
+            dgvProductsSelection.Columns.Clear();
+            dgvProductsSelection.AutoGenerateColumns = true;
+            dgvProductsSelection.DataSource = tbl;
 
-                dgvProductsSelection.Rows.Add(
-                    id,
-                    name,
-                    price.ToString("N0") + " đ"
-                );
+            if (dgvProductsSelection.Columns.Count > 0)
+            {
+                if (dgvProductsSelection.Columns.Contains("MaSanPham")) dgvProductsSelection.Columns["MaSanPham"].HeaderText = "Mã SP";
+                if (dgvProductsSelection.Columns.Contains("TenSanPham")) dgvProductsSelection.Columns["TenSanPham"].HeaderText = "Tên Sản Phẩm";
+                if (dgvProductsSelection.Columns.Contains("TenDanhMuc")) dgvProductsSelection.Columns["TenDanhMuc"].HeaderText = "Danh Mục";
+                if (dgvProductsSelection.Columns.Contains("GiaNhap")) { dgvProductsSelection.Columns["GiaNhap"].HeaderText = "Giá Nhập"; dgvProductsSelection.Columns["GiaNhap"].DefaultCellStyle.Format = "N0"; }
+                if (dgvProductsSelection.Columns.Contains("GiaBan")) { dgvProductsSelection.Columns["GiaBan"].HeaderText = "Giá Bán"; dgvProductsSelection.Columns["GiaBan"].DefaultCellStyle.Format = "N0"; }
+                if (dgvProductsSelection.Columns.Contains("SoLuongTon")) dgvProductsSelection.Columns["SoLuongTon"].HeaderText = "SL Tồn";
+                if (dgvProductsSelection.Columns.Contains("TrangThai")) dgvProductsSelection.Columns["TrangThai"].HeaderText = "Trạng Thái";
+                if (dgvProductsSelection.Columns.Contains("NgayTao")) { dgvProductsSelection.Columns["NgayTao"].HeaderText = "Ngày Tạo"; dgvProductsSelection.Columns["NgayTao"].DefaultCellStyle.Format = "dd/MM/yyyy"; }
             }
 
             // Tối ưu giao diện lưới
@@ -692,13 +720,16 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         private void FilterProducts()
         {
             string keyword = txtProductSearch.Text.Trim();
-            string sql = "SELECT MaSanPham, TenSanPham, GiaNhap FROM SanPham WHERE TrangThai = N'Đang bán'";
+            string sql = @"SELECT s.MaSanPham, s.TenSanPham, d.TenDanhMuc, s.GiaNhap, s.GiaBan, s.SoLuongTon, s.TrangThai, s.NgayTao 
+                           FROM SanPham s 
+                           LEFT JOIN DanhMuc d ON s.MaDanhMuc = d.MaDanhMuc 
+                           WHERE s.TrangThai = N'Đang bán'";
 
             if (!string.IsNullOrEmpty(keyword))
             {
-                sql += $" AND (TenSanPham LIKE N'%{keyword}%' OR MoTa LIKE N'%{keyword}%')";
+                sql += $" AND (s.TenSanPham LIKE N'%{keyword}%' OR s.MoTa LIKE N'%{keyword}%')";
             }
-            sql += " ORDER BY TenSanPham ASC";
+            sql += " ORDER BY s.NgayTao DESC";
 
             DataTable tblFiltered = DbContext.GetDataToTable(sql);
             LoadProductsSelectionGrid(tblFiltered);
@@ -707,12 +738,15 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         // 5.2.17. Chọn sản phẩm từ lưới danh mục bên trái
         private void dgvProductsSelection_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (!isAddingDetail) return; // Chỉ cho phép click chọn khi đang ấn THÊM
+            
             if (e.RowIndex >= 0)
             {
                 string rawId = dgvProductsSelection.Rows[e.RowIndex].Cells[0].Value?.ToString() ?? "";
                 if (int.TryParse(rawId, out int id))
                 {
-                    string sql = $@"SELECT s.MaSanPham, s.TenSanPham, s.GiaNhap, s.MoTa, s.Anh, d.TenDanhMuc 
+                    // Fetch full product detail from DB because we only loaded 3 columns
+                    string sql = $@"SELECT s.MaSanPham, s.TenSanPham, s.GiaNhap, s.Anh, s.MoTa, d.TenDanhMuc 
                                    FROM SanPham s 
                                    LEFT JOIN DanhMuc d ON s.MaDanhMuc = d.MaDanhMuc 
                                    WHERE s.MaSanPham = {id}";
@@ -795,6 +829,17 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                     var item = currentDetails.FirstOrDefault(d => d.MaSanPham == id);
                     if (item != null)
                     {
+                        // Chuyển sang chế độ Sửa
+                        isAddingDetail = false;
+                        btnAddToCart.Enabled = false; // Tắt THÊM
+                        guna2Button4.Enabled = true; // Bật SỬA
+                        btnRemoveFromCart.Enabled = true; // Bật XÓA
+                        guna2Button3.Enabled = true; // Bật BỎ QUA
+                        btnBackToReceipt.Enabled = false; // Tắt LƯU (vì sửa xóa ăn luôn)
+                        
+                        txtSelSoLuong.Enabled = true;
+                        txtSelGiaNhap.Enabled = true;
+                        
                         txtSelMaSP.Text = item.MaSanPham.ToString();
                         txtSelTenSP.Text = item.TenSanPham;
                         txtSelSoLuong.Text = item.SoLuong.ToString();
@@ -831,15 +876,155 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvCurrentDetails.ColumnHeadersHeight = 35;
         }
 
-        // 5.2.20. Bấm nút THÊM sản phẩm vào giỏ hàng
+        // 5.2.20. Bấm nút THÊM (Bắt đầu thêm sản phẩm)
         private void btnAddToCart_Click(object sender, EventArgs e)
         {
-            if (!isEditing)
+            if (!isEditing && !isAddingNew)
             {
-                MessageBox.Show("Vui lòng nhấn nút THÊM hoặc SỬA phiếu nhập ở Tab 1 trước khi thêm sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhấn nút THÊM hoặc SỬA phiếu nhập ở Tab 1 trước khi thao tác!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
+            isAddingDetail = true;
+            txtSelSoLuong.Enabled = true;
+            txtSelGiaNhap.Enabled = true;
+            
+            btnAddToCart.Enabled = false;
+            guna2Button4.Enabled = false;
+            btnRemoveFromCart.Enabled = false;
+            btnBackToReceipt.Enabled = true;
+            guna2Button3.Enabled = true;
+            
+            MessageBox.Show("Vui lòng chọn 1 sản phẩm từ danh sách bên trái để nhập liệu.", "Hướng dẫn", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        // 5.2.20.1 Bấm nút SỬA (Sửa ngay sản phẩm đang chọn)
+        private void guna2Button4_Click(object sender, EventArgs e)
+        {
+            if (!isEditing && !isAddingNew)
+            {
+                MessageBox.Show("Vui lòng nhấn nút THÊM hoặc SỬA phiếu nhập ở Tab 1 trước khi thao tác!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string rawId = txtSelMaSP.Text;
+            if (string.IsNullOrEmpty(rawId) || !int.TryParse(rawId, out int id))
+            {
+                MessageBox.Show("Vui lòng chọn một sản phẩm từ giỏ hàng bên phải để sửa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            
+            if (!int.TryParse(txtSelSoLuong.Text, out int qty) || qty <= 0)
+            {
+                MessageBox.Show("Số lượng nhập kho phải là số nguyên dương lớn hơn 0!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtSelSoLuong.Focus();
+                return;
+            }
+
+            if (!double.TryParse(txtSelGiaNhap.Text, out double price) || price < 0)
+            {
+                MessageBox.Show("Giá nhập hàng kho phải là số thực không âm!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtSelGiaNhap.Focus();
+                return;
+            }
+
+            var item = currentDetails.FirstOrDefault(d => d.MaSanPham == id);
+            if (item != null)
+            {
+                item.SoLuong = qty;
+                item.GiaNhap = price;
+                LoadCurrentDetailsGrid();
+                MessageBox.Show("Sửa chi tiết sản phẩm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ResetTab2State();
+            }
+        }
+
+        // 5.2.21. Bấm nút XÓA sản phẩm khỏi giỏ hàng
+        private void btnRemoveFromCart_Click(object sender, EventArgs e)
+        {
+            if (!isEditing && !isAddingNew)
+            {
+                MessageBox.Show("Vui lòng nhấn nút THÊM hoặc SỬA phiếu nhập ở Tab 1 trước khi thao tác!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string rawId = txtSelMaSP.Text;
+            if (string.IsNullOrEmpty(rawId) || !int.TryParse(rawId, out int id))
+            {
+                MessageBox.Show("Vui lòng chọn sản phẩm cần xóa khỏi giỏ hàng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var item = currentDetails.FirstOrDefault(d => d.MaSanPham == id);
+            if (item != null)
+            {
+                currentDetails.Remove(item);
+                LoadCurrentDetailsGrid();
+                MessageBox.Show("Xóa sản phẩm khỏi giỏ hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ResetTab2State();
+            }
+        }
+
+        // 5.2.22. Reset ô nhập liệu chi tiết
+        private void btnResetCartForm_Click(object sender, EventArgs e)
+        {
+            ResetTab2State();
+        }
+
+        
+
+        // 5.2.23. Bấm nút tìm kiếm sản phẩm trên Tab 2
+        private void btnStockInSearch_Click(object sender, EventArgs e)
+        {
+            // Lần 1: Kích hoạt chế độ tìm kiếm
+            if (txtProductSearch.Enabled == false)
+            {
+                ResetTab2State();
+                txtProductSearch.Enabled = true;
+                txtProductSearch.Focus();
+                btnAddToCart.Enabled = false;
+                MessageBox.Show("Chế độ tìm kiếm đã bật! Vui lòng nhập từ khóa vào ô tìm kiếm rồi ấn Tìm kiếm lần nữa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            // Lần 2: Thực thi tìm kiếm
+            FilterProducts();
+            MessageBox.Show($"Tìm thấy {dgvProductsSelection.Rows.Count} sản phẩm phù hợp!", "Tìm kiếm thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        // 5.2.24. Làm mới danh sách chọn sản phẩm Tab 2
+        private void btnStockInRefresh_Click(object sender, EventArgs e)
+        {
+            txtProductSearch.Text = "";
+            ResetTab2State();
+            LoadProductsSelectionGrid();
+        }
+
+        private void tabSelectionContainer_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabSelectionContainer.SelectedTab == tabProductDetail)
+            {
+                // Mặc định không cần nạp thêm
+            }
+        }
+
+        // 5.2.25. Bấm nút xác nhận CHỌN MẶT HÀNG ở Tab chi tiết ảnh
+        private void btnSelectProduct_Click(object sender, EventArgs e)
+        {
+            string rawId = txtSelMaSP.Text;
+            if (!string.IsNullOrEmpty(rawId) && int.TryParse(rawId, out int id))
+            {
+                tabSelectionContainer.SelectedTab = tabListProducts; // Quay về lưới danh sách
+                txtSelSoLuong.Focus();
+                txtSelSoLuong.SelectAll();
+            }
+        }
+
+        // 5.2.26. Bấm nút LƯU (Xác nhận thêm)
+        private void btnBackToReceipt_Click(object sender, EventArgs e)
+        {
+            if (!isAddingDetail) return;
+            
             string rawId = txtSelMaSP.Text;
             if (string.IsNullOrEmpty(rawId) || !int.TryParse(rawId, out int id))
             {
@@ -864,7 +1049,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             var existing = currentDetails.FirstOrDefault(d => d.MaSanPham == id);
             if (existing != null)
             {
-                existing.SoLuong = qty;
+                existing.SoLuong += qty; // Cộng dồn nếu đã có
                 existing.GiaNhap = price;
             }
             else
@@ -879,90 +1064,14 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
 
             LoadCurrentDetailsGrid();
-            btnResetCartForm_Click(this, EventArgs.Empty);
+            MessageBox.Show("Đã thêm sản phẩm vào giỏ hàng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            ResetTab2State();
         }
 
-        // 5.2.21. Bấm nút XÓA sản phẩm khỏi giỏ hàng
-        private void btnRemoveFromCart_Click(object sender, EventArgs e)
+        // 5.2.27 Bấm nút BỎ QUA
+        private void guna2Button3_Click(object sender, EventArgs e)
         {
-            if (!isEditing)
-            {
-                MessageBox.Show("Vui lòng nhấn nút THÊM hoặc SỬA phiếu nhập ở Tab 1 trước khi sửa giỏ hàng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            string rawId = txtSelMaSP.Text;
-            if (string.IsNullOrEmpty(rawId) || !int.TryParse(rawId, out int id))
-            {
-                MessageBox.Show("Vui lòng chọn sản phẩm cần xóa khỏi giỏ hàng!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            var item = currentDetails.FirstOrDefault(d => d.MaSanPham == id);
-            if (item != null)
-            {
-                currentDetails.Remove(item);
-                LoadCurrentDetailsGrid();
-                btnResetCartForm_Click(this, EventArgs.Empty);
-            }
-            else
-            {
-                MessageBox.Show("Sản phẩm này hiện tại chưa có trong danh sách phiếu nhập!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        // 5.2.22. Reset ô nhập liệu chi tiết
-        private void btnResetCartForm_Click(object sender, EventArgs e)
-        {
-            txtSelMaSP.Text = "";
-            txtSelTenSP.Text = "";
-            txtSelSoLuong.Text = "";
-            txtSelGiaNhap.Text = "";
-        }
-
-        // 5.2.23. Bấm nút tìm kiếm sản phẩm trên Tab 2
-        private void btnStockInSearch_Click(object sender, EventArgs e)
-        {
-            FilterProducts();
-        }
-
-        // 5.2.24. Làm mới danh sách chọn sản phẩm Tab 2
-        private void btnStockInRefresh_Click(object sender, EventArgs e)
-        {
-            txtProductSearch.Text = "";
-            btnResetCartForm_Click(this, EventArgs.Empty);
-            LoadProductsSelectionGrid();
-        }
-
-        private void tabSelectionContainer_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (tabSelectionContainer.SelectedTab == tabProductDetail)
-            {
-                // Mặc định không cần nạp thêm
-            }
-        }
-
-        // 5.2.25. Bấm nút xác nhận CHỌN MẶT HÀNG ở Tab chi tiết ảnh
-        private void btnSelectProduct_Click(object sender, EventArgs e)
-        {
-            string rawId = txtSelMaSP.Text;
-            if (!string.IsNullOrEmpty(rawId) && int.TryParse(rawId, out int id))
-            {
-                tabSelectionContainer.SelectedTab = tabListProducts; // Quay về lưới danh sách
-                txtSelSoLuong.Focus();
-                txtSelSoLuong.SelectAll();
-            }
-        }
-
-        // 5.2.26. Bấm nút QUAY VỀ PHIẾU NHẬP
-        private void btnBackToReceipt_Click(object sender, EventArgs e)
-        {
-            tabMain.SelectedTab = tabPhieuNhap;
-        }
-
-        private void guna2Button4_Click(object sender, EventArgs e)
-        {
-
+            ResetTab2State();
         }
     }
 }

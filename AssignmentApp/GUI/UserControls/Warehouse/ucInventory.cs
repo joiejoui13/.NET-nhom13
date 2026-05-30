@@ -587,7 +587,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 ToggleInputs(true);
                 txtMaLichSu.Enabled = true;
 
-                btnCancel.Enabled = true;
+                btnCancel.Enabled = false;
                 btnAdd.Enabled = false;
                 btnEdit.Enabled = false;
                 btnDelete.Enabled = false;
@@ -638,8 +638,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
 
             Load_DataGridView(tblSearch);
-            
-            btnCancel.Enabled = true;
         }
 
         // 5.2.12. Viết thủ tục btnRefresh_Click (Nút Làm mới)

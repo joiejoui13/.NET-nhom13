@@ -464,13 +464,19 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         private void btnSearch_Click(object sender, EventArgs e)
         {
             // Lần 1: Kích hoạt chế độ tìm kiếm
-            if (txtMaSanPham.Enabled == false && btnAdd.Enabled == true)
+            if (txtMaSanPham.Enabled == false)
             {
                 ClearInputs();
                 ToggleInputs(true);
                 txtMaSanPham.Enabled = true; // Mở luôn mã SP để có thể tìm theo mã
 
-                btnCancel.Enabled = true;
+                // Tránh mặc định lọc theo trạng thái "Đang bán" và Giá/Tồn = 0
+                txtGiaNhap.Text = "";
+                txtGiaBan.Text = "";
+                txtSoLuongTon.Text = "";
+                cboTrangThai.SelectedIndex = -1;
+
+                btnCancel.Enabled = false;
                 btnAdd.Enabled = false;
                 btnEdit.Enabled = false;
                 btnDelete.Enabled = false;
@@ -528,16 +534,12 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
             if (dgvSanPham.Rows.Count > 0)
             {
-                ClearInputs();
                 MessageBox.Show($"Tìm thấy {dgvSanPham.Rows.Count} sản phẩm phù hợp!", "Tìm kiếm thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                ClearInputs();
                 MessageBox.Show("Không tìm thấy sản phẩm nào khớp với các tiêu chí tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            
-            btnCancel.Enabled = true;
         }
 
         // 5.2.16. Sự kiện chọn ảnh đại diện sản phẩm từ máy tính

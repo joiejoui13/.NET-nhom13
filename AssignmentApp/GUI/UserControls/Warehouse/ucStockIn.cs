@@ -23,6 +23,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         private List<StockInDetailModel> currentDetails = new List<StockInDetailModel>();
         private bool isEditing = false;
         private bool isAddingNew = false;
+        private bool isSearching = false;
         private int activeUserId = 1;      // Mặc định người dùng hệ thống là Admin
         private string activeUserName = "Admin";
 
@@ -51,7 +52,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // Đặt tiêu đề lưới hiển thị danh sách phiếu nhập
             lblGridTitle.Text = "DANH SÁCH PHIẾU NHẬP";
             dgvDetails.Columns[0].HeaderText = "Mã Phiếu Nhập";
-            dgvDetails.Columns[1].HeaderText = "Người Nhập";
+            dgvDetails.Columns[1].HeaderText = "Mã NV";
             dgvDetails.Columns[2].HeaderText = "Ngày Nhập";
             dgvDetails.Columns[3].HeaderText = "Trạng Thái";
             dgvDetails.Columns[4].HeaderText = "Tổng Tiền";
@@ -62,14 +63,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // Tải lưới danh sách phiếu nhập
             LoadReceiptsGrid();
 
-            // Chọn dòng đầu tiên nếu có dữ liệu
-            if (dgvDetails.Rows.Count > 0)
-            {
-                SelectReceiptRow(0);
-            }
-
             // Đưa các nút và các trường thông tin về trạng thái khóa
-            
+            ResetTab1State();
         }
 
         // 5.2.2. Lấy thông tin tài khoản người dùng hoạt động
@@ -103,9 +98,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
             else
             {
-                string sql = @"SELECT p.MaPhieuNhap, n.TenNguoiDung, p.NgayNhap, p.TrangThai, p.TongTien 
+                string sql = @"SELECT p.MaPhieuNhap, p.MaNguoiDung, p.NgayNhap, p.TrangThai, p.TongTien 
                                FROM PhieuNhap p 
-                               LEFT JOIN NguoiDung n ON p.MaNguoiDung = n.MaNguoiDung
                                ORDER BY p.NgayNhap DESC";
                 tbl = DbContext.GetDataToTable(sql);
             }
@@ -114,7 +108,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             foreach (DataRow r in tbl.Rows)
             {
                 int id = Convert.ToInt32(r["MaPhieuNhap"]);
-                string user = r["TenNguoiDung"]?.ToString() ?? "Admin";
+                string user = r["MaNguoiDung"]?.ToString() ?? "";
                 DateTime date = r["NgayNhap"] != DBNull.Value ? Convert.ToDateTime(r["NgayNhap"]) : DateTime.Now;
                 string status = r["TrangThai"]?.ToString() ?? "Chờ xử lý";
                 double total = r["TongTien"] != DBNull.Value ? Convert.ToDouble(r["TongTien"]) : 0;
@@ -146,9 +140,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
             int receiptId = Convert.ToInt32(dgvDetails.Rows[rowIndex].Cells[0].Value);
 
-            string sql = $@"SELECT p.MaPhieuNhap, n.TenNguoiDung, p.NgayNhap, p.TrangThai 
+            string sql = $@"SELECT p.MaPhieuNhap, p.MaNguoiDung, p.NgayNhap, p.TrangThai 
                            FROM PhieuNhap p 
-                           LEFT JOIN NguoiDung n ON p.MaNguoiDung = n.MaNguoiDung 
                            WHERE p.MaPhieuNhap = {receiptId}";
             DataTable tbl = DbContext.GetDataToTable(sql);
 
@@ -156,7 +149,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             {
                 DataRow r = tbl.Rows[0];
                 txtMaPhieuNhap.Text = r["MaPhieuNhap"].ToString();
-                txtNguoiDung.Text = r["TenNguoiDung"]?.ToString() ?? "Admin";
+                txtNguoiDung.Text = r["MaNguoiDung"]?.ToString() ?? "";
                 dtNgayNhap.Value = r["NgayNhap"] != DBNull.Value ? Convert.ToDateTime(r["NgayNhap"]) : DateTime.Now;
                 cboTrangThai.Text = r["TrangThai"]?.ToString() ?? "Chờ xử lý";
 
@@ -184,17 +177,38 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         // 5.2.5. Xử lý click dòng trên lưới phiếu nhập
         private void dgvDetails_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0 && !isEditing)
+            if (e.RowIndex >= 0)
             {
-                SelectReceiptRow(e.RowIndex);
-                
-                if (txtMaPhieuNhap.Enabled == true) { txtMaPhieuNhap.Enabled = false; btnSearch.Enabled = true; }
+                if (isEditing)
+                {
+                    MessageBox.Show("Hệ thống đang ở chế độ Thêm/Sửa! Vui lòng Lưu hoặc Bỏ qua trước khi chọn phiếu khác.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
-                btnAdd.Enabled = false;
+                // Thoát chế độ tìm kiếm nếu đang ở chế độ tìm kiếm
+                if (txtMaPhieuNhap.Enabled == true)
+                {
+                    txtMaPhieuNhap.Enabled = false;
+                    btnAdd.Enabled = true;
+                }
+
+                SelectReceiptRow(e.RowIndex);
+
+                // Mở khóa các ô nhập liệu (giống ToggleInputs(true) ở Category)
+                // Theo yêu cầu: Mã Phiếu và Ngày Nhập không được sửa
+                txtMaPhieuNhap.Enabled = false;
+                txtNguoiDung.Enabled = true;
+                txtNguoiDung.ReadOnly = false;
+                dtNgayNhap.Enabled = false;
+                cboTrangThai.Enabled = true;
+                
+                // Bật tắt các nút giống Category
                 btnEdit.Enabled = true;
                 btnDelete.Enabled = true;
-                btnSave.Enabled = false;
                 btnCancel.Enabled = true;
+                
+                btnAdd.Enabled = false;
+                btnSave.Enabled = false;
             }
         }
 
@@ -203,14 +217,19 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         {
             isEditing = false;
             isAddingNew = false;
+            isSearching = false;
             
             txtMaPhieuNhap.Text = "";
+            dtNgayNhap.Format = DateTimePickerFormat.Custom;
+            dtNgayNhap.CustomFormat = "dd/MM/yyyy";
             dtNgayNhap.Value = DateTime.Now;
             cboTrangThai.SelectedIndex = -1;
             txtNguoiDung.Text = "";
 
             txtMaPhieuNhap.ReadOnly = true;
             txtMaPhieuNhap.Enabled = false; // T?t ch? d? tìm ki?m
+            txtNguoiDung.ReadOnly = true;
+            txtNguoiDung.Enabled = false;
             dtNgayNhap.Enabled = false;
             cboTrangThai.Enabled = false;
 
@@ -262,7 +281,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 int nextId = !string.IsNullOrEmpty(maxStr) ? Convert.ToInt32(maxStr) + 1 : 101;
 
                 txtMaPhieuNhap.Text = "Tự động sinh";
-                txtNguoiDung.Text = activeUserName;
+                txtNguoiDung.Text = "";
                 dtNgayNhap.Value = DateTime.Now;
                 cboTrangThai.Text = "Chờ xử lý";
 
@@ -275,13 +294,13 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 btnCancel.Enabled = true;
 
                 txtMaPhieuNhap.ReadOnly = true;
-                dtNgayNhap.Enabled = true;
+                txtMaPhieuNhap.Enabled = false;
+                txtNguoiDung.ReadOnly = false;
+                txtNguoiDung.Enabled = true;
+                dtNgayNhap.Enabled = false;
                 cboTrangThai.Enabled = true;
 
                 ResetTab2State();
-
-                // Chuyển sang Tab 2 ngay lập tức để chọn sản phẩm vào giỏ hàng
-                btnChooseProducts_Click(this, EventArgs.Empty);
             }
         }
 
@@ -299,28 +318,79 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
             if (currentStatus == "Đã hoàn thành" || currentStatus == "Đã hủy")
             {
-                MessageBox.Show("Nghiệp vụ kế toán: Không được phép sửa chữa phiếu nhập kho đã 'Đã hoàn thành' hoặc 'Đã hủy'!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"Đơn đã {currentStatus.ToLower()}, không thể sửa để bảo toàn toàn vẹn dữ liệu!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            isAddingNew = false;
-            btnAdd.Enabled = false;
-                btnEdit.Enabled = false;
-                btnDelete.Enabled = false;
-                btnSave.Enabled = true;
-                btnCancel.Enabled = true;
+            if (string.IsNullOrWhiteSpace(txtNguoiDung.Text))
+            {
+                MessageBox.Show("Bạn phải nhập Mã nhân viên (Người dùng) để sửa phiếu!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNguoiDung.Focus();
+                return;
+            }
 
-                txtMaPhieuNhap.ReadOnly = true;
-                dtNgayNhap.Enabled = true;
-                cboTrangThai.Enabled = true;
+            int userId;
+            if (!int.TryParse(txtNguoiDung.Text.Trim(), out userId))
+            {
+                MessageBox.Show("Mã nhân viên phải là số!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNguoiDung.Focus();
+                return;
+            }
 
-                ResetTab2State();
+            string status = cboTrangThai.Text;
+            if (status == "Đã hoàn thành" && currentDetails.Count == 0)
+            {
+                MessageBox.Show("Không thể lưu phiếu trống ở trạng thái 'Đã hoàn thành'! Vui lòng sang Tab 2 thêm sản phẩm hoặc chọn trạng thái khác.", "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-            // Chuyển sang Tab 2 để thay đổi giỏ hàng sản phẩm nhập
-            btnChooseProducts_Click(this, EventArgs.Empty);
+            double totalAmount = currentDetails.Sum(d => d.ThanhTien);
+            string dateFormatted = dtNgayNhap.Value.ToString("yyyy-MM-dd HH:mm:ss");
+
+            // Cập nhật thông tin phiếu chính
+            string sqlUpdateMaster = $@"UPDATE PhieuNhap 
+                                        SET MaNguoiDung = {userId},
+                                            NgayNhap = '{dateFormatted}', 
+                                            TrangThai = N'{status}', 
+                                            TongTien = {totalAmount} 
+                                        WHERE MaPhieuNhap = {receiptId}";
+            DbContext.RunSql(sqlUpdateMaster);
+
+            // Xóa chi tiết cũ để chèn lại giỏ hàng mới
+            string sqlDelOldDetails = $"DELETE FROM ChiTietNhapHang WHERE MaPhieuNhap = {receiptId}";
+            DbContext.RunSql(sqlDelOldDetails);
+
+            // Chèn lại giỏ hàng mới
+            foreach (var d in currentDetails)
+            {
+                string sqlInsertDetail = $@"INSERT INTO ChiTietNhapHang (MaPhieuNhap, MaSanPham, SoLuong, DonGia) 
+                                            VALUES ({receiptId}, {d.MaSanPham}, {d.SoLuong}, {d.GiaNhap})";
+                DbContext.RunSql(sqlInsertDetail);
+            }
+
+            // Xử lý chuyển đổi trạng thái tồn kho
+            string invFeedback = "";
+            if (currentStatus != "Đã hoàn thành" && status == "Đã hoàn thành")
+            {
+                // Chuyển từ Chờ xử lý -> Hoàn thành => Cộng tăng kho hàng
+                UpdateProductInventoryAndLog(receiptId, currentDetails);
+                invFeedback = "\n[KHO HÀNG] Phiếu nhập chuyển sang 'Đã hoàn thành'. Tồn kho sản phẩm được cộng tăng!";
+            }
+            else if (currentStatus == "Đã hoàn thành" && status == "Đã hủy")
+            {
+                // Hoàn tác tồn kho: Trừ bớt lại kho hàng do phiếu bị HỦY
+                RevertProductInventoryAndLog(receiptId, currentDetails);
+                invFeedback = "\n[KHO HÀNG] Phiếu nhập bị HỦY hoàn toàn. Đã trừ hoàn tác lại tồn kho sản phẩm tương ứng!";
+            }
+
+            MessageBox.Show("Cập nhật thông tin phiếu nhập thành công!" + invFeedback, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            
+            LoadReceiptsGrid();
+            ResetTab1State();
+            ResetTab2State();
         }
 
-        // 5.2.9. Bấm nút XÓA phiếu nhập hoàn toàn
+        // 5.2.9. Bấm nút XÓA phiếu nhập
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) || txtMaPhieuNhap.Text == "Tự động sinh") return;
@@ -330,34 +400,37 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             string sqlCheck = $"SELECT TrangThai FROM PhieuNhap WHERE MaPhieuNhap = {receiptId}";
             string currentStatus = DbContext.GetFieldValues(sqlCheck);
 
-            if (currentStatus == "Đã hoàn thành")
+            if (currentStatus == "Đã hủy")
             {
-                MessageBox.Show("Nghiệp vụ kế toán: Không được phép xóa phiếu nhập kho 'Đã hoàn thành'!\nHãy chuyển trạng thái sang 'Đã hủy' để bảo toàn dữ liệu tồn kho.", "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Phiếu nhập này đã ở trạng thái 'Đã hủy' rồi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            var confirmResult = MessageBox.Show($"Bạn có chắc chắn muốn xóa hoàn toàn phiếu nhập #{receiptId} khỏi hệ thống?", "Xác nhận xóa phiếu nhập", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            var confirmResult = MessageBox.Show($"Bạn có chắc chắn muốn xóa (chuyển trạng thái sang 'Đã hủy') phiếu nhập #{receiptId} không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {
                 try
                 {
-                    // Xóa chi tiết phiếu trước do ràng buộc khóa ngoại
-                    string sqlDelDetails = $"DELETE FROM ChiTietNhapHang WHERE MaPhieuNhap = {receiptId}";
-                    DbContext.RunSql(sqlDelDetails);
+                    string sqlUpdate = $"UPDATE PhieuNhap SET TrangThai = N'Đã hủy' WHERE MaPhieuNhap = {receiptId}";
+                    DbContext.RunSql(sqlUpdate);
 
-                    // Xóa phiếu nhập chính
-                    string sqlDelMaster = $"DELETE FROM PhieuNhap WHERE MaPhieuNhap = {receiptId}";
-                    DbContext.RunSqlDel(sqlDelMaster);
+                    string invFeedback = "";
+                    if (currentStatus == "Đã hoàn thành")
+                    {
+                        // Hoàn tác tồn kho do hủy phiếu đã hoàn thành
+                        RevertProductInventoryAndLog(receiptId, currentDetails);
+                        invFeedback = "\n[KHO HÀNG] Phiếu nhập bị HỦY. Đã trừ hoàn tác lại tồn kho sản phẩm tương ứng!";
+                    }
 
-                    MessageBox.Show("Xóa phiếu nhập khỏi hệ thống thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Đã chuyển trạng thái phiếu nhập sang 'Đã hủy'!" + invFeedback, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    
                     LoadReceiptsGrid();
-
                     ResetTab1State();
                     ResetTab2State();
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Lỗi xóa dữ liệu: " + ex.Message, "Lỗi hệ thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Lỗi hệ thống: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -365,110 +438,60 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         // 5.2.10. Bấm nút LƯU thay đổi phiếu nhập
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (currentDetails.Count == 0)
+            if (string.IsNullOrWhiteSpace(txtNguoiDung.Text))
             {
-                MessageBox.Show("Phiếu nhập kho phải chứa ít nhất 1 sản phẩm! Hãy chọn sản phẩm ở Tab 2.", "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Bạn phải nhập Mã nhân viên (Người dùng) để lập phiếu!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNguoiDung.Focus();
+                return;
+            }
+
+            int userId;
+            if (!int.TryParse(txtNguoiDung.Text.Trim(), out userId))
+            {
+                MessageBox.Show("Mã nhân viên phải là số!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtNguoiDung.Focus();
+                return;
+            }
+
+            string status = cboTrangThai.Text;
+            if (status == "Đã hoàn thành" && currentDetails.Count == 0)
+            {
+                MessageBox.Show("Không thể lưu phiếu trống ở trạng thái 'Đã hoàn thành'! Vui lòng sang Tab 2 thêm sản phẩm hoặc chọn trạng thái khác.", "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             double totalAmount = currentDetails.Sum(d => d.ThanhTien);
-            string status = cboTrangThai.Text;
             string dateFormatted = dtNgayNhap.Value.ToString("yyyy-MM-dd HH:mm:ss");
 
-            if (isAddingNew)
+            string sqlInsertMaster = $@"INSERT INTO PhieuNhap (MaNguoiDung, TongTien, TrangThai, NgayNhap) 
+                                        VALUES ({userId}, {totalAmount}, N'{status}', '{dateFormatted}')";
+            DbContext.RunSql(sqlInsertMaster);
+
+            string sqlMax = "SELECT MAX(MaPhieuNhap) FROM PhieuNhap";
+            string maxStr = DbContext.GetFieldValues(sqlMax);
+            int newId = !string.IsNullOrEmpty(maxStr) ? Convert.ToInt32(maxStr) : 101;
+
+            foreach (var d in currentDetails)
             {
-                // Thêm mới phiếu chính (PhieuNhap)
-                string sqlInsertMaster = $@"INSERT INTO PhieuNhap (MaNguoiDung, TongTien, TrangThai, NgayNhap) 
-                                            VALUES ({activeUserId}, {totalAmount}, N'{status}', '{dateFormatted}')";
-                DbContext.RunSql(sqlInsertMaster);
-
-                // Lấy mã phiếu vừa tự sinh ra
-                string sqlMax = "SELECT MAX(MaPhieuNhap) FROM PhieuNhap";
-                string maxStr = DbContext.GetFieldValues(sqlMax);
-                int newId = !string.IsNullOrEmpty(maxStr) ? Convert.ToInt32(maxStr) : 101;
-
-                // Thêm các chi tiết phiếu nhập (ChiTietNhapHang)
-                foreach (var d in currentDetails)
-                {
-                    string sqlInsertDetail = $@"INSERT INTO ChiTietNhapHang (MaPhieuNhap, MaSanPham, SoLuong, DonGia) 
-                                                VALUES ({newId}, {d.MaSanPham}, {d.SoLuong}, {d.GiaNhap})";
-                    DbContext.RunSql(sqlInsertDetail);
-                }
-
-                // Nếu lưu ở trạng thái ĐÃ HOÀN THÀNH -> Tăng số lượng tồn kho sản phẩm + Tạo lịch sử nhập kho
-                string invFeedback = "";
-                if (status == "Đã hoàn thành")
-                {
-                    UpdateProductInventoryAndLog(newId, currentDetails);
-                    invFeedback = "\n[KHO HÀNG] Đã tự động cập nhật cộng tăng số lượng tồn kho của các sản phẩm!";
-                }
-
-                MessageBox.Show("Thêm mới phiếu nhập kho thành công!" + invFeedback, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string sqlInsertDetail = $@"INSERT INTO ChiTietNhapHang (MaPhieuNhap, MaSanPham, SoLuong, DonGia) 
+                                            VALUES ({newId}, {d.MaSanPham}, {d.SoLuong}, {d.GiaNhap})";
+                DbContext.RunSql(sqlInsertDetail);
             }
-            else
+
+            string invFeedback = "";
+            if (status == "Đã hoàn thành")
             {
-                // Sửa phiếu cũ
-                int receiptId = Convert.ToInt32(txtMaPhieuNhap.Text);
-
-                // Kiểm tra trạng thái cũ trước khi cập nhật
-                string sqlOldStatus = $"SELECT TrangThai FROM PhieuNhap WHERE MaPhieuNhap = {receiptId}";
-                string oldStatus = DbContext.GetFieldValues(sqlOldStatus);
-
-                // Cập nhật thông tin phiếu chính
-                string sqlUpdateMaster = $@"UPDATE PhieuNhap 
-                                            SET NgayNhap = '{dateFormatted}', 
-                                                TrangThai = N'{status}', 
-                                                TongTien = {totalAmount} 
-                                            WHERE MaPhieuNhap = {receiptId}";
-                DbContext.RunSql(sqlUpdateMaster);
-
-                // Xóa chi tiết cũ để chèn lại giỏ hàng mới
-                string sqlDelOldDetails = $"DELETE FROM ChiTietNhapHang WHERE MaPhieuNhap = {receiptId}";
-                DbContext.RunSql(sqlDelOldDetails);
-
-                // Chèn lại giỏ hàng mới
-                foreach (var d in currentDetails)
-                {
-                    string sqlInsertDetail = $@"INSERT INTO ChiTietNhapHang (MaPhieuNhap, MaSanPham, SoLuong, DonGia) 
-                                                VALUES ({receiptId}, {d.MaSanPham}, {d.SoLuong}, {d.GiaNhap})";
-                    DbContext.RunSql(sqlInsertDetail);
-                }
-
-                // Xử lý chuyển đổi trạng thái tồn kho
-                string invFeedback = "";
-                if (oldStatus != "Đã hoàn thành" && status == "Đã hoàn thành")
-                {
-                    // Chuyển từ Chờ xử lý -> Hoàn thành => Cộng tăng kho hàng
-                    UpdateProductInventoryAndLog(receiptId, currentDetails);
-                    invFeedback = "\n[KHO HÀNG] Phiếu nhập chuyển sang 'Đã hoàn thành'. Tồn kho sản phẩm được cộng tăng!";
-                }
-                else if (oldStatus == "Đã hoàn thành" && status == "Đã hủy")
-                {
-                    // Hoàn tác tồn kho: Trừ bớt lại kho hàng do phiếu bị HỦY
-                    RevertProductInventoryAndLog(receiptId, currentDetails);
-                    invFeedback = "\n[KHO HÀNG] Phiếu nhập bị HỦY hoàn toàn. Đã trừ hoàn tác lại tồn kho sản phẩm tương ứng!";
-                }
-
-                MessageBox.Show("Cập nhật thông tin phiếu nhập thành công!" + invFeedback, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                UpdateProductInventoryAndLog(newId, currentDetails);
+                invFeedback = "\n[KHO HÀNG] Đã tự động cập nhật cộng tăng số lượng tồn kho của các sản phẩm!";
             }
+
+            MessageBox.Show("Thêm mới phiếu nhập kho thành công!" + invFeedback, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             isAddingNew = false;
             
             LoadReceiptsGrid();
-
-            // Chọn lại dòng vừa xử lý
-            if (txtMaPhieuNhap.Text != "Tự động sinh")
-            {
-                int targetId = Convert.ToInt32(txtMaPhieuNhap.Text);
-                for (int i = 0; i < dgvDetails.Rows.Count; i++)
-                {
-                    if (Convert.ToInt32(dgvDetails.Rows[i].Cells[0].Value) == targetId)
-                    {
-                        SelectReceiptRow(i);
-                        break;
-                    }
-                }
-            }
+            ResetTab1State();
+            ResetTab2State();
         }
 
         // 5.2.10.1. Tăng tồn kho sản phẩm và ghi chép LichSuNhapKho
@@ -518,54 +541,96 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         // 5.2.11. Bấm nút BỎ QUA sửa đổi
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            isAddingNew = false;
-            
-            if (dgvDetails.SelectedRows.Count > 0)
-            {
-                SelectReceiptRow(dgvDetails.SelectedRows[0].Index);
-            }
-            else if (dgvDetails.Rows.Count > 0)
-            {
-                SelectReceiptRow(0);
-            }
+            ResetTab1State(); // Trở về trạng thái ban đầu giống như Làm lại / Load form
         }
 
         // 5.2.12. Tìm kiếm phiếu nhập theo mã trên Tab 1
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) || txtMaPhieuNhap.Text == "Tự động sinh")
+            // LẦN 1: Kích hoạt chế độ tìm kiếm
+            if (txtMaPhieuNhap.Enabled == false)
             {
-                MessageBox.Show("Vui lòng nhập Mã phiếu nhập (dạng số) vào ô để tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                ResetTab1State();
+                txtMaPhieuNhap.Enabled = true; 
+                txtMaPhieuNhap.ReadOnly = false;
+                
+                txtNguoiDung.Enabled = true; 
+                txtNguoiDung.ReadOnly = false;
+                cboTrangThai.Enabled = true;
+                
+                // Mở khóa Ngày Nhập để lọc, chuyển sang CustomFormat rỗng để thể hiện giá trị Null
+                dtNgayNhap.Enabled = true;
+                dtNgayNhap.Format = DateTimePickerFormat.Custom;
+                dtNgayNhap.CustomFormat = " ";
+
+                // Đăng ký sự kiện (xóa trước để tránh trùng lặp nếu ấn nhiều lần)
+                dtNgayNhap.ValueChanged -= DtNgayNhap_ValueChanged;
+                dtNgayNhap.ValueChanged += DtNgayNhap_ValueChanged;
+
+                // Ẩn/khóa các nút khác
+                btnAdd.Enabled = false;
+                btnEdit.Enabled = false;
+                btnDelete.Enabled = false;
+                btnSave.Enabled = false;
+                btnCancel.Enabled = false;
+
+                MessageBox.Show("Chế độ tìm kiếm đã bật! Vui lòng nhập thông tin (Mã, Người dùng...) rồi ấn nút Tìm kiếm lần nữa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtMaPhieuNhap.Focus();
                 return;
             }
 
-            string searchVal = txtMaPhieuNhap.Text.Trim();
-            string sql = $@"SELECT p.MaPhieuNhap, n.TenNguoiDung, p.NgayNhap, p.TrangThai, p.TongTien 
-                           FROM PhieuNhap p 
-                           LEFT JOIN NguoiDung n ON p.MaNguoiDung = n.MaNguoiDung
-                           WHERE p.MaPhieuNhap = {searchVal}";
+            // LẦN 2: Thực hiện tìm kiếm
+            bool hasDateFilter = dtNgayNhap.CustomFormat != " ";
+            if (txtMaPhieuNhap.Text == "" && txtNguoiDung.Text == "" && cboTrangThai.Text == "" && !hasDateFilter)
+            {
+                MessageBox.Show("Hãy nhập ít nhất một điều kiện tìm kiếm!!!", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            string sql = "SELECT p.MaPhieuNhap, p.MaNguoiDung, p.NgayNhap, p.TrangThai, p.TongTien FROM PhieuNhap p WHERE 1=1";
+            
+            if (txtMaPhieuNhap.Text != "" && txtMaPhieuNhap.Text != "Tự động sinh")
+                sql += $" AND p.MaPhieuNhap = {txtMaPhieuNhap.Text.Trim()}";
+                
+            if (txtNguoiDung.Text != "")
+                sql += $" AND p.MaNguoiDung = {txtNguoiDung.Text.Trim()}";
+                
+            if (cboTrangThai.Text != "")
+                sql += $" AND p.TrangThai = N'{cboTrangThai.Text}'";
+
+            if (hasDateFilter)
+            {
+                string dateSearch = dtNgayNhap.Value.ToString("yyyy-MM-dd");
+                sql += $" AND CAST(p.NgayNhap AS DATE) = '{dateSearch}'";
+            }
 
             DataTable tblSearch = DbContext.GetDataToTable(sql);
-            if (tblSearch.Rows.Count > 0)
+            
+            if (tblSearch.Rows.Count == 0)
             {
-                LoadReceiptsGrid(tblSearch);
-                SelectReceiptRow(0);
+                MessageBox.Show("Không có bản ghi thỏa mãn điều kiện!!!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
-                MessageBox.Show("Không tìm thấy phiếu nhập nào có mã vừa nhập!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show($"Có {tblSearch.Rows.Count} bản ghi thỏa mãn điều kiện!!!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                LoadReceiptsGrid(tblSearch);
+                SelectReceiptRow(0);
+            }
+        }
+
+        private void DtNgayNhap_ValueChanged(object sender, EventArgs e)
+        {
+            if (dtNgayNhap.CustomFormat == " ")
+            {
+                dtNgayNhap.CustomFormat = "dd/MM/yyyy";
             }
         }
 
         // 5.2.13. Làm mới danh sách phiếu nhập
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+            ResetTab1State(); // Quay lại giao diện lúc mới vào
             LoadReceiptsGrid();
-            if (dgvDetails.Rows.Count > 0)
-            {
-                SelectReceiptRow(0);
-            }
-            
         }
 
         // 5.2.14. Bấm nút CHỌN SẢN PHẨM để mở Tab 2

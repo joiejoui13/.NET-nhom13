@@ -237,7 +237,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 btnEdit.Enabled = false;
                 btnDelete.Enabled = false;
                 btnSave.Enabled = false;
-                btnCancel.Enabled = true;
+                btnCancel.Enabled = false;
 
                 MessageBox.Show("Chế độ tìm kiếm đã bật! Vui lòng nhập thông tin (Mã, Tên, Mô tả...) rồi ấn nút Tìm kiếm lần nữa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 txtMaDanhMuc.Focus();

@@ -260,6 +260,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         // 5.2.8. Bấm nút SỬA thông tin phiếu nhập
         private void btnEdit_Click(object sender, EventArgs e)
         {
+            
             if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) || txtMaPhieuNhap.Text == "Tự động sinh") return;
 
             int receiptId = Convert.ToInt32(txtMaPhieuNhap.Text);

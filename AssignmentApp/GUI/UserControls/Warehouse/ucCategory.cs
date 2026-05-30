@@ -1,20 +1,12 @@
 using AssignmentApp.DAL.Core;
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Windows.Forms;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using Microsoft.Data.SqlClient;
-using System.Data;
-
 
 namespace AssignmentApp.GUI.UserControls.Warehouse
 {
     public partial class ucCategory : UserControl
     {
-        DataTable dtDanhMuc;
-
         public ucCategory()
         {
             InitializeComponent();
@@ -22,41 +14,49 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
         private void ucCategory_Load(object sender, EventArgs e)
         {
+            // Đồng bộ dữ liệu cho ComboBox Trạng thái
+            cboTrangThai.Items.Clear();
+            cboTrangThai.Items.Add("Hoạt động");
+            cboTrangThai.Items.Add("Đã hủy");
+            cboTrangThai.DropDownStyle = ComboBoxStyle.DropDownList; // Ngăn người dùng gõ linh tinh
+
+            DbContext.Ketnoi();
+            Load_DataGridView();
+
+            ResetValues();
+            txtMaDanhMuc.Enabled = false; 
+            ToggleInputs(false);
+
             btnAdd.Enabled = true;
-            btnEdit.Enabled = true;
-            btnDelete.Enabled = true;
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
             btnSave.Enabled = false;
             btnCancel.Enabled = false;
-            Load_DataGridView();
         }
+
         private void Load_DataGridView()
         {
-            string sql = @"SELECT MaDanhMuc, TenDanhMuc, MoTa,
-                   TrangThai, NgayTao, NgayCapNhat
-                   FROM DanhMuc";
-
-            if (DbContext.Conn.State == ConnectionState.Closed)
-            {
-                DbContext.Ketnoi();
-            }
-
-            SqlDataAdapter da =
-          new SqlDataAdapter(sql, (SqlConnection)DbContext.Conn);
-
-            dtDanhMuc = new DataTable();
-            da.Fill(dtDanhMuc);
+            string sql = "SELECT MaDanhMuc, TenDanhMuc, MoTa, TrangThai, NgayTao, NgayCapNhat FROM DanhMuc";
+            DataTable tblDM = DbContext.GetDataToTable(sql);
+            
             dgvDanhMuc.AutoGenerateColumns = false;
-            dgvDanhMuc.DataSource = dtDanhMuc;
-            dgvDanhMuc.Columns["colNgayTao"].DefaultCellStyle.Format =
-                "dd/MM/yyyy HH:mm";
-
-            dgvDanhMuc.Columns["colNgayCapNhat"].DefaultCellStyle.Format =
-                "dd/MM/yyyy HH:mm";
+            dgvDanhMuc.DataSource = tblDM;
+            
+            if (dgvDanhMuc.Columns.Contains("colNgayTao"))
+                dgvDanhMuc.Columns["colNgayTao"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+            
+            if (dgvDanhMuc.Columns.Contains("colNgayCapNhat"))
+                dgvDanhMuc.Columns["colNgayCapNhat"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
 
             dgvDanhMuc.AllowUserToAddRows = false;
+            dgvDanhMuc.EditMode = DataGridViewEditMode.EditProgrammatically;
+        }
 
-            dgvDanhMuc.EditMode =
-                DataGridViewEditMode.EditProgrammatically;
+        private void ToggleInputs(bool isEnabled)
+        {
+            txtTenDanhMuc.Enabled = isEnabled;
+            txtMoTa.Enabled = isEnabled;
+            cboTrangThai.Enabled = isEnabled;
         }
 
         private void ResetValues()
@@ -67,354 +67,274 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             cboTrangThai.SelectedIndex = -1;
         }
 
-
-        private void dgvDanhMuc_CellClick(object? sender, DataGridViewCellEventArgs e)
+        private void dgvDanhMuc_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            // Kiểm tra xem có phải đang ở chế độ Thêm mới không (Nút Thêm khóa và Mã Danh Mục cũng khóa)
+            if (btnAdd.Enabled == false && txtMaDanhMuc.Enabled == false)
+            {
+                MessageBox.Show("Đang ở chế độ thêm mới!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtTenDanhMuc.Focus();
+                return;
+            }
+            
+            if (dgvDanhMuc.Rows.Count == 0 || e.RowIndex < 0)
+            {
+                return;
+            }
 
+            // Thoát chế độ tìm kiếm nếu đang ở chế độ tìm kiếm (Mã Danh Mục đang mở)
+            if (txtMaDanhMuc.Enabled == true)
+            {
+                txtMaDanhMuc.Enabled = false;
+                btnAdd.Enabled = true;
+            }
+
+            txtMaDanhMuc.Text = dgvDanhMuc.CurrentRow.Cells["colMaDanhMuc"].Value.ToString();
+            txtTenDanhMuc.Text = dgvDanhMuc.CurrentRow.Cells["colTenDanhMuc"].Value.ToString();
+            txtMoTa.Text = dgvDanhMuc.CurrentRow.Cells["colMoTa"].Value.ToString();
+            cboTrangThai.Text = dgvDanhMuc.CurrentRow.Cells["colTrangThai"].Value.ToString();
+
+            ToggleInputs(true);
+
+            btnEdit.Enabled = true;
+            btnDelete.Enabled = true;
+            btnCancel.Enabled = true;
         }
 
-        private void btnAdd_Click(object? sender, EventArgs e)
+        private void btnAdd_Click(object sender, EventArgs e)
         {
-            btnEdit.Enabled = false;
-            btnDelete.Enabled = false;
+            ResetValues();
+            
             btnSave.Enabled = true;
             btnCancel.Enabled = true;
             btnAdd.Enabled = false;
-            ResetValues();
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
+
             txtMaDanhMuc.Enabled = false;
+            txtMaDanhMuc.Text = "(Tự động sinh)";
+            cboTrangThai.Text = "Hoạt động";
+            
+            ToggleInputs(true);
             txtTenDanhMuc.Focus();
         }
 
-        private void btnEdit_Click(object? sender, EventArgs e)
+        private void btnEdit_Click(object sender, EventArgs e)
         {
-            string sql;
-
-            if (dtDanhMuc.Rows.Count == 0)
+            if (dgvDanhMuc.Rows.Count == 0)
             {
-                MessageBox.Show("Không còn dữ liệu!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Không còn dữ liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-
-            if (txtMaDanhMuc.Text.Trim() == "")
+            if (txtMaDanhMuc.Text == "")
             {
-                MessageBox.Show("Bạn chưa chọn danh mục nào!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Bạn chưa chọn danh mục nào để sửa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-
             if (txtTenDanhMuc.Text.Trim().Length == 0)
             {
-                MessageBox.Show("Bạn phải nhập tên danh mục!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Bạn phải nhập tên danh mục!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtTenDanhMuc.Focus();
                 return;
             }
-
             if (txtMoTa.Text.Trim().Length == 0)
             {
-                MessageBox.Show("Bạn phải nhập mô tả!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Bạn phải nhập mô tả!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtMoTa.Focus();
                 return;
             }
-
             if (cboTrangThai.Text.Trim().Length == 0)
             {
-                MessageBox.Show("Bạn phải chọn trạng thái!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Bạn phải chọn trạng thái!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cboTrangThai.Focus();
                 return;
             }
 
-            sql = $@"
-        UPDATE DanhMuc
-        SET 
-            TenDanhMuc = N'{txtTenDanhMuc.Text.Trim()}',
-            MoTa = N'{txtMoTa.Text.Trim()}',
-            TrangThai = N'{cboTrangThai.Text}',
-            NgayCapNhat = GETDATE()
-        WHERE MaDanhMuc = {txtMaDanhMuc.Text}";
+            string sql = $@"UPDATE DanhMuc SET 
+                            TenDanhMuc = N'{txtTenDanhMuc.Text.Trim()}', 
+                            MoTa = N'{txtMoTa.Text.Trim()}', 
+                            TrangThai = N'{cboTrangThai.Text.Trim()}',
+                            NgayCapNhat = GETDATE()
+                            WHERE MaDanhMuc = {txtMaDanhMuc.Text}";
 
-            SqlCommand cmd = new SqlCommand(sql, (SqlConnection)DbContext.Conn);
-            cmd.ExecuteNonQuery();
-
-            MessageBox.Show("Sửa danh mục thành công!", "Thông báo",
-                MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+            DbContext.RunSql(sql);
             Load_DataGridView();
-
             ResetValues();
+            
+            ToggleInputs(false);
 
-            btnAdd.Enabled = true;
-            btnDelete.Enabled = true;
-            btnSave.Enabled = false;
             btnCancel.Enabled = false;
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
         }
 
-        private void btnDelete_Click(object? sender, EventArgs e)
+        private void btnDelete_Click(object sender, EventArgs e)
         {
-            string sql;
-
-            if (dtDanhMuc.Rows.Count == 0)
+            if (dgvDanhMuc.Rows.Count == 0)
             {
-                MessageBox.Show("Không còn dữ liệu!", "Thông báo",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                MessageBox.Show("Không còn dữ liệu!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+            if (txtMaDanhMuc.Text == "")
+            {
+                MessageBox.Show("Bạn chưa chọn danh mục nào để xóa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            if (txtMaDanhMuc.Text.Trim() == "")
+            if (MessageBox.Show("Bạn có chắc chắn muốn xóa (chuyển trạng thái sang Đã hủy) danh mục này không?", "Thông báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
-                MessageBox.Show("Bạn chưa chọn danh mục nào!", "Thông báo",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-                return;
-            }
-
-            if (MessageBox.Show(
-                "Bạn có muốn xóa danh mục này không?",
-                "Thông báo",
-                MessageBoxButtons.OKCancel,
-                MessageBoxIcon.Question) == DialogResult.OK)
-            {
-                sql = $@"DELETE FROM DanhMuc
-                 WHERE MaDanhMuc = {txtMaDanhMuc.Text}";
-
-                SqlCommand cmd =
-                    new SqlCommand(sql, (SqlConnection)DbContext.Conn);
-
-                cmd.ExecuteNonQuery();
-
-                MessageBox.Show("Xóa danh mục thành công!",
-                    "Thông báo",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-
+                string sql = $"UPDATE DanhMuc SET TrangThai = N'Đã hủy' WHERE MaDanhMuc = {txtMaDanhMuc.Text}";
+                
+                DbContext.RunSql(sql);
                 Load_DataGridView();
-
                 ResetValues();
+                
+                ToggleInputs(false);
+                
+                btnEdit.Enabled = false;
+                btnDelete.Enabled = false;
+                btnCancel.Enabled = false;
             }
         }
 
-        private void btnRefresh_Click(object? sender, EventArgs e)
+        private void btnRefresh_Click(object sender, EventArgs e)
         {
-            ResetValues();
-
             Load_DataGridView();
-
-            btnAdd.Enabled = true;
-            btnEdit.Enabled = true;
-            btnDelete.Enabled = true;
-
-            btnSave.Enabled = false;
-            btnCancel.Enabled = false;
-
-            txtMaDanhMuc.Enabled = false;
-
-            MessageBox.Show("Đã làm mới dữ liệu!",
-                "Thông báo",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
-        }
-
-        private void btnCancel_Click(object? sender, EventArgs e)
-        {
             ResetValues();
+            
+            ToggleInputs(false);
 
             btnCancel.Enabled = false;
             btnAdd.Enabled = true;
-            btnDelete.Enabled = true;
-            btnEdit.Enabled = true;
+            btnDelete.Enabled = false;
+            btnEdit.Enabled = false;
             btnSave.Enabled = false;
-
             txtMaDanhMuc.Enabled = false;
-
-            Load_DataGridView();
         }
 
-        private void btnSearch_Click(object? sender, EventArgs e)
+        private void btnCancel_Click(object sender, EventArgs e)
         {
-            string sql;
+            ResetValues();
+            
+            ToggleInputs(false);
 
-            if (txtTenDanhMuc.Text.Trim() == "")
+            btnCancel.Enabled = false;
+            btnAdd.Enabled = true;
+            btnDelete.Enabled = false;
+            btnEdit.Enabled = false;
+            btnSave.Enabled = false;
+            txtMaDanhMuc.Enabled = false;
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            // LẦN 1: Kích hoạt chế độ tìm kiếm (khi Mã Danh Mục đang bị khóa)
+            if (txtMaDanhMuc.Enabled == false)
             {
-                MessageBox.Show("Bạn hãy nhập tên danh mục cần tìm!",
-                    "Thông báo",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
+                ResetValues();
+                txtMaDanhMuc.Enabled = true; // Mở khóa mã danh mục để điền
+                ToggleInputs(true);
 
-                txtTenDanhMuc.Focus();
+                // Ẩn/khóa các nút khác
+                btnAdd.Enabled = false;
+                btnEdit.Enabled = false;
+                btnDelete.Enabled = false;
+                btnSave.Enabled = false;
+                btnCancel.Enabled = true;
+
+                MessageBox.Show("Chế độ tìm kiếm đã bật! Vui lòng nhập thông tin (Mã, Tên, Mô tả...) rồi ấn nút Tìm kiếm lần nữa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtMaDanhMuc.Focus();
                 return;
             }
 
-            sql = $@"
-        SELECT MaDanhMuc, TenDanhMuc, MoTa,
-               TrangThai, NgayTao, NgayCapNhat
-        FROM DanhMuc
-        WHERE TenDanhMuc LIKE N'%{txtTenDanhMuc.Text.Trim()}%'";
-
-            if (DbContext.Conn.State == ConnectionState.Closed)
+            // LẦN 2: Thực hiện tìm kiếm (khi Mã Danh Mục đang được mở)
+            if (txtMaDanhMuc.Text == "" && txtTenDanhMuc.Text == "" && txtMoTa.Text == "" && cboTrangThai.Text == "")
             {
-                DbContext.Ketnoi();
-            }
+                MessageBox.Show("Hãy nhập ít nhất một điều kiện tìm kiếm!!!", "Yêu cầu", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            } 
 
-            SqlDataAdapter da =
-                new SqlDataAdapter(sql, (SqlConnection)DbContext.Conn);
+            string sql = "SELECT MaDanhMuc, TenDanhMuc, MoTa, TrangThai, NgayTao, NgayCapNhat FROM DanhMuc WHERE 1=1";
+            
+            if (txtMaDanhMuc.Text != "")
+                sql += $" AND MaDanhMuc LIKE '%{txtMaDanhMuc.Text.Trim()}%'";
+                
+            if (txtTenDanhMuc.Text != "")
+                sql += $" AND TenDanhMuc LIKE N'%{txtTenDanhMuc.Text.Trim()}%'";
+                
+            if (txtMoTa.Text != "")
+                sql += $" AND MoTa LIKE N'%{txtMoTa.Text.Trim()}%'";
+                
+            if (cboTrangThai.Text != "")
+                sql += $" AND TrangThai = N'{cboTrangThai.Text}'";
 
-            DataTable dtSearch = new DataTable();
-
-            da.Fill(dtSearch);
-
+            DataTable dtSearch = DbContext.GetDataToTable(sql);
+            
             if (dtSearch.Rows.Count == 0)
             {
-                MessageBox.Show("Không tìm thấy danh mục nào!",
-                    "Thông báo",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-
-                return;
+                MessageBox.Show("Không có bản ghi thỏa mãn điều kiện!!!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-
+            else
+            {
+                MessageBox.Show($"Có {dtSearch.Rows.Count} bản ghi thỏa mãn điều kiện!!!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+           
             dgvDanhMuc.DataSource = dtSearch;
-
-            MessageBox.Show("Đã tìm thấy " + dtSearch.Rows.Count +
-                " danh mục!",
-                "Thông báo",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+            // Lưu ý: Vẫn giữ giao diện tìm kiếm cho đến khi click vào DataGridView hoặc bấm Làm mới
         }
 
-        private void btnSave_Click(object? sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            string sql;
-
-         
             if (txtTenDanhMuc.Text.Trim().Length == 0)
             {
-                MessageBox.Show("Bạn phải nhập tên danh mục!",
-                    "Thông báo",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageBox.Show("Bạn phải nhập tên danh mục!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtTenDanhMuc.Focus();
                 return;
             }
 
-         
             if (txtMoTa.Text.Trim().Length == 0)
             {
-                MessageBox.Show("Bạn phải nhập mô tả!",
-                    "Thông báo",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageBox.Show("Bạn phải nhập mô tả!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtMoTa.Focus();
                 return;
             }
 
-         
             if (cboTrangThai.Text.Trim().Length == 0)
             {
-                MessageBox.Show("Bạn phải chọn trạng thái!",
-                    "Thông báo",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageBox.Show("Bạn phải chọn trạng thái!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cboTrangThai.Focus();
                 return;
             }
 
-           
-            sql = @"SELECT TenDanhMuc
-            FROM DanhMuc
-            WHERE TenDanhMuc = N'" +
-                    txtTenDanhMuc.Text.Trim() + "'";
-
-            SqlCommand cmdCheck =
-                new SqlCommand(sql, (SqlConnection)DbContext.Conn);
-
-            SqlDataReader reader = cmdCheck.ExecuteReader();
-
-            if (reader.HasRows)
+            string sqlCheck = $"SELECT TenDanhMuc FROM DanhMuc WHERE TenDanhMuc = N'{txtTenDanhMuc.Text.Trim()}'";
+            DataTable dtCheck = DbContext.GetDataToTable(sqlCheck);
+            if (dtCheck.Rows.Count > 0)
             {
-                reader.Close();
-
-                MessageBox.Show("Tên danh mục đã tồn tại!",
-                    "Thông báo",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning);
-
+                MessageBox.Show("Tên danh mục đã tồn tại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtTenDanhMuc.Focus();
                 return;
             }
 
-            reader.Close();
-
-           
-            sql = @"INSERT INTO DanhMuc
-            (TenDanhMuc, MoTa, TrangThai, NgayTao)
-            VALUES
-            (N'" + txtTenDanhMuc.Text.Trim() +
-                    "', N'" + txtMoTa.Text.Trim() +
-                    "', N'" + cboTrangThai.Text.Trim() +
-                    "', GETDATE())";
-
-            SqlCommand cmd =
-                new SqlCommand(sql, (SqlConnection)DbContext.Conn);
-
-            cmd.ExecuteNonQuery();
-
-            MessageBox.Show("Thêm danh mục thành công!",
-                "Thông báo",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
-
+            string sql = $@"INSERT INTO DanhMuc(TenDanhMuc, MoTa, TrangThai, NgayTao) 
+                            VALUES(N'{txtTenDanhMuc.Text.Trim()}', N'{txtMoTa.Text.Trim()}', N'{cboTrangThai.Text.Trim()}', GETDATE())";
+            
+            DbContext.RunSql(sql);
             Load_DataGridView();
-
             ResetValues();
 
-            btnAdd.Enabled = true;
-            btnEdit.Enabled = true;
-            btnDelete.Enabled = true;
+            ToggleInputs(false);
 
-            btnSave.Enabled = false;
+            btnAdd.Enabled = true;
+            btnDelete.Enabled = false;
+            btnEdit.Enabled = false;
             btnCancel.Enabled = false;
+            btnSave.Enabled = false;
+            txtMaDanhMuc.Enabled = false;
         }
 
         private void dgvDanhMuc_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (btnAdd.Enabled == false)
-            {
-                MessageBox.Show("Đang ở chế độ thêm mới!", "Thông báo", 
-                    MessageBoxButtons.OK, 
-                    MessageBoxIcon.Information);
-                txtMaDanhMuc.Focus();
-                return;
-            }
-            if (dtDanhMuc.Rows.Count == 0)
-            {
-                MessageBox.Show("Không có dữ liệu!", "Thông báo",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
-                return;
-            }
-
-            txtMaDanhMuc.Text = dgvDanhMuc.CurrentRow.Cells["colMaDanhMuc"].Value.ToString();
-
-            txtTenDanhMuc.Text = dgvDanhMuc.CurrentRow.Cells["colTenDanhMuc"].Value.ToString();
-
-            txtMoTa.Text = dgvDanhMuc.CurrentRow.Cells["colMoTa"].Value.ToString();
-
-            cboTrangThai.Text = dgvDanhMuc.CurrentRow.Cells["colTrangThai"].Value.ToString();
-
-            btnEdit.Enabled = true;
-            btnDelete.Enabled = true;
-            btnCancel.Enabled = true;
+            dgvDanhMuc_CellClick(sender, e);
         }
-
     }
 }
-
-  
-

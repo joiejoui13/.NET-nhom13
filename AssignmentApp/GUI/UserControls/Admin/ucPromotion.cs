@@ -113,7 +113,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtPhanTramGiamGia.Text = "";
             txtMoTaKhuyenMai.Text = "";
             dtNgayBatDau.Value = DateTime.Now;
+            dtNgayBatDau.Checked = true;
             dtNgayHetHan.Value = DateTime.Now; // Biến trên giao diện vẫn là dtNgayHetHan
+            dtNgayHetHan.Checked = true;
             cboTrangThai.SelectedIndex = -1;
         }
 
@@ -328,8 +330,12 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 ResetValues();
                 ToggleInputs(true);
                 txtMaKhuyenMai.Enabled = true;
+                
+                // Cho ngày tháng về null (không chọn) để không bắt buộc tìm theo ngày
+                dtNgayBatDau.Checked = false;
+                dtNgayHetHan.Checked = false;
 
-                btnCancel.Enabled = true;
+                btnCancel.Enabled = false;
                 btnAdd.Enabled = false;
                 btnEdit.Enabled = false;
                 btnDelete.Enabled = false;
@@ -356,6 +362,12 @@ namespace AssignmentApp.GUI.UserControls.Admin
             if (!string.IsNullOrEmpty(statusTerm))
                 sql += $" AND TrangThai = N'{statusTerm}'";
 
+            if (dtNgayBatDau.Checked)
+                sql += $" AND NgayBatDau = '{dtNgayBatDau.Value:yyyy-MM-dd}'";
+                
+            if (dtNgayHetHan.Checked)
+                sql += $" AND NgayKetThuc = '{dtNgayHetHan.Value:yyyy-MM-dd}'";
+
             DataTable tblKM = DbContext.GetDataToTable(sql);
             dgvPromotion.DataSource = tblKM;
 
@@ -370,7 +382,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 MessageBox.Show("Không tìm thấy bản ghi nào khớp với các tiêu chí tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             
-            btnCancel.Enabled = true;
+            btnCancel.Enabled = false;
         }
 
         // 5.2.12. Viết thủ tục btnHienthi_Click (Nút Làm mới)

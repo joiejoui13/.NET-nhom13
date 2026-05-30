@@ -129,7 +129,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblInputTitle.ForeColor = Color.FromArgb(0, 126, 249);
             lblInputTitle.Location = new Point(15, 10);
             lblInputTitle.Name = "lblInputTitle";
-            lblInputTitle.Size = new Size(256, 28);
+            lblInputTitle.Size = new Size(203, 21);
             lblInputTitle.TabIndex = 0;
             lblInputTitle.Text = "THÔNG TIN KHUYẾN MÃI";
             // 
@@ -140,7 +140,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblMaKhuyenMai.ForeColor = Color.FromArgb(64, 64, 64);
             lblMaKhuyenMai.Location = new Point(15, 40);
             lblMaKhuyenMai.Name = "lblMaKhuyenMai";
-            lblMaKhuyenMai.Size = new Size(120, 20);
+            lblMaKhuyenMai.Size = new Size(94, 15);
             lblMaKhuyenMai.TabIndex = 1;
             lblMaKhuyenMai.Text = "Mã khuyến mãi:";
             // 
@@ -168,7 +168,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblTenKhuyenMai.ForeColor = Color.FromArgb(64, 64, 64);
             lblTenKhuyenMai.Location = new Point(15, 95);
             lblTenKhuyenMai.Name = "lblTenKhuyenMai";
-            lblTenKhuyenMai.Size = new Size(123, 20);
+            lblTenKhuyenMai.Size = new Size(97, 15);
             lblTenKhuyenMai.TabIndex = 2;
             lblTenKhuyenMai.Text = "Tên khuyến mãi:";
             // 
@@ -196,7 +196,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblPhanTramGiamGia.ForeColor = Color.FromArgb(64, 64, 64);
             lblPhanTramGiamGia.Location = new Point(15, 150);
             lblPhanTramGiamGia.Name = "lblPhanTramGiamGia";
-            lblPhanTramGiamGia.Size = new Size(154, 20);
+            lblPhanTramGiamGia.Size = new Size(118, 15);
             lblPhanTramGiamGia.TabIndex = 3;
             lblPhanTramGiamGia.Text = "Phần trăm giảm (%):";
             // 
@@ -224,7 +224,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblNgayBatDau.ForeColor = Color.FromArgb(64, 64, 64);
             lblNgayBatDau.Location = new Point(15, 205);
             lblNgayBatDau.Name = "lblNgayBatDau";
-            lblNgayBatDau.Size = new Size(107, 20);
+            lblNgayBatDau.Size = new Size(83, 15);
             lblNgayBatDau.TabIndex = 4;
             lblNgayBatDau.Text = "Ngày bắt đầu:";
             // 
@@ -241,6 +241,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dtNgayBatDau.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtNgayBatDau.Name = "dtNgayBatDau";
             dtNgayBatDau.ShadowDecoration.CustomizableEdges = customizableEdges8;
+            dtNgayBatDau.ShowCheckBox = true;
             dtNgayBatDau.Size = new Size(290, 30);
             dtNgayBatDau.TabIndex = 4;
             dtNgayBatDau.Value = new DateTime(2026, 5, 22, 20, 2, 39, 0);
@@ -252,7 +253,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblNgayHetHan.ForeColor = Color.FromArgb(64, 64, 64);
             lblNgayHetHan.Location = new Point(15, 260);
             lblNgayHetHan.Name = "lblNgayHetHan";
-            lblNgayHetHan.Size = new Size(107, 20);
+            lblNgayHetHan.Size = new Size(83, 15);
             lblNgayHetHan.TabIndex = 5;
             lblNgayHetHan.Text = "Ngày hết hạn:";
             // 
@@ -269,6 +270,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dtNgayHetHan.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
             dtNgayHetHan.Name = "dtNgayHetHan";
             dtNgayHetHan.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            dtNgayHetHan.ShowCheckBox = true;
             dtNgayHetHan.Size = new Size(290, 30);
             dtNgayHetHan.TabIndex = 5;
             dtNgayHetHan.Value = new DateTime(2026, 5, 22, 20, 2, 39, 68);
@@ -280,7 +282,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblMoTaKhuyenMai.ForeColor = Color.FromArgb(64, 64, 64);
             lblMoTaKhuyenMai.Location = new Point(15, 315);
             lblMoTaKhuyenMai.Name = "lblMoTaKhuyenMai";
-            lblMoTaKhuyenMai.Size = new Size(54, 20);
+            lblMoTaKhuyenMai.Size = new Size(42, 15);
             lblMoTaKhuyenMai.TabIndex = 6;
             lblMoTaKhuyenMai.Text = "Mô tả:";
             // 
@@ -309,7 +311,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblTrangThai.ForeColor = Color.FromArgb(64, 64, 64);
             lblTrangThai.Location = new Point(15, 410);
             lblTrangThai.Name = "lblTrangThai";
-            lblTrangThai.Size = new Size(84, 20);
+            lblTrangThai.Size = new Size(65, 15);
             lblTrangThai.TabIndex = 7;
             lblTrangThai.Text = "Trạng thái:";
             // 
@@ -437,7 +439,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblGridTitle.ForeColor = Color.FromArgb(0, 126, 249);
             lblGridTitle.Location = new Point(15, 10);
             lblGridTitle.Name = "lblGridTitle";
-            lblGridTitle.Size = new Size(262, 28);
+            lblGridTitle.Size = new Size(209, 21);
             lblGridTitle.TabIndex = 0;
             lblGridTitle.Text = "DANH SÁCH KHUYẾN MÃI";
             // 
@@ -498,13 +500,13 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dgvPromotion.DefaultCellStyle = dataGridViewCellStyle3;
             dgvPromotion.GridColor = Color.FromArgb(231, 229, 255);
-            dgvPromotion.Location = new Point(15, 105);
+            dgvPromotion.Location = new Point(15, 95);
             dgvPromotion.Name = "dgvPromotion";
             dgvPromotion.ReadOnly = true;
             dgvPromotion.RowHeadersVisible = false;
             dgvPromotion.RowHeadersWidth = 51;
             dgvPromotion.RowTemplate.Height = 30;
-            dgvPromotion.Size = new Size(587, 540);
+            dgvPromotion.Size = new Size(587, 550);
             dgvPromotion.TabIndex = 17;
             dgvPromotion.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvPromotion.ThemeStyle.AlternatingRowsStyle.Font = null;

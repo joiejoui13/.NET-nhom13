@@ -91,7 +91,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
             btnCancel = new Guna.UI2.WinForms.Guna2Button();
             pnlGridCard = new Guna.UI2.WinForms.Guna2Panel();
             lblGridTitle = new Label();
-            btnRefresh = new Guna.UI2.WinForms.Guna2Button();
             tabReportContainer = new TabControl();
             tabCharts = new TabPage();
             tblChartsLayout = new TableLayoutPanel();
@@ -427,7 +426,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
             pnlGridCard.BackColor = Color.Transparent;
             pnlGridCard.BorderRadius = 10;
             pnlGridCard.Controls.Add(lblGridTitle);
-            pnlGridCard.Controls.Add(btnRefresh);
             pnlGridCard.Controls.Add(tabReportContainer);
             pnlGridCard.CustomizableEdges = customizableEdges29;
             pnlGridCard.FillColor = Color.White;
@@ -448,22 +446,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
             lblGridTitle.Size = new Size(219, 21);
             lblGridTitle.TabIndex = 0;
             lblGridTitle.Text = "DỮ LIỆU & BIỂU ĐỒ BÁO CÁO";
-            // 
-            // btnRefresh
-            // 
-            btnRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            btnRefresh.BorderRadius = 5;
-            btnRefresh.CustomizableEdges = customizableEdges27;
-            btnRefresh.FillColor = Color.FromArgb(108, 117, 125);
-            btnRefresh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
-            btnRefresh.ForeColor = Color.White;
-            btnRefresh.Location = new Point(505, 10);
-            btnRefresh.Name = "btnRefresh";
-            btnRefresh.ShadowDecoration.CustomizableEdges = customizableEdges28;
-            btnRefresh.Size = new Size(100, 36);
-            btnRefresh.TabIndex = 10;
-            btnRefresh.Text = "LÀM MỚI";
-            btnRefresh.Click += btnRefresh_Click;
             // 
             // tabReportContainer
             // 
@@ -771,7 +753,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
 
         private Guna.UI2.WinForms.Guna2Panel pnlGridCard;
         private System.Windows.Forms.Label lblGridTitle;
-        private Guna.UI2.WinForms.Guna2Button btnRefresh;
 
         private System.Windows.Forms.TabControl tabReportContainer;
         private System.Windows.Forms.TabPage tabCharts;

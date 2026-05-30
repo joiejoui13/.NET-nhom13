@@ -709,7 +709,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvProductsSelection.Columns.AddRange(new DataGridViewColumn[] { colSelMaSP, colSelTenSP, colSelGiaNhap });
             dataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle6.BackColor = Color.White;
-            dataGridViewCellStyle6.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            dataGridViewCellStyle6.Font = new Font("Segoe UI", 9F);
             dataGridViewCellStyle6.ForeColor = Color.FromArgb(71, 69, 94);
             dataGridViewCellStyle6.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dataGridViewCellStyle6.SelectionForeColor = Color.FromArgb(71, 69, 94);
@@ -777,6 +777,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // pnlProductDetailCard
             // 
+            pnlProductDetailCard.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlProductDetailCard.BorderColor = Color.FromArgb(230, 230, 230);
             pnlProductDetailCard.BorderRadius = 15;
             pnlProductDetailCard.BorderThickness = 1;
@@ -822,7 +823,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // lblProductDetailDesc
             // 
-            lblProductDetailDesc.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            lblProductDetailDesc.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lblProductDetailDesc.Font = new Font("Segoe UI", 9.5F, FontStyle.Bold);
             lblProductDetailDesc.ForeColor = Color.FromArgb(127, 140, 141);
             lblProductDetailDesc.Location = new Point(240, 20);
@@ -830,6 +831,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblProductDetailDesc.Size = new Size(323, 435);
             lblProductDetailDesc.TabIndex = 2;
             lblProductDetailDesc.Text = "Mã SP: --\nThông tin chi tiết về sản phẩm sẽ được cập nhật ở đây.";
+            lblProductDetailDesc.Click += lblProductDetailDesc_Click;
             // 
             // pnlChonRight
             // 
@@ -875,6 +877,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             guna2Button3.Size = new Size(289, 35);
             guna2Button3.TabIndex = 23;
             guna2Button3.Text = "BỎ QUA";
+            guna2Button3.Click += guna2Button3_Click;
             // 
             // lblChonRightTitle
             // 
@@ -922,7 +925,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvCurrentDetails.Columns.AddRange(new DataGridViewColumn[] { colCurMaSP, colCurTenSP, colCurSoLuong, colCurGiaNhap, colCurThanhTien });
             dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle9.BackColor = Color.White;
-            dataGridViewCellStyle9.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
+            dataGridViewCellStyle9.Font = new Font("Segoe UI", 9F);
             dataGridViewCellStyle9.ForeColor = Color.FromArgb(71, 69, 94);
             dataGridViewCellStyle9.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dataGridViewCellStyle9.SelectionForeColor = Color.FromArgb(71, 69, 94);
@@ -1003,6 +1006,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             btnAddToCart.Size = new Size(94, 36);
             btnAddToCart.TabIndex = 19;
             btnAddToCart.Text = "THÊM";
+            btnAddToCart.Click += btnAddToCart_Click;
             // 
             // lblSelMaSP
             // 
@@ -1045,7 +1049,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             btnBackToReceipt.ShadowDecoration.CustomizableEdges = customizableEdges50;
             btnBackToReceipt.Size = new Size(289, 40);
             btnBackToReceipt.TabIndex = 21;
-            btnBackToReceipt.Text = "LƯU THAY ĐỔI";
+            btnBackToReceipt.Text = "LƯU CHI TIẾT PHIẾU";
             btnBackToReceipt.Click += btnBackToReceipt_Click;
             // 
             // txtSelMaSP
@@ -1181,7 +1185,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtProductSearch.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtProductSearch.Font = new Font("Segoe UI", 9F);
             txtProductSearch.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtProductSearch.Location = new Point(15, 45);
+            txtProductSearch.Location = new Point(350, 15);
             txtProductSearch.Name = "txtProductSearch";
             txtProductSearch.PlaceholderText = "Tìm kiếm theo mã, tên SP...";
             txtProductSearch.SelectedText = "";

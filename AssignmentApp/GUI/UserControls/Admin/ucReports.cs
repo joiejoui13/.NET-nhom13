@@ -41,12 +41,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             LoadReportData();
         }
 
-        // 5.3.4. Viết thủ tục btnHienthi_Click (Nút Làm Mới)
-        private void btnRefresh_Click(object sender, EventArgs e)
-        {
-            // Đặt lại các giá trị hoặc chỉ tải lại dữ liệu mới nhất
-            LoadReportData();
-        }
+        // Nút làm mới đã bị xóa theo yêu cầu
 
         // 5.3.5. Viết thủ tục xuất báo cáo Excel (btnSave_Click)
         private void btnSave_Click(object sender, EventArgs e)

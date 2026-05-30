@@ -304,7 +304,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 ToggleInputs(true);
                 txtMaNguoiDung.Enabled = true;
 
-                btnCancel.Enabled = true;
+                btnCancel.Enabled = false;
                 btnAdd.Enabled = false;
                 btnEdit.Enabled = false;
                 btnDelete.Enabled = false;
@@ -357,7 +357,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 MessageBox.Show("Không tìm thấy kết quả nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
             
-            btnCancel.Enabled = true;
+            btnCancel.Enabled = false;
         }
 
         // 5.2.12. Viết thủ tục btnHienthi_Click (Nút Làm mới)

@@ -144,7 +144,7 @@ CREATE TABLE GiaoHang (
     MaHoaDon INT,
     MaTraHang INT,
     DiaChiGiao NVARCHAR(255),
-    TrangThai NVARCHAR(50),
+    TrangThaiGiao NVARCHAR(50),
     NgayGiao DATETIME,
     FOREIGN KEY (MaHoaDon) REFERENCES HoaDon(MaHoaDon),
     FOREIGN KEY (MaTraHang) REFERENCES TraHang(MaTraHang)
@@ -270,7 +270,7 @@ SET IDENTITY_INSERT ChiTietHoaDon OFF;
 
 -- 9. GiaoHang (Cho đơn đặt hàng công ty)
 SET IDENTITY_INSERT GiaoHang ON;
-INSERT INTO GiaoHang (MaGiaoHang, MaHoaDon, DiaChiGiao, TrangThai, NgayGiao) VALUES
+INSERT INTO GiaoHang (MaGiaoHang, MaHoaDon, DiaChiGiao, TrangThaiGiao, NgayGiao) VALUES
 (1, 2, N'Tòa nhà văn phòng Cầu Giấy', N'Đang chuẩn bị hàng', NULL);
 SET IDENTITY_INSERT GiaoHang OFF;
 

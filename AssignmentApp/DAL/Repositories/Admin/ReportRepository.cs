@@ -145,12 +145,12 @@ namespace AssignmentApp.DAL.Repositories.Admin
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
             string sql = @"
                 SELECT 
-                    COALESCE(g.TrangThai, N'Mua tại quầy') AS TrangThai,
+                    COALESCE(g.TrangThaiGiao, N'Mua tại quầy') AS TrangThai,
                     COUNT(*) AS SoLuong
                 FROM HoaDon h
                 LEFT JOIN GiaoHang g ON h.MaHoaDon = g.MaHoaDon
                 WHERE h.NgayTao >= @Start AND h.NgayTao <= @End
-                GROUP BY COALESCE(g.TrangThai, N'Mua tại quầy')";
+                GROUP BY COALESCE(g.TrangThaiGiao, N'Mua tại quầy')";
             return DbContext.Conn.Query<OrderStatusRow>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1) });
         }
     }

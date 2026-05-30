@@ -184,7 +184,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             tabMain.Controls.Add(tabPhieuNhap);
             tabMain.Controls.Add(tabChonSanPham);
-            tabMain.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            
             tabMain.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
             tabMain.ItemSize = new Size(220, 35);
             tabMain.Location = new Point(10, 10);
@@ -208,7 +208,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // pnlInputCard
             // 
-            pnlInputCard.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            pnlInputCard.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             pnlInputCard.BackColor = Color.Transparent;
             pnlInputCard.BorderRadius = 10;
             pnlInputCard.Controls.Add(lblInputTitle);
@@ -359,7 +359,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // btnAdd
             // 
-            btnAdd.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnAdd.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             btnAdd.BorderRadius = 5;
             btnAdd.CustomizableEdges = customizableEdges9;
             btnAdd.FillColor = Color.FromArgb(0, 126, 249);
@@ -375,7 +375,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // btnEdit
             // 
-            btnEdit.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnEdit.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             btnEdit.BorderRadius = 5;
             btnEdit.CustomizableEdges = customizableEdges11;
             btnEdit.FillColor = Color.FromArgb(0, 126, 249);
@@ -391,7 +391,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // btnDelete
             // 
-            btnDelete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnDelete.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             btnDelete.BorderRadius = 5;
             btnDelete.CustomizableEdges = customizableEdges13;
             btnDelete.FillColor = Color.FromArgb(244, 67, 54);
@@ -407,7 +407,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // btnSave
             // 
-            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnSave.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             btnSave.BorderRadius = 5;
             btnSave.CustomizableEdges = customizableEdges15;
             btnSave.FillColor = Color.FromArgb(0, 126, 249);
@@ -423,7 +423,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // btnCancel
             // 
-            btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnCancel.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             btnCancel.BorderRadius = 5;
             btnCancel.CustomizableEdges = customizableEdges17;
             btnCancel.FillColor = Color.FromArgb(108, 117, 125);
@@ -439,7 +439,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // pnlGridCard
             // 
-            pnlGridCard.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pnlGridCard.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             pnlGridCard.BackColor = Color.Transparent;
             pnlGridCard.BorderRadius = 10;
             pnlGridCard.Controls.Add(lblGridTitle);
@@ -483,7 +483,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // btnRefresh
             // 
-            btnRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             btnRefresh.BorderRadius = 5;
             btnRefresh.CustomizableEdges = customizableEdges23;
             btnRefresh.FillColor = Color.FromArgb(108, 117, 125);
@@ -503,7 +503,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvDetails.AllowUserToDeleteRows = false;
             dataGridViewCellStyle1.BackColor = Color.White;
             dgvDetails.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
-            dgvDetails.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvDetails.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             dataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = Color.FromArgb(0, 126, 249);
             dataGridViewCellStyle2.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -652,7 +652,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // pnlChonLeft
             // 
-            pnlChonLeft.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pnlChonLeft.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             pnlChonLeft.BackColor = Color.Transparent;
             pnlChonLeft.BorderRadius = 10;
             pnlChonLeft.Controls.Add(tabSelectionContainer);
@@ -693,7 +693,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvProductsSelection.AllowUserToDeleteRows = false;
             dataGridViewCellStyle4.BackColor = Color.White;
             dgvProductsSelection.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
-            dgvProductsSelection.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvProductsSelection.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle5.BackColor = Color.FromArgb(0, 126, 249);
             dataGridViewCellStyle5.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
@@ -774,7 +774,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // pnlProductDetailCard
             // 
-            pnlProductDetailCard.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pnlProductDetailCard.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             pnlProductDetailCard.BorderColor = Color.FromArgb(230, 230, 230);
             pnlProductDetailCard.BorderRadius = 15;
             pnlProductDetailCard.BorderThickness = 1;
@@ -830,7 +830,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // pnlChonRight
             // 
-            pnlChonRight.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            pnlChonRight.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             pnlChonRight.BackColor = Color.Transparent;
             pnlChonRight.BorderRadius = 10;
             pnlChonRight.Controls.Add(guna2Button3);
@@ -860,7 +860,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // guna2Button3
             // 
-            guna2Button3.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            guna2Button3.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             guna2Button3.BorderRadius = 5;
             guna2Button3.CustomizableEdges = customizableEdges41;
             guna2Button3.FillColor = Color.FromArgb(108, 117, 125);
@@ -886,7 +886,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // guna2Button4
             // 
-            guna2Button4.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            guna2Button4.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             guna2Button4.BorderRadius = 5;
             guna2Button4.CustomizableEdges = customizableEdges43;
             guna2Button4.FillColor = Color.FromArgb(0, 126, 249);
@@ -905,7 +905,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvCurrentDetails.AllowUserToDeleteRows = false;
             dataGridViewCellStyle7.BackColor = Color.White;
             dgvCurrentDetails.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
-            dgvCurrentDetails.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvCurrentDetails.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle8.BackColor = Color.FromArgb(0, 126, 249);
             dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -987,7 +987,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // btnAddToCart
             // 
-            btnAddToCart.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnAddToCart.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             btnAddToCart.BorderRadius = 5;
             btnAddToCart.CustomizableEdges = customizableEdges45;
             btnAddToCart.FillColor = Color.FromArgb(0, 126, 249);
@@ -1002,7 +1002,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // lblSelMaSP
             // 
-            lblSelMaSP.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblSelMaSP.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             lblSelMaSP.AutoSize = true;
             lblSelMaSP.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblSelMaSP.ForeColor = Color.FromArgb(64, 64, 64);
@@ -1014,7 +1014,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // btnRemoveFromCart
             // 
-            btnRemoveFromCart.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnRemoveFromCart.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             btnRemoveFromCart.BorderRadius = 5;
             btnRemoveFromCart.CustomizableEdges = customizableEdges47;
             btnRemoveFromCart.FillColor = Color.FromArgb(244, 67, 54);
@@ -1030,7 +1030,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // btnBackToReceipt
             // 
-            btnBackToReceipt.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnBackToReceipt.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             btnBackToReceipt.BorderRadius = 5;
             btnBackToReceipt.CustomizableEdges = customizableEdges49;
             btnBackToReceipt.FillColor = Color.FromArgb(0, 126, 249);
@@ -1046,7 +1046,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // txtSelMaSP
             // 
-            txtSelMaSP.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtSelMaSP.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             txtSelMaSP.BorderRadius = 5;
             txtSelMaSP.CustomizableEdges = customizableEdges51;
             txtSelMaSP.DefaultText = "";
@@ -1064,7 +1064,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // lblSelTenSP
             // 
-            lblSelTenSP.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblSelTenSP.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             lblSelTenSP.AutoSize = true;
             lblSelTenSP.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblSelTenSP.ForeColor = Color.FromArgb(64, 64, 64);
@@ -1076,7 +1076,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // txtSelTenSP
             // 
-            txtSelTenSP.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtSelTenSP.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             txtSelTenSP.BorderRadius = 5;
             txtSelTenSP.CustomizableEdges = customizableEdges53;
             txtSelTenSP.DefaultText = "";
@@ -1094,7 +1094,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // lblSelSoLuong
             // 
-            lblSelSoLuong.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblSelSoLuong.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             lblSelSoLuong.AutoSize = true;
             lblSelSoLuong.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblSelSoLuong.ForeColor = Color.FromArgb(64, 64, 64);
@@ -1106,7 +1106,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // txtSelSoLuong
             // 
-            txtSelSoLuong.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            txtSelSoLuong.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             txtSelSoLuong.BorderRadius = 5;
             txtSelSoLuong.CustomizableEdges = customizableEdges55;
             txtSelSoLuong.DefaultText = "";
@@ -1123,7 +1123,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // lblSelGiaNhap
             // 
-            lblSelGiaNhap.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            lblSelGiaNhap.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             lblSelGiaNhap.AutoSize = true;
             lblSelGiaNhap.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblSelGiaNhap.ForeColor = Color.FromArgb(64, 64, 64);
@@ -1135,7 +1135,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // txtSelGiaNhap
             // 
-            txtSelGiaNhap.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            txtSelGiaNhap.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             txtSelGiaNhap.BorderRadius = 5;
             txtSelGiaNhap.CustomizableEdges = customizableEdges57;
             txtSelGiaNhap.DefaultText = "";
@@ -1152,7 +1152,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // lblTotalAmount
             // 
-            lblTotalAmount.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblTotalAmount.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             lblTotalAmount.AutoSize = true;
             lblTotalAmount.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblTotalAmount.ForeColor = Color.FromArgb(22, 163, 74);
@@ -1171,7 +1171,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // txtProductSearch
             // 
-            txtProductSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtProductSearch.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             txtProductSearch.BorderRadius = 5;
             txtProductSearch.CustomizableEdges = customizableEdges61;
             txtProductSearch.DefaultText = "";
@@ -1189,7 +1189,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // guna2Button1
             // 
-            guna2Button1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            guna2Button1.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             guna2Button1.BorderRadius = 5;
             guna2Button1.CustomizableEdges = customizableEdges63;
             guna2Button1.FillColor = Color.FromArgb(0, 126, 249);
@@ -1204,7 +1204,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // guna2Button2
             // 
-            guna2Button2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            guna2Button2.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             guna2Button2.BorderRadius = 5;
             guna2Button2.CustomizableEdges = customizableEdges65;
             guna2Button2.FillColor = Color.FromArgb(108, 117, 125);

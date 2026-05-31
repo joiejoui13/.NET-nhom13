@@ -4,11 +4,15 @@ namespace AssignmentApp.DTO
 {
     public class InventoryLog
     {
-        public string MaLichSu { get; set; } = string.Empty;
-        public string MaSanPham { get; set; } = string.Empty;
+        public int MaLichSu { get; set; }
+        public int MaSanPham { get; set; }
         public string TenSanPham { get; set; } = string.Empty;
-        public int SoLuongThayDoi { get; set; }
-        public string Loai { get; set; } = string.Empty;
-        public DateTime Ngay { get; set; }
+        public int ThayDoi { get; set; }
+        public int SoLuongTruoc { get; set; }
+        public int SoLuongSau { get; set; }
+        public string LoaiGiaoDich { get; set; } = string.Empty;
+        public int MaThamChieu { get; set; }
+        public string TrangThai { get; set; } = string.Empty;
+        public DateTime Thoigian { get; set; }
     }
 }

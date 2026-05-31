@@ -4,18 +4,20 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using AssignmentApp.DAL.Repositories.Admin;
+using AssignmentApp.BLL.Services.Admin;
+using AssignmentApp.DTO.Models;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Painting;
+using Microsoft.Extensions.DependencyInjection;
 using SkiaSharp;
 
 namespace AssignmentApp.GUI.UserControls.Admin
 {
     public partial class ucReports : UserControl
     {
-        // Khởi tạo Repository chứa các hàm thao tác CSDL liên quan đến Báo cáo thống kê
-        private readonly ReportRepository _repo = new ReportRepository();
+        // Khởi tạo Service xử lý nghiệp vụ liên quan đến Báo cáo thống kê (thay vì gọi thẳng Repository)
+        private readonly IReportService _reportService;
 
         #region 1. KHỞI TẠO VÀ TẢI FORM (INITIALIZATION & LOAD)
 
@@ -26,6 +28,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
         public ucReports()
         {
             InitializeComponent();
+            
+            // Lấy instance của IReportService thông qua cơ chế Dependency Injection
+            _reportService = Program.ServiceProvider.GetRequiredService<IReportService>();
 
             // CẤU HÌNH COMBOBOX: Danh sách chu kỳ báo cáo (Ngày/Tháng/Năm)
             // Đã được tách từ file Designer để tập trung logic cấu hình tại đây
@@ -39,7 +44,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
         /// Sự kiện Load: Kích hoạt khi UserControl lần đầu được hiển thị.
         /// Thiết lập các mốc thời gian mặc định và tự động tải dữ liệu báo cáo lần đầu tiên.
         /// </summary>
-        private void ucReports_Load(object sender, EventArgs e)
+        private async void ucReports_Load(object sender, EventArgs e)
         {
             // 1. Thiết lập giá trị mặc định cho bộ lọc báo cáo
             cboPeriod.SelectedIndex = 1; // Mặc định chọn chỉ mục 1 (Tháng)
@@ -49,7 +54,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dtpEndDate.Value = new DateTime(2026, 12, 31);
             
             // 2. Kích hoạt quy trình tải toàn bộ dữ liệu báo cáo
-            LoadReportData();
+            await LoadReportDataAsync();
         }
 
         #endregion
@@ -60,7 +65,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
         /// Hàm cốt lõi đảm nhiệm toàn bộ quy trình tải dữ liệu báo cáo.
         /// Bao gồm: Cập nhật thẻ tổng quan (KPI), vẽ 3 loại biểu đồ (Đường, Cột, Tròn) và đổ dữ liệu vào DataGridView.
         /// </summary>
-        private void LoadReportData()
+        private async Task LoadReportDataAsync()
         {
             try
             {
@@ -76,32 +81,32 @@ namespace AssignmentApp.GUI.UserControls.Admin
 
                 // 2. CẬP NHẬT CÁC THẺ TỔNG QUAN (KPI CARDS)
                 // - Lấy và hiển thị Tổng Doanh Thu
-                decimal revenue = _repo.GetRevenue(start, end);
+                decimal revenue = await _reportService.GetRevenueAsync(start, end);
                 lblRevenueValue.Text = revenue.ToString("N0") + " ₫";
 
                 // - Lấy và hiển thị Tổng Số Đơn Hàng
-                int orders = _repo.GetOrderCount(start, end);
+                int orders = await _reportService.GetOrderCountAsync(start, end);
                 lblOrdersValue.Text = orders.ToString("N0");
 
                 // - Lấy và hiển thị Tổng Số Sản Phẩm Bán Ra
-                int products = _repo.GetTotalProductsSold(start, end);
+                int products = await _reportService.GetTotalProductsSoldAsync(start, end);
                 lblProductsValue.Text = products.ToString("N0");
 
                 // 3. VẼ BIỂU ĐỒ HỖN HỢP: XU HƯỚNG DOANH THU & ĐƠN HÀNG (LINE & BAR CHART)
                 // - Kéo dữ liệu xu hướng từ CSDL
-                var trend = _repo.GetRevenueTrend(start, end, period);
+                var trend = await _reportService.GetRevenueTrendAsync(start, end, period);
+                var trendList = trend.ToList();
                 
-                // - Phân tách dữ liệu thành các mảng trục X, Y
                 // Phân tách dữ liệu thành các mảng trục X, Y (Sử dụng vòng lặp for cơ bản thay cho LINQ)
-                string[] dates = new string[trend.Count];
-                double[] revenues = new double[trend.Count];
-                int[] ordersCounts = new int[trend.Count];
+                string[] dates = new string[trendList.Count];
+                double[] revenues = new double[trendList.Count];
+                int[] ordersCounts = new int[trendList.Count];
 
-                for (int i = 0; i < trend.Count; i++)
+                for (int i = 0; i < trendList.Count; i++)
                 {
-                    dates[i] = trend[i].Period;
-                    revenues[i] = (double)trend[i].Revenue;
-                    ordersCounts[i] = trend[i].OrdersCount;
+                    dates[i] = trendList[i].Period;
+                    revenues[i] = (double)trendList[i].Revenue;
+                    ordersCounts[i] = trendList[i].OrdersCount;
                 }
 
                 // - Khởi tạo các chuỗi dữ liệu (Series) cho biểu đồ LiveCharts
@@ -156,7 +161,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 };
 
                 // 4. VẼ BIỂU ĐỒ TRÒN 1: TOP 5 SẢN PHẨM BÁN CHẠY
-                var topProducts = _repo.GetTopProducts(start, end, 5);
+                var topProducts = await _reportService.GetTopProductsAsync(start, end, 5);
                 var productSeries = new List<ISeries>();
                 foreach (var p in topProducts)
                 {
@@ -170,7 +175,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 pieChartProducts.Series = productSeries;
 
                 // 5. VẼ BIỂU ĐỒ TRÒN 2: PHÂN BỔ TRẠNG THÁI ĐƠN HÀNG (Hoàn thành, Hủy, Chờ...)
-                var orderStatus = _repo.GetOrderStatusDistribution(start, end);
+                var orderStatus = await _reportService.GetOrderStatusDistributionAsync(start, end);
                 var statusSeries = new List<ISeries>();
                 foreach (var s in orderStatus)
                 {
@@ -183,8 +188,8 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 pieChartStatus.Series = statusSeries;
 
                 // 6. ĐỔ DỮ LIỆU CHI TIẾT HÓA ĐƠN XUỐNG DATAGRIDVIEW
-                var sales = _repo.GetSalesReport(start, end).ToList();
-                dgvReports.DataSource = sales;
+                var sales = await _reportService.GetSalesReportAsync(start, end);
+                dgvReports.DataSource = sales.ToList();
 
                 // Tinh chỉnh hiển thị các cột (Chỉ thiết lập nếu cột đã sinh ra)
                 if (dgvReports.Columns.Count > 0)
@@ -227,9 +232,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
         /// <summary>
         /// Nút Lọc/Tìm kiếm: Kích hoạt tải lại toàn bộ báo cáo dựa trên khoảng thời gian mới vừa chọn.
         /// </summary>
-        private void btnSearch_Click(object sender, EventArgs e)
+        private async void btnSearch_Click(object sender, EventArgs e)
         {
-            LoadReportData();
+            await LoadReportDataAsync();
         }
 
         /// <summary>

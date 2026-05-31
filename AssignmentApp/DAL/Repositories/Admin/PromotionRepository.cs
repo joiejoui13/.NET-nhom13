@@ -6,7 +6,7 @@ using Dapper;
 
 namespace AssignmentApp.DAL.Repositories.Admin
 {
-    public class PromotionRepository
+    public class PromotionRepository : IPromotionRepository
     {
         public async Task<IEnumerable<Promotion>> GetAllAsync()
         {
@@ -15,7 +15,7 @@ namespace AssignmentApp.DAL.Repositories.Admin
             return await DbContext.Conn.QueryAsync<Promotion>(sql);
         }
 
-        public async Task<Promotion> GetByIdAsync(string maKhuyenMai)
+        public async Task<Promotion> GetByIdAsync(int maKhuyenMai)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
             string sql = "SELECT * FROM KhuyenMai WHERE MaKhuyenMai = @MaKhuyenMai";
@@ -25,8 +25,8 @@ namespace AssignmentApp.DAL.Repositories.Admin
         public async Task<int> AddAsync(Promotion p)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = @"INSERT INTO KhuyenMai (MaKhuyenMai, TenKhuyenMai, PhanTramGiamGia, NgayBatDau, NgayHetHan, MoTaKhuyenMai, TrangThai) 
-                           VALUES (@MaKhuyenMai, @TenKhuyenMai, @PhanTramGiamGia, @NgayBatDau, @NgayHetHan, @MoTaKhuyenMai, @TrangThai)";
+            string sql = @"INSERT INTO KhuyenMai (TenKhuyenMai, PhanTramGiamGia, NgayBatDau, NgayKetThuc, MoTaKhuyenMai, TrangThai) 
+                           VALUES (@TenKhuyenMai, @PhanTramGiamGia, @NgayBatDau, @NgayKetThuc, @MoTaKhuyenMai, @TrangThai)";
             return await DbContext.Conn.ExecuteAsync(sql, p);
         }
 
@@ -35,13 +35,13 @@ namespace AssignmentApp.DAL.Repositories.Admin
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
             string sql = @"UPDATE KhuyenMai 
                            SET TenKhuyenMai = @TenKhuyenMai, PhanTramGiamGia = @PhanTramGiamGia, 
-                               NgayBatDau = @NgayBatDau, NgayHetHan = @NgayHetHan, 
+                               NgayBatDau = @NgayBatDau, NgayKetThuc = @NgayKetThuc, 
                                MoTaKhuyenMai = @MoTaKhuyenMai, TrangThai = @TrangThai 
                            WHERE MaKhuyenMai = @MaKhuyenMai";
             return await DbContext.Conn.ExecuteAsync(sql, p);
         }
 
-        public async Task<int> DeleteAsync(string maKhuyenMai)
+        public async Task<int> DeleteAsync(int maKhuyenMai)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
             string sql = "DELETE FROM KhuyenMai WHERE MaKhuyenMai = @MaKhuyenMai";

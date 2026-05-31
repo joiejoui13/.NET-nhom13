@@ -3,69 +3,34 @@ using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using AssignmentApp.DAL.Core;
+using AssignmentApp.DTO.Models;
 using Dapper;
 
 namespace AssignmentApp.DAL.Repositories.Admin
 {
-    // CÁC LỚP DTO ĐỂ HỨNG DỮ LIỆU TỪ DATABASE
-    public class SalesReportRow
+    public class ReportRepository : IReportRepository
     {
-        public string MaHoaDon { get; set; } = string.Empty;
-        public string TenKhachHang { get; set; } = string.Empty;
-        public string TenNguoiDung { get; set; } = string.Empty;
-        public DateTime NgayTao { get; set; }
-        public decimal TongTien { get; set; }
-        public string HinhThucThanhToan { get; set; } = string.Empty;
-    }
-
-    public class RevenueTrendRow
-    {
-        public string Period { get; set; } = string.Empty;
-        public decimal Revenue { get; set; }
-        public int OrdersCount { get; set; }
-    }
-
-    public class TopProductRow
-    {
-        public string MaSanPham { get; set; } = string.Empty;
-        public string TenSanPham { get; set; } = string.Empty;
-        public int SoLuongBan { get; set; }
-        public decimal DoanhThu { get; set; }
-    }
-
-    public class OrderStatusRow
-    {
-        public string TrangThai { get; set; } = string.Empty;
-        public int SoLuong { get; set; }
-    }
-
-    // 5.3.1. Viết lớp ReportRepository (Truy xuất dữ liệu Báo cáo)
-    public class ReportRepository
-    {
-        // 5.3.1.1. Hàm lấy Tổng Doanh Thu
-        public decimal GetRevenue(DateTime start, DateTime end)
+        public async Task<decimal> GetRevenueAsync(DateTime start, DateTime end)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
             string sql = @"
                 SELECT COALESCE(SUM(TongTien), 0)
                 FROM HoaDon
                 WHERE NgayTao >= @Start AND NgayTao <= @End AND TrangThai = N'Đã hoàn thành'";
-            return DbContext.Conn.ExecuteScalar<decimal>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1) });
+            return await DbContext.Conn.ExecuteScalarAsync<decimal>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1) });
         }
 
-        // 5.3.1.2. Hàm lấy Tổng Số Đơn Hàng
-        public int GetOrderCount(DateTime start, DateTime end)
+        public async Task<int> GetOrderCountAsync(DateTime start, DateTime end)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
             string sql = @"
                 SELECT COUNT(*)
                 FROM HoaDon
                 WHERE NgayTao >= @Start AND NgayTao <= @End AND TrangThai = N'Đã hoàn thành'";
-            return DbContext.Conn.ExecuteScalar<int>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1) });
+            return await DbContext.Conn.ExecuteScalarAsync<int>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1) });
         }
 
-        // 5.3.1.3. Hàm lấy Tổng Sản Phẩm Đã Bán
-        public int GetTotalProductsSold(DateTime start, DateTime end)
+        public async Task<int> GetTotalProductsSoldAsync(DateTime start, DateTime end)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
             string sql = @"
@@ -73,11 +38,10 @@ namespace AssignmentApp.DAL.Repositories.Admin
                 FROM ChiTietHoaDon ct
                 INNER JOIN HoaDon h ON ct.MaHoaDon = h.MaHoaDon
                 WHERE h.NgayTao >= @Start AND h.NgayTao <= @End AND h.TrangThai = N'Đã hoàn thành'";
-            return DbContext.Conn.ExecuteScalar<int>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1) });
+            return await DbContext.Conn.ExecuteScalarAsync<int>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1) });
         }
 
-        // 5.3.1.4. Hàm lấy Bảng kê chi tiết Hóa đơn (Data Grid)
-        public IEnumerable<SalesReportRow> GetSalesReport(DateTime start, DateTime end)
+        public async Task<IEnumerable<SalesReportRow>> GetSalesReportAsync(DateTime start, DateTime end)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
             string sql = @"
@@ -93,11 +57,10 @@ namespace AssignmentApp.DAL.Repositories.Admin
                 LEFT JOIN NguoiDung n ON h.MaNguoiDung = n.MaNguoiDung
                 WHERE h.NgayTao >= @Start AND h.NgayTao <= @End
                 ORDER BY h.NgayTao DESC";
-            return DbContext.Conn.Query<SalesReportRow>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1) });
+            return await DbContext.Conn.QueryAsync<SalesReportRow>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1) });
         }
 
-        // 5.3.1.5. Hàm lấy Dữ liệu cho Biểu đồ Đường (Xu hướng doanh thu)
-        public IEnumerable<RevenueTrendRow> GetRevenueTrend(DateTime start, DateTime end, string period)
+        public async Task<IEnumerable<RevenueTrendRow>> GetRevenueTrendAsync(DateTime start, DateTime end, string period)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
             
@@ -117,11 +80,10 @@ namespace AssignmentApp.DAL.Repositories.Admin
                 GROUP BY {groupQuery}
                 ORDER BY Period ASC";
 
-            return DbContext.Conn.Query<RevenueTrendRow>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1) });
+            return await DbContext.Conn.QueryAsync<RevenueTrendRow>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1) });
         }
 
-        // 5.3.1.6. Hàm lấy Top 5 Sản Phẩm Bán Chạy Nhất (Biểu đồ Tròn)
-        public IEnumerable<TopProductRow> GetTopProducts(DateTime start, DateTime end, int topN = 5)
+        public async Task<IEnumerable<TopProductRow>> GetTopProductsAsync(DateTime start, DateTime end, int topN = 5)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
             string sql = @"
@@ -136,11 +98,10 @@ namespace AssignmentApp.DAL.Repositories.Admin
                 WHERE h.NgayTao >= @Start AND h.NgayTao <= @End AND h.TrangThai = N'Đã hoàn thành'
                 GROUP BY ct.MaSanPham, s.TenSanPham
                 ORDER BY SoLuongBan DESC";
-            return DbContext.Conn.Query<TopProductRow>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1), TopN = topN });
+            return await DbContext.Conn.QueryAsync<TopProductRow>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1), TopN = topN });
         }
 
-        // 5.3.1.7. Hàm lấy Phân bố Trạng thái đơn hàng (Biểu đồ Tròn)
-        public IEnumerable<OrderStatusRow> GetOrderStatusDistribution(DateTime start, DateTime end)
+        public async Task<IEnumerable<OrderStatusRow>> GetOrderStatusDistributionAsync(DateTime start, DateTime end)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
             string sql = @"
@@ -151,7 +112,7 @@ namespace AssignmentApp.DAL.Repositories.Admin
                 LEFT JOIN GiaoHang g ON h.MaHoaDon = g.MaHoaDon
                 WHERE h.NgayTao >= @Start AND h.NgayTao <= @End
                 GROUP BY COALESCE(g.TrangThaiGiao, N'Mua tại quầy')";
-            return DbContext.Conn.Query<OrderStatusRow>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1) });
+            return await DbContext.Conn.QueryAsync<OrderStatusRow>(sql, new { Start = start.Date, End = end.Date.AddDays(1).AddSeconds(-1) });
         }
     }
 }

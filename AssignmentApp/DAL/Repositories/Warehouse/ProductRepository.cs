@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using AssignmentApp.DAL.Core;
@@ -70,6 +70,13 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
             return await DbContext.Conn.ExecuteAsync(sql, p);
         }
 
+                public async Task<int> UpdateStockAsync(int productId, int quantityChange)
+        {
+            if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
+            string sql = "UPDATE SanPham SET SoLuongTon = SoLuongTon + @QuantityChange WHERE MaSanPham = @ProductId";
+            return await DbContext.Conn.ExecuteAsync(sql, new { QuantityChange = quantityChange, ProductId = productId });
+        }
+
         public async Task<int> SoftDeleteAsync(int id)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
@@ -135,3 +142,4 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
         }
     }
 }
+

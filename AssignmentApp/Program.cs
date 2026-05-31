@@ -1,4 +1,4 @@
-namespace AssignmentApp;
+﻿namespace AssignmentApp;
 using System;
 using System.Windows.Forms;
 using Microsoft.Extensions.DependencyInjection;
@@ -71,7 +71,9 @@ static class Program
             services.AddScoped<IStockInService, StockInService>();
 
         // Đăng ký cho module Bán hàng (Sales)
+        services.AddScoped<IOrderRepository, OrderRepository>();
         services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<IOrderService, OrderService>();
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IDeliveryRepository, DeliveryRepository>();
         services.AddScoped<IDeliveryService, DeliveryService>();

@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using AssignmentApp.DTO;
@@ -17,6 +17,8 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
         Task<int> UpdateAsync(Product p);
         Task<int> SoftDeleteAsync(int id);
         Task<IEnumerable<Product>> SearchAsync(string idTerm, string nameTerm, int catId, string statusTerm, double priceLimit, int stockLimit);
+        Task<int> UpdateStockAsync(int productId, int quantityChange);
         Task<DataTable> GetCategoriesForComboBoxAsync();
     }
 }
+

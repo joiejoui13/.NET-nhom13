@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ using Dapper;
 
 namespace AssignmentApp.DAL.Repositories.Sales
 {
-    public class OrderRepository
+    public class OrderRepository : IOrderRepository
     {
         public async Task<int> AddAsync(Order o)
         {
@@ -145,3 +145,4 @@ namespace AssignmentApp.DAL.Repositories.Sales
         }
     }
 }
+

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -6,6 +6,10 @@ using System.Drawing;
 using System.Threading.Tasks;
 using System.IO;
 using AssignmentApp.DAL.Repositories.Sales;
+using AssignmentApp.BLL.Services.Sales;
+using AssignmentApp.BLL.Services.Warehouse;
+using AssignmentApp.BLL.Services.Admin;
+using Microsoft.Extensions.DependencyInjection;
 using AssignmentApp.DAL.Repositories.Warehouse;
 using AssignmentApp.DTO;
 
@@ -13,9 +17,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
 {
     public partial class ucOrderManagement : UserControl
     {
-        private OrderRepository _orderRepo = new OrderRepository();
-        private ProductRepository _productRepo = new ProductRepository();
-        private OrderDetailRepository _detailRepo = new OrderDetailRepository();
+        private readonly IOrderService _orderService;
+        private readonly IProductService _productService;
+        private readonly ICustomerService _customerService;
+        private readonly IPromotionService _promoService;
 
         private List<Order> _orders = new List<Order>();
         private Order _selectedOrder = null;
@@ -31,6 +36,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
         public ucOrderManagement(bool defaultToPOS = false)
         {
             InitializeComponent();
+            _orderService = Program.ServiceProvider.GetRequiredService<IOrderService>();
+            _productService = Program.ServiceProvider.GetRequiredService<IProductService>();
+            _customerService = Program.ServiceProvider.GetRequiredService<ICustomerService>();
+            _promoService = Program.ServiceProvider.GetRequiredService<IPromotionService>();
             this.defaultToPOS = defaultToPOS;
             cboTrangThai.SelectedIndexChanged += cboTrangThai_SelectedIndexChanged;
             
@@ -224,7 +233,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private async Task LoadOrdersGridAsync()
         {
             dgvOrders.Rows.Clear();
-            _orders = (await _orderRepo.GetAllAsync()).ToList();
+            _orders = (await _orderService.GetAllOrdersAsync()).ToList();
             
             foreach (var order in _orders)
             {
@@ -285,7 +294,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtLyDoHuy.Text = order.LyDoHuy;
 
             // Load Details from DB
-            var details = await _orderRepo.GetDetailsAsync(order.MaHoaDon.ToString());
+            var details = await _orderService.GetOrderDetailsAsync(order.MaHoaDon.ToString());
             currentDetails = details.ToList();
             
             lblPOSTitle.Text = $"MÃ HÓA ĐƠN: {order.MaHoaDon}";
@@ -381,7 +390,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 }
 
                 // Perform Search
-                var list = await _orderRepo.GetAllAsync();
+                var list = await _orderService.GetAllOrdersAsync();
                 
                 if (!string.IsNullOrEmpty(txtMaHoaDon.Text))
                     list = list.Where(o => o.MaHoaDon.Contains(txtMaHoaDon.Text, StringComparison.OrdinalIgnoreCase));
@@ -513,8 +522,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 MessageBox.Show("Mã khách hàng phải là số!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            var customerRepo = new AssignmentApp.DAL.Repositories.Sales.CustomerRepository();
-            var customer = await customerRepo.GetByIdAsync(maKH);
+            
+            var customer = await _customerService.GetCustomerByIdAsync(maKH);
             if (customer == null)
             {
                 MessageBox.Show("Mã khách hàng không tồn tại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -528,8 +537,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     MessageBox.Show("Mã khuyến mãi phải là số!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
-                var promoRepo = new AssignmentApp.DAL.Repositories.Admin.PromotionRepository();
-                var promo = await promoRepo.GetByIdAsync(promoId);
+                
+                var promo = await _promoService.GetPromotionByIdAsync(promoId);
                 if (promo == null)
                 {
                     MessageBox.Show("Mã khuyến mãi không tồn tại!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -544,6 +553,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
+            string oldStatus = _selectedOrder.TrangThai;
             _selectedOrder.TrangThai = cboTrangThai.Text;
             _selectedOrder.LoaiHoaDon = cboLoaiHoaDon.Text;
             _selectedOrder.HinhThucThanhToan = cboHinhThucThanhToan.Text;
@@ -552,7 +562,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             _selectedOrder.LyDoHuy = cboTrangThai.Text == "Đã huỷ" ? txtLyDoHuy.Text : "";
             _selectedOrder.TongTien = decimal.Parse(txtTongTien.Text.Replace(" đ", "").Replace(",", ""));
 
-            await _orderRepo.UpdateAsync(_selectedOrder);
+            await _orderService.UpdateOrderStatusAsync(_selectedOrder, oldStatus);
 
             MessageBox.Show("Cập nhật đơn hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             SetControlState("Init");
@@ -593,16 +603,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     NgayTao = DateTime.Now
                 };
 
-                await _orderRepo.AddAsync(newOrder);
-                var savedOrders = await _orderRepo.GetAllAsync();
-                string newId = savedOrders.Max(o => int.Parse(o.MaHoaDon)).ToString();
-                
-                foreach(var detail in currentDetails)
-                {
-                    detail.MaHoaDon = newId;
-                    await _orderRepo.AddDetailAsync(detail);
-                }
-
+                await _orderService.CreateOrderAsync(newOrder, currentDetails);
                 MessageBox.Show("Tạo đơn hàng mới thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
@@ -632,7 +633,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 _selectedOrder.LoaiHoaDon = "Đơn bán hàng";
                 _selectedOrder.TrangThai = "Đã hoàn thành"; 
                 
-                // _ = _orderRepo.UpdateAsync(_selectedOrder);
+                // _ = _orderService.ConvertToInvoiceAsync(_selectedOrder);
 
                 MessageBox.Show("Đã chuyển đổi Đơn đặt hàng thành Đơn bán hàng thành công!\nTồn kho tương ứng đã được cập nhật.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 
@@ -649,7 +650,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             dgvProductsSelection.Rows.Clear();
 
-            var list = dataSource ?? (await _productRepo.GetAllAsync()).ToList();
+            var list = dataSource ?? (await _productService.GetAllProductsAsync()).ToList();
             foreach (var prod in list)
             {
                 dgvProductsSelection.Rows.Add(
@@ -695,7 +696,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             if (int.TryParse(id, out int productId))
             {
-                var prod = await _productRepo.GetByIdAsync(productId);
+                var prod = await _productService.GetProductByIdAsync(productId);
                 if (prod != null)
             {
                 txtSelMaSP.Text = prod.MaSanPham.ToString();
@@ -788,8 +789,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             int discountPercent = 0;
             if (int.TryParse(txtGiamGia.Text, out int promoId))
             {
-                var promoRepo = new AssignmentApp.DAL.Repositories.Admin.PromotionRepository();
-                var promo = await promoRepo.GetByIdAsync(promoId);
+                
+                var promo = await _promoService.GetPromotionByIdAsync(promoId);
                 if (promo != null)
                 {
                     discountPercent = promo.PhanTramGiamGia;
@@ -959,7 +960,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             string maDM = txtSelMaDanhMuc.Text.Trim().ToLower();
             string tenDM = txtSelTenDanhMuc.Text.Trim().ToLower();
 
-            var all = await _productRepo.GetAllAsync();
+            var all = await _productService.GetAllProductsAsync();
             var filtered = all.Where(p =>
                 (string.IsNullOrEmpty(keyword) ||
                  p.MaSanPham.ToString() == keyword ||
@@ -1013,15 +1014,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private async void btnBackToReceipt_Click(object? sender, EventArgs e)
         {
+            
             if (_selectedOrder != null && isCartModified)
             {
-                await _orderRepo.DeleteDetailsByOrderIdAsync(_selectedOrder.MaHoaDon.ToString());
-                foreach (var detail in currentDetails)
-                {
-                    detail.MaHoaDon = _selectedOrder.MaHoaDon.ToString();
-                    await _orderRepo.AddDetailAsync(detail);
-                }
-                
                 decimal total = currentDetails.Sum(d => d.ThanhTien);
                 decimal finalTotal = total;
                 if (!string.IsNullOrEmpty(txtGiamGia.Text) && txtGiamGia.Text.StartsWith("KM"))
@@ -1032,8 +1027,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
                         finalTotal = total - (total * dp / 100);
                     }
                 }
-                _selectedOrder.TongTien = finalTotal;
-                await _orderRepo.UpdateAsync(_selectedOrder);
+                
+                await _orderService.UpdateOrderCartAsync(_selectedOrder, currentDetails);
                 
                 MessageBox.Show("Lưu thay đổi giỏ hàng thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 isCartModified = false;
@@ -1048,3 +1043,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
     }
 }
+
+
+
+

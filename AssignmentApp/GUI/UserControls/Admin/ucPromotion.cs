@@ -434,6 +434,12 @@ namespace AssignmentApp.GUI.UserControls.Admin
             string nameTerm = txtTenKhuyenMai.Text.Trim();
             string statusTerm = cboTrangThai.Text;
 
+            if (string.IsNullOrEmpty(idTerm) && string.IsNullOrEmpty(nameTerm) && string.IsNullOrEmpty(statusTerm) && !dtNgayBatDau.Checked && !dtNgayHetHan.Checked)
+            {
+                MessageBox.Show("Vui lòng điền ít nhất một tiêu chí tìm kiếm!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (!string.IsNullOrEmpty(idTerm))
                 filtered = filtered.Where(p => p.MaKhuyenMai.ToString().Contains(idTerm));
                 

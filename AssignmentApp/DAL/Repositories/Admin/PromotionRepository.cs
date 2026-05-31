@@ -86,7 +86,7 @@ namespace AssignmentApp.DAL.Repositories.Admin
         public async Task<int> DeleteAsync(int maKhuyenMai)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
-            string sql = "DELETE FROM KhuyenMai WHERE MaKhuyenMai = @MaKhuyenMai";
+            string sql = "UPDATE KhuyenMai SET TrangThai = N'Không hoạt động' WHERE MaKhuyenMai = @MaKhuyenMai";
             return await DbContext.Conn.ExecuteAsync(sql, new { MaKhuyenMai = maKhuyenMai });
         }
     }

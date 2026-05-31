@@ -527,6 +527,13 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             string typeTerm = (cboLoaiThayDoi.SelectedIndex != -1) ? cboLoaiThayDoi.Text : "";
             string statusTerm = (cboTrangThai.SelectedIndex != -1) ? cboTrangThai.Text : "";
 
+            if (string.IsNullOrEmpty(idTerm) && string.IsNullOrEmpty(refTerm) && string.IsNullOrEmpty(productTerm) &&
+                string.IsNullOrEmpty(typeTerm) && string.IsNullOrEmpty(statusTerm))
+            {
+                MessageBox.Show("Vui lòng điền ít nhất một tiêu chí tìm kiếm!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
                 var searchResults = await _inventoryService.SearchLogsAsync(idTerm, refTerm, productTerm, typeTerm, statusTerm);

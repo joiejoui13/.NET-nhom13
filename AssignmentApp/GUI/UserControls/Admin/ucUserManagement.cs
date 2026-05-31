@@ -81,30 +81,20 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 dgvUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
                 dgvUsers.Columns[0].Width = 80;
-                dgvUsers.Columns[0].MinimumWidth = 80;
                 dgvUsers.Columns[0].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 
-                dgvUsers.Columns[1].Width = 220; 
-                dgvUsers.Columns[1].MinimumWidth = 220;
+                dgvUsers.Columns[1].Width = 220;
                 
                 dgvUsers.Columns[2].Width = 140;
-                dgvUsers.Columns[2].MinimumWidth = 140;
-                dgvUsers.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 
-                dgvUsers.Columns[3].MinimumWidth = 150;
                 dgvUsers.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; 
                 
                 dgvUsers.Columns[4].Width = 130;
-                dgvUsers.Columns[4].MinimumWidth = 130;
-                dgvUsers.Columns[4].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 
                 dgvUsers.Columns[5].Width = 150; 
-                dgvUsers.Columns[5].MinimumWidth = 150;
-                dgvUsers.Columns[5].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 
                 dgvUsers.Columns[6].Width = 180; 
-                dgvUsers.Columns[6].MinimumWidth = 180;
-                dgvUsers.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+          
 
                 dgvUsers.RowTemplate.Height = 40; 
                 dgvUsers.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F);
@@ -373,6 +363,13 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 string emailTerm = txtEmail.Text.Trim();
                 string roleTerm = cboVaiTro.Text;
                 string statusTerm = cboTrangThai.Text;
+
+                if (string.IsNullOrEmpty(idTerm) && string.IsNullOrEmpty(nameTerm) && string.IsNullOrEmpty(phoneTerm) &&
+                    string.IsNullOrEmpty(emailTerm) && string.IsNullOrEmpty(roleTerm) && string.IsNullOrEmpty(statusTerm))
+                {
+                    MessageBox.Show("Vui lòng điền ít nhất một tiêu chí tìm kiếm!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
 
                 var users = await _userService.SearchUsersAsync(idTerm, nameTerm, phoneTerm, emailTerm, roleTerm, statusTerm);
                 var userList = users.ToList();

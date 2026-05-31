@@ -144,7 +144,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colSelDonGia = new DataGridViewTextBoxColumn();
             tabProductDetail = new TabPage();
             pnlChonRight = new Guna.UI2.WinForms.Guna2Panel();
-            btnBoquaCT = new Guna.UI2.WinForms.Guna2Button();
+            guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
             btnSuaCT = new Guna.UI2.WinForms.Guna2Button();
             lblChonRightTitle = new Label();
             dgvCurrentDetails = new Guna.UI2.WinForms.Guna2DataGridView();
@@ -201,10 +201,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             tabMain.Margin = new Padding(3, 4, 3, 4);
             tabMain.Name = "tabMain";
             tabMain.SelectedIndex = 0;
-            tabMain.Size = new Size(1143, 934);
+            tabMain.Size = new Size(1143, 933);
             tabMain.SizeMode = TabSizeMode.Fixed;
             tabMain.TabIndex = 0;
-            tabMain.SelectedIndexChanged += tabMain_SelectedIndexChanged;
             // 
             // tabPhieuTra
             // 
@@ -214,11 +213,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             tabPhieuTra.Location = new Point(4, 39);
             tabPhieuTra.Margin = new Padding(3, 4, 3, 4);
             tabPhieuTra.Name = "tabPhieuTra";
-            tabPhieuTra.Padding = new Padding(11, 14, 11, 14);
-            tabPhieuTra.Size = new Size(1135, 891);
+            tabPhieuTra.Padding = new Padding(11, 13, 11, 13);
+            tabPhieuTra.Size = new Size(1135, 890);
             tabPhieuTra.TabIndex = 0;
             tabPhieuTra.Text = "   THÔNG TIN PHIẾU TRẢ   ";
-            tabPhieuTra.Click += tabPhieuTra_Click;
             // 
             // pnlInputCard
             // 
@@ -247,11 +245,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlInputCard.Controls.Add(btnCancel);
             pnlInputCard.CustomizableEdges = customizableEdges23;
             pnlInputCard.FillColor = Color.White;
-            pnlInputCard.Location = new Point(11, 14);
+            pnlInputCard.Location = new Point(11, 13);
             pnlInputCard.Margin = new Padding(3, 4, 3, 4);
             pnlInputCard.Name = "pnlInputCard";
             pnlInputCard.ShadowDecoration.CustomizableEdges = customizableEdges24;
-            pnlInputCard.Size = new Size(366, 850);
+            pnlInputCard.Size = new Size(366, 849);
             pnlInputCard.TabIndex = 0;
             // 
             // btnEdit
@@ -262,7 +260,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnEdit.FillColor = Color.FromArgb(0, 126, 249);
             btnEdit.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnEdit.ForeColor = Color.White;
-            btnEdit.Location = new Point(130, 666);
+            btnEdit.Location = new Point(130, 667);
             btnEdit.Margin = new Padding(3, 4, 3, 4);
             btnEdit.Name = "btnEdit";
             btnEdit.ShadowDecoration.CustomizableEdges = customizableEdges2;
@@ -276,7 +274,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblInputTitle.AutoSize = true;
             lblInputTitle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblInputTitle.ForeColor = Color.FromArgb(0, 126, 249);
-            lblInputTitle.Location = new Point(17, 14);
+            lblInputTitle.Location = new Point(17, 13);
             lblInputTitle.Name = "lblInputTitle";
             lblInputTitle.Size = new Size(234, 28);
             lblInputTitle.TabIndex = 0;
@@ -301,15 +299,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtMaHoaDon.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtMaHoaDon.Font = new Font("Segoe UI", 9F);
             txtMaHoaDon.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtMaHoaDon.Location = new Point(17, 86);
-            txtMaHoaDon.Margin = new Padding(5, 6, 5, 6);
+            txtMaHoaDon.Location = new Point(17, 87);
+            txtMaHoaDon.Margin = new Padding(3, 5, 3, 5);
             txtMaHoaDon.Name = "txtMaHoaDon";
             txtMaHoaDon.PlaceholderText = "Nhập mã hóa đơn gốc...";
             txtMaHoaDon.SelectedText = "";
             txtMaHoaDon.ShadowDecoration.CustomizableEdges = customizableEdges4;
             txtMaHoaDon.Size = new Size(331, 40);
             txtMaHoaDon.TabIndex = 1;
-            txtMaHoaDon.TextChanged += txtMaHoaDon_TextChanged;
             txtMaHoaDon.Leave += txtMaHoaDon_Leave;
             // 
             // lblKhachHang
@@ -317,7 +314,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblKhachHang.AutoSize = true;
             lblKhachHang.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblKhachHang.ForeColor = Color.FromArgb(64, 64, 64);
-            lblKhachHang.Location = new Point(17, 134);
+            lblKhachHang.Location = new Point(17, 133);
             lblKhachHang.Name = "lblKhachHang";
             lblKhachHang.Size = new Size(152, 20);
             lblKhachHang.TabIndex = 2;
@@ -339,7 +336,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblLyDo.AutoSize = true;
             lblLyDo.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblLyDo.ForeColor = Color.FromArgb(64, 64, 64);
-            lblLyDo.Location = new Point(17, 194);
+            lblLyDo.Location = new Point(17, 193);
             lblLyDo.Name = "lblLyDo";
             lblLyDo.Size = new Size(114, 20);
             lblLyDo.TabIndex = 4;
@@ -354,7 +351,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtLyDo.Font = new Font("Segoe UI", 9F);
             txtLyDo.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             txtLyDo.Location = new Point(17, 220);
-            txtLyDo.Margin = new Padding(5, 6, 5, 6);
+            txtLyDo.Margin = new Padding(3, 5, 3, 5);
             txtLyDo.Name = "txtLyDo";
             txtLyDo.PlaceholderText = "Nhập lý do trả hàng...";
             txtLyDo.SelectedText = "";
@@ -367,7 +364,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblTongTienHoan.AutoSize = true;
             lblTongTienHoan.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblTongTienHoan.ForeColor = Color.FromArgb(64, 64, 64);
-            lblTongTienHoan.Location = new Point(17, 266);
+            lblTongTienHoan.Location = new Point(17, 267);
             lblTongTienHoan.Name = "lblTongTienHoan";
             lblTongTienHoan.Size = new Size(119, 20);
             lblTongTienHoan.TabIndex = 5;
@@ -381,8 +378,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtTongTienHoan.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtTongTienHoan.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             txtTongTienHoan.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
-            txtTongTienHoan.Location = new Point(17, 294);
-            txtTongTienHoan.Margin = new Padding(5, 6, 5, 6);
+            txtTongTienHoan.Location = new Point(17, 293);
+            txtTongTienHoan.Margin = new Padding(3, 5, 3, 5);
             txtTongTienHoan.Name = "txtTongTienHoan";
             txtTongTienHoan.PlaceholderText = "";
             txtTongTienHoan.ReadOnly = true;
@@ -410,7 +407,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dtpNgayTra.FillColor = Color.White;
             dtpNgayTra.Font = new Font("Segoe UI", 9F);
             dtpNgayTra.Format = DateTimePickerFormat.Short;
-            dtpNgayTra.Location = new Point(17, 366);
+            dtpNgayTra.Location = new Point(17, 367);
             dtpNgayTra.Margin = new Padding(3, 4, 3, 4);
             dtpNgayTra.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
             dtpNgayTra.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
@@ -425,7 +422,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblTrangThai.AutoSize = true;
             lblTrangThai.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblTrangThai.ForeColor = Color.FromArgb(64, 64, 64);
-            lblTrangThai.Location = new Point(17, 414);
+            lblTrangThai.Location = new Point(17, 413);
             lblTrangThai.Name = "lblTrangThai";
             lblTrangThai.Size = new Size(84, 20);
             lblTrangThai.TabIndex = 7;
@@ -444,6 +441,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
             cboTrangThai.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             cboTrangThai.ItemHeight = 24;
+            cboTrangThai.Items.AddRange(new object[] { "Hoàn thành", "Chờ xử lý", "Đã hủy" });
             cboTrangThai.Location = new Point(17, 440);
             cboTrangThai.Margin = new Padding(3, 4, 3, 4);
             cboTrangThai.Name = "cboTrangThai";
@@ -456,7 +454,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblLoaiGiaoDich.AutoSize = true;
             lblLoaiGiaoDich.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             lblLoaiGiaoDich.ForeColor = Color.FromArgb(64, 64, 64);
-            lblLoaiGiaoDich.Location = new Point(17, 486);
+            lblLoaiGiaoDich.Location = new Point(17, 487);
             lblLoaiGiaoDich.Name = "lblLoaiGiaoDich";
             lblLoaiGiaoDich.Size = new Size(109, 20);
             lblLoaiGiaoDich.TabIndex = 8;
@@ -475,7 +473,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboLoaiGiaoDich.ForeColor = Color.FromArgb(68, 88, 112);
             cboLoaiGiaoDich.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             cboLoaiGiaoDich.ItemHeight = 24;
-            cboLoaiGiaoDich.Location = new Point(17, 514);
+            cboLoaiGiaoDich.Items.AddRange(new object[] { "Trả hàng", "Đổi hàng (1:1)" });
+            cboLoaiGiaoDich.Location = new Point(17, 513);
             cboLoaiGiaoDich.Margin = new Padding(3, 4, 3, 4);
             cboLoaiGiaoDich.Name = "cboLoaiGiaoDich";
             cboLoaiGiaoDich.ShadowDecoration.CustomizableEdges = customizableEdges14;
@@ -490,7 +489,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnAdd.FillColor = Color.FromArgb(0, 126, 249);
             btnAdd.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnAdd.ForeColor = Color.White;
-            btnAdd.Location = new Point(17, 666);
+            btnAdd.Location = new Point(17, 667);
             btnAdd.Margin = new Padding(3, 4, 3, 4);
             btnAdd.Name = "btnAdd";
             btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges16;
@@ -507,7 +506,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnDelete.FillColor = Color.FromArgb(244, 67, 54);
             btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnDelete.ForeColor = Color.White;
-            btnDelete.Location = new Point(240, 666);
+            btnDelete.Location = new Point(240, 667);
             btnDelete.Margin = new Padding(3, 4, 3, 4);
             btnDelete.Name = "btnDelete";
             btnDelete.ShadowDecoration.CustomizableEdges = customizableEdges18;
@@ -524,7 +523,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnSave.FillColor = Color.FromArgb(0, 126, 249);
             btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnSave.ForeColor = Color.White;
-            btnSave.Location = new Point(17, 726);
+            btnSave.Location = new Point(17, 727);
             btnSave.Margin = new Padding(3, 4, 3, 4);
             btnSave.Name = "btnSave";
             btnSave.ShadowDecoration.CustomizableEdges = customizableEdges20;
@@ -541,11 +540,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnCancel.FillColor = Color.FromArgb(108, 117, 125);
             btnCancel.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnCancel.ForeColor = Color.White;
-            btnCancel.Location = new Point(17, 786);
+            btnCancel.Location = new Point(17, 787);
             btnCancel.Margin = new Padding(3, 4, 3, 4);
             btnCancel.Name = "btnCancel";
             btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges22;
-            btnCancel.Size = new Size(331, 46);
+            btnCancel.Size = new Size(331, 47);
             btnCancel.TabIndex = 13;
             btnCancel.Text = "BỎ QUA";
             btnCancel.Click += btnCancel_Click;
@@ -559,12 +558,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlGridCard.Controls.Add(dgvReturns);
             pnlGridCard.CustomizableEdges = customizableEdges29;
             pnlGridCard.FillColor = Color.White;
-            pnlGridCard.Location = new Point(394, 14);
+            pnlGridCard.Location = new Point(394, 13);
             pnlGridCard.Margin = new Padding(3, 4, 3, 4);
             pnlGridCard.Name = "pnlGridCard";
             pnlGridCard.Padding = new Padding(17, 20, 17, 20);
             pnlGridCard.ShadowDecoration.CustomizableEdges = customizableEdges30;
-            pnlGridCard.Size = new Size(728, 850);
+            pnlGridCard.Size = new Size(728, 849);
             pnlGridCard.TabIndex = 1;
             // 
             // lblGridTitle
@@ -572,7 +571,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblGridTitle.AutoSize = true;
             lblGridTitle.Font = new Font("Segoe UI", 12F, FontStyle.Bold);
             lblGridTitle.ForeColor = Color.FromArgb(0, 126, 249);
-            lblGridTitle.Location = new Point(17, 14);
+            lblGridTitle.Location = new Point(17, 13);
             lblGridTitle.Name = "lblGridTitle";
             lblGridTitle.Size = new Size(198, 28);
             lblGridTitle.TabIndex = 0;
@@ -636,14 +635,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dataGridViewCellStyle3.WrapMode = DataGridViewTriState.False;
             dgvReturns.DefaultCellStyle = dataGridViewCellStyle3;
             dgvReturns.GridColor = Color.FromArgb(231, 229, 255);
-            dgvReturns.Location = new Point(17, 126);
+            dgvReturns.Location = new Point(17, 127);
             dgvReturns.Margin = new Padding(3, 4, 3, 4);
             dgvReturns.Name = "dgvReturns";
             dgvReturns.ReadOnly = true;
             dgvReturns.RowHeadersVisible = false;
-            dgvReturns.RowHeadersWidth = 62;
+            dgvReturns.RowHeadersWidth = 51;
             dgvReturns.RowTemplate.Height = 28;
-            dgvReturns.Size = new Size(694, 702);
+            dgvReturns.Size = new Size(694, 703);
             dgvReturns.TabIndex = 4;
             dgvReturns.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvReturns.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -667,69 +666,60 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvReturns.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dgvReturns.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
             dgvReturns.CellClick += dgvReturns_CellClick;
-            dgvReturns.CellContentClick += dgvReturns_CellContentClick;
             // 
             // colMaTraHang
             // 
-            colMaTraHang.DataPropertyName = "MaTraHang";
             colMaTraHang.HeaderText = "Mã Trả";
-            colMaTraHang.MinimumWidth = 8;
+            colMaTraHang.MinimumWidth = 6;
             colMaTraHang.Name = "colMaTraHang";
             colMaTraHang.ReadOnly = true;
             // 
             // colMaHoaDon
             // 
-            colMaHoaDon.DataPropertyName = "MaHoaDon";
             colMaHoaDon.HeaderText = "Mã HD Gốc";
-            colMaHoaDon.MinimumWidth = 8;
+            colMaHoaDon.MinimumWidth = 6;
             colMaHoaDon.Name = "colMaHoaDon";
             colMaHoaDon.ReadOnly = true;
             // 
             // colTrangThai
             // 
-            colTrangThai.DataPropertyName = "TrangThai";
             colTrangThai.HeaderText = "Trạng Thái";
-            colTrangThai.MinimumWidth = 8;
+            colTrangThai.MinimumWidth = 6;
             colTrangThai.Name = "colTrangThai";
             colTrangThai.ReadOnly = true;
             // 
             // colLoaiGiaoDich
             // 
-            colLoaiGiaoDich.DataPropertyName = "LoaiGiaoDich";
             colLoaiGiaoDich.HeaderText = "Loại GD";
-            colLoaiGiaoDich.MinimumWidth = 8;
+            colLoaiGiaoDich.MinimumWidth = 6;
             colLoaiGiaoDich.Name = "colLoaiGiaoDich";
             colLoaiGiaoDich.ReadOnly = true;
             // 
             // colTongTienHoan
             // 
-            colTongTienHoan.DataPropertyName = "TongTienHoan";
             colTongTienHoan.HeaderText = "Tiền Hoàn";
-            colTongTienHoan.MinimumWidth = 8;
+            colTongTienHoan.MinimumWidth = 6;
             colTongTienHoan.Name = "colTongTienHoan";
             colTongTienHoan.ReadOnly = true;
             // 
             // colNhanVien
             // 
-            colNhanVien.DataPropertyName = "MaNguoiDung";
             colNhanVien.HeaderText = "Nhân Viên";
-            colNhanVien.MinimumWidth = 8;
+            colNhanVien.MinimumWidth = 6;
             colNhanVien.Name = "colNhanVien";
             colNhanVien.ReadOnly = true;
             // 
             // colNgayTra
             // 
-            colNgayTra.DataPropertyName = "NgayTra";
             colNgayTra.HeaderText = "Ngày Trả";
-            colNgayTra.MinimumWidth = 8;
+            colNgayTra.MinimumWidth = 6;
             colNgayTra.Name = "colNgayTra";
             colNgayTra.ReadOnly = true;
             // 
             // colLyDo
             // 
-            colLyDo.DataPropertyName = "LyDo";
             colLyDo.HeaderText = "Lý Do";
-            colLyDo.MinimumWidth = 8;
+            colLyDo.MinimumWidth = 6;
             colLyDo.Name = "colLyDo";
             colLyDo.ReadOnly = true;
             // 
@@ -742,10 +732,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             tabChonSanPham.Location = new Point(4, 39);
             tabChonSanPham.Margin = new Padding(3, 4, 3, 4);
             tabChonSanPham.Name = "tabChonSanPham";
-            tabChonSanPham.Size = new Size(1135, 891);
+            tabChonSanPham.Size = new Size(1135, 890);
             tabChonSanPham.TabIndex = 1;
             tabChonSanPham.Text = "   CHỌN SẢN PHẨM TRẢ   ";
-            tabChonSanPham.Click += tabChonSanPham_Click;
             // 
             // pnlReturnTop
             // 
@@ -755,13 +744,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlReturnTop.Controls.Add(btnReturnRefresh);
             pnlReturnTop.CustomizableEdges = customizableEdges35;
             pnlReturnTop.FillColor = Color.White;
-            pnlReturnTop.Location = new Point(11, 14);
+            pnlReturnTop.Location = new Point(11, 13);
             pnlReturnTop.Margin = new Padding(3, 4, 3, 4);
             pnlReturnTop.Name = "pnlReturnTop";
             pnlReturnTop.ShadowDecoration.CustomizableEdges = customizableEdges36;
-            pnlReturnTop.Size = new Size(1111, 80);
+            pnlReturnTop.Size = new Size(1097, 80);
             pnlReturnTop.TabIndex = 0;
-            pnlReturnTop.Paint += pnlReturnTop_Paint;
             // 
             // lblReturnTitle
             // 
@@ -814,11 +802,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlChonLeft.Controls.Add(tabSelectionContainer);
             pnlChonLeft.CustomizableEdges = customizableEdges39;
             pnlChonLeft.FillColor = Color.White;
-            pnlChonLeft.Location = new Point(11, 106);
+            pnlChonLeft.Location = new Point(11, 107);
             pnlChonLeft.Margin = new Padding(3, 4, 3, 4);
             pnlChonLeft.Name = "pnlChonLeft";
             pnlChonLeft.ShadowDecoration.CustomizableEdges = customizableEdges40;
-            pnlChonLeft.Size = new Size(677, 742);
+            pnlChonLeft.Size = new Size(677, 743);
             pnlChonLeft.TabIndex = 0;
             // 
             // tabSelectionContainer
@@ -830,8 +818,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             tabSelectionContainer.Margin = new Padding(3, 4, 3, 4);
             tabSelectionContainer.Name = "tabSelectionContainer";
             tabSelectionContainer.SelectedIndex = 0;
-            tabSelectionContainer.Size = new Size(677, 742);
+            tabSelectionContainer.Size = new Size(677, 743);
             tabSelectionContainer.TabIndex = 2;
+            tabSelectionContainer.SelectedIndexChanged += tabSelectionContainer_SelectedIndexChanged;
             // 
             // tabListProducts
             // 
@@ -840,8 +829,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             tabListProducts.Location = new Point(4, 32);
             tabListProducts.Margin = new Padding(3, 4, 3, 4);
             tabListProducts.Name = "tabListProducts";
-            tabListProducts.Padding = new Padding(11, 14, 11, 14);
-            tabListProducts.Size = new Size(669, 706);
+            tabListProducts.Padding = new Padding(11, 13, 11, 13);
+            tabListProducts.Size = new Size(669, 707);
             tabListProducts.TabIndex = 0;
             tabListProducts.Text = "Danh sách sản phẩm mua";
             // 
@@ -868,14 +857,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
             dgvProductsSelection.DefaultCellStyle = dataGridViewCellStyle6;
             dgvProductsSelection.GridColor = Color.FromArgb(231, 229, 255);
-            dgvProductsSelection.Location = new Point(11, 14);
+            dgvProductsSelection.Location = new Point(11, 13);
             dgvProductsSelection.Margin = new Padding(3, 4, 3, 4);
             dgvProductsSelection.Name = "dgvProductsSelection";
             dgvProductsSelection.ReadOnly = true;
             dgvProductsSelection.RowHeadersVisible = false;
-            dgvProductsSelection.RowHeadersWidth = 62;
+            dgvProductsSelection.RowHeadersWidth = 51;
             dgvProductsSelection.RowTemplate.Height = 28;
-            dgvProductsSelection.Size = new Size(645, 664);
+            dgvProductsSelection.Size = new Size(645, 668);
             dgvProductsSelection.TabIndex = 1;
             dgvProductsSelection.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvProductsSelection.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -899,44 +888,39 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvProductsSelection.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dgvProductsSelection.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
             dgvProductsSelection.CellClick += dgvProductsSelection_CellClick;
-            dgvProductsSelection.CellContentClick += dgvProductsSelection_CellContentClick;
             // 
             // colSelMaSP
             // 
-            colSelMaSP.DataPropertyName = "MaSanPham";
             colSelMaSP.HeaderText = "Mã SP";
-            colSelMaSP.MinimumWidth = 8;
+            colSelMaSP.MinimumWidth = 6;
             colSelMaSP.Name = "colSelMaSP";
             colSelMaSP.ReadOnly = true;
             // 
             // colSelTenSP
             // 
-            colSelTenSP.DataPropertyName = "TenSanPham";
             colSelTenSP.HeaderText = "Tên Sản Phẩm";
-            colSelTenSP.MinimumWidth = 8;
+            colSelTenSP.MinimumWidth = 6;
             colSelTenSP.Name = "colSelTenSP";
             colSelTenSP.ReadOnly = true;
             // 
             // colSelSoLuongMua
             // 
-            colSelSoLuongMua.DataPropertyName = "SoLuong";
             colSelSoLuongMua.HeaderText = "SL Mua";
-            colSelSoLuongMua.MinimumWidth = 8;
+            colSelSoLuongMua.MinimumWidth = 6;
             colSelSoLuongMua.Name = "colSelSoLuongMua";
             colSelSoLuongMua.ReadOnly = true;
             // 
             // colSelDaTra
             // 
             colSelDaTra.HeaderText = "Đã Trả";
-            colSelDaTra.MinimumWidth = 8;
+            colSelDaTra.MinimumWidth = 6;
             colSelDaTra.Name = "colSelDaTra";
             colSelDaTra.ReadOnly = true;
             // 
             // colSelDonGia
             // 
-            colSelDonGia.DataPropertyName = "DonGia";
             colSelDonGia.HeaderText = "Đơn Giá";
-            colSelDonGia.MinimumWidth = 8;
+            colSelDonGia.MinimumWidth = 6;
             colSelDonGia.Name = "colSelDonGia";
             colSelDonGia.ReadOnly = true;
             // 
@@ -947,18 +931,17 @@ namespace AssignmentApp.GUI.UserControls.Sales
             tabProductDetail.Location = new Point(4, 32);
             tabProductDetail.Margin = new Padding(3, 4, 3, 4);
             tabProductDetail.Name = "tabProductDetail";
-            tabProductDetail.Padding = new Padding(11, 14, 11, 14);
-            tabProductDetail.Size = new Size(669, 706);
+            tabProductDetail.Padding = new Padding(11, 13, 11, 13);
+            tabProductDetail.Size = new Size(669, 707);
             tabProductDetail.TabIndex = 1;
             tabProductDetail.Text = "Chi tiết sản phẩm";
-            tabProductDetail.Click += tabProductDetail_Click;
             // 
             // pnlChonRight
             // 
             pnlChonRight.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             pnlChonRight.BackColor = Color.Transparent;
             pnlChonRight.BorderRadius = 10;
-            pnlChonRight.Controls.Add(btnBoquaCT);
+            pnlChonRight.Controls.Add(guna2Button2);
             pnlChonRight.Controls.Add(btnSuaCT);
             pnlChonRight.Controls.Add(lblChonRightTitle);
             pnlChonRight.Controls.Add(dgvCurrentDetails);
@@ -978,30 +961,29 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlChonRight.Controls.Add(btnLuuCT);
             pnlChonRight.CustomizableEdges = customizableEdges61;
             pnlChonRight.FillColor = Color.White;
-            pnlChonRight.Location = new Point(699, 106);
+            pnlChonRight.Location = new Point(699, 107);
             pnlChonRight.Margin = new Padding(3, 4, 3, 4);
             pnlChonRight.Name = "pnlChonRight";
             pnlChonRight.ShadowDecoration.CustomizableEdges = customizableEdges62;
-            pnlChonRight.Size = new Size(423, 742);
+            pnlChonRight.Size = new Size(423, 743);
             pnlChonRight.TabIndex = 1;
             // 
-            // btnBoquaCT
+            // guna2Button2
             // 
-            btnBoquaCT.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnBoquaCT.BorderRadius = 5;
-            btnBoquaCT.CustomizableEdges = customizableEdges41;
-            btnBoquaCT.FillColor = Color.FromArgb(108, 117, 125);
-            btnBoquaCT.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnBoquaCT.ForeColor = Color.White;
-            btnBoquaCT.Location = new Point(223, 594);
-            btnBoquaCT.Margin = new Padding(3, 4, 3, 4);
-            btnBoquaCT.Name = "btnBoquaCT";
-            btnBoquaCT.ShadowDecoration.CustomizableEdges = customizableEdges42;
-            btnBoquaCT.Size = new Size(183, 46);
-            btnBoquaCT.TabIndex = 18;
-            btnBoquaCT.Text = "BỎ QUA";
-            btnBoquaCT.Visible = false;
-            btnBoquaCT.Click += btnBoquaCT_Click;
+            guna2Button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            guna2Button2.BorderRadius = 5;
+            guna2Button2.CustomizableEdges = customizableEdges41;
+            guna2Button2.FillColor = Color.FromArgb(108, 117, 125);
+            guna2Button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            guna2Button2.ForeColor = Color.White;
+            guna2Button2.Location = new Point(223, 593);
+            guna2Button2.Margin = new Padding(3, 4, 3, 4);
+            guna2Button2.Name = "guna2Button2";
+            guna2Button2.ShadowDecoration.CustomizableEdges = customizableEdges42;
+            guna2Button2.Size = new Size(183, 45);
+            guna2Button2.TabIndex = 18;
+            guna2Button2.Text = "BỎ QUA";
+            guna2Button2.Visible = false;
             // 
             // btnSuaCT
             // 
@@ -1011,11 +993,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnSuaCT.FillColor = Color.FromArgb(0, 126, 249);
             btnSuaCT.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnSuaCT.ForeColor = Color.White;
-            btnSuaCT.Location = new Point(147, 534);
+            btnSuaCT.Location = new Point(147, 533);
             btnSuaCT.Margin = new Padding(3, 4, 3, 4);
             btnSuaCT.Name = "btnSuaCT";
             btnSuaCT.ShadowDecoration.CustomizableEdges = customizableEdges44;
-            btnSuaCT.Size = new Size(127, 42);
+            btnSuaCT.Size = new Size(127, 43);
             btnSuaCT.TabIndex = 17;
             btnSuaCT.Text = "SỬA";
             btnSuaCT.Visible = false;
@@ -1038,7 +1020,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvCurrentDetails.AllowUserToDeleteRows = false;
             dataGridViewCellStyle7.BackColor = Color.White;
             dgvCurrentDetails.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
-            dgvCurrentDetails.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            dgvCurrentDetails.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle8.BackColor = Color.FromArgb(28, 30, 38);
             dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -1060,7 +1042,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvCurrentDetails.Name = "dgvCurrentDetails";
             dgvCurrentDetails.ReadOnly = true;
             dgvCurrentDetails.RowHeadersVisible = false;
-            dgvCurrentDetails.RowHeadersWidth = 62;
+            dgvCurrentDetails.RowHeadersWidth = 51;
             dgvCurrentDetails.RowTemplate.Height = 26;
             dgvCurrentDetails.Size = new Size(389, 200);
             dgvCurrentDetails.TabIndex = 1;
@@ -1086,53 +1068,46 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvCurrentDetails.ThemeStyle.RowsStyle.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dgvCurrentDetails.ThemeStyle.RowsStyle.SelectionForeColor = Color.FromArgb(71, 69, 94);
             dgvCurrentDetails.CellClick += dgvCurrentDetails_CellClick;
-            dgvCurrentDetails.CellContentClick += dgvCurrentDetails_CellContentClick;
             // 
             // colCurMaSP
             // 
-            colCurMaSP.DataPropertyName = "colCurMaSP";
             colCurMaSP.HeaderText = "Mã";
-            colCurMaSP.MinimumWidth = 8;
+            colCurMaSP.MinimumWidth = 6;
             colCurMaSP.Name = "colCurMaSP";
             colCurMaSP.ReadOnly = true;
             // 
             // colCurTenSP
             // 
-            colCurTenSP.DataPropertyName = "colCurTenSP";
             colCurTenSP.HeaderText = "Tên";
-            colCurTenSP.MinimumWidth = 8;
+            colCurTenSP.MinimumWidth = 6;
             colCurTenSP.Name = "colCurTenSP";
             colCurTenSP.ReadOnly = true;
             // 
             // colCurSoLuong
             // 
-            colCurSoLuong.DataPropertyName = "colCurSoLuong";
             colCurSoLuong.HeaderText = "SL";
-            colCurSoLuong.MinimumWidth = 8;
+            colCurSoLuong.MinimumWidth = 6;
             colCurSoLuong.Name = "colCurSoLuong";
             colCurSoLuong.ReadOnly = true;
             // 
             // colCurDonGia
             // 
-            colCurDonGia.DataPropertyName = "colCurDonGia";
             colCurDonGia.HeaderText = "Đơn Giá";
-            colCurDonGia.MinimumWidth = 8;
+            colCurDonGia.MinimumWidth = 6;
             colCurDonGia.Name = "colCurDonGia";
             colCurDonGia.ReadOnly = true;
             // 
             // colCurTinhTrang
             // 
-            colCurTinhTrang.DataPropertyName = "colCurTinhTrang";
             colCurTinhTrang.HeaderText = "Tình Trạng";
-            colCurTinhTrang.MinimumWidth = 8;
+            colCurTinhTrang.MinimumWidth = 6;
             colCurTinhTrang.Name = "colCurTinhTrang";
             colCurTinhTrang.ReadOnly = true;
             // 
             // colCurThanhTien
             // 
-            colCurThanhTien.DataPropertyName = "colCurThanhTien";
             colCurThanhTien.HeaderText = "T.Tiền";
-            colCurThanhTien.MinimumWidth = 8;
+            colCurThanhTien.MinimumWidth = 6;
             colCurThanhTien.Name = "colCurThanhTien";
             colCurThanhTien.ReadOnly = true;
             // 
@@ -1142,7 +1117,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblSelMaSP.AutoSize = true;
             lblSelMaSP.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
             lblSelMaSP.ForeColor = Color.FromArgb(64, 64, 64);
-            lblSelMaSP.Location = new Point(17, 274);
+            lblSelMaSP.Location = new Point(17, 273);
             lblSelMaSP.Name = "lblSelMaSP";
             lblSelMaSP.Size = new Size(55, 19);
             lblSelMaSP.TabIndex = 2;
@@ -1155,8 +1130,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelMaSP.CustomizableEdges = customizableEdges45;
             txtSelMaSP.DefaultText = "";
             txtSelMaSP.Font = new Font("Segoe UI", 9F);
-            txtSelMaSP.Location = new Point(17, 294);
-            txtSelMaSP.Margin = new Padding(5, 6, 5, 6);
+            txtSelMaSP.Location = new Point(17, 293);
+            txtSelMaSP.Margin = new Padding(3, 5, 3, 5);
             txtSelMaSP.Name = "txtSelMaSP";
             txtSelMaSP.PlaceholderText = "";
             txtSelMaSP.ReadOnly = true;
@@ -1171,7 +1146,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblSelTenSP.AutoSize = true;
             lblSelTenSP.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
             lblSelTenSP.ForeColor = Color.FromArgb(64, 64, 64);
-            lblSelTenSP.Location = new Point(126, 274);
+            lblSelTenSP.Location = new Point(126, 273);
             lblSelTenSP.Name = "lblSelTenSP";
             lblSelTenSP.Size = new Size(106, 19);
             lblSelTenSP.TabIndex = 4;
@@ -1184,8 +1159,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelTenSP.CustomizableEdges = customizableEdges47;
             txtSelTenSP.DefaultText = "";
             txtSelTenSP.Font = new Font("Segoe UI", 9F);
-            txtSelTenSP.Location = new Point(126, 294);
-            txtSelTenSP.Margin = new Padding(5, 6, 5, 6);
+            txtSelTenSP.Location = new Point(126, 293);
+            txtSelTenSP.Margin = new Padding(3, 5, 3, 5);
             txtSelTenSP.Name = "txtSelTenSP";
             txtSelTenSP.PlaceholderText = "";
             txtSelTenSP.ReadOnly = true;
@@ -1214,7 +1189,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelSoLuong.DefaultText = "";
             txtSelSoLuong.Font = new Font("Segoe UI", 9F);
             txtSelSoLuong.Location = new Point(223, 360);
-            txtSelSoLuong.Margin = new Padding(5, 6, 5, 6);
+            txtSelSoLuong.Margin = new Padding(3, 5, 3, 5);
             txtSelSoLuong.Name = "txtSelSoLuong";
             txtSelSoLuong.PlaceholderText = "";
             txtSelSoLuong.SelectedText = "";
@@ -1242,7 +1217,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelDonGia.DefaultText = "";
             txtSelDonGia.Font = new Font("Segoe UI", 9F);
             txtSelDonGia.Location = new Point(17, 360);
-            txtSelDonGia.Margin = new Padding(5, 6, 5, 6);
+            txtSelDonGia.Margin = new Padding(3, 5, 3, 5);
             txtSelDonGia.Name = "txtSelDonGia";
             txtSelDonGia.PlaceholderText = "";
             txtSelDonGia.ReadOnly = true;
@@ -1257,7 +1232,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblSelTinhTrang.AutoSize = true;
             lblSelTinhTrang.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
             lblSelTinhTrang.ForeColor = Color.FromArgb(64, 64, 64);
-            lblSelTinhTrang.Location = new Point(17, 406);
+            lblSelTinhTrang.Location = new Point(17, 407);
             lblSelTinhTrang.Name = "lblSelTinhTrang";
             lblSelTinhTrang.Size = new Size(148, 19);
             lblSelTinhTrang.TabIndex = 10;
@@ -1270,8 +1245,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelTinhTrang.CustomizableEdges = customizableEdges53;
             txtSelTinhTrang.DefaultText = "";
             txtSelTinhTrang.Font = new Font("Segoe UI", 9F);
-            txtSelTinhTrang.Location = new Point(17, 426);
-            txtSelTinhTrang.Margin = new Padding(5, 6, 5, 6);
+            txtSelTinhTrang.Location = new Point(17, 427);
+            txtSelTinhTrang.Margin = new Padding(3, 5, 3, 5);
             txtSelTinhTrang.Name = "txtSelTinhTrang";
             txtSelTinhTrang.PlaceholderText = "";
             txtSelTinhTrang.SelectedText = "";
@@ -1287,11 +1262,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnAddToCart.FillColor = Color.FromArgb(0, 126, 249);
             btnAddToCart.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnAddToCart.ForeColor = Color.White;
-            btnAddToCart.Location = new Point(17, 534);
+            btnAddToCart.Location = new Point(17, 533);
             btnAddToCart.Margin = new Padding(3, 4, 3, 4);
             btnAddToCart.Name = "btnAddToCart";
             btnAddToCart.ShadowDecoration.CustomizableEdges = customizableEdges56;
-            btnAddToCart.Size = new Size(123, 42);
+            btnAddToCart.Size = new Size(123, 43);
             btnAddToCart.TabIndex = 12;
             btnAddToCart.Text = "THÊM";
             btnAddToCart.Click += btnAddToCart_Click;
@@ -1304,11 +1279,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnRemoveFromCart.FillColor = Color.FromArgb(244, 67, 54);
             btnRemoveFromCart.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnRemoveFromCart.ForeColor = Color.White;
-            btnRemoveFromCart.Location = new Point(281, 534);
+            btnRemoveFromCart.Location = new Point(281, 533);
             btnRemoveFromCart.Margin = new Padding(3, 4, 3, 4);
             btnRemoveFromCart.Name = "btnRemoveFromCart";
             btnRemoveFromCart.ShadowDecoration.CustomizableEdges = customizableEdges58;
-            btnRemoveFromCart.Size = new Size(125, 42);
+            btnRemoveFromCart.Size = new Size(125, 43);
             btnRemoveFromCart.TabIndex = 13;
             btnRemoveFromCart.Text = "XÓA";
             btnRemoveFromCart.Click += btnRemoveFromCart_Click;
@@ -1320,7 +1295,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblTotalAmount.ForeColor = Color.FromArgb(220, 38, 38);
             lblTotalAmount.Location = new Point(17, 480);
             lblTotalAmount.Name = "lblTotalAmount";
-            lblTotalAmount.Size = new Size(389, 34);
+            lblTotalAmount.Size = new Size(389, 33);
             lblTotalAmount.TabIndex = 15;
             lblTotalAmount.Text = "TỔNG TIỀN HOÀN TRẢ TẠM TÍNH: 0 đ";
             lblTotalAmount.TextAlign = ContentAlignment.MiddleLeft;
@@ -1333,11 +1308,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnLuuCT.FillColor = Color.FromArgb(0, 126, 249);
             btnLuuCT.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnLuuCT.ForeColor = Color.White;
-            btnLuuCT.Location = new Point(17, 594);
+            btnLuuCT.Location = new Point(17, 593);
             btnLuuCT.Margin = new Padding(3, 4, 3, 4);
             btnLuuCT.Name = "btnLuuCT";
             btnLuuCT.ShadowDecoration.CustomizableEdges = customizableEdges60;
-            btnLuuCT.Size = new Size(183, 46);
+            btnLuuCT.Size = new Size(183, 45);
             btnLuuCT.TabIndex = 16;
             btnLuuCT.Text = "LƯU THAY ĐỔI";
             btnLuuCT.Click += btnBackToReceipt_Click;
@@ -1386,11 +1361,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             picAnh.CustomizableEdges = customizableEdges37;
             picAnh.ImageRotate = 0F;
-            picAnh.Location = new Point(0, 0);
+            picAnh.Location = new Point(8, 8);
             picAnh.Name = "picAnh";
             picAnh.ShadowDecoration.CustomizableEdges = customizableEdges38;
             picAnh.Size = new Size(375, 250);
-            picAnh.SizeMode = PictureBoxSizeMode.Zoom;
             picAnh.TabIndex = 0;
             picAnh.TabStop = false;
             // 
@@ -1402,7 +1376,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             Controls.Add(tabMain);
             Margin = new Padding(3, 4, 3, 4);
             Name = "ucReturn";
-            Size = new Size(1143, 934);
+            Size = new Size(1143, 933);
             Load += ucReturn_Load;
             tabMain.ResumeLayout(false);
             tabPhieuTra.ResumeLayout(false);
@@ -1460,6 +1434,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private Guna.UI2.WinForms.Guna2Button btnSearch;
         private Guna.UI2.WinForms.Guna2Button btnRefresh;
         private Guna.UI2.WinForms.Guna2DataGridView dgvReturns;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMaTraHang;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colMaHoaDon;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTrangThai;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colLoaiGiaoDich;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTongTienHoan;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNhanVien;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colNgayTra;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colLyDo;
 
         // Tab 2 Fields
         private Guna.UI2.WinForms.Guna2Panel pnlReturnTop;
@@ -1476,10 +1458,21 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private Guna.UI2.WinForms.Guna2Panel pnlChonLeft;
         private System.Windows.Forms.Label lblChonLeftTitle;
         private Guna.UI2.WinForms.Guna2DataGridView dgvProductsSelection;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSelMaSP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSelTenSP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSelSoLuongMua;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSelDaTra;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSelDonGia;
 
         private Guna.UI2.WinForms.Guna2Panel pnlChonRight;
         private System.Windows.Forms.Label lblChonRightTitle;
         private Guna.UI2.WinForms.Guna2DataGridView dgvCurrentDetails;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCurMaSP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCurTenSP;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCurSoLuong;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCurDonGia;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCurTinhTrang;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colCurThanhTien;
 
         private System.Windows.Forms.Label lblSelMaSP;
         private Guna.UI2.WinForms.Guna2TextBox txtSelMaSP;
@@ -1500,26 +1493,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         // Unused controls hidden
         private Guna.UI2.WinForms.Guna2Button btnSuaCT;
-        private Guna.UI2.WinForms.Guna2Button btnBoquaCT;
-        private DataGridViewTextBoxColumn colMaTraHang;
-        private DataGridViewTextBoxColumn colMaHoaDon;
-        private DataGridViewTextBoxColumn colTrangThai;
-        private DataGridViewTextBoxColumn colLoaiGiaoDich;
-        private DataGridViewTextBoxColumn colTongTienHoan;
-        private DataGridViewTextBoxColumn colNhanVien;
-        private DataGridViewTextBoxColumn colNgayTra;
-        private DataGridViewTextBoxColumn colLyDo;
-        private DataGridViewTextBoxColumn colSelMaSP;
-        private DataGridViewTextBoxColumn colSelTenSP;
-        private DataGridViewTextBoxColumn colSelSoLuongMua;
-        private DataGridViewTextBoxColumn colSelDaTra;
-        private DataGridViewTextBoxColumn colSelDonGia;
-        private DataGridViewTextBoxColumn colCurMaSP;
-        private DataGridViewTextBoxColumn colCurTenSP;
-        private DataGridViewTextBoxColumn colCurSoLuong;
-        private DataGridViewTextBoxColumn colCurDonGia;
-        private DataGridViewTextBoxColumn colCurTinhTrang;
-        private DataGridViewTextBoxColumn colCurThanhTien;
+        private Guna.UI2.WinForms.Guna2Button guna2Button2;
         private Guna.UI2.WinForms.Guna2PictureBox picAnh;
     }
 }

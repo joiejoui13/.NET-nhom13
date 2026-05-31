@@ -568,6 +568,14 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             double.TryParse(txtGiaBan.Text, out double priceLimit);
             int.TryParse(txtSoLuongTon.Text, out int stockLimit);
 
+            if (string.IsNullOrEmpty(idTerm) && string.IsNullOrEmpty(nameTerm) && 
+                selectedCatId <= 0 && string.IsNullOrEmpty(statusTerm) && 
+                priceLimit <= 0 && stockLimit <= 0)
+            {
+                MessageBox.Show("Vui lòng điền ít nhất một tiêu chí tìm kiếm!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             try
             {
                 var listSearch = await _productService.SearchProductsAsync(idTerm, nameTerm, selectedCatId, statusTerm, priceLimit, stockLimit);

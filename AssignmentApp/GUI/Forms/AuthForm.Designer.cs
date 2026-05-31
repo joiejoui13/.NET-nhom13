@@ -75,11 +75,12 @@ namespace AssignmentApp.GUI
             guna2Panel1.Controls.Add(btnCancel);
             guna2Panel1.Controls.Add(lblConnect);
             guna2Panel1.CustomizableEdges = customizableEdges13;
-            guna2Panel1.Location = new Point(179, 113);
+            guna2Panel1.Location = new Point(157, 87);
+            guna2Panel1.Margin = new Padding(3, 2, 3, 2);
             guna2Panel1.Name = "guna2Panel1";
             guna2Panel1.ShadowDecoration.CustomizableEdges = customizableEdges14;
             guna2Panel1.ShadowDecoration.Enabled = true;
-            guna2Panel1.Size = new Size(630, 359);
+            guna2Panel1.Size = new Size(551, 267);
             guna2Panel1.TabIndex = 2;
             // 
             // uiGroupBox1
@@ -93,10 +94,11 @@ namespace AssignmentApp.GUI
             uiGroupBox1.CustomizableEdges = customizableEdges5;
             uiGroupBox1.Font = new Font("Segoe UI Semibold", 12F, FontStyle.Bold);
             uiGroupBox1.ForeColor = Color.White;
-            uiGroupBox1.Location = new Point(32, 35);
+            uiGroupBox1.Location = new Point(28, 26);
+            uiGroupBox1.Margin = new Padding(3, 2, 3, 2);
             uiGroupBox1.Name = "uiGroupBox1";
             uiGroupBox1.ShadowDecoration.CustomizableEdges = customizableEdges6;
-            uiGroupBox1.Size = new Size(569, 219);
+            uiGroupBox1.Size = new Size(498, 164);
             uiGroupBox1.TabIndex = 2;
             uiGroupBox1.Text = "LOGIN";
             // 
@@ -108,14 +110,14 @@ namespace AssignmentApp.GUI
             txtPass.DefaultText = "";
             txtPass.Font = new Font("Segoe UI", 12F);
             txtPass.HoverState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtPass.Location = new Point(174, 133);
-            txtPass.Margin = new Padding(4, 6, 4, 6);
+            txtPass.Location = new Point(150, 109);
+            txtPass.Margin = new Padding(4, 4, 4, 4);
             txtPass.Name = "txtPass";
             txtPass.PasswordChar = '●';
             txtPass.PlaceholderText = "Password";
             txtPass.SelectedText = "";
             txtPass.ShadowDecoration.CustomizableEdges = customizableEdges2;
-            txtPass.Size = new Size(356, 46);
+            txtPass.Size = new Size(312, 34);
             txtPass.TabIndex = 9;
             txtPass.UseSystemPasswordChar = true;
             // 
@@ -127,13 +129,13 @@ namespace AssignmentApp.GUI
             txtUser.DefaultText = "";
             txtUser.Font = new Font("Segoe UI", 12F);
             txtUser.HoverState.BorderColor = Color.FromArgb(0, 126, 249);
-            txtUser.Location = new Point(174, 59);
-            txtUser.Margin = new Padding(4, 6, 4, 6);
+            txtUser.Location = new Point(150, 53);
+            txtUser.Margin = new Padding(4, 4, 4, 4);
             txtUser.Name = "txtUser";
             txtUser.PlaceholderText = "Username";
             txtUser.SelectedText = "";
             txtUser.ShadowDecoration.CustomizableEdges = customizableEdges4;
-            txtUser.Size = new Size(356, 46);
+            txtUser.Size = new Size(312, 34);
             txtUser.TabIndex = 8;
             // 
             // label2
@@ -141,9 +143,9 @@ namespace AssignmentApp.GUI
             label2.AutoSize = true;
             label2.BackColor = Color.Transparent;
             label2.ForeColor = Color.FromArgb(64, 64, 64);
-            label2.Location = new Point(40, 146);
+            label2.Location = new Point(33, 119);
             label2.Name = "label2";
-            label2.Size = new Size(102, 28);
+            label2.Size = new Size(83, 21);
             label2.TabIndex = 7;
             label2.Text = "Password:";
             // 
@@ -152,9 +154,9 @@ namespace AssignmentApp.GUI
             label1.AutoSize = true;
             label1.BackColor = Color.Transparent;
             label1.ForeColor = Color.FromArgb(64, 64, 64);
-            label1.Location = new Point(40, 72);
+            label1.Location = new Point(33, 63);
             label1.Name = "label1";
-            label1.Size = new Size(109, 28);
+            label1.Size = new Size(87, 21);
             label1.TabIndex = 6;
             label1.Text = "Username:";
             // 
@@ -169,10 +171,11 @@ namespace AssignmentApp.GUI
             btnLogin.FillColor = Color.FromArgb(0, 126, 249);
             btnLogin.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnLogin.ForeColor = Color.White;
-            btnLogin.Location = new Point(395, 285);
+            btnLogin.Location = new Point(346, 214);
+            btnLogin.Margin = new Padding(3, 2, 3, 2);
             btnLogin.Name = "btnLogin";
             btnLogin.ShadowDecoration.CustomizableEdges = customizableEdges8;
-            btnLogin.Size = new Size(100, 40);
+            btnLogin.Size = new Size(88, 30);
             btnLogin.TabIndex = 0;
             btnLogin.Text = "LOGIN";
             btnLogin.Click += btnLogin_Click;
@@ -188,10 +191,11 @@ namespace AssignmentApp.GUI
             btnCancel.FillColor = Color.FromArgb(231, 76, 60);
             btnCancel.Font = new Font("Segoe UI Semibold", 10F, FontStyle.Bold);
             btnCancel.ForeColor = Color.White;
-            btnCancel.Location = new Point(501, 285);
+            btnCancel.Location = new Point(438, 214);
+            btnCancel.Margin = new Padding(3, 2, 3, 2);
             btnCancel.Name = "btnCancel";
             btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges10;
-            btnCancel.Size = new Size(100, 40);
+            btnCancel.Size = new Size(88, 30);
             btnCancel.TabIndex = 1;
             btnCancel.Text = "CANCEL";
             btnCancel.Click += btnCancel_Click;
@@ -209,23 +213,25 @@ namespace AssignmentApp.GUI
             lblConnect.FillColor = Color.FromArgb(242, 245, 250);
             lblConnect.Font = new Font("Segoe UI", 9F);
             lblConnect.ForeColor = Color.FromArgb(103, 101, 86);
-            lblConnect.Location = new Point(32, 285);
+            lblConnect.Location = new Point(28, 214);
+            lblConnect.Margin = new Padding(3, 2, 3, 2);
             lblConnect.Name = "lblConnect";
             lblConnect.ShadowDecoration.CustomizableEdges = customizableEdges12;
-            lblConnect.Size = new Size(242, 37);
+            lblConnect.Size = new Size(212, 28);
             lblConnect.TabIndex = 6;
             lblConnect.Text = "SERVER CONNECTION: SECURE";
             lblConnect.TextAlign = HorizontalAlignment.Left;
             // 
             // frmAuth
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(242, 245, 250);
-            ClientSize = new Size(984, 594);
+            ClientSize = new Size(861, 446);
             Controls.Add(guna2Panel1);
             FormBorderStyle = FormBorderStyle.None;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            Margin = new Padding(4, 3, 4, 3);
             Name = "frmAuth";
             Text = "USER AUTHENTICATION";
             Load += AuthForm_Load;

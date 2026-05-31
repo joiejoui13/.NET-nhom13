@@ -942,6 +942,11 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 MessageBox.Show("Bật Tìm Kiếm Nhanh: Bạn điền vào ô Tên hoặc Mã bên trên rồi bấm 'Lọc' tiếp nhé.", "Gợi ý", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
+            if (string.IsNullOrEmpty(txtSelMaSP.Text.Trim()) && string.IsNullOrEmpty(txtSelTenSP.Text.Trim()))
+            {
+                MessageBox.Show("Vui lòng điền ít nhất tên hoặc mã sản phẩm để tìm kiếm!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             await FilterProductsAsync();
             MessageBox.Show($"Tôi đã tìm thấy {dgvProductsSelection.Rows.Count} sản phẩm khớp với bạn rồi đó!", "OK nhe", MessageBoxButtons.OK, MessageBoxIcon.Information);

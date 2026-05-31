@@ -8,16 +8,8 @@ using Dapper;
 
 namespace AssignmentApp.DAL.Repositories.Sales
 {
-    /// <summary>
-    /// Class thao tác trực tiếp với CSDL (Tầng DAL - Data Access Layer).
-    /// Áp dụng Pattern Repository và thư viện Micro-ORM Dapper để tối ưu hóa hiệu năng truy vấn.
-    /// Mọi câu lệnh SQL đều dùng Parameterized Query để chống SQL Injection.
-    /// </summary>
     public class ReturnRepository
     {
-/// <summary>
-        /// [CHI TIẾT] Lấy toàn bộ danh sách dữ liệu. Sử dụng bất đồng bộ (Task) để tối ưu hiệu suất và không chặn luồng chính (Main Thread).
-        /// </summary>
         public async Task<IEnumerable<Return>> GetAllAsync()
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();

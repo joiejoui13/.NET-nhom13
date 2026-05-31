@@ -48,6 +48,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnBackToReceipt.Click += btnBackToReceipt_Click;
         }
 
+
         private void tabMain_Selecting(object? sender, TabControlCancelEventArgs e)
         {
             if (e.TabPage == tabChonSanPham)
@@ -73,6 +74,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelTenSP.Enabled = false;
             txtSelGiaNhap.Enabled = false;
             txtSelSoLuong.Enabled = false;
+            txtSelMaDanhMuc.Enabled = false;
+            txtSelTenDanhMuc.Enabled = false;
 
             if (state == "SelectingAvailable")
             {
@@ -645,12 +648,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private async Task LoadProductsSelectionGridAsync(List<Product>? dataSource = null)
         {
             dgvProductsSelection.Rows.Clear();
-            if (dgvProductsSelection.Columns.Count == 3)
-            {
-                dgvProductsSelection.Columns.Add(new DataGridViewTextBoxColumn() { Name = "colSelMaDanhMuc", HeaderText = "Danh Mục", ReadOnly = true });
-                dgvProductsSelection.Columns.Add(new DataGridViewTextBoxColumn() { Name = "colSelSoLuongTon", HeaderText = "Tồn Kho", ReadOnly = true });
-                dgvProductsSelection.Columns.Add(new DataGridViewTextBoxColumn() { Name = "colSelTrangThai", HeaderText = "Trạng Thái", ReadOnly = true });
-            }
 
             var list = dataSource ?? (await _productRepo.GetAllAsync()).ToList();
             foreach (var prod in list)
@@ -704,6 +701,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 txtSelMaSP.Text = prod.MaSanPham.ToString();
                 txtSelTenSP.Text = prod.TenSanPham;
                 txtSelGiaNhap.Text = prod.GiaBan.ToString();
+                txtSelMaDanhMuc.Text = prod.MaDanhMuc.ToString();
+                txtSelTenDanhMuc.Text = prod.TenDanhMuc ?? "";
 
                 lblProductDetailDesc.Text = $"Mã SP: {prod.MaSanPham}\n" +
                                             $"Tên SP: {prod.TenSanPham}\n" +
@@ -908,6 +907,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelTenSP.Text = "";
             txtSelSoLuong.Text = "";
             txtSelGiaNhap.Text = "";
+            txtSelMaDanhMuc.Text = "";
+            txtSelTenDanhMuc.Text = "";
             dgvProductsSelection.ClearSelection();
             dgvCurrentDetails.ClearSelection();
             tabSelectionContainer.SelectedTab = tabListProducts;
@@ -925,10 +926,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 txtSelTenSP.Enabled = true;
                 txtSelGiaNhap.Enabled = true;
                 txtSelSoLuong.Enabled = true;
+                txtSelMaDanhMuc.Enabled = true;
+                txtSelTenDanhMuc.Enabled = true;
 
                 // Mở khóa ReadOnly để cho phép gõ phím
                 txtSelMaSP.ReadOnly = false;
                 txtSelTenSP.ReadOnly = false;
+                txtSelGiaNhap.ReadOnly = false;
+                txtSelSoLuong.ReadOnly = false;
+                txtSelMaDanhMuc.ReadOnly = false;
+                txtSelTenDanhMuc.ReadOnly = false;
 
                 MessageBox.Show("Đã bật chế độ Tìm kiếm!\n\nVui lòng gõ thông tin cần tìm vào các ô trống rồi nhấn TÌM KIẾM lần nữa.", "Hướng dẫn", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -938,6 +945,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 string.IsNullOrWhiteSpace(txtSelTenSP.Text) &&
                 string.IsNullOrWhiteSpace(txtSelGiaNhap.Text) &&
                 string.IsNullOrWhiteSpace(txtSelSoLuong.Text) &&
+                string.IsNullOrWhiteSpace(txtSelMaDanhMuc.Text) &&
+                string.IsNullOrWhiteSpace(txtSelTenDanhMuc.Text) &&
                 string.IsNullOrWhiteSpace(txtProductSearch.Text))
             {
                 MessageBox.Show("Vui lòng điền thông tin để tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -947,6 +956,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             string keyword = txtProductSearch.Text.Trim().ToLower();
             string maSP = txtSelMaSP.Text.Trim().ToLower();
             string tenSP = txtSelTenSP.Text.Trim().ToLower();
+            string maDM = txtSelMaDanhMuc.Text.Trim().ToLower();
+            string tenDM = txtSelTenDanhMuc.Text.Trim().ToLower();
 
             var all = await _productRepo.GetAllAsync();
             var filtered = all.Where(p =>
@@ -955,7 +966,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                  p.TenSanPham.ToLower().Contains(keyword) ||
                  p.MaDanhMuc.ToString() == keyword) &&
                 (string.IsNullOrEmpty(maSP) || p.MaSanPham.ToString() == maSP) &&
-                (string.IsNullOrEmpty(tenSP) || p.TenSanPham.ToLower().Contains(tenSP))
+                (string.IsNullOrEmpty(tenSP) || p.TenSanPham.ToLower().Contains(tenSP)) &&
+                (string.IsNullOrEmpty(maDM) || p.MaDanhMuc.ToString() == maDM) &&
+                (string.IsNullOrEmpty(tenDM) || p.TenDanhMuc.ToLower().Contains(tenDM))
             ).ToList();
 
             _ = LoadProductsSelectionGridAsync(filtered);
@@ -969,6 +982,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtProductSearch.Text = "";
             txtSelMaSP.ReadOnly = true;
             txtSelTenSP.ReadOnly = true;
+            txtSelGiaNhap.ReadOnly = true;
+            txtSelSoLuong.ReadOnly = true;
+            txtSelMaDanhMuc.ReadOnly = true;
+            txtSelTenDanhMuc.ReadOnly = true;
             btnResetCartForm_Click(null, EventArgs.Empty);
             SetCartButtonsState("Init", isCartModified);
             _ = LoadProductsSelectionGridAsync();

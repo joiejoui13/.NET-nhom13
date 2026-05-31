@@ -149,6 +149,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colSelMaSP = new DataGridViewTextBoxColumn();
             colSelTenSP = new DataGridViewTextBoxColumn();
             colSelGiaBan = new DataGridViewTextBoxColumn();
+            colSelMaDanhMuc = new DataGridViewTextBoxColumn();
+            colSelSoLuongTon = new DataGridViewTextBoxColumn();
+            colSelTrangThai = new DataGridViewTextBoxColumn();
             tabProductDetail = new TabPage();
             pnlProductDetailCard = new Guna.UI2.WinForms.Guna2Panel();
             picProductDetail = new Guna.UI2.WinForms.Guna2PictureBox();
@@ -169,6 +172,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colCurThanhTien = new DataGridViewTextBoxColumn();
             lblSelMaSP = new Label();
             txtSelMaSP = new Guna.UI2.WinForms.Guna2TextBox();
+            lblSelMaDanhMuc = new Label();
+            txtSelMaDanhMuc = new Guna.UI2.WinForms.Guna2TextBox();
+            lblSelTenDanhMuc = new Label();
+            txtSelTenDanhMuc = new Guna.UI2.WinForms.Guna2TextBox();
             lblSelTenSP = new Label();
             txtSelTenSP = new Guna.UI2.WinForms.Guna2TextBox();
             lblSelSoLuong = new Label();
@@ -929,7 +936,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvProductsSelection.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             dgvProductsSelection.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvProductsSelection.ColumnHeadersHeight = 30;
-            dgvProductsSelection.Columns.AddRange(new DataGridViewColumn[] { colSelMaSP, colSelTenSP, colSelGiaBan });
+            dgvProductsSelection.Columns.AddRange(new DataGridViewColumn[] { colSelMaSP, colSelTenSP, colSelGiaBan, colSelMaDanhMuc, colSelSoLuongTon, colSelTrangThai });
             dgvProductsSelection.DefaultCellStyle = dataGridViewCellStyle3;
             dgvProductsSelection.Dock = DockStyle.Fill;
             dgvProductsSelection.GridColor = Color.FromArgb(231, 229, 255);
@@ -980,6 +987,24 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colSelGiaBan.HeaderText = "Giá bán";
             colSelGiaBan.Name = "colSelGiaBan";
             colSelGiaBan.ReadOnly = true;
+            // 
+            // colSelMaDanhMuc
+            // 
+            colSelMaDanhMuc.HeaderText = "Danh Mục";
+            colSelMaDanhMuc.Name = "colSelMaDanhMuc";
+            colSelMaDanhMuc.ReadOnly = true;
+            // 
+            // colSelSoLuongTon
+            // 
+            colSelSoLuongTon.HeaderText = "Tồn Kho";
+            colSelSoLuongTon.Name = "colSelSoLuongTon";
+            colSelSoLuongTon.ReadOnly = true;
+            // 
+            // colSelTrangThai
+            // 
+            colSelTrangThai.HeaderText = "Trạng Thái";
+            colSelTrangThai.Name = "colSelTrangThai";
+            colSelTrangThai.ReadOnly = true;
             // 
             // tabProductDetail
             // 
@@ -1066,6 +1091,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlChonRight.Controls.Add(txtSelSoLuong);
             pnlChonRight.Controls.Add(lblSelGiaNhap);
             pnlChonRight.Controls.Add(txtSelGiaNhap);
+            pnlChonRight.Controls.Add(lblSelMaDanhMuc);
+            pnlChonRight.Controls.Add(txtSelMaDanhMuc);
+            pnlChonRight.Controls.Add(lblSelTenDanhMuc);
+            pnlChonRight.Controls.Add(txtSelTenDanhMuc);
             pnlChonRight.Controls.Add(lblTotalAmount);
             pnlChonRight.CustomizableEdges = customizableEdges69;
             pnlChonRight.FillColor = Color.White;
@@ -1193,7 +1222,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvCurrentDetails.ReadOnly = true;
             dgvCurrentDetails.RowHeadersVisible = false;
             dgvCurrentDetails.RowTemplate.Height = 28;
-            dgvCurrentDetails.Size = new Size(318, 221);
+            dgvCurrentDetails.Size = new Size(318, 166);
             dgvCurrentDetails.TabIndex = 5;
             dgvCurrentDetails.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvCurrentDetails.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -1366,6 +1395,58 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelGiaNhap.Size = new Size(179, 30);
             txtSelGiaNhap.TabIndex = 8;
             // 
+            // lblSelMaDanhMuc
+            // 
+            lblSelMaDanhMuc.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            lblSelMaDanhMuc.AutoSize = true;
+            lblSelMaDanhMuc.Font = new Font("Segoe UI", 9F);
+            lblSelMaDanhMuc.Location = new Point(9, 213);
+            lblSelMaDanhMuc.Name = "lblSelMaDanhMuc";
+            lblSelMaDanhMuc.Size = new Size(57, 15);
+            lblSelMaDanhMuc.TabIndex = 21;
+            lblSelMaDanhMuc.Text = "Mã DM:";
+            // 
+            // txtSelMaDanhMuc
+            // 
+            txtSelMaDanhMuc.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            txtSelMaDanhMuc.BorderRadius = 5;
+            txtSelMaDanhMuc.CustomizableEdges = customizableEdges68;
+            txtSelMaDanhMuc.DefaultText = "";
+            txtSelMaDanhMuc.Font = new Font("Segoe UI", 9F);
+            txtSelMaDanhMuc.Location = new Point(9, 231);
+            txtSelMaDanhMuc.Name = "txtSelMaDanhMuc";
+            txtSelMaDanhMuc.ReadOnly = true;
+            txtSelMaDanhMuc.Enabled = false;
+            txtSelMaDanhMuc.ShadowDecoration.CustomizableEdges = customizableEdges68;
+            txtSelMaDanhMuc.Size = new Size(118, 30);
+            txtSelMaDanhMuc.TabIndex = 22;
+            // 
+            // lblSelTenDanhMuc
+            // 
+            lblSelTenDanhMuc.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            lblSelTenDanhMuc.AutoSize = true;
+            lblSelTenDanhMuc.Font = new Font("Segoe UI", 9F);
+            lblSelTenDanhMuc.Location = new Point(148, 213);
+            lblSelTenDanhMuc.Name = "lblSelTenDanhMuc";
+            lblSelTenDanhMuc.Size = new Size(59, 15);
+            lblSelTenDanhMuc.TabIndex = 23;
+            lblSelTenDanhMuc.Text = "Tên DM:";
+            // 
+            // txtSelTenDanhMuc
+            // 
+            txtSelTenDanhMuc.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            txtSelTenDanhMuc.BorderRadius = 5;
+            txtSelTenDanhMuc.CustomizableEdges = customizableEdges68;
+            txtSelTenDanhMuc.DefaultText = "";
+            txtSelTenDanhMuc.Font = new Font("Segoe UI", 9F);
+            txtSelTenDanhMuc.Location = new Point(148, 231);
+            txtSelTenDanhMuc.Name = "txtSelTenDanhMuc";
+            txtSelTenDanhMuc.ReadOnly = true;
+            txtSelTenDanhMuc.Enabled = false;
+            txtSelTenDanhMuc.ShadowDecoration.CustomizableEdges = customizableEdges68;
+            txtSelTenDanhMuc.Size = new Size(179, 30);
+            txtSelTenDanhMuc.TabIndex = 24;
+            // 
             // lblTotalAmount
             // 
             lblTotalAmount.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
@@ -1517,6 +1598,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private System.Windows.Forms.DataGridViewTextBoxColumn colSelMaSP;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSelTenSP;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSelGiaBan;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSelMaDanhMuc;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSelSoLuongTon;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colSelTrangThai;
         private System.Windows.Forms.TabPage tabProductDetail;
         private Guna.UI2.WinForms.Guna2Panel pnlProductDetailCard;
         private Guna.UI2.WinForms.Guna2PictureBox picProductDetail;
@@ -1545,5 +1629,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private Guna.UI2.WinForms.Guna2Button btnAddToCart;
         private Guna.UI2.WinForms.Guna2Button btnRemoveFromCart;
         private Guna.UI2.WinForms.Guna2Button btnBackToReceipt;
+        private System.Windows.Forms.Label lblSelMaDanhMuc;
+        private Guna.UI2.WinForms.Guna2TextBox txtSelMaDanhMuc;
+        private System.Windows.Forms.Label lblSelTenDanhMuc;
+        private Guna.UI2.WinForms.Guna2TextBox txtSelTenDanhMuc;
     }
 }

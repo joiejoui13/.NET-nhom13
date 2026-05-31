@@ -8,56 +8,83 @@ namespace AssignmentApp.GUI.UserControls.Sales
 {
     public partial class ucReturn : UserControl
     {
+        #region 1. KHAI BÁO BIẾN & KHỞI TẠO (DÙNG CHUNG)
     
+        // Bảng dữ liệu chứa danh sách các phiếu trả hàng
         DataTable dtReturn;        
+        // Bảng dữ liệu chứa danh sách chi tiết sản phẩm của hóa đơn gốc
         DataTable dtInvoiceDetails; 
+        // Bảng dữ liệu đóng vai trò như 'Giỏ hàng' chứa các sản phẩm được chọn để trả
         DataTable dtCart;           
 
+        // Biến lưu trữ mã của Phiếu Trả Hàng đang được thao tác (nếu = 0 nghĩa là chưa chọn phiếu nào)
         int maTraHangHienTai = 0;  
+        // Cờ đánh dấu hệ thống đang ở chế độ Thêm mới phiếu
         bool isAdding = false;   
+        // Cờ đánh dấu hệ thống đang ở chế độ Sửa phiếu
         bool isEditing = false;    
+        // Cờ đánh dấu hệ thống đang ở chế độ Tìm kiếm phiếu (Tab 1)
         bool isSearching = false;    
+        // Cờ đánh dấu xem giỏ hàng đã bị thay đổi (thêm/sửa/xóa) hay chưa
         bool isCartModified = false;
+        // Cờ đánh dấu hệ thống đang ở chế độ Tìm kiếm sản phẩm (Tab 2)
         bool isReturnSearching = false;
 
+        // Hàm khởi tạo (Constructor): Được gọi tự động đầu tiên khi giao diện (ucReturn) được tạo ra
         public ucReturn()
         {
+            // Lệnh bắt buộc để vẽ các thành phần giao diện (nút, bảng, chữ,...)
             InitializeComponent();
-            dtpNgayTra.ValueChanged += (s, e) => 
-            {
-                if (dtpNgayTra.Format == DateTimePickerFormat.Custom)
-                    dtpNgayTra.Format = DateTimePickerFormat.Short;
-            };
             
-            tabMain.Selecting += (s, e) =>
-            {
-                if (e.TabPage == tabChonSanPham && maTraHangHienTai == 0)
-                {
-                    e.Cancel = true;
-                    MessageBox.Show("Vui lòng chọn hoặc tạo mới một phiếu trả trước khi chuyển sang tab chọn sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            };
+            // Đăng ký sự kiện: Khi người dùng đổi ngày trả hàng thì gọi hàm dtpNgayTra_ValueChanged
+            dtpNgayTra.ValueChanged += dtpNgayTra_ValueChanged;
+            // Đăng ký sự kiện: Khi người dùng chuyển qua lại giữa các Tab (Tab 1 và Tab 2) thì gọi hàm tabMain_Selecting
+            tabMain.Selecting += tabMain_Selecting;
         }
 
-       
+        // Hàm xử lý sự kiện: Khi đổi ngày trả hàng
+        private void dtpNgayTra_ValueChanged(object sender, EventArgs e)
+        {
+            // Đảm bảo định dạng hiển thị ngày tháng luôn là kiểu Short (Vd: 15/08/2026)
+            if (dtpNgayTra.Format == DateTimePickerFormat.Custom)
+            {
+                dtpNgayTra.Format = DateTimePickerFormat.Short;
+            }
+        }
+
+        // Hàm xử lý sự kiện: Khi bấm chọn chuyển Tab
+        private void tabMain_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            // Nếu người dùng định bấm sang Tab 2 (Chọn sản phẩm) nhưng chưa có phiếu nào được chọn (maTraHangHienTai == 0)
+            if (e.TabPage == tabChonSanPham && maTraHangHienTai == 0)
+            {
+                e.Cancel = true; // Hủy thao tác chuyển Tab
+                MessageBox.Show("Vui lòng chọn hoặc tạo mới một phiếu trả trước khi chuyển sang tab chọn sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        // Hàm xử lý sự kiện Load form: Chạy 1 lần duy nhất khi giao diện vừa mở lên
         private void ucReturn_Load(object sender, EventArgs e)
         {
-
-            KhoiTaoGioHang();
-            NapDanhSachPhieu();
-            SetTrangThaiBanDau();
+            KhoiTaoGioHang();      // Bước 1: Tạo cấu trúc cho giỏ hàng
+            NapDanhSachPhieu();    // Bước 2: Lấy dữ liệu phiếu từ cơ sở dữ liệu lên bảng (Grid)
+            SetTrangThaiBanDau();  // Bước 3: Đưa giao diện về trạng thái khóa/mặc định ban đầu
         }
 
+        // Hàm khởi tạo giỏ hàng (Chỉ tạo cấu trúc các cột, chưa có dữ liệu)
         private void KhoiTaoGioHang()
         {
             dtCart = new DataTable();
+            // Khai báo các cột cho bảng giỏ hàng với kiểu dữ liệu tương ứng (int, string, decimal)
             dtCart.Columns.Add("colCurMaSP", typeof(int));
             dtCart.Columns.Add("colCurTenSP", typeof(string));
             dtCart.Columns.Add("colCurSoLuong", typeof(int));
             dtCart.Columns.Add("colCurDonGia", typeof(decimal));
             dtCart.Columns.Add("colCurTinhTrang", typeof(string));
+            // Cột Thành tiền tự động tính bằng Số lượng x Đơn giá
             dtCart.Columns.Add("colCurThanhTien", typeof(decimal), "colCurSoLuong * colCurDonGia");
 
+            // Liên kết các cột vừa tạo vào các cột trên giao diện DataGridView (Bảng bên phải ở Tab 2)
             colCurMaSP.DataPropertyName = "colCurMaSP";
             colCurTenSP.DataPropertyName = "colCurTenSP";
             colCurSoLuong.DataPropertyName = "colCurSoLuong";
@@ -65,19 +92,27 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colCurTinhTrang.DataPropertyName = "colCurTinhTrang";
             colCurThanhTien.DataPropertyName = "colCurThanhTien";
 
-            dgvCurrentDetails.AutoGenerateColumns = false;
-            dgvCurrentDetails.DataSource = dtCart;
-            dgvCurrentDetails.AllowUserToAddRows = false;
+            dgvCurrentDetails.AutoGenerateColumns = false; // Tắt tự động sinh cột để dùng cột mình tự cấu hình
+            dgvCurrentDetails.DataSource = dtCart;         // Đổ dữ liệu của dtCart vào bảng
+            dgvCurrentDetails.AllowUserToAddRows = false;  // Không cho người dùng tự gõ thêm hàng trống vào cuối bảng
         }
 
+        #endregion
+
+        #region 2. CÁC HÀM TIỆN ÍCH & TRẠNG THÁI (DÙNG CHUNG)
+
+        // Hàm thiết lập trạng thái mặc định ban đầu cho toàn bộ giao diện
         private void SetTrangThaiBanDau()
         {
+            // Tắt toàn bộ các cờ trạng thái
             isAdding = false;
             isEditing = false;
             isSearching = false;
 
+            // Khóa các ô nhập liệu ở Tab 1 để ngăn người dùng gõ linh tinh khi chưa bấm nút
             KhoaONhapTab0(true);
 
+            // Bật nút Thêm, tắt các nút sửa/xóa/lưu (Vì chưa chọn phiếu nào thì không thể sửa xóa)
             btnAdd.Enabled = true;
             btnEdit.Enabled = false;
             btnDelete.Enabled = false;
@@ -86,43 +121,53 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnSearch.Enabled = true;   
             btnRefresh.Enabled = true;
 
+            // Khóa luôn các nút ở Tab 2
             KhoaTab1(true);
+            
+            // Xóa sạch chữ ở các ô nhập liệu
             XoaTrangTab0();
             XoaTrangTab1();
         }
 
       
+        // Hàm thiết lập trạng thái khi người dùng đang Thêm hoặc Sửa phiếu
         private void SetTrangThaiDangNhap()
         {
+            // Mở khóa các ô nhập liệu để người dùng gõ
             KhoaONhapTab0(false);
 
+            // Khóa các nút Thêm, Sửa, Xóa để tránh xung đột
             btnAdd.Enabled = false;
             btnEdit.Enabled = false;
             btnDelete.Enabled = false;
+            // Bật nút Lưu và Bỏ qua
             btnSave.Enabled = true;
             btnCancel.Enabled = true;
         }
 
+        // Hàm ẩn/hiện (Khóa/mở) các ô nhập liệu ở Tab 1
         private void KhoaONhapTab0(bool khoa)
         {
+            // Nếu khoa = true -> ReadOnly = true (Chỉ đọc), Enabled = false (Bị mờ đi)
             txtMaHoaDon.ReadOnly = khoa;
             txtMaHoaDon.Enabled = !khoa;
             txtLyDo.ReadOnly = khoa;
             txtLyDo.Enabled = !khoa;
-            dtpNgayTra.Enabled = false;
+            dtpNgayTra.Enabled = false; // Ngày trả hệ thống tự lấy ngày hiện tại nên luôn khóa
             cboTrangThai.Enabled = !khoa;
             cboLoaiGiaoDich.Enabled = !khoa;
+            
+            // Tổng tiền, Khách hàng, Nhân viên là do hệ thống tự tính/tự lấy, người dùng không được gõ
             txtTongTienHoan.ReadOnly = true;
             txtTongTienHoan.Enabled = false;
-
             txtKhachHang.ReadOnly = true;
             txtKhachHang.Enabled = false;
-            
             txtNhanVien.ReadOnly = true;
             txtNhanVien.Enabled = false;
         }
 
       
+        // Hàm khóa toàn bộ các nút chức năng ở Tab 2
         private void KhoaTab1(bool khoa)
         {
             btnAddToCart.Enabled = false;
@@ -136,24 +181,25 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
       
+        // Hàm xóa sạch nội dung các ô nhập ở Tab 1
         private void XoaTrangTab0()
         {
             txtMaHoaDon.Text = "";
             txtLyDo.Text = "";
             txtTongTienHoan.Text = "0 đ";
-            dtpNgayTra.Value = DateTime.Now; 
+            dtpNgayTra.Value = DateTime.Now; // Reset về ngày hiện tại
             dtpNgayTra.Format = DateTimePickerFormat.Short;
 
-          
-            cboTrangThai.SelectedIndex = 1; 
+            cboTrangThai.SelectedIndex = 1; // Mặc định chọn trạng thái ở dòng số 2 (Đang xử lý)
 
-            cboLoaiGiaoDich.SelectedIndex = -1; 
+            cboLoaiGiaoDich.SelectedIndex = -1; // Bỏ chọn
             txtKhachHang.Text = "";
             txtNhanVien.Text = "";
-            maTraHangHienTai = 0;
+            maTraHangHienTai = 0; // Xóa mã phiếu đang nhớ
         }
 
        
+        // Hàm xóa sạch nội dung các ô nhập ở Tab 2
         private void XoaTrangTab1()
         {
             txtSelMaSP.Text = "";
@@ -163,9 +209,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelTinhTrang.Text = "";
             lblTotalAmount.Text = "TỔNG TIỀN HOÀN TRẢ TẠM TÍNH: 0 đ";
 
+            // Xóa sạch giỏ hàng tạm
             if (dtCart != null)
                 dtCart.Rows.Clear();
 
+            // Xóa sạch danh sách sản phẩm hiển thị của hóa đơn gốc
             if (dtInvoiceDetails != null)
                 dtInvoiceDetails.Rows.Clear();
 
@@ -173,8 +221,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
    
+        // Hàm tải toàn bộ danh sách Phiếu trả hàng từ SQL Database lên bảng (Grid)
         private void NapDanhSachPhieu()
         {
+            // Câu lệnh SQL: Lấy thông tin phiếu trả, join với các bảng khác để lấy tên nhân viên, khách hàng
             string sql = @"
                 SELECT 
                     th.MaTraHang,
@@ -190,16 +240,18 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 JOIN NguoiDung  nd ON th.MaNguoiDung = nd.MaNguoiDung
                 JOIN HoaDon     hd ON th.MaHoaDon    = hd.MaHoaDon
                 JOIN KhachHang  kh ON hd.MaKhachHang = kh.MaKhachHang
-                ORDER BY th.MaTraHang DESC";
+                ORDER BY th.MaTraHang DESC"; // Sắp xếp phiếu mới nhất lên đầu
 
+            // Kiểm tra kết nối Database, nếu đóng thì mở ra
             if (DbContext.Conn.State == ConnectionState.Closed)
                 DbContext.Ketnoi();
 
+            // Dùng DataAdapter để kéo dữ liệu từ SQL về
             SqlDataAdapter da = new SqlDataAdapter(sql, (SqlConnection)DbContext.Conn);
             dtReturn = new DataTable();
-            da.Fill(dtReturn);
+            da.Fill(dtReturn); // Đổ dữ liệu vào bảng dtReturn
 
-         
+            // Gắn các cột dữ liệu vào giao diện bảng (Grid)
             colMaTraHang.DataPropertyName = "MaTraHang";
             colMaHoaDon.DataPropertyName = "MaHoaDon";
             colTrangThai.DataPropertyName = "TrangThai";
@@ -266,7 +318,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblTotalAmount.Text = "TỔNG TIỀN HOÀN TRẢ TẠM TÍNH: " + tongTien.ToString("N0") + " đ";
         }
 
-     
+        #endregion
+
+        #region 3. TAB 1: QUẢN LÝ PHIẾU TRẢ HÀNG
+
         private void dgvReturns_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (isAdding || isEditing)
@@ -385,7 +440,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 DataRow nguon = dtChiTiet.Rows[i];
                 int soLuong = Convert.ToInt32(nguon["SoLuong"]);
                 decimal tienHoan = Convert.ToDecimal(nguon["TienHoan"]);
-                decimal donGia = (soLuong > 0) ? tienHoan / soLuong : 0;
+                decimal donGia = 0;
+                if (soLuong > 0)
+                {
+                    donGia = tienHoan / soLuong;
+                }
+                else
+                {
+                    donGia = 0;
+                }
 
                 DataRow dongMoi = dtCart.NewRow();
                 dongMoi["colCurMaSP"] = Convert.ToInt32(nguon["MaSanPham"]);
@@ -562,13 +625,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
       
+        // Hàm xử lý sự kiện khi bấm nút Lưu ở Tab 1 (Dùng để Tạo mới phiếu trả)
         private void btnSave_Click(object sender, EventArgs e)
         {
-          
+            // Bước 1: Kiểm tra dữ liệu đầu vào (Validate)
             if (txtMaHoaDon.Text.Trim() == "")
             {
-                MessageBox.Show("Vui lòng nhập mã hóa đơn gốc!", "Cảnh báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhập mã hóa đơn gốc!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtMaHoaDon.Focus();
                 return;
             }
@@ -598,19 +661,22 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
+            // Bước 2: Kiểm tra phiên đăng nhập (Ai đang thao tác)
             if (AssignmentApp.BLL.Session.UserSession.CurrentUser == null)
             {
                 MessageBox.Show("Lỗi: Không tìm thấy phiên đăng nhập!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
+            // Bước 3: Mở kết nối Database
             if (DbContext.Conn.State == ConnectionState.Closed)
                 DbContext.Ketnoi();
 
+            // Bước 4: Tạo câu lệnh SQL Insert (Thêm phiếu mới vào bảng TraHang)
             string sqlInsert = @"
                 INSERT INTO TraHang (MaHoaDon, MaNguoiDung, LyDo, TongTienHoan, NgayTra, TrangThai, LoaiGiaoDich)
                 VALUES (@mahd, @manguoidung, @lydo, 0, GETDATE(), @trangthai, @loaigd);
-                SELECT SCOPE_IDENTITY();"; 
+                SELECT SCOPE_IDENTITY();"; // SCOPE_IDENTITY() trả về ID của phiếu vừa được tạo
 
             SqlCommand cmdInsert = new SqlCommand(sqlInsert, (SqlConnection)DbContext.Conn);
             cmdInsert.Parameters.AddWithValue("@mahd", maHD);
@@ -619,6 +685,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cmdInsert.Parameters.AddWithValue("@trangthai", cboTrangThai.Text.Trim());
             cmdInsert.Parameters.AddWithValue("@loaigd", cboLoaiGiaoDich.Text.Trim());
 
+            // Thực thi và lưu lại Mã Phiếu vừa tạo vào biến maTraHangHienTai
             int newMaTraHang = Convert.ToInt32(cmdInsert.ExecuteScalar());
 
             MessageBox.Show(
@@ -626,19 +693,22 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 "Vui lòng chuyển sang Tab 'Chọn sản phẩm trả' để tiếp tục.",
                 "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            NapDanhSachPhieu();
-            SetTrangThaiBanDau();
+            // Bước 5: Cập nhật lại giao diện
+            NapDanhSachPhieu(); // Tải lại danh sách để phiếu mới hiện lên grid
+            SetTrangThaiBanDau(); // Reset form
             
+            // Giữ nguyên phiếu vừa tạo để thao tác tiếp
             maTraHangHienTai = newMaTraHang;
             cboTrangThai.Text = "Đang xử lý";
-            KhoaONhapTab0(false);
+            KhoaONhapTab0(false); // Mở khóa các ô nhập
 
-           
+            // Hiển thị tiêu đề phiếu bên Tab 2
             lblReturnTitle.Text = "MÃ PHIẾU: " + maTraHangHienTai;
+            // Tải danh sách sản phẩm thuộc hóa đơn này lên Tab 2
             NapSanPhamHoaDon(maHD); 
-            KhoaTab1(false);        
+            KhoaTab1(false); // Mở khóa các nút bên Tab 2
 
-         
+            // Bước 6: Tự động chuyển sang Tab 2 để chọn sản phẩm
             tabMain.SelectedIndex = 1;
         }
 
@@ -769,7 +839,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             SetTrangThaiBanDau();
         }
 
-     
+        #endregion
+
+        #region 4. TAB 2: QUẢN LÝ CHI TIẾT SẢN PHẨM TRẢ
+
         private void dgvProductsSelection_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dtInvoiceDetails == null || dtInvoiceDetails.Rows.Count == 0) return;
@@ -850,85 +923,80 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
      
+        // Hàm xử lý khi bấm nút "Thêm vào giỏ" ở Tab 2
         private void btnAddToCart_Click(object sender, EventArgs e)
         {
+            // Bước 1: Kiểm tra tính hợp lệ
             if (txtSelMaSP.Text.Trim() == "")
             {
-                MessageBox.Show("Vui lòng chọn sản phẩm từ danh sách bên trái!", "Cảnh báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-         
-            int soLuongTra;
-            if (!int.TryParse(txtSelSoLuong.Text.Trim(), out soLuongTra) || soLuongTra <= 0)
-            {
-                MessageBox.Show("Số lượng trả phải là số nguyên dương!", "Cảnh báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtSelSoLuong.Focus();
-                return;
-            }
-
-            if (txtSelTinhTrang.Text.Trim() == "")
-            {
-                MessageBox.Show("Vui lòng nhập tình trạng hàng trả!", "Cảnh báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtSelTinhTrang.Focus();
-                return;
-            }
-
-            int maSP = int.Parse(txtSelMaSP.Text.Trim());
-
-            int slMua = 0;
-            int daTra = 0;
-            for (int i = 0; i < dgvProductsSelection.Rows.Count; i++)
-            {
-                if (dgvProductsSelection.Rows[i].Cells["colSelMaSP"].Value != null &&
-                    Convert.ToInt32(dgvProductsSelection.Rows[i].Cells["colSelMaSP"].Value) == maSP)
-                {
-                    slMua = Convert.ToInt32(dgvProductsSelection.Rows[i].Cells["colSelSoLuongMua"].Value);
-                    daTra = Convert.ToInt32(dgvProductsSelection.Rows[i].Cells["colSelDaTra"].Value);
-                    break;
-                }
-            }
-
-            int soLuongToiDa = slMua - daTra;
-            if (soLuongTra > soLuongToiDa)
-            {
-                MessageBox.Show(
-                    "Số lượng trả vượt quá giới hạn!\nTối đa có thể trả thêm: " + soLuongToiDa + " sản phẩm.",
+                MessageBox.Show("Vui lòng chọn một sản phẩm từ danh sách hóa đơn!",
                     "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            decimal donGia = 0;
-            decimal.TryParse(txtSelDonGia.Text.Trim(), out donGia);
-
-           
-            bool daCoTrong = false;
-            for (int i = 0; i < dtCart.Rows.Count; i++)
+            int maSP = int.Parse(txtSelMaSP.Text.Trim());
+            int soLuongTra = 0;
+            if (!int.TryParse(txtSelSoLuong.Text.Trim(), out soLuongTra) || soLuongTra <= 0)
             {
-                if (Convert.ToInt32(dtCart.Rows[i]["colCurMaSP"]) == maSP)
-                {
-                
-                    int slHienTai = Convert.ToInt32(dtCart.Rows[i]["colCurSoLuong"]);
-                    if (slHienTai + soLuongTra > soLuongToiDa)
-                    {
-                        MessageBox.Show(
-                            "Tổng số lượng trả vượt quá giới hạn! Hiện đã có " + slHienTai +
-                            " trong giỏ, tối đa còn được thêm: " + (soLuongToiDa - slHienTai),
-                            "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
-                    }
+                MessageBox.Show("Số lượng trả phải lớn hơn 0!",
+                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtSelSoLuong.Focus();
+                return;
+            }
 
-                    dtCart.Rows[i]["colCurSoLuong"] = slHienTai + soLuongTra;
-                    dtCart.Rows[i]["colCurTinhTrang"] = txtSelTinhTrang.Text.Trim();
-                    daCoTrong = true;
+            decimal donGia = decimal.Parse(txtSelDonGia.Text.Trim());
+
+            // Bước 2: Lấy số lượng đã mua và đã trả trước đó để đối chiếu
+            int slMua = 0;
+            int slDaTra = 0;
+            foreach (DataRow row in dtInvoiceDetails.Rows)
+            {
+                if (Convert.ToInt32(row["MaSanPham"]) == maSP)
+                {
+                    slMua = Convert.ToInt32(row["SLMua"]);
+                    slDaTra = Convert.ToInt32(row["DaTra"]);
                     break;
                 }
             }
 
-           
+            // Tính số lượng còn lại được phép trả
+            int slDuocPhepTra = slMua - slDaTra;
+
+            // Bước 3: Kiểm tra xem sản phẩm này đã có trong giỏ hàng tạm chưa
+            bool daCoTrong = false;
+            foreach (DataRow r in dtCart.Rows)
+            {
+                if (Convert.ToInt32(r["colCurMaSP"]) == maSP)
+                {
+                    daCoTrong = true;
+                    int slCu = Convert.ToInt32(r["colCurSoLuong"]);
+                    int tongSLSauKhiThem = slCu + soLuongTra;
+
+                    // Nếu tổng số lượng đòi trả vượt quá số lượng được phép trả -> Báo lỗi
+                    if (tongSLSauKhiThem > slDuocPhepTra)
+                    {
+                        MessageBox.Show("Tổng số lượng trả (" + tongSLSauKhiThem +
+                            ") vượt quá số lượng được phép trả (" + slDuocPhepTra + ")!",
+                            "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    
+                    // Cập nhật số lượng và tình trạng mới
+                    r["colCurSoLuong"] = tongSLSauKhiThem;
+                    r["colCurTinhTrang"] = txtSelTinhTrang.Text.Trim();
+                    break;
+                }
+            }
+
+            // Nếu chưa có trong giỏ mà số lượng đòi trả lớn hơn số được phép -> Báo lỗi
+            if (!daCoTrong && soLuongTra > slDuocPhepTra)
+            {
+                MessageBox.Show("Số lượng trả vượt quá số lượng được phép trả (" + slDuocPhepTra + ")!",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            // Bước 4: Thêm vào giỏ hàng nếu hợp lệ
             if (!daCoTrong)
             {
                 DataRow dongMoi = dtCart.NewRow();
@@ -937,14 +1005,17 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 dongMoi["colCurSoLuong"] = soLuongTra;
                 dongMoi["colCurDonGia"] = donGia;
                 dongMoi["colCurTinhTrang"] = txtSelTinhTrang.Text.Trim();
-                dtCart.Rows.Add(dongMoi);
+                dtCart.Rows.Add(dongMoi); // Đẩy dòng mới vào bảng giỏ hàng
             }
 
-            isCartModified = true;
+            // Bật nút Lưu thay đổi
             btnLuuCT.Enabled = true;
+            // Tính lại tổng tiền
             TinhTongTienHoanTra();
+            // Xóa trắng form nhập
             XoaTrangTab1SanPham();
             
+            // Khóa các nút để chờ thao tác tiếp theo
             if (maTraHangHienTai != 0 && cboTrangThai.Text != "Hoàn thành" && cboTrangThai.Text != "Đã hủy")
             {
                 btnAddToCart.Enabled = false;
@@ -995,17 +1066,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
         }
 
-       
-        private void XoaTrangTab1SanPham()
-        {
-            txtSelMaSP.Text = "";
-            txtSelTenSP.Text = "";
-            txtSelSoLuong.Text = "";
-            txtSelDonGia.Text = "";
-            txtSelTinhTrang.Text = "";
-        }
-
-        
+        // Hàm xử lý khi bấm nút "Hoàn tất & Trở về"
         private void btnBackToReceipt_Click(object sender, EventArgs e)
         {
             if (dtCart == null || dtCart.Rows.Count == 0)
@@ -1022,19 +1083,44 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
+            tabMain.SelectedIndex = 0;
+        }
+
+        private void XoaTrangTab1SanPham()
+        {
+            txtSelMaSP.Text = "";
+            txtSelTenSP.Text = "";
+            txtSelSoLuong.Text = "";
+            txtSelDonGia.Text = "";
+            txtSelTinhTrang.Text = "";
+        }
+
+        
+        // Hàm lưu toàn bộ giỏ hàng vào Database
+        private void btnLuuCT_Click(object sender, EventArgs e)
+        {
+            if (dtCart.Rows.Count == 0)
+            {
+                MessageBox.Show("Danh sách sản phẩm trống, không có gì để lưu!",
+                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (DbContext.Conn.State == ConnectionState.Closed)
                 DbContext.Ketnoi();
 
+            // Sử dụng Transaction (Giao dịch): Đảm bảo hoặc là lưu thành công TẤT CẢ, hoặc là KHÔNG LƯU gì cả nếu có lỗi (tránh lưu nửa chừng)
             SqlTransaction giaoDich = ((SqlConnection)DbContext.Conn).BeginTransaction();
 
             try
             {
-              
                 decimal tongTienHoan = 0;
+                // Tính tổng tiền hoàn thực tế từ giỏ hàng
                 for (int i = 0; i < dtCart.Rows.Count; i++)
                     tongTienHoan += Convert.ToDecimal(dtCart.Rows[i]["colCurThanhTien"]);
 
-                // Khôi phục tồn kho cũ trước khi xóa để tránh cộng dồn nếu lưu nhiều lần
+                // Bước 1: Khôi phục tồn kho cũ (trả lại kho) của các sản phẩm TRƯỚC KHI XÓA
+                // (Vì mình sẽ xóa sạch chi tiết cũ rồi chèn lại toàn bộ chi tiết mới từ giỏ)
                 string sqlKhoiPhucTon = @"
                     UPDATE SanPham
                     SET SoLuongTon = SoLuongTon - ct.SoLuong
@@ -1045,44 +1131,41 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 cmdKhoiPhuc.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
                 cmdKhoiPhuc.ExecuteNonQuery();
 
+                // Bước 2: Xóa sạch các chi tiết trả hàng cũ của mã phiếu này trong Database
                 string sqlXoaCT = "DELETE FROM ChiTietTraHang WHERE MaTraHang = @matrahang";
                 SqlCommand cmdXoa = new SqlCommand(sqlXoaCT, (SqlConnection)DbContext.Conn, giaoDich);
                 cmdXoa.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
                 cmdXoa.ExecuteNonQuery();
+
+                // Bước 3: Lưu lại toàn bộ các sản phẩm đang có trong giỏ hàng (dtCart) vào Database
                 for (int i = 0; i < dtCart.Rows.Count; i++)
                 {
                     DataRow dong = dtCart.Rows[i];
-                    int maSP = Convert.ToInt32(dong["colCurMaSP"]);
-                    int soLuongTra = Convert.ToInt32(dong["colCurSoLuong"]);
-                    decimal thanhTien = Convert.ToDecimal(dong["colCurThanhTien"]);
-                    string tinhTrang = dong["colCurTinhTrang"].ToString();
+                    int msp = Convert.ToInt32(dong["colCurMaSP"]);
+                    int sl = Convert.ToInt32(dong["colCurSoLuong"]);
+                    decimal dg = Convert.ToDecimal(dong["colCurDonGia"]);
+                    string tt = dong["colCurTinhTrang"]?.ToString();
+                    decimal tienHoan = Convert.ToDecimal(dong["colCurThanhTien"]);
 
-                   
-                    string sqlCT = @"INSERT INTO ChiTietTraHang (MaTraHang, MaSanPham, SoLuong, TienHoan, TinhTrang)
-                                     VALUES (@matrahang, @masp, @sl, @tien, @tinhtrang)";
-                    SqlCommand cmdCT = new SqlCommand(sqlCT, (SqlConnection)DbContext.Conn, giaoDich);
-                    cmdCT.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
-                    cmdCT.Parameters.AddWithValue("@masp", maSP);
-                    cmdCT.Parameters.AddWithValue("@sl", soLuongTra);
-                    cmdCT.Parameters.AddWithValue("@tien", thanhTien);
-                    cmdCT.Parameters.AddWithValue("@tinhtrang", tinhTrang);
-                    cmdCT.ExecuteNonQuery();
+                    // Thêm vào bảng ChiTietTraHang
+                    string sqlThemCT = @"INSERT INTO ChiTietTraHang(MaTraHang, MaSanPham, SoLuong, TinhTrang, TienHoan)
+                                         VALUES(@matrahang, @masp, @soluong, @tinhtrang, @tienhoan)";
+                    SqlCommand cmdThemCT = new SqlCommand(sqlThemCT, (SqlConnection)DbContext.Conn, giaoDich);
+                    cmdThemCT.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
+                    cmdThemCT.Parameters.AddWithValue("@masp", msp);
+                    cmdThemCT.Parameters.AddWithValue("@soluong", sl);
+                    cmdThemCT.Parameters.AddWithValue("@tinhtrang", tt);
+                    cmdThemCT.Parameters.AddWithValue("@tienhoan", tienHoan);
+                    cmdThemCT.ExecuteNonQuery();
 
-               
-                    string sqlTon = "SELECT SoLuongTon FROM SanPham WHERE MaSanPham = @masp";
-                    SqlCommand cmdTon = new SqlCommand(sqlTon, (SqlConnection)DbContext.Conn, giaoDich);
-                    cmdTon.Parameters.AddWithValue("@masp", maSP);
-                    int tonKhoTruoc = Convert.ToInt32(cmdTon.ExecuteScalar());
-                    int tonKhoSau = tonKhoTruoc + soLuongTra;
-
-                    string sqlCapNhat = "UPDATE SanPham SET SoLuongTon = @sau WHERE MaSanPham = @masp";
-                    SqlCommand cmdCapNhat = new SqlCommand(sqlCapNhat, (SqlConnection)DbContext.Conn, giaoDich);
-                    cmdCapNhat.Parameters.AddWithValue("@sau", tonKhoSau);
-                    cmdCapNhat.Parameters.AddWithValue("@masp", maSP);
-                    cmdCapNhat.ExecuteNonQuery();
+                    // Cập nhật lại tồn kho (+ số lượng trả vào số lượng tồn)
+                    string sqlCapNhatKho = @"UPDATE SanPham SET SoLuongTon = SoLuongTon + @soluong WHERE MaSanPham = @masp";
+                    SqlCommand cmdKho = new SqlCommand(sqlCapNhatKho, (SqlConnection)DbContext.Conn, giaoDich);
+                    cmdKho.Parameters.AddWithValue("@soluong", sl);
+                    cmdKho.Parameters.AddWithValue("@masp", msp);
+                    cmdKho.ExecuteNonQuery();
                 }
 
-             
                 decimal tienHoanThucTe = tongTienHoan; 
 
                 string loaiGD = cboLoaiGiaoDich.Text.Trim();
@@ -1091,6 +1174,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     tienHoanThucTe = 0;
                 }
 
+                // Bước 4: Cập nhật lại tổng tiền cho phiếu trả gốc
                 string sqlCapNhatPhieu = @"UPDATE TraHang SET
                     TongTienHoan = @tong,
                     NgayTra      = GETDATE()
@@ -1100,23 +1184,24 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 cmdPhieu.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
                 cmdPhieu.ExecuteNonQuery();
 
+                // Xác nhận lưu dữ liệu (Commit Transaction)
                 giaoDich.Commit();
 
+                // Cập nhật UI
                 txtTongTienHoan.Text = tienHoanThucTe.ToString("N0") + " đ";
-
                 dtpNgayTra.Value = DateTime.Now;
-
+                
                 isCartModified = false;
                 btnLuuCT.Enabled = false;
-                
-                MessageBox.Show("Lưu chi tiết phiếu trả thành công!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                MessageBox.Show("Lưu thay đổi thành công!",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 NapDanhSachPhieu();
-
             }
             catch (Exception ex)
             {
+                // Nếu có lỗi, hủy toàn bộ giao dịch (Rollback)
                 giaoDich.Rollback();
                 MessageBox.Show("Có lỗi khi lưu dữ liệu:\n" + ex.Message, "Lỗi hệ thống",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -1326,5 +1411,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 btnBoquaCT.Enabled = false;
             }
         }
+
+        #endregion
     }
 }

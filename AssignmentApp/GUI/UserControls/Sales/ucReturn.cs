@@ -1,4 +1,4 @@
-using AssignmentApp.DAL.Core;
+﻿using AssignmentApp.DAL.Core;
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
@@ -13,35 +13,35 @@ namespace AssignmentApp.GUI.UserControls.Sales
 {
     public partial class ucReturn : UserControl
     {
-        #region 1. KHAI B�O BI?N & KH?I T?O (D�NG CHUNG)
+        #region 1. KHAI BÁO BIẾN & KHỞI TẠO (DÙNG CHUNG)
     
-        // B?ng d? li?u ch?a danh s�ch c�c phi?u tr? h�ng
+        // Bảng dữ liệu chứa danh sách các phiếu trả hàng
         BindingList<Return> listReturn;        
-        // B?ng d? li?u ch?a danh s�ch chi ti?t s?n ph?m c?a h�a don g?c
+        // Bảng dữ liệu chứa danh sách chi tiết sản phẩm của hóa đơn gốc
         BindingList<ReturnInvoiceProduct> listInvoiceDetails; 
-        // B?ng d? li?u d�ng vai tr� nhu 'Gi? h�ng' ch?a c�c s?n ph?m du?c ch?n d? tr?
+        // Bảng dữ liệu đóng vai trò như 'Giỏ hàng' chứa các sản phẩm được chọn để trả
         BindingList<ReturnDetail> listCart;           
         
         private readonly IReturnService _returnService;
         private readonly IProductService _productService;
 
-        // Bi?n luu tr? m� c?a Phi?u Tr? H�ng dang du?c thao t�c (n?u = 0 nghia l� chua ch?n phi?u n�o)
+        // Biến lưu trữ mã của Phiếu Trả Hàng đang được thao tác (nếu = 0 nghĩa là chưa chọn phiếu nào)
         int maTraHangHienTai = 0;  
-        // C? d�nh d?u h? th?ng dang ? ch? d? Th�m m?i phi?u
+        // Cờ đánh dấu hệ thống đang ở chế độ Thêm mới phiếu
         bool isAdding = false;   
-        // C? d�nh d?u h? th?ng dang ? ch? d? S?a phi?u
+        // Cờ đánh dấu hệ thống đang ở chế độ Sửa phiếu
         bool isEditing = false;    
-        // C? d�nh d?u h? th?ng dang ? ch? d? T�m ki?m phi?u (Tab 1)
+        // Cờ đánh dấu hệ thống đang ở chế độ Tìm kiếm phiếu (Tab 1)
         bool isSearching = false;    
-        // C? d�nh d?u xem gi? h�ng d� b? thay d?i (th�m/s?a/x�a) hay chua
+        // Cờ đánh dấu xem giỏ hàng đã bị thay đổi (thêm/sửa/xóa) hay chưa
         bool isCartModified = false;
-        // C? d�nh d?u h? th?ng dang ? ch? d? T�m ki?m s?n ph?m (Tab 2)
+        // Cờ đánh dấu hệ thống đang ở chế độ Tìm kiếm sản phẩm (Tab 2)
         bool isReturnSearching = false;
 
-        // H�m kh?i t?o (Constructor): �u?c g?i t? d?ng d?u ti�n khi giao di?n (ucReturn) du?c t?o ra
+        // Hàm khởi tạo (Constructor): Được gọi tự động đầu tiên khi giao diện (ucReturn) được tạo ra
         public ucReturn()
         {
-            // L?nh b?t bu?c d? v? c�c th�nh ph?n giao di?n (n�t, b?ng, ch?,...)
+            // Lệnh bắt buộc để vẽ các thành phần giao diện (nút, bảng, chữ,...)
             InitializeComponent();
             
             if (Program.ServiceProvider != null)
@@ -49,49 +49,47 @@ namespace AssignmentApp.GUI.UserControls.Sales
             if (Program.ServiceProvider != null)
                 _productService = Program.ServiceProvider.GetRequiredService<IProductService>();
             
-            // �ang k� s? ki?n: Khi ngu?i d�ng d?i ng�y tr? h�ng th� g?i h�m dtpNgayTra_ValueChanged
+            // Đăng ký sự kiện: Khi người dùng đổi ngày trả hàng thì gọi hàm dtpNgayTra_ValueChanged
             dtpNgayTra.ValueChanged += dtpNgayTra_ValueChanged;
-            // �ang k� s? ki?n: Khi ngu?i d�ng chuy?n qua l?i gi?a c�c Tab (Tab 1 v� Tab 2) th� g?i h�m tabMain_Selecting
+            // Đăng ký sự kiện: Khi người dùng chuyển qua lại giữa các Tab (Tab 1 và Tab 2) thì gọi hàm tabMain_Selecting
             tabMain.Selecting += tabMain_Selecting;
         }
 
-        // H�m x? l� s? ki?n: Khi d?i ng�y tr? h�ng
+        // Hàm xử lý sự kiện: Khi đổi ngày trả hàng
         private void dtpNgayTra_ValueChanged(object sender, EventArgs e)
         {
-            // �?m b?o d?nh d?ng hi?n th? ng�y th�ng lu�n l� ki?u Short (Vd: 15/08/2026)
+            // Đảm bảo định dạng hiển thị ngày tháng luôn là kiểu Short (Vd: 15/08/2026)
             if (dtpNgayTra.Format == DateTimePickerFormat.Custom)
             {
                 dtpNgayTra.Format = DateTimePickerFormat.Short;
             }
         }
 
-        // H�m x? l� s? ki?n: Khi b?m ch?n chuy?n Tab
+        // Hàm xử lý sự kiện: Khi bấm chọn chuyển Tab
         private void tabMain_Selecting(object sender, TabControlCancelEventArgs e)
         {
-            // N?u ngu?i d�ng d?nh b?m sang Tab 2 (Ch?n s?n ph?m) nhung chua c� phi?u n�o du?c ch?n (maTraHangHienTai == 0)
+            // Nếu người dùng định bấm sang Tab 2 (Chọn sản phẩm) nhưng chưa có phiếu nào được chọn (maTraHangHienTai == 0)
             if (e.TabPage == tabChonSanPham && maTraHangHienTai == 0)
             {
-                e.Cancel = true; // H?y thao t�c chuy?n Tab
-                MessageBox.Show("Vui l�ng ch?n ho?c t?o m?i m?t phi?u tr? tru?c khi chuy?n sang tab ch?n s?n ph?m!", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                e.Cancel = true; // Hủy thao tác chuyển Tab
+                MessageBox.Show("Vui lòng chọn hoặc tạo mới một phiếu trả trước khi chuyển sang tab chọn sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
-        // H�m x? l� s? ki?n Load form: Ch?y 1 l?n duy nh?t khi giao di?n v?a m? l�n
-        private void NumericOnly_KeyPress(object sender, KeyPressEventArgs e) { if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar)) { e.Handled = true; } }
-
+        // Hàm xử lý sự kiện Load form: Chạy 1 lần duy nhất khi giao diện vừa mở lên
         private void ucReturn_Load(object sender, EventArgs e)
         {
-            KhoiTaoGioHang();      // Bu?c 1: T?o c?u tr�c cho gi? h�ng
-            NapDanhSachPhieu();    // Bu?c 2: L?y d? li?u phi?u t? co s? d? li?u l�n b?ng (Grid)
-            SetTrangThaiBanDau();  // Bu?c 3: �ua giao di?n v? tr?ng th�i kh�a/m?c d?nh ban d?u
+            KhoiTaoGioHang();      // Bước 1: Tạo cấu trúc cho giỏ hàng
+            NapDanhSachPhieu();    // Bước 2: Lấy dữ liệu phiếu từ cơ sở dữ liệu lên bảng (Grid)
+            SetTrangThaiBanDau();  // Bước 3: Đưa giao diện về trạng thái khóa/mặc định ban đầu
         }
 
-        // H�m kh?i t?o gi? h�ng (Ch? t?o c?u tr�c c�c c?t, chua c� d? li?u)
+        // Hàm khởi tạo giỏ hàng (Chỉ tạo cấu trúc các cột, chưa có dữ liệu)
         private void KhoiTaoGioHang()
         {
             listCart = new BindingList<ReturnDetail>();
 
-            // Li�n k?t c�c c?t v?a t?o v�o c�c c?t tr�n giao di?n DataGridView (B?ng b�n ph?i ? Tab 2)
+            // Liên kết các cột vừa tạo vào các cột trên giao diện DataGridView (Bảng bên phải ở Tab 2)
             colCurMaSP.DataPropertyName = "MaSanPham";
             colCurTenSP.DataPropertyName = "TenSanPham";
             colCurSoLuong.DataPropertyName = "SoLuong";
@@ -103,27 +101,27 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // We will calculate it in code or DataGridView CellFormatting.
             colCurThanhTien.DataPropertyName = "TienHoan";
 
-            dgvCurrentDetails.AutoGenerateColumns = false; // T?t t? d?ng sinh c?t d? d�ng c?t m�nh t? c?u h�nh
-            dgvCurrentDetails.DataSource = listCart;         // �? d? li?u c?a dtCart v�o b?ng
-            dgvCurrentDetails.AllowUserToAddRows = false;  // Kh�ng cho ngu?i d�ng t? g� th�m h�ng tr?ng v�o cu?i b?ng
+            dgvCurrentDetails.AutoGenerateColumns = false; // Tắt tự động sinh cột để dùng cột mình tự cấu hình
+            dgvCurrentDetails.DataSource = listCart;         // Đổ dữ liệu của dtCart vào bảng
+            dgvCurrentDetails.AllowUserToAddRows = false;  // Không cho người dùng tự gõ thêm hàng trống vào cuối bảng
         }
 
         #endregion
 
-        #region 2. C�C H�M TI?N �CH & TR?NG TH�I (D�NG CHUNG)
+        #region 2. CÁC HÀM TIỆN ÍCH & TRẠNG THÁI (DÙNG CHUNG)
 
-        // H�m thi?t l?p tr?ng th�i m?c d?nh ban d?u cho to�n b? giao di?n
+        // Hàm thiết lập trạng thái mặc định ban đầu cho toàn bộ giao diện
         private void SetTrangThaiBanDau()
         {
-            // T?t to�n b? c�c c? tr?ng th�i
+            // Tắt toàn bộ các cờ trạng thái
             isAdding = false;
             isEditing = false;
             isSearching = false;
 
-            // Kh�a c�c � nh?p li?u ? Tab 1 d? ngan ngu?i d�ng g� linh tinh khi chua b?m n�t
+            // Khóa các ô nhập liệu ở Tab 1 để ngăn người dùng gõ linh tinh khi chưa bấm nút
             KhoaONhapTab0(true);
 
-            // B?t n�t Th�m, t?t c�c n�t s?a/x�a/luu (V� chua ch?n phi?u n�o th� kh�ng th? s?a x�a)
+            // Bật nút Thêm, tắt các nút sửa/xóa/lưu (Vì chưa chọn phiếu nào thì không thể sửa xóa)
             btnAdd.Enabled = true;
             btnEdit.Enabled = false;
             btnDelete.Enabled = false;
@@ -132,43 +130,43 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnSearch.Enabled = true;   
             btnRefresh.Enabled = true;
 
-            // Kh�a lu�n c�c n�t ? Tab 2
+            // Khóa luôn các nút ở Tab 2
             KhoaTab1(true);
             
-            // X�a s?ch ch? ? c�c � nh?p li?u
+            // Xóa sạch chữ ở các ô nhập liệu
             XoaTrangTab0();
             XoaTrangTab1();
         }
 
       
-        // H�m thi?t l?p tr?ng th�i khi ngu?i d�ng dang Th�m ho?c S?a phi?u
+        // Hàm thiết lập trạng thái khi người dùng đang Thêm hoặc Sửa phiếu
         private void SetTrangThaiDangNhap()
         {
-            // M? kh�a c�c � nh?p li?u d? ngu?i d�ng g�
+            // Mở khóa các ô nhập liệu để người dùng gõ
             KhoaONhapTab0(false);
 
-            // Kh�a c�c n�t Th�m, S?a, X�a d? tr�nh xung d?t
+            // Khóa các nút Thêm, Sửa, Xóa để tránh xung đột
             btnAdd.Enabled = false;
             btnEdit.Enabled = false;
             btnDelete.Enabled = false;
-            // B?t n�t Luu v� B? qua
+            // Bật nút Lưu và Bỏ qua
             btnSave.Enabled = true;
             btnCancel.Enabled = true;
         }
 
-        // H�m ?n/hi?n (Kh�a/m?) c�c � nh?p li?u ? Tab 1
+        // Hàm ẩn/hiện (Khóa/mở) các ô nhập liệu ở Tab 1
         private void KhoaONhapTab0(bool khoa)
         {
-            // N?u khoa = true -> ReadOnly = true (Ch? d?c), Enabled = false (B? m? di)
+            // Nếu khoa = true -> ReadOnly = true (Chỉ đọc), Enabled = false (Bị mờ đi)
             txtMaHoaDon.ReadOnly = khoa;
             txtMaHoaDon.Enabled = !khoa;
             txtLyDo.ReadOnly = khoa;
             txtLyDo.Enabled = !khoa;
-            dtpNgayTra.Enabled = false; // Ng�y tr? h? th?ng t? l?y ng�y hi?n t?i n�n lu�n kh�a
+            dtpNgayTra.Enabled = false; // Ngày trả hệ thống tự lấy ngày hiện tại nên luôn khóa
             cboTrangThai.Enabled = !khoa;
             cboLoaiGiaoDich.Enabled = !khoa;
             
-            // T?ng ti?n, Kh�ch h�ng, Nh�n vi�n l� do h? th?ng t? t�nh/t? l?y, ngu?i d�ng kh�ng du?c g�
+            // Tổng tiền, Khách hàng, Nhân viên là do hệ thống tự tính/tự lấy, người dùng không được gõ
             txtTongTienHoan.ReadOnly = true;
             txtTongTienHoan.Enabled = false;
             txtKhachHang.ReadOnly = true;
@@ -178,7 +176,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
       
-        // H�m kh�a to�n b? c�c n�t ch?c nang ? Tab 2
+        // Hàm khóa toàn bộ các nút chức năng ở Tab 2
         private void KhoaTab1(bool khoa)
         {
             btnAddToCart.Enabled = false;
@@ -192,25 +190,25 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
       
-        // H�m x�a s?ch n?i dung c�c � nh?p ? Tab 1
+        // Hàm xóa sạch nội dung các ô nhập ở Tab 1
         private void XoaTrangTab0()
         {
             txtMaHoaDon.Text = "";
             txtLyDo.Text = "";
-            txtTongTienHoan.Text = "0 d";
-            dtpNgayTra.Value = DateTime.Now; // Reset v? ng�y hi?n t?i
+            txtTongTienHoan.Text = "0 đ";
+            dtpNgayTra.Value = DateTime.Now; // Reset về ngày hiện tại
             dtpNgayTra.Format = DateTimePickerFormat.Short;
 
-            cboTrangThai.SelectedIndex = 1; // M?c d?nh ch?n tr?ng th�i ? d�ng s? 2 (�ang x? l�)
+            cboTrangThai.SelectedIndex = 1; // Mặc định chọn trạng thái ở dòng số 2 (Đang xử lý)
 
-            cboLoaiGiaoDich.SelectedIndex = -1; // B? ch?n
+            cboLoaiGiaoDich.SelectedIndex = -1; // Bỏ chọn
             txtKhachHang.Text = "";
             txtNhanVien.Text = "";
-            maTraHangHienTai = 0; // X�a m� phi?u dang nh?
+            maTraHangHienTai = 0; // Xóa mã phiếu đang nhớ
         }
 
        
-        // H�m x�a s?ch n?i dung c�c � nh?p ? Tab 2
+        // Hàm xóa sạch nội dung các ô nhập ở Tab 2
         private void XoaTrangTab1()
         {
             txtSelMaSP.Text = "";
@@ -218,34 +216,34 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelSoLuong.Text = "";
             txtSelDonGia.Text = "";
             txtSelTinhTrang.Text = "";
-            lblTotalAmount.Text = "T?NG TI?N HO�N TR? T?M T�NH: 0 d";
-            lblProductDetailDesc.Text = "M� SP: --\nTh�ng tin chi ti?t v? s?n ph?m s? du?c c?p nh?t ? d�y.";
+            lblTotalAmount.Text = "TỔNG TIỀN HOÀN TRẢ TẠM TÍNH: 0 đ";
+            lblProductDetailDesc.Text = "Mã SP: --\nThông tin chi tiết về sản phẩm sẽ được cập nhật ở đây.";
             if (picAnh.Image != null)
             {
                 picAnh.Image.Dispose();
                 picAnh.Image = null;
             }
 
-            // X�a s?ch gi? h�ng t?m
+            // Xóa sạch giỏ hàng tạm
             if (listCart != null)
                 listCart.Clear();
 
-            // X�a s?ch danh s�ch s?n ph?m hi?n th? c?a h�a don g?c
+            // Xóa sạch danh sách sản phẩm hiển thị của hóa đơn gốc
             if (listInvoiceDetails != null)
                 listInvoiceDetails.Clear();
 
-            lblReturnTitle.Text = "M� PHI?U: ";
+            lblReturnTitle.Text = "MÃ PHIẾU: ";
         }
 
    
-        // H�m t?i to�n b? danh s�ch Phi?u tr? h�ng t? SQL Database l�n b?ng (Grid)
+        // Hàm tải toàn bộ danh sách Phiếu trả hàng từ SQL Database lên bảng (Grid)
         private async void NapDanhSachPhieu()
         {
             if (_returnService == null) return;
             var returns = await _returnService.GetAllReturnsAsync();
             listReturn = new BindingList<Return>(new List<Return>(returns));
 
-            // G?n c�c c?t d? li?u v�o giao di?n b?ng (Grid)
+            // Gắn các cột dữ liệu vào giao diện bảng (Grid)
             colMaTraHang.DataPropertyName = "MaTraHang";
             colMaHoaDon.DataPropertyName = "MaHoaDon";
             colTrangThai.DataPropertyName = "TrangThai";
@@ -261,10 +259,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
     
         /// <summary>
-        /// [NGHI?P V?] T?i danh s�ch c�c s?n ph?m (chi ti?t) thu?c m?t H�a don c? th?.
-        /// D? li?u n�y d�ng d? ch?n dua v�o gi? h�ng tr? l?i.
+        /// [NGHIỆP VỤ] Tải danh sách các sản phẩm (chi tiết) thuộc một Hóa đơn cụ thể.
+        /// Dữ liệu này dùng để chọn đưa vào giỏ hàng trả lại.
         /// </summary>
-        /// <param name="maHoaDon">M� h�a don c?n l?y danh s�ch s?n ph?m</param>
+        /// <param name="maHoaDon">Mã hóa đơn cần lấy danh sách sản phẩm</param>
         private async void NapSanPhamHoaDon(int maHoaDon)
         {
             if (_returnService == null) return;
@@ -283,8 +281,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
      
         /// <summary>
-        /// [TI?N �CH] Duy?t qua danh s�ch c�c s?n ph?m trong gi? h�ng (listCart) 
-        /// d? t�nh t?ng s? ti?n ho�n tr? t?m t�nh v� c?p nh?t l�n nh�n (Label) hi?n th?.
+        /// [TIỆN ÍCH] Duyệt qua danh sách các sản phẩm trong giỏ hàng (listCart) 
+        /// để tính tổng số tiền hoàn trả tạm tính và cập nhật lên nhãn (Label) hiển thị.
         /// </summary>
         private void TinhTongTienHoanTra()
         {
@@ -296,24 +294,24 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     tongTien += item.TienHoan;
                 }
             }
-            lblTotalAmount.Text = "T?NG TI?N HO�N TR? T?M T�NH: " + tongTien.ToString("N0") + " d";
+            lblTotalAmount.Text = "TỔNG TIỀN HOÀN TRẢ TẠM TÍNH: " + tongTien.ToString("N0") + " đ";
         }
 
         #endregion
 
-        #region 3. TAB 1: QU?N L� PHI?U TR? H�NG
+        #region 3. TAB 1: QUẢN LÝ PHIẾU TRẢ HÀNG
 
         /// <summary>
-        /// [S? KI?N GIAO DI?N] X? l� khi ngu?i d�ng click v�o m?t d�ng tr�n b?ng Danh s�ch Phi?u tr? (Tab 1).
-        /// - �?y d? li?u t? d�ng du?c ch?n l�n c�c � nh?p li?u (TextBox, ComboBox).
-        /// - Ch?n thao t�c n?u h? th?ng dang ? ch? d? Th�m/S?a.
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng click vào một dòng trên bảng Danh sách Phiếu trả (Tab 1).
+        /// - Đẩy dữ liệu từ dòng được chọn lên các ô nhập liệu (TextBox, ComboBox).
+        /// - Chặn thao tác nếu hệ thống đang ở chế độ Thêm/Sửa.
         /// </summary>
         private void dgvReturns_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (isAdding || isEditing)
             {
-                MessageBox.Show("�ang ? ch? d? nh?p li?u! H�y Luu ho?c B? qua tru?c.",
-                    "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Đang ở chế độ nhập liệu! Hãy Lưu hoặc Bỏ qua trước.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -324,7 +322,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             txtMaHoaDon.Text = dong.MaHoaDon.ToString();
             txtLyDo.Text = dong.LyDo;
-            txtTongTienHoan.Text = dong.TongTienHoan.ToString("N0") + " d";
+            txtTongTienHoan.Text = dong.TongTienHoan.ToString("N0") + " đ";
             dtpNgayTra.Value = dong.NgayTra;
             txtNhanVien.Text = dong.NhanVien;
             txtKhachHang.Text = dong.KhachHang;
@@ -349,7 +347,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             maTraHangHienTai = dong.MaTraHang;
             int maHoaDonChon = dong.MaHoaDon;
-            lblReturnTitle.Text = "M� PHI?U: " + maTraHangHienTai;
+            lblReturnTitle.Text = "MÃ PHIẾU: " + maTraHangHienTai;
 
             KhoaONhapTab0(false);
             txtMaHoaDon.ReadOnly = true;
@@ -369,7 +367,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             NapChiTietDaTra(maTraHangHienTai);
 
           
-            if (trangThai == "Ho�n th�nh" || trangThai == "�� h?y")
+            if (trangThai == "Hoàn thành" || trangThai == "Đã hủy")
             {
                 
                 btnAddToCart.Enabled = false;
@@ -418,7 +416,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             int maHD;
             if (!int.TryParse(txtMaHoaDon.Text.Trim(), out maHD))
             {
-                MessageBox.Show("M� h�a don ph?i l� s? nguy�n!", "C?nh b�o",
+                MessageBox.Show("Mã hóa đơn phải là số nguyên!", "Cảnh báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -431,7 +429,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 if (AssignmentApp.BLL.Session.UserSession.CurrentUser != null)
                     txtNhanVien.Text = AssignmentApp.BLL.Session.UserSession.CurrentUser.TenNguoiDung;
                 else
-                    txtNhanVien.Text = "(Kh�ng r�)";
+                    txtNhanVien.Text = "(Không rõ)";
 
                 txtKhachHang.Text = khachHang;
 
@@ -439,10 +437,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
             else
             {
-                MessageBox.Show("Kh�ng t�m th?y h�a don s? " + maHD + "!", "C?nh b�o",
+                MessageBox.Show("Không tìm thấy hóa đơn số " + maHD + "!", "Cảnh báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtNhanVien.Text = "(Kh�ng t�m th?y)";
-                txtKhachHang.Text = "(Kh�ng t�m th?y)";
+                txtNhanVien.Text = "(Không tìm thấy)";
+                txtKhachHang.Text = "(Không tìm thấy)";
             }
         }
 
@@ -451,7 +449,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             isAdding = true;
             XoaTrangTab0();
             SetTrangThaiDangNhap();
-            cboLoaiGiaoDich.Text = "Tr? h�ng";
+            cboLoaiGiaoDich.Text = "Trả hàng";
             txtMaHoaDon.Focus();
         }
 
@@ -460,23 +458,23 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             if (maTraHangHienTai == 0)
             {
-                MessageBox.Show("Vui l�ng ch?n m?t phi?u tr? t? danh s�ch!", "Th�ng b�o",
+                MessageBox.Show("Vui lòng chọn một phiếu trả từ danh sách!", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (_returnService == null) return;
 
-            if (cboTrangThai.Text == "Ho�n th�nh" || cboTrangThai.Text == "�� h?y")
+            if (cboTrangThai.Text == "Hoàn thành" || cboTrangThai.Text == "Đã hủy")
             {
-                MessageBox.Show("Phi?u tr? d� '" + cboTrangThai.Text + "', kh�ng th? s?a!", "C?nh b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Phiếu trả đã '" + cboTrangThai.Text + "', không thể sửa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
 
             if (cboLoaiGiaoDich.Text.Trim() == "")
             {
-                MessageBox.Show("Vui l�ng ch?n lo?i giao d?ch!", "C?nh b�o",
+                MessageBox.Show("Vui lòng chọn loại giao dịch!", "Cảnh báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cboLoaiGiaoDich.Focus();
                 return;
@@ -485,7 +483,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             var r = new Return { MaTraHang = maTraHangHienTai, LyDo = txtLyDo.Text.Trim(), LoaiGiaoDich = cboLoaiGiaoDich.Text.Trim(), TrangThai = cboTrangThai.Text.Trim() };
             await _returnService.UpdateReturnAsync(r);
 
-            MessageBox.Show("C?p nh?t phi?u tr? th�nh c�ng!", "Th�ng b�o",
+            MessageBox.Show("Cập nhật phiếu trả thành công!", "Thông báo",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             NapDanhSachPhieu();
@@ -496,35 +494,35 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             if (maTraHangHienTai == 0)
             {
-                MessageBox.Show("Vui l�ng ch?n m?t phi?u tr? t? danh s�ch!", "Th�ng b�o",
+                MessageBox.Show("Vui lòng chọn một phiếu trả từ danh sách!", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (_returnService == null) return;
 
-            if (cboTrangThai.Text == "Ho�n th�nh" || cboTrangThai.Text == "�� h?y")
+            if (cboTrangThai.Text == "Hoàn thành" || cboTrangThai.Text == "Đã hủy")
             {
-                MessageBox.Show("Phi?u tr? d� '" + cboTrangThai.Text + "', kh�ng th? x�a!", "C?nh b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Phiếu trả đã '" + cboTrangThai.Text + "', không thể xóa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (MessageBox.Show(
-                "X�c nh?n chuy?n tr?ng th�i phi?u tr? #" + maTraHangHienTai + " th�nh '�� h?y'?",
-                "X�c nh?n h?y phi?u", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
+                "Xác nhận chuyển trạng thái phiếu trả #" + maTraHangHienTai + " thành 'Đã hủy'?",
+                "Xác nhận hủy phiếu", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
                 return;
 
             try
             {
-                var r = new Return { MaTraHang = maTraHangHienTai, LyDo = txtLyDo.Text.Trim(), LoaiGiaoDich = cboLoaiGiaoDich.Text.Trim(), TrangThai = "�� h?y" };
+                var r = new Return { MaTraHang = maTraHangHienTai, LyDo = txtLyDo.Text.Trim(), LoaiGiaoDich = cboLoaiGiaoDich.Text.Trim(), TrangThai = "Đã hủy" };
                 await _returnService.UpdateReturnAsync(r);
 
-                MessageBox.Show("H?y phi?u tr? th�nh c�ng!", "Th�ng b�o",
+                MessageBox.Show("Hủy phiếu trả thành công!", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show("L?i khi h?y: " + ex.Message, "L?i",
+                MessageBox.Show("Lỗi khi hủy: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -533,18 +531,18 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
       
-        // H�m x? l� s? ki?n khi b?m n�t Luu ? Tab 1 (D�ng d? T?o m?i phi?u tr?)
+        // Hàm xử lý sự kiện khi bấm nút Lưu ở Tab 1 (Dùng để Tạo mới phiếu trả)
         /// <summary>
-        /// [S? KI?N GIAO DI?N] Khi ngu?i d�ng b?m n�t LUU THAY �?I (Tab 1).
-        /// - N?u dang Th�m M?i: T?o m?t th?c th? Return m?i v� insert xu?ng Database, l?y m� v?a t?o v� chuy?n sang Tab 2 d? nh?p chi ti?t.
-        /// - N?u dang S?a: C?p nh?t th�ng tin phi?u (L� do, Tr?ng th�i, LoaiGiaoDich) xu?ng Database, sau d� c?p nh?t l?i Grid.
+        /// [SỰ KIỆN GIAO DIỆN] Khi người dùng bấm nút LƯU THAY ĐỔI (Tab 1).
+        /// - Nếu đang Thêm Mới: Tạo một thực thể Return mới và insert xuống Database, lấy mã vừa tạo và chuyển sang Tab 2 để nhập chi tiết.
+        /// - Nếu đang Sửa: Cập nhật thông tin phiếu (Lý do, Trạng thái, LoaiGiaoDich) xuống Database, sau đó cập nhật lại Grid.
         /// </summary>
         private async void btnSave_Click(object sender, EventArgs e)
         {
-            // Bu?c 1: Ki?m tra d? li?u d?u v�o (Validate)
+            // Bước 1: Kiểm tra dữ liệu đầu vào (Validate)
             if (txtMaHoaDon.Text.Trim() == "")
             {
-                MessageBox.Show("Vui l�ng nh?p m� h�a don g?c!", "C?nh b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhập mã hóa đơn gốc!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtMaHoaDon.Focus();
                 return;
             }
@@ -552,14 +550,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
             int maHD;
             if (!int.TryParse(txtMaHoaDon.Text.Trim(), out maHD))
             {
-                MessageBox.Show("M� h�a don ph?i l� s? nguy�n!", "C?nh b�o",
+                MessageBox.Show("Mã hóa đơn phải là số nguyên!", "Cảnh báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (txtLyDo.Text.Trim() == "")
             {
-                MessageBox.Show("Vui l�ng nh?p l� do tr? h�ng!", "C?nh b�o",
+                MessageBox.Show("Vui lòng nhập lý do trả hàng!", "Cảnh báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtLyDo.Focus();
                 return;
@@ -567,16 +565,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             if (cboLoaiGiaoDich.Text.Trim() == "")
             {
-                MessageBox.Show("Vui l�ng ch?n lo?i giao d?ch!", "C?nh b�o",
+                MessageBox.Show("Vui lòng chọn loại giao dịch!", "Cảnh báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 cboLoaiGiaoDich.Focus();
                 return;
             }
 
-            // Bu?c 2: Ki?m tra phi�n dang nh?p (Ai dang thao t�c)
+            // Bước 2: Kiểm tra phiên đăng nhập (Ai đang thao tác)
             if (AssignmentApp.BLL.Session.UserSession.CurrentUser == null)
             {
-                MessageBox.Show("L?i: Kh�ng t�m th?y phi�n dang nh?p!", "L?i", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Lỗi: Không tìm thấy phiên đăng nhập!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
@@ -598,31 +596,31 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 int newMaTraHang = await _returnService.CreateReturnAsync(returnObj);
 
                 MessageBox.Show(
-                    "�� kh?i t?o phi?u tr? #" + newMaTraHang + " th�nh c�ng!\n" +
-                    "Vui l�ng chuy?n sang Tab 'Ch?n s?n ph?m tr?' d? ti?p t?c.",
-                    "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    "Đã khởi tạo phiếu trả #" + newMaTraHang + " thành công!\n" +
+                    "Vui lòng chuyển sang Tab 'Chọn sản phẩm trả' để tiếp tục.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Bu?c 5: C?p nh?t l?i giao di?n
-                NapDanhSachPhieu(); // T?i l?i danh s�ch d? phi?u m?i hi?n l�n grid
+                // Bước 5: Cập nhật lại giao diện
+                NapDanhSachPhieu(); // Tải lại danh sách để phiếu mới hiện lên grid
                 SetTrangThaiBanDau(); // Reset form
                 
-                // Gi? nguy�n phi?u v?a t?o d? thao t�c ti?p
+                // Giữ nguyên phiếu vừa tạo để thao tác tiếp
                 maTraHangHienTai = newMaTraHang;
-                cboTrangThai.Text = "�ang x? l�";
-                KhoaONhapTab0(false); // M? kh�a c�c � nh?p
+                cboTrangThai.Text = "Đang xử lý";
+                KhoaONhapTab0(false); // Mở khóa các ô nhập
 
-                // Hi?n th? ti�u d? phi?u b�n Tab 2
-                lblReturnTitle.Text = "M� PHI?U: " + maTraHangHienTai;
-                // T?i danh s�ch s?n ph?m thu?c h�a don n�y l�n Tab 2
+                // Hiển thị tiêu đề phiếu bên Tab 2
+                lblReturnTitle.Text = "MÃ PHIẾU: " + maTraHangHienTai;
+                // Tải danh sách sản phẩm thuộc hóa đơn này lên Tab 2
                 NapSanPhamHoaDon(maHD); 
-                KhoaTab1(false); // M? kh�a c�c n�t b�n Tab 2
+                KhoaTab1(false); // Mở khóa các nút bên Tab 2
 
-                // Bu?c 6: T? d?ng chuy?n sang Tab 2 d? ch?n s?n ph?m
+                // Bước 6: Tự động chuyển sang Tab 2 để chọn sản phẩm
                 tabMain.SelectedIndex = 1;
             }
             catch (Exception ex)
             {
-                MessageBox.Show("L?i khi th�m phi?u: " + ex.Message, "L?i", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Lỗi khi thêm phiếu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -662,8 +660,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 cboTrangThai.SelectedIndex = -1;
                 cboLoaiGiaoDich.SelectedIndex = -1;
                 
-                lblReturnTitle.Text = "CH? �? T�M KI?M";
-                MessageBox.Show("�� chuy?n sang ch? d? t�m ki?m.\nVui l�ng nh?p th�ng tin t�m ki?m v�o c�c � tuong ?ng v� ?n T�M KI?M l?n n?a!", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                lblReturnTitle.Text = "CHẾ ĐỘ TÌM KIẾM";
+                MessageBox.Show("Đã chuyển sang chế độ tìm kiếm.\nVui lòng nhập thông tin tìm kiếm vào các ô tương ứng và ấn TÌM KIẾM lần nữa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 
                 txtMaHoaDon.Focus();
                 return;
@@ -673,7 +671,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             string khach = txtKhachHang.Text.Trim();
             string nhanVien = txtNhanVien.Text.Trim();
             string lydo = txtLyDo.Text.Trim();
-            string tongTienStr = txtTongTienHoan.Text.Replace(" d", "").Replace(",", "").Replace(".", "").Trim();
+            string tongTienStr = txtTongTienHoan.Text.Replace(" đ", "").Replace(",", "").Replace(".", "").Trim();
 
             bool isAnyFieldFilled = maHD != "" || khach != "" || nhanVien != "" || lydo != "" || 
                                     (tongTienStr != "" && tongTienStr != "0") || 
@@ -683,7 +681,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             if (!isAnyFieldFilled)
             {
-                MessageBox.Show("Vui l�ng nh?p ho?c ch?n �t nh?t m?t th�ng tin d? t�m ki?m!", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhập hoặc chọn ít nhất một thông tin để tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -706,7 +704,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             if (listReturn.Count == 0)
             {
-                MessageBox.Show("Kh�ng t�m th?y phi?u tr? ph� h?p!", "Th�ng b�o",
+                MessageBox.Show("Không tìm thấy phiếu trả phù hợp!", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
@@ -723,13 +721,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         #endregion
 
-        #region 4. TAB 2: QU?N L� CHI TI?T S?N PH?M TR?
+        #region 4. TAB 2: QUẢN LÝ CHI TIẾT SẢN PHẨM TRẢ
 
         /// <summary>
-        /// [S? KI?N GIAO DI?N] Khi ngu?i d�ng ch?n m?t d�ng b�n danh s�ch s?n ph?m c?a h�a don g?c.
-        /// - L?y th�ng tin s?n ph?m (M�, T�n, �on gi�).
-        /// - T�m v� load ?nh s?n ph?m t? du?ng d?n tuy?t d?i (tr�nh file lock) ho?c t? thu m?c Resources d? ph�ng.
-        /// - C?p nh?t n?i dung m� t? chi ti?t s?n ph?m v� s? lu?ng t?i da c� th? tr?.
+        /// [SỰ KIỆN GIAO DIỆN] Khi người dùng chọn một dòng bên danh sách sản phẩm của hóa đơn gốc.
+        /// - Lấy thông tin sản phẩm (Mã, Tên, Đơn giá).
+        /// - Tìm và load ảnh sản phẩm từ đường dẫn tuyệt đối (tránh file lock) hoặc từ thư mục Resources dự phòng.
+        /// - Cập nhật nội dung mô tả chi tiết sản phẩm và số lượng tối đa có thể trả.
         /// </summary>
         private void dgvProductsSelection_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -773,20 +771,20 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 }
             }
 
-            lblProductDetailDesc.Text = $"M� s?n ph?m: {rowView.MaSanPham}\n" +
-                                        $"T�n s?n ph?m: {rowView.TenSanPham ?? "Kh�ng r�"}\n" +
-                                        $"�on gi� mua: {rowView.DonGia.ToString("N0")} VN�\n" +
-                                        $"S? lu?ng d� mua: {rowView.SLMua} | S? lu?ng d� tr? tru?c d�y: {rowView.DaTra}\n" +
-                                        $"B?n c� th? tr? t?i da: {rowView.SLMua - rowView.DaTra} s?n ph?m n?a.";
+            lblProductDetailDesc.Text = $"Mã sản phẩm: {rowView.MaSanPham}\n" +
+                                        $"Tên sản phẩm: {rowView.TenSanPham ?? "Không rõ"}\n" +
+                                        $"Đơn giá mua: {rowView.DonGia.ToString("N0")} VNĐ\n" +
+                                        $"Số lượng đã mua: {rowView.SLMua} | Số lượng đã trả trước đây: {rowView.DaTra}\n" +
+                                        $"Bạn có thể trả tối đa: {rowView.SLMua - rowView.DaTra} sản phẩm nữa.";
 
             tabSelectionContainer.SelectedIndex = 1;
             
             // State management
             if (maTraHangHienTai != 0)
             {
-                if (cboTrangThai.Text == "Ho�n th�nh" || cboTrangThai.Text == "�� h?y")
+                if (cboTrangThai.Text == "Hoàn thành" || cboTrangThai.Text == "Đã hủy")
                 {
-                    MessageBox.Show("Phi?u tr? d� '" + cboTrangThai.Text + "', kh�ng th? th�m s?n ph?m!", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Phiếu trả đã '" + cboTrangThai.Text + "', không thể thêm sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
@@ -854,20 +852,20 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 }
             }
 
-            lblProductDetailDesc.Text = $"M� s?n ph?m: {dong.MaSanPham}\n" +
-                                        $"T�n s?n ph?m: {dong.TenSanPham ?? "Kh�ng r�"}\n" +
-                                        $"�on gi� mua: {dong.DonGia.ToString("N0")} VN�\n" +
-                                        $"S? lu?ng d� mua: {slMua} | S? lu?ng d� tr? tru?c d�y: {slDaTra}\n" +
-                                        $"B?n c� th? tr? t?i da: {slMua - slDaTra} s?n ph?m n?a.";
+            lblProductDetailDesc.Text = $"Mã sản phẩm: {dong.MaSanPham}\n" +
+                                        $"Tên sản phẩm: {dong.TenSanPham ?? "Không rõ"}\n" +
+                                        $"Đơn giá mua: {dong.DonGia.ToString("N0")} VNĐ\n" +
+                                        $"Số lượng đã mua: {slMua} | Số lượng đã trả trước đây: {slDaTra}\n" +
+                                        $"Bạn có thể trả tối đa: {slMua - slDaTra} sản phẩm nữa.";
 
             tabSelectionContainer.SelectedIndex = 1;
             
             // State management
             if (maTraHangHienTai != 0)
             {
-                if (cboTrangThai.Text == "Ho�n th�nh" || cboTrangThai.Text == "�� h?y")
+                if (cboTrangThai.Text == "Hoàn thành" || cboTrangThai.Text == "Đã hủy")
                 {
-                    MessageBox.Show("Phi?u tr? d� '" + cboTrangThai.Text + "', kh�ng th? s?a ho?c x�a!", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Phiếu trả đã '" + cboTrangThai.Text + "', không thể sửa hoặc xóa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
@@ -880,20 +878,20 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
      
-        // H�m x? l� khi b?m n�t "Th�m v�o gi?" ? Tab 2
+        // Hàm xử lý khi bấm nút "Thêm vào giỏ" ở Tab 2
         /// <summary>
-        /// [S? KI?N GIAO DI?N] Khi ngu?i d�ng b?m n�t TH�M s?n ph?m v�o gi? h�ng tr? (Tab 2).
-        /// - Validate (Ki?m tra) s? lu?ng nh?p v�o (ph?i l� s? h?p l?, > 0).
-        /// - Ki?m tra xem s? lu?ng mu?n tr? c� vu?t qu� (S? lu?ng d� mua - S? lu?ng d� tr? tru?c d�) hay kh�ng.
-        /// - C?p nh?t gi? h�ng: N?u d� c� th� c?ng d?n s? lu?ng, n?u chua th� th�m d�ng m?i.
+        /// [SỰ KIỆN GIAO DIỆN] Khi người dùng bấm nút THÊM sản phẩm vào giỏ hàng trả (Tab 2).
+        /// - Validate (Kiểm tra) số lượng nhập vào (phải là số hợp lệ, > 0).
+        /// - Kiểm tra xem số lượng muốn trả có vượt quá (Số lượng đã mua - Số lượng đã trả trước đó) hay không.
+        /// - Cập nhật giỏ hàng: Nếu đã có thì cộng dồn số lượng, nếu chưa thì thêm dòng mới.
         /// </summary>
         private async void btnAddToCart_Click(object sender, EventArgs e)
         {
-            // Bu?c 1: Ki?m tra t�nh h?p l?
+            // Bước 1: Kiểm tra tính hợp lệ
             if (txtSelMaSP.Text.Trim() == "")
             {
-                MessageBox.Show("Vui l�ng ch?n m?t s?n ph?m t? danh s�ch h�a don!",
-                    "C?nh b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn một sản phẩm từ danh sách hóa đơn!",
+                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -901,15 +899,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
             int soLuongTra = 0;
             if (!int.TryParse(txtSelSoLuong.Text.Trim(), out soLuongTra) || soLuongTra <= 0)
             {
-                MessageBox.Show("S? lu?ng tr? ph?i l?n hon 0!",
-                    "C?nh b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Số lượng trả phải lớn hơn 0!",
+                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtSelSoLuong.Focus();
                 return;
             }
 
             decimal donGia = decimal.Parse(txtSelDonGia.Text.Trim());
 
-            // Bu?c 2: L?y s? lu?ng d� mua v� d� tr? tru?c d� d? d?i chi?u
+            // Bước 2: Lấy số lượng đã mua và đã trả trước đó để đối chiếu
             int slMua = 0;
             int slDaTra = 0;
             foreach (var row in listInvoiceDetails)
@@ -922,10 +920,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 }
             }
 
-            // T�nh s? lu?ng c�n l?i du?c ph�p tr?
+            // Tính số lượng còn lại được phép trả
             int slDuocPhepTra = slMua - slDaTra;
 
-            // Bu?c 3: Ki?m tra xem s?n ph?m n�y d� c� trong gi? h�ng t?m chua
+            // Bước 3: Kiểm tra xem sản phẩm này đã có trong giỏ hàng tạm chưa
             bool daCoTrong = false;
             foreach (var r in listCart)
             {
@@ -935,16 +933,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     int slCu = r.SoLuong;
                     int tongSLSauKhiThem = slCu + soLuongTra;
 
-                    // N?u t?ng s? lu?ng d�i tr? vu?t qu� s? lu?ng du?c ph�p tr? -> B�o l?i
+                    // Nếu tổng số lượng đòi trả vượt quá số lượng được phép trả -> Báo lỗi
                     if (tongSLSauKhiThem > slDuocPhepTra)
                     {
-                        MessageBox.Show("T?ng s? lu?ng tr? (" + tongSLSauKhiThem +
-                            ") vu?t qu� s? lu?ng du?c ph�p tr? (" + slDuocPhepTra + ")!",
-                            "L?i", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Tổng số lượng trả (" + tongSLSauKhiThem +
+                            ") vượt quá số lượng được phép trả (" + slDuocPhepTra + ")!",
+                            "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                     
-                    // C?p nh?t s? lu?ng v� t�nh tr?ng m?i
+                    // Cập nhật số lượng và tình trạng mới
                     r.SoLuong = tongSLSauKhiThem;
                     r.TinhTrang = txtSelTinhTrang.Text.Trim();
                     r.TienHoan = r.SoLuong * r.DonGia;
@@ -952,15 +950,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 }
             }
 
-            // N?u chua c� trong gi? m� s? lu?ng d�i tr? l?n hon s? du?c ph�p -> B�o l?i
+            // Nếu chưa có trong giỏ mà số lượng đòi trả lớn hơn số được phép -> Báo lỗi
             if (!daCoTrong && soLuongTra > slDuocPhepTra)
             {
-                MessageBox.Show("S? lu?ng tr? vu?t qu� s? lu?ng du?c ph�p tr? (" + slDuocPhepTra + ")!",
-                    "L?i", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Số lượng trả vượt quá số lượng được phép trả (" + slDuocPhepTra + ")!",
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // Bu?c 4: Th�m v�o gi? h�ng n?u h?p l?
+            // Bước 4: Thêm vào giỏ hàng nếu hợp lệ
             if (!daCoTrong)
             {
                 var newDetail = new ReturnDetail
@@ -975,18 +973,18 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 listCart.Add(newDetail);
             }
 
-            // �?m b?o UI update
+            // Đảm bảo UI update
             listCart.ResetBindings();
 
-            // B?t n�t Luu thay d?i
+            // Bật nút Lưu thay đổi
             btnLuuCT.Enabled = true;
-            // T�nh l?i t?ng ti?n
+            // Tính lại tổng tiền
             TinhTongTienHoanTra();
-            // X�a tr?ng form nh?p
+            // Xóa trắng form nhập
             XoaTrangTab1SanPham();
             
-            // Kh�a c�c n�t d? ch? thao t�c ti?p theo
-            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Ho�n th�nh" && cboTrangThai.Text != "�� h?y")
+            // Khóa các nút để chờ thao tác tiếp theo
+            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Hoàn thành" && cboTrangThai.Text != "Đã hủy")
             {
                 btnAddToCart.Enabled = false;
                 btnSuaCT.Enabled = false;
@@ -1000,12 +998,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             if (txtSelMaSP.Text.Trim() == "")
             {
-                MessageBox.Show("Vui l�ng ch?n s?n ph?m c?n x�a t? danh s�ch h�ng tr? l?i!",
-                    "C?nh b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn sản phẩm cần xóa từ danh sách hàng trả lại!",
+                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (MessageBox.Show("X�a s?n ph?m n�y kh?i danh s�ch tr??", "X�c nh?n",
+            if (MessageBox.Show("Xóa sản phẩm này khỏi danh sách trả?", "Xác nhận",
                 MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
                 return;
 
@@ -1026,7 +1024,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             TinhTongTienHoanTra();
             XoaTrangTab1SanPham();
             
-            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Ho�n th�nh" && cboTrangThai.Text != "�� h?y")
+            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Hoàn thành" && cboTrangThai.Text != "Đã hủy")
             {
                 btnAddToCart.Enabled = false;
                 btnSuaCT.Enabled = false;
@@ -1035,25 +1033,25 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
         }
 
-        // H�m x? l� khi b?m n�t "Ho�n t?t & Tr? v?"
+        // Hàm xử lý khi bấm nút "Hoàn tất & Trở về"
         /// <summary>
-        /// [S? KI?N GIAO DI?N] Khi ngu?i d�ng b?m n�t LUU CHI TI?T PHI?U (Tab 2).
-        /// - X�a to�n b? chi ti?t cu (n?u c�) c?a phi?u dang thao t�c.
-        /// - L?p qua gi? h�ng (listCart) v� luu t?ng s?n ph?m v�o b?ng ChiTietTraHang.
-        /// - K?t th�c qu� tr�nh s?a chi ti?t, reload l?i danh s�ch b�n Tab 1 v� l�m m?i giao di?n.
+        /// [SỰ KIỆN GIAO DIỆN] Khi người dùng bấm nút LƯU CHI TIẾT PHIẾU (Tab 2).
+        /// - Xóa toàn bộ chi tiết cũ (nếu có) của phiếu đang thao tác.
+        /// - Lặp qua giỏ hàng (listCart) và lưu từng sản phẩm vào bảng ChiTietTraHang.
+        /// - Kết thúc quá trình sửa chi tiết, reload lại danh sách bên Tab 1 và làm mới giao diện.
         /// </summary>
         private void btnBackToReceipt_Click(object sender, EventArgs e)
         {
             if (listCart == null || listCart.Count == 0)
             {
-                MessageBox.Show("Danh s�ch h�ng tr? l?i dang tr?ng! Vui l�ng th�m s?n ph?m.",
-                    "C?nh b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Danh sách hàng trả lại đang trống! Vui lòng thêm sản phẩm.",
+                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             if (maTraHangHienTai == 0)
             {
-                MessageBox.Show("Chua c� phi?u tr?! Vui l�ng ho�n t?t Tab 1 tru?c.", "C?nh b�o",
+                MessageBox.Show("Chưa có phiếu trả! Vui lòng hoàn tất Tab 1 trước.", "Cảnh báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
@@ -1068,7 +1066,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelSoLuong.Text = "";
             txtSelDonGia.Text = "";
             txtSelTinhTrang.Text = "";
-            lblProductDetailDesc.Text = "M� SP: --\nTh�ng tin chi ti?t v? s?n ph?m s? du?c c?p nh?t ? d�y.";
+            lblProductDetailDesc.Text = "Mã SP: --\nThông tin chi tiết về sản phẩm sẽ được cập nhật ở đây.";
             if (picAnh.Image != null)
             {
                 picAnh.Image.Dispose();
@@ -1077,13 +1075,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
         
-        // H�m luu to�n b? gi? h�ng v�o Database
+        // Hàm lưu toàn bộ giỏ hàng vào Database
         private async void btnLuuCT_Click(object sender, EventArgs e)
         {
             if (listCart == null || listCart.Count == 0)
             {
-                MessageBox.Show("Danh s�ch s?n ph?m tr?ng, kh�ng c� g� d? luu!",
-                    "C?nh b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Danh sách sản phẩm trống, không có gì để lưu!",
+                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -1098,37 +1096,37 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 }
 
                 string loaiGD = cboLoaiGiaoDich.Text.Trim();
-                if (loaiGD == "�?i h�ng (1:1)")
+                if (loaiGD == "Đổi hàng (1:1)")
                 {
                     tongTienHoan = 0;
                 }
 
                 await _returnService.SaveReturnDetailsTransactionAsync(maTraHangHienTai, new List<ReturnDetail>(listCart), tongTienHoan, cboLoaiGiaoDich.Text.Trim());
 
-                // C?p nh?t UI
-                txtTongTienHoan.Text = tongTienHoan.ToString("N0") + " d";
+                // Cập nhật UI
+                txtTongTienHoan.Text = tongTienHoan.ToString("N0") + " đ";
                 dtpNgayTra.Value = DateTime.Now;
                 
                 isCartModified = false;
                 btnLuuCT.Enabled = false;
 
-                MessageBox.Show("Luu thay d?i th�nh c�ng!",
-                    "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Lưu thay đổi thành công!",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 NapDanhSachPhieu();
             }
             catch (Exception ex)
             {
-                MessageBox.Show("C� l?i khi luu d? li?u:\n" + ex.Message, "L?i h? th?ng",
+                MessageBox.Show("Có lỗi khi lưu dữ liệu:\n" + ex.Message, "Lỗi hệ thống",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnReturnSearch_Click(object sender, EventArgs e)
         {
-            if (maTraHangHienTai == 0 || cboTrangThai.Text == "Ho�n th�nh" || cboTrangThai.Text == "�� h?y")
+            if (maTraHangHienTai == 0 || cboTrangThai.Text == "Hoàn thành" || cboTrangThai.Text == "Đã hủy")
             {
-                MessageBox.Show("Vui l�ng ch?n m?t phi?u dang x? l� tru?c khi t�m ki?m!", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn một phiếu đang xử lý trước khi tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -1151,7 +1149,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 txtSelTinhTrang.Enabled = false;
                 txtSelTinhTrang.ReadOnly = true;
 
-                MessageBox.Show("Vui l�ng nh?p M�, T�n s?n ph?m ho?c S? lu?ng d� tr? v�o � tuong ?ng b�n ph?i, sau d� ?n T�M KI?M l?n n?a!", "Hu?ng d?n", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Vui lòng nhập Mã, Tên sản phẩm hoặc Số lượng đã trả vào ô tương ứng bên phải, sau đó ấn TÌM KIẾM lần nữa!", "Hướng dẫn", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 txtSelTenSP.Focus();
             }
             else
@@ -1164,7 +1162,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 
                 if (tuKhoaTen == "" && tuKhoaMa == "" && tuKhoaSL == "")
                 {
-                    MessageBox.Show("Vui l�ng nh?p th�ng tin t�m ki?m!", "Th�ng b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    MessageBox.Show("Vui lòng nhập thông tin tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
@@ -1189,7 +1187,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     }
                     else
                     {
-                        MessageBox.Show("S? lu?ng tr? ph?i l� s? nguy�n!", "C?nh b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Số lượng trả phải là số nguyên!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
                 }
@@ -1198,7 +1196,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
                 if (dgvProductsSelection.Rows.Count == 0)
                 {
-                    MessageBox.Show("Kh�ng t�m th?y s?n ph?m n�o ph� h?p trong h�a don!", "K?t qu? t�m ki?m", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Không tìm thấy sản phẩm nào phù hợp trong hóa đơn!", "Kết quả tìm kiếm", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
@@ -1220,7 +1218,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 dgvProductsSelection.DataSource = listInvoiceDetails;
             }
 
-            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Ho�n th�nh" && cboTrangThai.Text != "�� h?y")
+            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Hoàn thành" && cboTrangThai.Text != "Đã hủy")
             {
                 btnAddToCart.Enabled = false;
                 btnSuaCT.Enabled = false;
@@ -1265,13 +1263,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             if (txtSelMaSP.Text.Trim() == "")
             {
-                MessageBox.Show("Vui l�ng ch?n s?n ph?m c?n s?a t? gi? h�ng!", "C?nh b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn sản phẩm cần sửa từ giỏ hàng!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             int soLuongTra;
             if (!int.TryParse(txtSelSoLuong.Text.Trim(), out soLuongTra) || soLuongTra <= 0)
             {
-                MessageBox.Show("S? lu?ng tr? ph?i l� s? nguy�n duong!", "C?nh b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Số lượng trả phải là số nguyên dương!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
             int maSP = int.Parse(txtSelMaSP.Text.Trim());
@@ -1291,14 +1289,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 }
             }
             
-            if (cboLoaiGiaoDich.Text.Trim() == "�?i h�ng")
+            if (cboLoaiGiaoDich.Text.Trim() == "Đổi hàng")
             {
                 if (_productService != null)
                 {
                     var product = await _productService.GetProductByIdAsync(maSP);
                     if (product == null || product.SoLuongTon < soLuongTra)
                     {
-                        MessageBox.Show($"Trong kho ch? c�n {product?.SoLuongTon ?? 0} s?n ph?m m?i d? d?i. Kh�ng d? s? lu?ng!", "C?nh b�o t?n kho", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show($"Trong kho chỉ còn {product?.SoLuongTon ?? 0} sản phẩm mới để đổi. Không đủ số lượng!", "Cảnh báo tồn kho", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
                 }
@@ -1314,7 +1312,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     {
                         if (soLuongTra > soLuongToiDa)
                         {
-                            MessageBox.Show("S? lu?ng tr? vu?t qu� gi?i h?n! T?i da: " + soLuongToiDa, "C?nh b�o", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            MessageBox.Show("Số lượng trả vượt quá giới hạn! Tối đa: " + soLuongToiDa, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                             return;
                         }
                         r.SoLuong = soLuongTra;
@@ -1331,7 +1329,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             TinhTongTienHoanTra();
             XoaTrangTab1SanPham();
             
-            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Ho�n th�nh" && cboTrangThai.Text != "�� h?y")
+            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Hoàn thành" && cboTrangThai.Text != "Đã hủy")
             {
                 btnAddToCart.Enabled = false;
                 btnSuaCT.Enabled = false;
@@ -1343,7 +1341,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private void btnBoquaCT_Click(object sender, EventArgs e) 
         { 
             XoaTrangTab1SanPham();
-            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Ho�n th�nh" && cboTrangThai.Text != "�� h?y")
+            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Hoàn thành" && cboTrangThai.Text != "Đã hủy")
             {
                 btnAddToCart.Enabled = false;
                 btnSuaCT.Enabled = false;

@@ -487,7 +487,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             txtNgayTao.BorderRadius = 5;
             txtNgayTao.Checked = true;
-            txtNgayTao.ShowCheckBox = true;
             txtNgayTao.CustomizableEdges = customizableEdges15;
             txtNgayTao.FillColor = Color.FromArgb(240, 242, 245);
             txtNgayTao.Font = new Font("Segoe UI", 9F);

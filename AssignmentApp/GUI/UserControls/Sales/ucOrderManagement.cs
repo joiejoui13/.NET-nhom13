@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Threading.Tasks;
+using System.IO;
 using AssignmentApp.DAL.Repositories.Sales;
 using AssignmentApp.DAL.Repositories.Warehouse;
 using AssignmentApp.DTO;
@@ -21,7 +22,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private bool isEditing = false;
         private bool isAddingNew = false;
         private bool isSearchMode = false;
+        private bool isPOSSearchMode = false;
         private List<OrderDetail> currentDetails = new List<OrderDetail>();
+        private bool isCartModified = false;
 
         private bool defaultToPOS = false;
 
@@ -35,17 +38,76 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvOrders.CellDoubleClick += dgvOrders_CellDoubleClick;
             dgvProductsSelection.CellDoubleClick += dgvProductsSelection_CellDoubleClick;
             txtGiamGia.TextChanged += async (s, e) => await UpdateTotalAmountAsync();
+            txtGiamGia.TextChanged += async (s, e) => await UpdateTotalAmountAsync();
+            txtNgayTao.ValueChanged += txtNgayTao_ValueChanged;
+            tabMain.Selecting += tabMain_Selecting;
+            guna2Button4.Click += guna2Button4_Click;
+            guna2Button3.Click += guna2Button3_Click;
+            btnAddToCart.Click += btnAddToCart_Click;
+            btnRemoveFromCart.Click += btnRemoveFromCart_Click;
+            btnBackToReceipt.Click += btnBackToReceipt_Click;
+        }
+
+        private void tabMain_Selecting(object? sender, TabControlCancelEventArgs e)
+        {
+            if (e.TabPage == tabChonSanPham)
+            {
+                if (_selectedOrder == null && !isAddingNew)
+                {
+                    MessageBox.Show("Vui lòng chọn một đơn hàng hoặc ấn Thêm mới để thao tác chọn sản phẩm!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        private void SetCartButtonsState(string state, bool isModified = false)
+        {
+            btnAddToCart.Enabled = false;
+            guna2Button4.Enabled = false; // Sửa
+            btnRemoveFromCart.Enabled = false; // Xóa
+            guna2Button3.Enabled = false; // Bỏ qua
+            btnBackToReceipt.Enabled = isModified; // Lưu thay đổi
+
+            // Đóng tất cả textbox mặc định
+            txtSelMaSP.Enabled = false;
+            txtSelTenSP.Enabled = false;
+            txtSelGiaNhap.Enabled = false;
+            txtSelSoLuong.Enabled = false;
+
+            if (state == "SelectingAvailable")
+            {
+                btnAddToCart.Enabled = true;
+                guna2Button3.Enabled = true;
+                txtSelSoLuong.Enabled = true; // Chỉ mở số lượng
+            }
+            else if (state == "SelectingCart")
+            {
+                guna2Button4.Enabled = true;
+                btnRemoveFromCart.Enabled = true;
+                guna2Button3.Enabled = true;
+                txtSelSoLuong.Enabled = true; // Chỉ mở số lượng
+            }
+        }
+
+        private void txtNgayTao_ValueChanged(object? sender, EventArgs e)
+        {
+            if (txtNgayTao.Format == DateTimePickerFormat.Custom && txtNgayTao.CustomFormat == " ")
+            {
+                txtNgayTao.Format = DateTimePickerFormat.Short;
+                txtNgayTao.CustomFormat = null;
+            }
         }
 
         private void ucOrderManagement_Load(object sender, EventArgs e)
         {
             SetControlState("Init");
             _ = LoadOrdersGridAsync();
+            _ = LoadProductsSelectionGridAsync();
+            SetCartButtonsState("Init");
 
             if (defaultToPOS && tabMain != null && tabChonSanPham != null)
             {
                 tabMain.SelectedTab = tabChonSanPham;
-                _ = LoadProductsSelectionGridAsync();
                 LoadCurrentDetailsGrid();
             }
         }
@@ -114,7 +176,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 isSearchMode = true;
                 isAddingNew = false;
                 isEditing = false;
-                txtNgayTao.Checked = false;
+                txtNgayTao.Format = DateTimePickerFormat.Custom;
+                txtNgayTao.CustomFormat = " ";
             }
 
             if (mode == "Search")
@@ -209,6 +272,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboLoaiHoaDon.Text = order.LoaiHoaDon;
             txtMaKhachHang.Text = order.MaKhachHang.ToString();
             txtTenNguoiDung.Text = order.MaNguoiDung?.ToString();
+            txtNgayTao.Format = DateTimePickerFormat.Short;
+            txtNgayTao.CustomFormat = null;
             txtNgayTao.Value = order.NgayTao;
             txtGiamGia.Text = order.MaKhuyenMai ?? "";
             cboHinhThucThanhToan.Text = order.HinhThucThanhToan;
@@ -220,6 +285,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             var details = await _orderRepo.GetDetailsAsync(order.MaHoaDon.ToString());
             currentDetails = details.ToList();
             
+            lblPOSTitle.Text = $"MÃ HÓA ĐƠN: {order.MaHoaDon}";
+            LoadCurrentDetailsGrid();
+
             UpdateConvertToSalesState();
         }
 
@@ -303,7 +371,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     string.IsNullOrWhiteSpace(cboLoaiHoaDon.Text) &&
                     string.IsNullOrWhiteSpace(txtGiamGia.Text) &&
                     string.IsNullOrWhiteSpace(cboHinhThucThanhToan.Text) &&
-                    !txtNgayTao.Checked)
+                    (txtNgayTao.Format == DateTimePickerFormat.Custom && txtNgayTao.CustomFormat == " "))
                 {
                     MessageBox.Show("Vui lòng điền thông tin để tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -345,7 +413,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 if (!string.IsNullOrEmpty(cboLoaiHoaDon.Text))
                     list = list.Where(o => o.LoaiHoaDon == cboLoaiHoaDon.Text);
 
-                if (txtNgayTao.Checked)
+                if (!(txtNgayTao.Format == DateTimePickerFormat.Custom && txtNgayTao.CustomFormat == " "))
                     list = list.Where(o => o.NgayTao.Date == txtNgayTao.Value.Date);
 
                 _orders = list.ToList();
@@ -384,11 +452,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtTongTien.Text = "";
             txtGiamGia.Text = "";
             cboHinhThucThanhToan.SelectedIndex = -1;
+            txtNgayTao.Format = DateTimePickerFormat.Short;
+            txtNgayTao.CustomFormat = null;
             txtNgayTao.Value = DateTime.Now;
             cboLoaiHoaDon.SelectedIndex = -1;
             cboTrangThai.SelectedIndex = -1;
             txtLyDoHuy.Text = "";
-
+            lblPOSTitle.Text = "MÃ HÓA ĐƠN: ";
         }
 
         private void btnAdd_Click(object? sender, EventArgs e)
@@ -398,6 +468,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtMaHoaDon.Text = "Tự động sinh";
             txtMaKhachHang.Text = ""; 
             txtTenNguoiDung.Text = AssignmentApp.BLL.Session.UserSession.CurrentUser?.MaNguoiDung.ToString() ?? "1"; 
+            txtNgayTao.Format = DateTimePickerFormat.Short;
+            txtNgayTao.CustomFormat = null;
             txtNgayTao.Value = DateTime.Now;
             cboLoaiHoaDon.Text = "Đơn bán hàng";
             cboTrangThai.Text = "Chờ xử lý";
@@ -410,6 +482,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtTenNguoiDung.Enabled = false;
             
             currentDetails.Clear();
+            LoadCurrentDetailsGrid();
+            lblPOSTitle.Text = "MÃ HÓA ĐƠN: (Đang tạo mới)";
         }
 
         private async void btnEdit_Click(object? sender, EventArgs e)
@@ -571,13 +645,23 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private async Task LoadProductsSelectionGridAsync(List<Product>? dataSource = null)
         {
             dgvProductsSelection.Rows.Clear();
+            if (dgvProductsSelection.Columns.Count == 3)
+            {
+                dgvProductsSelection.Columns.Add(new DataGridViewTextBoxColumn() { Name = "colSelMaDanhMuc", HeaderText = "Danh Mục", ReadOnly = true });
+                dgvProductsSelection.Columns.Add(new DataGridViewTextBoxColumn() { Name = "colSelSoLuongTon", HeaderText = "Tồn Kho", ReadOnly = true });
+                dgvProductsSelection.Columns.Add(new DataGridViewTextBoxColumn() { Name = "colSelTrangThai", HeaderText = "Trạng Thái", ReadOnly = true });
+            }
+
             var list = dataSource ?? (await _productRepo.GetAllAsync()).ToList();
             foreach (var prod in list)
             {
                 dgvProductsSelection.Rows.Add(
                     prod.MaSanPham,
                     prod.TenSanPham,
-                    prod.GiaBan.ToString("N0") + " đ"
+                    prod.GiaBan.ToString("N0") + " đ",
+                    prod.MaDanhMuc,
+                    prod.SoLuongTon,
+                    prod.TrangThai
                 );
             }
         }
@@ -595,6 +679,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 if (!string.IsNullOrEmpty(rawId))
                 {
                     _ = PopulateProductToPOSAsync(rawId);
+                    tabSelectionContainer.SelectedTab = tabProductDetail;
+                    isPOSSearchMode = false;
+                    SetCartButtonsState("SelectingAvailable", isCartModified);
                 }
             }
         }
@@ -618,6 +705,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 txtSelTenSP.Text = prod.TenSanPham;
                 txtSelGiaNhap.Text = prod.GiaBan.ToString();
 
+                lblProductDetailDesc.Text = $"Mã SP: {prod.MaSanPham}\n" +
+                                            $"Tên SP: {prod.TenSanPham}\n" +
+                                            $"Danh mục: {prod.MaDanhMuc}\n" +
+                                            $"Giá bán: {prod.GiaBan:N0} đ\n" +
+                                            $"Số lượng tồn: {prod.SoLuongTon}\n" +
+                                            $"Trạng thái: {prod.TrangThai}\n" +
+                                            $"Ngày tạo: {prod.NgayTao:dd/MM/yyyy}\n\n" +
+                                            $"Mô tả:\n{prod.MoTa}";
+
                 var existing = currentDetails.FirstOrDefault(d => d.MaSanPham == id);
                 if (existing != null)
                 {
@@ -631,6 +727,25 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
                 txtSelSoLuong.Focus();
                 txtSelSoLuong.SelectAll();
+                
+                if (!string.IsNullOrEmpty(prod.Anh) && File.Exists(prod.Anh))
+                {
+                    try
+                    {
+                        byte[] bytes = File.ReadAllBytes(prod.Anh);
+                        using (MemoryStream ms = new MemoryStream(bytes))
+                        {
+                            if (picProductDetail.Image != null) picProductDetail.Image.Dispose();
+                            picProductDetail.Image = Image.FromStream(ms);
+                        }
+                    }
+                    catch { picProductDetail.Image = null; }
+                }
+                else
+                {
+                    if (picProductDetail.Image != null) picProductDetail.Image.Dispose();
+                    picProductDetail.Image = null;
+                }
             }
         }
     }
@@ -642,17 +757,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 string rawId = dgvCurrentDetails.Rows[e.RowIndex].Cells[0].Value?.ToString() ?? "";
                 if (!string.IsNullOrEmpty(rawId))
                 {
-                    var item = currentDetails.FirstOrDefault(d => d.MaSanPham == rawId);
-                    if (item != null)
-                    {
-                        txtSelMaSP.Text = item.MaSanPham.ToString();
-                        txtSelTenSP.Text = "Sản phẩm " + item.MaSanPham; 
-                        txtSelSoLuong.Text = item.SoLuong.ToString();
-                        txtSelGiaNhap.Text = item.DonGia.ToString();
-
-                        txtSelSoLuong.Focus();
-                        txtSelSoLuong.SelectAll();
-                    }
+                    _ = PopulateProductToPOSAsync(rawId);
+                    tabSelectionContainer.SelectedTab = tabProductDetail;
+                    SetCartButtonsState("SelectingCart", isCartModified);
                 }
             }
         }
@@ -692,7 +799,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             
             decimal finalTotal = total - (total * discountPercent / 100);
             txtTongTien.Text = finalTotal.ToString("N0") + " đ";
-            lblTotalAmount.Text = $"TỔNG TIỀN TẠM TÍNH: {finalTotal.ToString("N0")} đ";
+            lblTotalAmount.Text = $"TỔNG TIỀN TẠM TÍNH: {total.ToString("N0")} đ";
         }
 
         private void btnAddToCart_Click(object? sender, EventArgs e)
@@ -721,8 +828,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             var existing = currentDetails.FirstOrDefault(d => d.MaSanPham == id);
             if (existing != null)
             {
-                existing.SoLuong = qty;
-                existing.DonGia = price;
+                existing.SoLuong += qty;
+                existing.ThanhTien = existing.SoLuong * existing.DonGia;
             }
             else
             {
@@ -730,16 +837,45 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 {
                     MaSanPham = id,
                     SoLuong = qty,
-                    DonGia = price
+                    DonGia = price,
+                    ThanhTien = qty * price
                 });
             }
 
             LoadCurrentDetailsGrid();
-            
-            // Reset textboxes slightly
-            txtSelSoLuong.Text = "1";
-            txtSelSoLuong.Focus();
-            txtSelSoLuong.SelectAll();
+            isCartModified = true;
+            SetCartButtonsState("Init", isCartModified);
+            btnResetCartForm_Click(null, EventArgs.Empty);
+        }
+
+        private void guna2Button4_Click(object? sender, EventArgs e)
+        {
+            string id = txtSelMaSP.Text;
+            if (string.IsNullOrEmpty(id)) return;
+            var existing = currentDetails.FirstOrDefault(d => d.MaSanPham == id);
+            if (existing != null)
+            {
+                if (int.TryParse(txtSelSoLuong.Text, out int qty) && qty > 0)
+                {
+                    existing.SoLuong = qty;
+                    existing.ThanhTien = existing.SoLuong * existing.DonGia;
+                }
+                if (decimal.TryParse(txtSelGiaNhap.Text, out decimal price) && price >= 0)
+                {
+                    existing.DonGia = price;
+                    existing.ThanhTien = existing.SoLuong * existing.DonGia;
+                }
+                LoadCurrentDetailsGrid();
+                isCartModified = true;
+                SetCartButtonsState("Init", isCartModified);
+                btnResetCartForm_Click(null, EventArgs.Empty);
+            }
+        }
+
+        private void guna2Button3_Click(object? sender, EventArgs e)
+        {
+            btnResetCartForm_Click(null, EventArgs.Empty);
+            SetCartButtonsState("Init", isCartModified);
         }
 
         private void btnRemoveFromCart_Click(object? sender, EventArgs e)
@@ -756,6 +892,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             {
                 currentDetails.Remove(item);
                 LoadCurrentDetailsGrid();
+                isCartModified = true;
+                SetCartButtonsState("Init", isCartModified);
                 btnResetCartForm_Click(this, EventArgs.Empty);
             }
             else
@@ -770,29 +908,69 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelTenSP.Text = "";
             txtSelSoLuong.Text = "";
             txtSelGiaNhap.Text = "";
+            dgvProductsSelection.ClearSelection();
+            dgvCurrentDetails.ClearSelection();
+            tabSelectionContainer.SelectedTab = tabListProducts;
         }
 
         private async void btnPOSSearch_Click(object? sender, EventArgs e)
         {
+            if (!isPOSSearchMode)
+            {
+                isPOSSearchMode = true;
+                btnResetCartForm_Click(null, EventArgs.Empty);
+                SetCartButtonsState("Init", isCartModified);
+                
+                txtSelMaSP.Enabled = true;
+                txtSelTenSP.Enabled = true;
+                txtSelGiaNhap.Enabled = true;
+                txtSelSoLuong.Enabled = true;
+
+                // Mở khóa ReadOnly để cho phép gõ phím
+                txtSelMaSP.ReadOnly = false;
+                txtSelTenSP.ReadOnly = false;
+
+                MessageBox.Show("Đã bật chế độ Tìm kiếm!\n\nVui lòng gõ thông tin cần tìm vào các ô trống rồi nhấn TÌM KIẾM lần nữa.", "Hướng dẫn", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtSelMaSP.Text) && 
+                string.IsNullOrWhiteSpace(txtSelTenSP.Text) &&
+                string.IsNullOrWhiteSpace(txtSelGiaNhap.Text) &&
+                string.IsNullOrWhiteSpace(txtSelSoLuong.Text) &&
+                string.IsNullOrWhiteSpace(txtProductSearch.Text))
+            {
+                MessageBox.Show("Vui lòng điền thông tin để tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             string keyword = txtProductSearch.Text.Trim().ToLower();
+            string maSP = txtSelMaSP.Text.Trim().ToLower();
+            string tenSP = txtSelTenSP.Text.Trim().ToLower();
 
             var all = await _productRepo.GetAllAsync();
             var filtered = all.Where(p =>
-                string.IsNullOrEmpty(keyword) ||
-                p.MaSanPham.ToString() == keyword ||
-                p.TenSanPham.ToLower().Contains(keyword) ||
-                p.MaDanhMuc.ToString() == keyword
+                (string.IsNullOrEmpty(keyword) ||
+                 p.MaSanPham.ToString() == keyword ||
+                 p.TenSanPham.ToLower().Contains(keyword) ||
+                 p.MaDanhMuc.ToString() == keyword) &&
+                (string.IsNullOrEmpty(maSP) || p.MaSanPham.ToString() == maSP) &&
+                (string.IsNullOrEmpty(tenSP) || p.TenSanPham.ToLower().Contains(tenSP))
             ).ToList();
 
             _ = LoadProductsSelectionGridAsync(filtered);
+            dgvProductsSelection.ClearSelection();
+            tabSelectionContainer.SelectedTab = tabListProducts;
         }
 
         private void btnPOSRefresh_Click(object? sender, EventArgs e)
         {
-            txtSelMaSP.Text = "";
-            txtSelTenSP.Text = "";
-            txtSelSoLuong.Text = "";
-            txtSelGiaNhap.Text = "";
+            isPOSSearchMode = false;
+            txtProductSearch.Text = "";
+            txtSelMaSP.ReadOnly = true;
+            txtSelTenSP.ReadOnly = true;
+            btnResetCartForm_Click(null, EventArgs.Empty);
+            SetCartButtonsState("Init", isCartModified);
             _ = LoadProductsSelectionGridAsync();
         }
 
@@ -815,11 +993,39 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
         }
 
-        private void btnBackToReceipt_Click(object? sender, EventArgs e)
+        private async void btnBackToReceipt_Click(object? sender, EventArgs e)
         {
+            if (_selectedOrder != null && isCartModified)
+            {
+                await _orderRepo.DeleteDetailsByOrderIdAsync(_selectedOrder.MaHoaDon.ToString());
+                foreach (var detail in currentDetails)
+                {
+                    detail.MaHoaDon = _selectedOrder.MaHoaDon.ToString();
+                    await _orderRepo.AddDetailAsync(detail);
+                }
+                
+                decimal total = currentDetails.Sum(d => d.ThanhTien);
+                decimal finalTotal = total;
+                if (!string.IsNullOrEmpty(txtGiamGia.Text) && txtGiamGia.Text.StartsWith("KM"))
+                {
+                    string percentStr = txtGiamGia.Text.ToUpper().Replace("KM", "");
+                    if (decimal.TryParse(percentStr, out decimal dp))
+                    {
+                        finalTotal = total - (total * dp / 100);
+                    }
+                }
+                _selectedOrder.TongTien = finalTotal;
+                await _orderRepo.UpdateAsync(_selectedOrder);
+                
+                MessageBox.Show("Lưu thay đổi giỏ hàng thành công!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                isCartModified = false;
+                SetCartButtonsState("Init", false);
+            }
+
             if (tabMain != null && tabPhieuXuat != null)
             {
                 tabMain.SelectedTab = tabPhieuXuat;
+                _ = LoadOrdersGridAsync();
             }
         }
     }

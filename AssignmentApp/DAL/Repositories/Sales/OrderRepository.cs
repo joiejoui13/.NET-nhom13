@@ -136,5 +136,12 @@ namespace AssignmentApp.DAL.Repositories.Sales
                 }
             }
         }
+        
+        public async Task<int> DeleteDetailsByOrderIdAsync(string maHoaDon)
+        {
+            if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
+            string sql = "DELETE FROM ChiTietHoaDon WHERE MaHoaDon = @MaHoaDon";
+            return await DbContext.Conn.ExecuteAsync(sql, new { MaHoaDon = maHoaDon });
+        }
     }
 }

@@ -839,10 +839,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // tabSelectionContainer
             // 
-            tabSelectionContainer.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabSelectionContainer.Controls.Add(tabListProducts);
             tabSelectionContainer.Controls.Add(tabProductDetail);
-            tabSelectionContainer.Location = new Point(3, 3);
+            tabSelectionContainer.Dock = DockStyle.Fill;
+            tabSelectionContainer.Location = new Point(0, 0);
             tabSelectionContainer.Name = "tabSelectionContainer";
             tabSelectionContainer.SelectedIndex = 0;
             tabSelectionContainer.Size = new Size(630, 557);
@@ -866,7 +866,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvProductsSelection.AllowUserToDeleteRows = false;
             dataGridViewCellStyle4.BackColor = Color.White;
             dgvProductsSelection.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
-            dgvProductsSelection.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             dataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle5.BackColor = Color.FromArgb(0, 126, 249);
             dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -884,14 +883,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dataGridViewCellStyle6.SelectionForeColor = Color.FromArgb(71, 69, 94);
             dataGridViewCellStyle6.WrapMode = DataGridViewTriState.False;
             dgvProductsSelection.DefaultCellStyle = dataGridViewCellStyle6;
+            dgvProductsSelection.Dock = DockStyle.Fill;
             dgvProductsSelection.GridColor = Color.FromArgb(231, 229, 255);
-            dgvProductsSelection.Location = new Point(7, 13);
+            dgvProductsSelection.Location = new Point(10, 10);
             dgvProductsSelection.Name = "dgvProductsSelection";
             dgvProductsSelection.ReadOnly = true;
             dgvProductsSelection.RowHeadersVisible = false;
             dgvProductsSelection.RowHeadersWidth = 51;
             dgvProductsSelection.RowTemplate.Height = 28;
-            dgvProductsSelection.Size = new Size(602, 504);
+            dgvProductsSelection.Size = new Size(602, 505);
             dgvProductsSelection.TabIndex = 1;
             dgvProductsSelection.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvProductsSelection.ThemeStyle.AlternatingRowsStyle.Font = null;

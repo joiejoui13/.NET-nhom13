@@ -534,8 +534,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private async Task PopulateProductToPOSAsync(string id)
         {
-            var prod = await _productRepo.GetByIdAsync(id);
-            if (prod != null)
+            if (int.TryParse(id, out int productId))
+            {
+                var prod = await _productRepo.GetByIdAsync(productId);
+                if (prod != null)
             {
                 txtSelMaSP.Text = prod.MaSanPham.ToString();
                 txtSelTenSP.Text = prod.TenSanPham;
@@ -556,6 +558,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 txtSelSoLuong.SelectAll();
             }
         }
+    }
 
         private void dgvCurrentDetails_CellClick(object? sender, DataGridViewCellEventArgs e)
         {

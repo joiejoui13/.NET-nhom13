@@ -3,78 +3,93 @@ using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
-using AssignmentApp.DAL.Core; // Import DbContext
+using AssignmentApp.DAL.Core; // Import DbContext kết nối SQL
 
 namespace AssignmentApp.GUI.UserControls.Warehouse
 {
     public partial class ucProductList : UserControl
     {
-
+        // Biến toàn cục dùng để lưu đường dẫn ảnh hiện tại của sản phẩm
         private string currentImagePath = "";
 
+        #region 1. KHỞI TẠO VÀ TẢI FORM (INITIALIZATION & LOAD)
+
+        /// <summary>
+        /// Hàm khởi tạo UserControl Danh sách Sản phẩm.
+        /// Chạy đầu tiên để vẽ giao diện và gán các cấu hình tĩnh.
+        /// </summary>
         public ucProductList()
         {
             InitializeComponent();
 
-            // Extracted from Designer
-            cboTrangThai.Items.AddRange(new object[] { "Hoạt động", "Ngừng hoạt động" });
-        }
-
-        // 5.2.1. Viết thủ tục ucProductList_Load khi tải Control
-        private void ucProductList_Load(object sender, EventArgs e)
-        {
-            // Kết nối cơ sở dữ liệu nếu chưa kết nối
-            if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed)
-            {
-                DbContext.Ketnoi();
-            }
-
-            // Tải danh sách Danh mục lên combobox cboDanhMuc
-            Load_cboDanhMuc();
-
-            // Khởi tạo ComboBox Trạng thái
+            // CẤU HÌNH COMBOBOX: Thêm các tùy chọn cố định (Tách từ Designer)
             cboTrangThai.Items.Clear();
             cboTrangThai.Items.AddRange(new object[] { "Đang bán", "Ngưng bán" });
-            cboTrangThai.SelectedIndex = 0;
-
-            // Tải lưới sản phẩm
-            LoadProductsGrid();
-
-            // Khóa các ô nhập liệu và thiết lập trạng thái nút bấm ban đầu
-            ToggleInputs(false);
-            
-            btnAdd.Enabled = true;
-            btnEdit.Enabled = false;
-            btnDelete.Enabled = false;
-            btnSave.Enabled = false;
-            btnCancel.Enabled = false;
-            txtMaSanPham.Enabled = false;
+            cboTrangThai.DropDownStyle = ComboBoxStyle.DropDownList; // Cấm người dùng gõ phím tinh tinh
         }
 
-        // 5.2.2. Viết thủ tục nạp combobox Danh Mục từ Database
+        /// <summary>
+        /// Sự kiện Load Form: Kích hoạt khi giao diện hiển thị.
+        /// Chuyên dùng để kết nối CSDL, kéo dữ liệu vào lưới và ComboBox.
+        /// </summary>
+        private void ucProductList_Load(object sender, EventArgs e)
+        {
+            // 1. Khởi tạo kết nối DB
+            DbContext.Ketnoi();
+
+            // 2. Nạp dữ liệu vào ComboBox Danh Mục từ CSDL
+            Load_cboDanhMuc();
+
+            // 3. Tải toàn bộ danh sách Sản phẩm lên DataGridView
+            LoadProductsGrid(null);
+
+            // 4. Khóa các ô nhập liệu và xóa sạch dữ liệu cũ trên form
+            ClearInputs();
+            ToggleInputs(false);
+            
+            // 5. Cấu hình trạng thái các nút bấm ban đầu
+            btnAdd.Enabled = true;          // Được quyền bấm Thêm mới
+            btnEdit.Enabled = false;        // Chưa chọn SP nào nên cấm Sửa
+            btnDelete.Enabled = false;      // Cấm Xóa
+            btnSave.Enabled = false;        // Đang không thao tác nên cấm Lưu
+            btnCancel.Enabled = false;      // Cấm Hủy
+            txtMaSanPham.Enabled = false;   // Mã SP do CSDL cấp, cấm gõ tay
+        }
+
+        #endregion
+
+        #region 2. CÁC HÀM HỖ TRỢ GIAO DIỆN VÀ DỮ LIỆU (HELPER METHODS)
+
+        /// <summary>
+        /// Tải toàn bộ Danh mục từ bảng DanhMuc lên ComboBox để người dùng có thể phân loại sản phẩm.
+        /// </summary>
         private void Load_cboDanhMuc()
         {
             string sql = "SELECT MaDanhMuc, TenDanhMuc FROM DanhMuc ORDER BY TenDanhMuc ASC";
             DataTable tblDanhMuc = DbContext.GetDataToTable(sql);
             
             cboDanhMuc.DataSource = tblDanhMuc;
-            cboDanhMuc.DisplayMember = "TenDanhMuc";
-            cboDanhMuc.ValueMember = "MaDanhMuc";
-            cboDanhMuc.SelectedIndex = -1; // Để trống mặc định ban đầu
+            cboDanhMuc.DisplayMember = "TenDanhMuc"; // Tên hiển thị ra cho người dùng đọc
+            cboDanhMuc.ValueMember = "MaDanhMuc";   // Mã chìm bên dưới để lưu CSDL
+            cboDanhMuc.SelectedIndex = -1;          // Mặc định không chọn danh mục nào
         }
 
-        // 5.2.3. Viết thủ tục LoadProductsGrid tải dữ liệu sản phẩm lên lưới
-        private void LoadProductsGrid(DataTable customTable = null)
+        /// <summary>
+        /// Kéo dữ liệu Sản Phẩm từ CSDL và hiển thị lên lưới.
+        /// </summary>
+        private void LoadProductsGrid(DataTable customTable)
         {
             DataTable tblProducts;
+
+            // Nếu người dùng có truyền customTable (Ví dụ: dữ liệu sau khi Tìm kiếm) thì dùng nó
             if (customTable != null)
             {
                 tblProducts = customTable;
             }
             else
             {
+                // Truy vấn JOIN 2 bảng để lấy Tên Danh Mục thay vì chỉ hiện Mã Danh Mục vô hồn
                 string sql = @"SELECT s.MaSanPham, s.TenSanPham, s.MaDanhMuc, d.TenDanhMuc, s.GiaNhap, s.GiaBan, s.SoLuongTon, s.MoTa, s.Anh, s.TrangThai, s.NgayTao 
                                FROM SanPham s 
                                LEFT JOIN DanhMuc d ON s.MaDanhMuc = d.MaDanhMuc
@@ -82,26 +97,26 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 tblProducts = DbContext.GetDataToTable(sql);
             }
 
-            // Tắt tự động tạo cột trên DataGridView
+            // Tắt chức năng tự đẻ cột của DataGridView để không làm hỏng thiết kế
             dgvSanPham.AutoGenerateColumns = false;
             dgvSanPham.DataSource = tblProducts;
 
-            // Gán DataPropertyName cho từng cột đã tạo sẵn trong Designer
+            // BINDING DỮ LIỆU: Cột nào ăn theo dữ liệu nào
             if (dgvSanPham.Columns.Contains("colMaSanPham")) dgvSanPham.Columns["colMaSanPham"].DataPropertyName = "MaSanPham";
             if (dgvSanPham.Columns.Contains("colTenSanPham")) dgvSanPham.Columns["colTenSanPham"].DataPropertyName = "TenSanPham";
-            if (dgvSanPham.Columns.Contains("colMaDanhMuc")) dgvSanPham.Columns["colMaDanhMuc"].DataPropertyName = "TenDanhMuc"; // Hiển thị tên DM cho dễ nhìn
+            if (dgvSanPham.Columns.Contains("colMaDanhMuc")) dgvSanPham.Columns["colMaDanhMuc"].DataPropertyName = "TenDanhMuc"; 
             if (dgvSanPham.Columns.Contains("colGiaNhap")) dgvSanPham.Columns["colGiaNhap"].DataPropertyName = "GiaNhap";
             if (dgvSanPham.Columns.Contains("colGiaBan")) dgvSanPham.Columns["colGiaBan"].DataPropertyName = "GiaBan";
             if (dgvSanPham.Columns.Contains("colSoLuongTon")) dgvSanPham.Columns["colSoLuongTon"].DataPropertyName = "SoLuongTon";
             if (dgvSanPham.Columns.Contains("colTrangThai")) dgvSanPham.Columns["colTrangThai"].DataPropertyName = "TrangThai";
             if (dgvSanPham.Columns.Contains("colNgayTao")) dgvSanPham.Columns["colNgayTao"].DataPropertyName = "NgayTao";
 
-            // Định dạng cột hiển thị tiền tệ và ngày tháng
-            if (dgvSanPham.Columns.Contains("colGiaNhap")) dgvSanPham.Columns["colGiaNhap"].DefaultCellStyle.Format = "N0";
+            // ĐỊNH DẠNG SỐ TIỀN VÀ NGÀY THÁNG
+            if (dgvSanPham.Columns.Contains("colGiaNhap")) dgvSanPham.Columns["colGiaNhap"].DefaultCellStyle.Format = "N0"; // "N0" tự động thêm dấu phẩy ngăn cách hàng nghìn
             if (dgvSanPham.Columns.Contains("colGiaBan")) dgvSanPham.Columns["colGiaBan"].DefaultCellStyle.Format = "N0";
             if (dgvSanPham.Columns.Contains("colNgayTao")) dgvSanPham.Columns["colNgayTao"].DefaultCellStyle.Format = "dd/MM/yyyy";
 
-            // Thiết lập độ rộng cột và căn chỉnh văn bản đẹp đẽ giống ucPromotion
+            // TẮT CHẾ ĐỘ AUTOSIZE TOÀN CỤC VÀ ĐỊNH RỘNG LẠI TỪNG CỘT
             dgvSanPham.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
             if (dgvSanPham.Columns.Contains("colMaSanPham"))
@@ -145,111 +160,19 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 dgvSanPham.Columns["colNgayTao"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
 
-            // Đồng bộ giao diện cao cấp
+            // Đồng bộ giao diện Row/Header
             dgvSanPham.RowTemplate.Height = 40;
             dgvSanPham.DefaultCellStyle.Font = new Font("Segoe UI", 10F);
             dgvSanPham.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
             dgvSanPham.ColumnHeadersHeight = 40;
-            dgvSanPham.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False; // Tránh tự động xuống dòng gây mất chữ ở tiêu đề
+            dgvSanPham.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False; 
+            dgvSanPham.AllowUserToAddRows = false;
+            dgvSanPham.EditMode = DataGridViewEditMode.EditProgrammatically;
         }
 
-        // 5.2.4. Viết thủ tục chọn sản phẩm hiển thị thông tin chi tiết
-        private void SelectProductRow(int rowIndex)
-        {
-            if (rowIndex < 0 || rowIndex >= dgvSanPham.Rows.Count) return;
-
-            dgvSanPham.ClearSelection();
-            dgvSanPham.Rows[rowIndex].Selected = true;
-
-            int prodId = Convert.ToInt32(dgvSanPham.Rows[rowIndex].Cells["colMaSanPham"].Value);
-            
-            string sql = $@"SELECT s.MaSanPham, s.TenSanPham, s.MaDanhMuc, d.TenDanhMuc, s.GiaNhap, s.GiaBan, s.SoLuongTon, s.MoTa, s.Anh, s.TrangThai, s.NgayTao 
-                           FROM SanPham s 
-                           LEFT JOIN DanhMuc d ON s.MaDanhMuc = d.MaDanhMuc 
-                           WHERE s.MaSanPham = {prodId}";
-            DataTable tbl = DbContext.GetDataToTable(sql);
-
-            if (tbl.Rows.Count > 0)
-            {
-                DataRow r = tbl.Rows[0];
-                txtMaSanPham.Text = r["MaSanPham"].ToString();
-                txtTenSanPham.Text = r["TenSanPham"]?.ToString() ?? "";
-                txtGiaNhap.Text = r["GiaNhap"]?.ToString() ?? "0";
-                txtGiaBan.Text = r["GiaBan"]?.ToString() ?? "0";
-                txtSoLuongTon.Text = r["SoLuongTon"]?.ToString() ?? "0";
-                txtMoTa.Text = r["MoTa"]?.ToString() ?? "";
-                
-                if (r["MaDanhMuc"] != DBNull.Value)
-                {
-                    cboDanhMuc.SelectedValue = Convert.ToInt32(r["MaDanhMuc"]);
-                }
-                else
-                {
-                    cboDanhMuc.SelectedIndex = -1;
-                }
-                cboTrangThai.Text = r["TrangThai"]?.ToString() ?? "Đang bán";
-
-                currentImagePath = r["Anh"]?.ToString() ?? "";
-                LoadProductImage(currentImagePath);
-
-                // Cập nhật nhãn tab chi tiết sản phẩm phía bên phải
-                double giaBan = r["GiaBan"] == DBNull.Value ? 0 : Convert.ToDouble(r["GiaBan"]);
-                int soLuongTon = r["SoLuongTon"] == DBNull.Value ? 0 : Convert.ToInt32(r["SoLuongTon"]);
-                string tenSP = r["TenSanPham"]?.ToString() ?? "";
-                string tenDanhMuc = r["TenDanhMuc"]?.ToString() ?? "Không rõ";
-                double giaNhap = r["GiaNhap"] == DBNull.Value ? 0 : Convert.ToDouble(r["GiaNhap"]);
-                string trangThai = r["TrangThai"]?.ToString() ?? "Đang bán";
-
-                lblProductDetailName.Text = tenSP.ToUpper();
-                lblProductDetailPrice.Text = $"Giá bán: {giaBan.ToString("N0")} VNĐ";
-                lblProductDetailStock.Text = $"Số lượng tồn: {soLuongTon.ToString("N0")}";
-                
-                lblProductDetailDesc.Text = $"Mã sản phẩm: {prodId}\n" +
-                                            $"Danh mục: {tenDanhMuc}\n" +
-                                            $"Giá nhập: {giaNhap.ToString("N0")} VNĐ\n" +
-                                            $"Trạng thái: {trangThai}";
-            }
-        }
-
-        // 5.2.5. Thủ tục tải ảnh sản phẩm an toàn tránh bị khóa file trên hệ thống
-        private void LoadProductImage(string imagePath)
-        {
-            // Thu hồi bộ nhớ ảnh cũ nếu có
-            if (picProductImage.Image != null)
-            {
-                picProductImage.Image.Dispose();
-                picProductImage.Image = null;
-            }
-            if (picProductDetailImage.Image != null)
-            {
-                picProductDetailImage.Image.Dispose();
-                picProductDetailImage.Image = null;
-            }
-
-            if (!string.IsNullOrEmpty(imagePath) && File.Exists(imagePath))
-            {
-                try
-                {
-                    // Đọc file ảnh dưới dạng byte array để không chiếm dụng, khóa file ảnh trên ổ cứng
-                    byte[] bytes = File.ReadAllBytes(imagePath);
-                    using (MemoryStream ms1 = new MemoryStream(bytes))
-                    {
-                        picProductImage.Image = Image.FromStream(ms1);
-                    }
-                    using (MemoryStream ms2 = new MemoryStream(bytes))
-                    {
-                        picProductDetailImage.Image = Image.FromStream(ms2);
-                    }
-                }
-                catch
-                {
-                    picProductImage.Image = null;
-                    picProductDetailImage.Image = null;
-                }
-            }
-        }
-
-        // 5.2.6. Thủ tục ToggleInputs thay đổi trạng thái bật tắt các trường thông tin
+        /// <summary>
+        /// Mở / Khóa các ô TextBox để người dùng nhập liệu.
+        /// </summary>
         private void ToggleInputs(bool isEnabled)
         {
             txtTenSanPham.Enabled = isEnabled;
@@ -262,7 +185,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             btnChonAnh.Enabled = isEnabled;
         }
 
-        // 5.2.7. Thủ tục dọn dẹp các trường nhập dữ liệu
+        /// <summary>
+        /// Dọn dẹp trắng tinh mọi thứ.
+        /// </summary>
         private void ClearInputs()
         {
             txtMaSanPham.Text = "";
@@ -271,27 +196,241 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtGiaBan.Text = "0";
             txtSoLuongTon.Text = "0";
             txtMoTa.Text = "";
-            if (cboDanhMuc.Items.Count > 0) cboDanhMuc.SelectedIndex = -1;
-            cboTrangThai.SelectedIndex = 0;
+            
+            if (cboDanhMuc.Items.Count > 0) 
+            {
+                cboDanhMuc.SelectedIndex = -1;
+            }
+            
+            if (cboTrangThai.Items.Count > 0) 
+            {
+                cboTrangThai.SelectedIndex = 0; // Mặc định Đang bán
+            }
 
             currentImagePath = "";
             LoadProductImage("");
         }
 
-        // 5.2.8. Sự kiện click vào ô trên lưới sản phẩm
+        /// <summary>
+        /// Khi người dùng click chuột vào lưới, hàm này sẽ lấy dữ liệu của nguyên dòng đó từ DB đổ lên Panel bên phải.
+        /// </summary>
+        private void SelectProductRow(int rowIndex)
+        {
+            if (rowIndex < 0 || rowIndex >= dgvSanPham.Rows.Count) 
+            {
+                return;
+            }
+
+            dgvSanPham.ClearSelection();
+            dgvSanPham.Rows[rowIndex].Selected = true;
+
+            // Ép kiểu an toàn (int.TryParse)
+            int prodId = 0;
+            if (int.TryParse(dgvSanPham.Rows[rowIndex].Cells["colMaSanPham"].Value.ToString(), out prodId) == false)
+            {
+                return;
+            }
+            
+            string sql = $@"SELECT s.MaSanPham, s.TenSanPham, s.MaDanhMuc, d.TenDanhMuc, s.GiaNhap, s.GiaBan, s.SoLuongTon, s.MoTa, s.Anh, s.TrangThai, s.NgayTao 
+                           FROM SanPham s 
+                           LEFT JOIN DanhMuc d ON s.MaDanhMuc = d.MaDanhMuc 
+                           WHERE s.MaSanPham = {prodId}";
+            DataTable tbl = DbContext.GetDataToTable(sql);
+
+            if (tbl.Rows.Count > 0)
+            {
+                DataRow r = tbl.Rows[0];
+                
+                // Sử dụng cấu trúc IF cơ bản, tránh dùng toán tử lạ "??" hoặc "?." để thân thiện với newbie
+                txtMaSanPham.Text = r["MaSanPham"].ToString();
+                
+                if (r["TenSanPham"] != DBNull.Value) txtTenSanPham.Text = r["TenSanPham"].ToString();
+                else txtTenSanPham.Text = "";
+
+                if (r["GiaNhap"] != DBNull.Value) txtGiaNhap.Text = r["GiaNhap"].ToString();
+                else txtGiaNhap.Text = "0";
+
+                if (r["GiaBan"] != DBNull.Value) txtGiaBan.Text = r["GiaBan"].ToString();
+                else txtGiaBan.Text = "0";
+
+                if (r["SoLuongTon"] != DBNull.Value) txtSoLuongTon.Text = r["SoLuongTon"].ToString();
+                else txtSoLuongTon.Text = "0";
+
+                if (r["MoTa"] != DBNull.Value) txtMoTa.Text = r["MoTa"].ToString();
+                else txtMoTa.Text = "";
+                
+                if (r["MaDanhMuc"] != DBNull.Value)
+                {
+                    cboDanhMuc.SelectedValue = Convert.ToInt32(r["MaDanhMuc"]);
+                }
+                else
+                {
+                    cboDanhMuc.SelectedIndex = -1;
+                }
+
+                if (r["TrangThai"] != DBNull.Value) cboTrangThai.Text = r["TrangThai"].ToString();
+                else cboTrangThai.Text = "Đang bán";
+
+                if (r["Anh"] != DBNull.Value) currentImagePath = r["Anh"].ToString();
+                else currentImagePath = "";
+
+                LoadProductImage(currentImagePath);
+
+                // Cập nhật Nhãn Tab Chi Tiết Bên Phải (Product Details Card)
+                double giaBan = 0;
+                if (r["GiaBan"] != DBNull.Value) giaBan = Convert.ToDouble(r["GiaBan"]);
+
+                int soLuongTon = 0;
+                if (r["SoLuongTon"] != DBNull.Value) soLuongTon = Convert.ToInt32(r["SoLuongTon"]);
+
+                string tenSP = "";
+                if (r["TenSanPham"] != DBNull.Value) tenSP = r["TenSanPham"].ToString();
+
+                string tenDanhMuc = "Không rõ";
+                if (r["TenDanhMuc"] != DBNull.Value) tenDanhMuc = r["TenDanhMuc"].ToString();
+
+                double giaNhap = 0;
+                if (r["GiaNhap"] != DBNull.Value) giaNhap = Convert.ToDouble(r["GiaNhap"]);
+
+                string trangThai = "Đang bán";
+                if (r["TrangThai"] != DBNull.Value) trangThai = r["TrangThai"].ToString();
+
+                lblProductDetailName.Text = tenSP.ToUpper();
+                lblProductDetailPrice.Text = $"Giá bán: {giaBan.ToString("N0")} VNĐ";
+                lblProductDetailStock.Text = $"Số lượng tồn: {soLuongTon.ToString("N0")}";
+                
+                lblProductDetailDesc.Text = $"Mã sản phẩm: {prodId}\n" +
+                                            $"Danh mục: {tenDanhMuc}\n" +
+                                            $"Giá nhập: {giaNhap.ToString("N0")} VNĐ\n" +
+                                            $"Trạng thái: {trangThai}";
+            }
+        }
+
+        /// <summary>
+        /// Thủ tục tải ảnh an toàn bằng MemoryStream.
+        /// Chống hiện tượng bị khóa file ảnh (Lock file) trên hệ điều hành khi muốn sửa/xóa ảnh sau này.
+        /// </summary>
+        private void LoadProductImage(string imagePath)
+        {
+            // Thu hồi bộ nhớ rác của C#
+            if (picProductImage.Image != null)
+            {
+                picProductImage.Image.Dispose();
+                picProductImage.Image = null;
+            }
+            if (picProductDetailImage.Image != null)
+            {
+                picProductDetailImage.Image.Dispose();
+                picProductDetailImage.Image = null;
+            }
+
+            if (string.IsNullOrEmpty(imagePath) == false && File.Exists(imagePath) == true)
+            {
+                try
+                {
+                    // Đọc file ảnh thông qua mảng Byte để không dính líu vật lý tới file gốc trên ổ cứng
+                    byte[] bytes = File.ReadAllBytes(imagePath);
+                    
+                    MemoryStream ms1 = new MemoryStream(bytes);
+                    picProductImage.Image = Image.FromStream(ms1);
+
+                    MemoryStream ms2 = new MemoryStream(bytes);
+                    picProductDetailImage.Image = Image.FromStream(ms2);
+                }
+                catch
+                {
+                    // Lỗi ảnh hỏng thì gán thành rỗng
+                    picProductImage.Image = null;
+                    picProductDetailImage.Image = null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Hàm tập trung sức mạnh: Kiểm duyệt toàn bộ dữ liệu người dùng gõ vào.
+        /// Vừa bắt lỗi, vừa nhả (out) các biến đã ép kiểu thành công ra ngoài cho nút Lưu/Sửa xài chung.
+        /// </summary>
+        private bool ValidateProductInputs(out string name, out string desc, out string status, out double importPrice, out double salesPrice, out int stock, out int catId)
+        {
+            // Khởi tạo các giá trị đầu ra (Bắt buộc phải khởi tạo khi dùng từ khóa 'out')
+            name = txtTenSanPham.Text.Trim();
+            desc = txtMoTa.Text.Trim();
+            status = cboTrangThai.Text;
+            importPrice = 0; 
+            salesPrice = 0; 
+            stock = 0; 
+            catId = 0;
+
+            if (string.IsNullOrEmpty(name) == true) 
+            { 
+                MessageBox.Show("Tên sản phẩm không được phép để trống!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                txtTenSanPham.Focus(); 
+                return false; 
+            }
+
+            if (cboDanhMuc.SelectedIndex == -1 || cboDanhMuc.SelectedValue == null) 
+            { 
+                MessageBox.Show("Vui lòng chọn danh mục sản phẩm!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                cboDanhMuc.Focus(); 
+                return false; 
+            }
+
+            if (double.TryParse(txtGiaNhap.Text, out importPrice) == false || importPrice < 0) 
+            { 
+                MessageBox.Show("Giá nhập kho phải là số hợp lệ và lớn hơn hoặc bằng 0!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                txtGiaNhap.Focus(); 
+                return false; 
+            }
+
+            if (double.TryParse(txtGiaBan.Text, out salesPrice) == false || salesPrice <= 0) 
+            { 
+                MessageBox.Show("Giá bán lẻ phải là số hợp lệ và lớn hơn 0!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                txtGiaBan.Focus(); 
+                return false; 
+            }
+
+            if (salesPrice < importPrice) 
+            { 
+                MessageBox.Show("Giá bán lẻ không được phép nhỏ hơn giá nhập kho!", "Lỗi kinh doanh", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                txtGiaBan.Focus(); 
+                return false; 
+            }
+
+            if (int.TryParse(txtSoLuongTon.Text, out stock) == false || stock < 0) 
+            { 
+                MessageBox.Show("Số lượng tồn kho phải là số nguyên không âm!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error); 
+                txtSoLuongTon.Focus(); 
+                return false; 
+            }
+
+            // Ép kiểu danh mục
+            catId = Convert.ToInt32(cboDanhMuc.SelectedValue);
+
+            return true; // Qua hết các ải, dữ liệu xanh sạch!
+        }
+
+        #endregion
+
+        #region 3. CÁC SỰ KIỆN TƯƠNG TÁC GIAO DIỆN (EVENTS)
+
+        /// <summary>
+        /// Kích hoạt khi bấm chuột trái vào bất kỳ ô nào trên bảng Sản phẩm.
+        /// </summary>
         private void dgvSanPham_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                // Thoát chế độ tìm kiếm nếu đang ở chế độ tìm kiếm
+                // Thoát chế độ tìm kiếm khẩn cấp nếu người dùng đang tìm kiếm mà bấm vào lưới
                 if (txtMaSanPham.Enabled == true)
                 {
                     txtMaSanPham.Enabled = false;
                     btnAdd.Enabled = true;
                 }
 
+                // Gọi hàm lấy dữ liệu siêu to khổng lồ
                 SelectProductRow(e.RowIndex);
                 
+                // Mở khóa các textbox
                 ToggleInputs(true);
                 
                 btnEdit.Enabled = true;
@@ -303,7 +442,13 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
         }
 
-        // 5.2.9. Sự kiện click nút Thêm mới
+        #endregion
+
+        #region 4. CÁC HÀM XỬ LÝ NÚT BẤM (BUTTON CLICK HANDLERS)
+
+        /// <summary>
+        /// Nút Thêm mới sản phẩm.
+        /// </summary>
         private void btnAdd_Click(object sender, EventArgs e)
         {
             ClearInputs();
@@ -324,35 +469,70 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtTenSanPham.Focus();
         }
 
-        private bool ValidateProductInputs(out string name, out string desc, out string status, out double importPrice, out double salesPrice, out int stock, out int catId)
+        /// <summary>
+        /// Nút Lưu sản phẩm (Thêm mới dữ liệu vào bảng SanPham - INSERT).
+        /// </summary>
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            name = txtTenSanPham.Text.Trim();
-            desc = txtMoTa.Text.Trim();
-            status = cboTrangThai.Text;
-            importPrice = 0; salesPrice = 0; stock = 0; catId = 0;
+            // 1. Kiểm tra ải Validation. Sử dụng từ khóa 'out' để hứng dữ liệu đã bóp vụn bên trong.
+            string name = "";
+            string desc = "";
+            string status = "";
+            double importPrice = 0;
+            double salesPrice = 0;
+            int stock = 0;
+            int catId = 0;
 
-            if (string.IsNullOrEmpty(name)) { MessageBox.Show("Tên sản phẩm không được phép để trống!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error); txtTenSanPham.Focus(); return false; }
-            if (cboDanhMuc.SelectedIndex == -1 || cboDanhMuc.SelectedValue == null) { MessageBox.Show("Vui lòng chọn danh mục sản phẩm!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error); cboDanhMuc.Focus(); return false; }
-            if (!double.TryParse(txtGiaNhap.Text, out importPrice) || importPrice < 0) { MessageBox.Show("Giá nhập kho phải lớn hơn hoặc bằng 0!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error); txtGiaNhap.Focus(); return false; }
-            if (!double.TryParse(txtGiaBan.Text, out salesPrice) || salesPrice <= 0) { MessageBox.Show("Giá bán lẻ phải lớn hơn 0!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error); txtGiaBan.Focus(); return false; }
-            if (salesPrice < importPrice) { MessageBox.Show("Giá bán lẻ không được nhỏ hơn giá nhập kho!", "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Error); txtGiaBan.Focus(); return false; }
-            if (!int.TryParse(txtSoLuongTon.Text, out stock) || stock < 0) { MessageBox.Show("Số lượng tồn kho phải là số không âm!", "Lỗi nhập liệu", MessageBoxButtons.OK, MessageBoxIcon.Error); txtSoLuongTon.Focus(); return false; }
-            catId = Convert.ToInt32(cboDanhMuc.SelectedValue);
-            return true;
+            if (ValidateProductInputs(out name, out desc, out status, out importPrice, out salesPrice, out stock, out catId) == false)
+            {
+                return;
+            }
+
+            // 2. Viết câu SQL Insert thẳng thắn, không màu mè
+            string sqlInsert = $@"INSERT INTO SanPham (TenSanPham, MaDanhMuc, GiaNhap, GiaBan, SoLuongTon, MoTa, Anh, TrangThai, NgayTao) 
+                                  VALUES (N'{name}', {catId}, {importPrice}, {salesPrice}, {stock}, N'{desc}', N'{currentImagePath}', N'{status}', GETDATE())";
+            DbContext.RunSql(sqlInsert);
+
+            MessageBox.Show("Thêm mới sản phẩm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            // 3. Khóa và làm mới
+            ToggleInputs(false);
+            LoadProductsGrid(null);
+
+            btnCancel.Enabled = false;
+            btnAdd.Enabled = true;
+            btnDelete.Enabled = false;
+            btnEdit.Enabled = false;
+            btnSave.Enabled = false;
+            txtMaSanPham.Enabled = false;
         }
 
-        // 5.2.10. Sự kiện click nút Sửa
+        /// <summary>
+        /// Nút Sửa thông tin sản phẩm (Cập nhật dữ liệu vào bảng SanPham - UPDATE).
+        /// </summary>
         private void btnEdit_Click(object sender, EventArgs e)
         {
             if (dgvSanPham.Rows.Count == 0 || string.IsNullOrEmpty(txtMaSanPham.Text) || txtMaSanPham.Text == "Tự động sinh")
             {
-                MessageBox.Show("Vui lòng chọn một sản phẩm trong danh sách để chỉnh sửa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn một sản phẩm trong danh sách lưới để chỉnh sửa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (!ValidateProductInputs(out string name, out string desc, out string status, out double importPrice, out double salesPrice, out int stock, out int catId))
-                return;
+            // 1. Kiểm duyệt tương tự nút Lưu
+            string name = "";
+            string desc = "";
+            string status = "";
+            double importPrice = 0;
+            double salesPrice = 0;
+            int stock = 0;
+            int catId = 0;
 
+            if (ValidateProductInputs(out name, out desc, out status, out importPrice, out salesPrice, out stock, out catId) == false)
+            {
+                return;
+            }
+
+            // 2. Viết câu SQL Update
             int prodId = Convert.ToInt32(txtMaSanPham.Text);
             string sqlUpdate = $@"UPDATE SanPham 
                                   SET TenSanPham = N'{name}', 
@@ -370,7 +550,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             MessageBox.Show("Cập nhật thông tin sản phẩm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             ToggleInputs(false);
-            LoadProductsGrid();
+            LoadProductsGrid(null);
 
             btnCancel.Enabled = false;
             btnAdd.Enabled = true;
@@ -380,10 +560,12 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtMaSanPham.Enabled = false;
         }
 
-        // 5.2.11. Sự kiện click nút Xóa sản phẩm
+        /// <summary>
+        /// Nút Xóa (Xóa Mềm): Chuyển trạng thái sang Ngưng bán.
+        /// </summary>
         private void btnDelete_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtMaSanPham.Text) || txtMaSanPham.Text == "Tự động sinh")
+            if (string.IsNullOrEmpty(txtMaSanPham.Text) == true || txtMaSanPham.Text == "Tự động sinh")
             {
                 MessageBox.Show("Vui lòng chọn một sản phẩm trong danh sách để xóa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
@@ -392,7 +574,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             int prodId = Convert.ToInt32(txtMaSanPham.Text);
             string name = txtTenSanPham.Text;
 
-            var confirmResult = MessageBox.Show($"Bạn có chắc chắn muốn xóa (chuyển trạng thái sang Ngưng bán) sản phẩm '{name}' không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            // Hỏi ý kiến lần cuối
+            DialogResult confirmResult = MessageBox.Show($"Bạn có chắc chắn muốn xóa (chuyển trạng thái sang Ngưng bán) sản phẩm '{name}' không?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirmResult == DialogResult.Yes)
             {
                 string sql = $"UPDATE SanPham SET TrangThai = N'Ngưng bán' WHERE MaSanPham = {prodId}";
@@ -400,7 +583,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
                 MessageBox.Show("Chuyển trạng thái sản phẩm thành Ngưng bán thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 
-                LoadProductsGrid();
+                LoadProductsGrid(null);
                 ClearInputs();
                 ToggleInputs(false);
 
@@ -411,11 +594,13 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
         }
 
-        // 5.2.12. Sự kiện nút Làm mới (Tải lại bảng)
+        /// <summary>
+        /// Nút Làm mới (Tải lại).
+        /// </summary>
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             ClearInputs();
-            LoadProductsGrid();
+            LoadProductsGrid(null);
             ToggleInputs(false);
             
             btnCancel.Enabled = false;
@@ -426,7 +611,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtMaSanPham.Enabled = false;
         }
 
-        // 5.2.13. Sự kiện click nút Bỏ qua thay đổi
+        /// <summary>
+        /// Nút Bỏ qua thao tác Thêm/Sửa đang làm dở dang.
+        /// </summary>
         private void btnCancel_Click(object sender, EventArgs e)
         {
             ClearInputs();
@@ -440,76 +627,69 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtMaSanPham.Enabled = false;
         }
 
-        // 5.2.14. Sự kiện click nút Lưu thay đổi
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-            if (!ValidateProductInputs(out string name, out string desc, out string status, out double importPrice, out double salesPrice, out int stock, out int catId))
-                return;
-
-            string sqlInsert = $@"INSERT INTO SanPham (TenSanPham, MaDanhMuc, GiaNhap, GiaBan, SoLuongTon, MoTa, Anh, TrangThai, NgayTao) 
-                                  VALUES (N'{name}', {catId}, {importPrice}, {salesPrice}, {stock}, N'{desc}', N'{currentImagePath}', N'{status}', GETDATE())";
-            DbContext.RunSql(sqlInsert);
-
-            MessageBox.Show("Thêm mới sản phẩm thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-            ToggleInputs(false);
-            LoadProductsGrid();
-
-            btnCancel.Enabled = false;
-            btnAdd.Enabled = true;
-            btnDelete.Enabled = false;
-            btnEdit.Enabled = false;
-            btnSave.Enabled = false;
-            txtMaSanPham.Enabled = false;
-        }
-
-        // 5.2.15. Sự kiện nút Tìm kiếm linh động nâng cao theo nhiều điều kiện
+        /// <summary>
+        /// Nút Tìm Kiếm (2 Giai đoạn).
+        /// </summary>
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            // Lần 1: Kích hoạt chế độ tìm kiếm
+            // Lần 1: Kích hoạt chế độ điền thông tin tìm kiếm
             if (txtMaSanPham.Enabled == false)
             {
                 ClearInputs();
                 ToggleInputs(true);
-                txtMaSanPham.Enabled = true; // Mở luôn mã SP để có thể tìm theo mã
+                txtMaSanPham.Enabled = true; // Mở luôn mã SP để có thể tìm theo mã nếu thích
 
-                // Tránh mặc định lọc theo trạng thái "Đang bán" và Giá/Tồn = 0
+                // Xóa các số 0 mặc định để người dùng đỡ bị tìm nhầm
                 txtGiaNhap.Text = "";
                 txtGiaBan.Text = "";
                 txtSoLuongTon.Text = "";
                 cboTrangThai.SelectedIndex = -1;
 
+                // Khóa bảo vệ các nút
                 btnCancel.Enabled = false;
                 btnAdd.Enabled = false;
                 btnEdit.Enabled = false;
                 btnDelete.Enabled = false;
                 btnSave.Enabled = false;
 
-                MessageBox.Show("Chế độ tìm kiếm đã bật! Vui lòng nhập thông tin cần tìm kiếm vào các ô dữ liệu rồi ấn Tìm kiếm lần nữa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Chế độ tìm kiếm đã BẬT!\nVui lòng nhập thông tin (Tên SP, Giá, Danh mục...) vào các ô trống rồi ấn nút Tìm kiếm lần nữa.", "Thông báo Hướng dẫn", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 txtMaSanPham.Focus();
                 return;
             }
 
-            // Lần 2: Bắt đầu tìm kiếm
+            // Lần 2: Ráp nối chuỗi SQL dựa trên các ô người dùng có nhập
             string idTerm = txtMaSanPham.Text.Trim();
             string nameTerm = txtTenSanPham.Text.Trim();
-            int selectedCatId = cboDanhMuc.SelectedValue is int id ? id : -1;
+            
+            int selectedCatId = -1;
+            if (cboDanhMuc.SelectedValue != null)
+            {
+                if (int.TryParse(cboDanhMuc.SelectedValue.ToString(), out selectedCatId) == false)
+                {
+                    selectedCatId = -1;
+                }
+            }
+
             string statusTerm = cboTrangThai.Text;
 
-            // Cho phép tìm nâng cao: các sản phẩm có giá <= limit nhập và tồn <= limit nhập
-            double.TryParse(txtGiaBan.Text, out double priceLimit);
-            int.TryParse(txtSoLuongTon.Text, out int stockLimit);
+            // Tìm nâng cao: Limit (Lấy các sản phẩm có giá nhỏ hơn hoặc bằng giá nhập vào)
+            double priceLimit = 0;
+            double.TryParse(txtGiaBan.Text, out priceLimit);
 
+            int stockLimit = 0;
+            int.TryParse(txtSoLuongTon.Text, out stockLimit);
+
+            // Bắt đầu chuỗi gốc
             string sql = @"SELECT s.MaSanPham, s.TenSanPham, s.MaDanhMuc, d.TenDanhMuc, s.GiaNhap, s.GiaBan, s.SoLuongTon, s.MoTa, s.Anh, s.TrangThai, s.NgayTao 
                            FROM SanPham s 
                            LEFT JOIN DanhMuc d ON s.MaDanhMuc = d.MaDanhMuc 
                            WHERE 1=1";
 
-            if (!string.IsNullOrEmpty(idTerm))
+            if (string.IsNullOrEmpty(idTerm) == false)
             {
                 sql += $" AND s.MaSanPham LIKE N'%{idTerm}%'";
             }
-            if (!string.IsNullOrEmpty(nameTerm))
+            if (string.IsNullOrEmpty(nameTerm) == false)
             {
                 sql += $" AND (s.TenSanPham LIKE N'%{nameTerm}%' OR s.MoTa LIKE N'%{nameTerm}%')";
             }
@@ -517,7 +697,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             {
                 sql += $" AND s.MaDanhMuc = {selectedCatId}";
             }
-            if (cboTrangThai.SelectedIndex != -1 && !string.IsNullOrEmpty(statusTerm))
+            if (cboTrangThai.SelectedIndex != -1 && string.IsNullOrEmpty(statusTerm) == false)
             {
                 sql += $" AND s.TrangThai = N'{statusTerm}'";
             }
@@ -532,6 +712,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
             sql += " ORDER BY s.NgayTao DESC";
 
+            // Truy vấn và nạp lên lưới
             DataTable tblSearch = DbContext.GetDataToTable(sql);
             LoadProductsGrid(tblSearch);
 
@@ -541,29 +722,39 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
             else
             {
-                MessageBox.Show("Không tìm thấy sản phẩm nào khớp với các tiêu chí tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Không tìm thấy sản phẩm nào khớp với thông tin đã nhập!", "Thông báo rỗng", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
-        // 5.2.16. Sự kiện chọn ảnh đại diện sản phẩm từ máy tính
+        /// <summary>
+        /// Nút tải ảnh đại diện từ hệ thống Windows (OpenFileDialog).
+        /// </summary>
         private void btnChonAnh_Click(object sender, EventArgs e)
         {
+            // Sử dụng khối using để đảm bảo hộp thoại tự động tắt và trả bộ nhớ khi xong
             using (OpenFileDialog ofd = new OpenFileDialog())
             {
+                // Chỉ cho phép chọn file ảnh
                 ofd.Filter = "Image Files(*.jpg; *.jpeg; *.gif; *.bmp; *.png)|*.jpg; *.jpeg; *.gif; *.bmp; *.png";
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
                     try
                     {
                         currentImagePath = ofd.FileName;
-                        LoadProductImage(currentImagePath);
+                        LoadProductImage(currentImagePath); // Gọi hàm tải ảnh an toàn bằng byte đã viết ở trên
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show("Không thể tải tập tin ảnh này: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("Hệ thống không thể tải tập tin ảnh này.\nChi tiết lỗi: " + ex.Message, "Lỗi file", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
         }
+
+        #endregion
+
+        #region 5. CÁC SỰ KIỆN TRỐNG (EMPTY HANDLERS)
+
+        #endregion
     }
 }

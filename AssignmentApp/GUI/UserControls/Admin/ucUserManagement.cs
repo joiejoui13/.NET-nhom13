@@ -1,60 +1,72 @@
 using System;
-using System.Data;
+using System.Data; // Thêm thư viện này để thao tác với đối tượng DataTable
 using System.Windows.Forms;
-using AssignmentApp.DAL.Core;
+using AssignmentApp.DAL.Core; // Để gọi class DbContext xử lý dữ liệu với CSDL
 
 namespace AssignmentApp.GUI.UserControls.Admin
 {
     public partial class ucUserManagement : UserControl
     {
+        #region 1. KHỞI TẠO VÀ TẢI FORM (INITIALIZATION & LOAD)
+
+        /// <summary>
+        /// Hàm khởi tạo mặc định của UserControl.
+        /// Chạy đầu tiên khi khởi tạo đối tượng, dùng để vẽ giao diện và thiết lập các cấu hình tĩnh.
+        /// </summary>
         public ucUserManagement()
         {
             InitializeComponent();
 
-            // Extracted from Designer
+            // CẤU HÌNH COMBOBOX: Danh sách tùy chọn Vai trò và Trạng thái.
+            // (Đã được bóc tách từ file Designer để quản lý logic tập trung tại file .cs)
             cboVaiTro.Items.AddRange(new object[] { "ADMIN", "SALES", "WAREHOUSE" });
             cboTrangThai.Items.AddRange(new object[] { "Hoạt động", "Tạm khóa", "Nghỉ việc" });
         }
 
-        // 5.2.2. Viết thủ tục Form_Load của ucUserManagement
+        /// <summary>
+        /// Sự kiện Load: Kích hoạt khi UserControl lần đầu được nạp lên giao diện phần mềm.
+        /// Chứa các logic kết nối CSDL, tải dữ liệu lên lưới và thiết lập trạng thái khởi điểm của các nút bấm.
+        /// </summary>
         private void ucUserManagement_Load(object sender, EventArgs e)
         {
+            // 1. Kết nối CSDL trước khi thao tác
             DbContext.Ketnoi();
+
+            // 2. Tải toàn bộ dữ liệu danh sách người dùng lên DataGridView
             Load_DataGridView();
             
+            // 3. Thiết lập giao diện ban đầu (Trạng thái nghỉ)
             ResetValues();
-            txtMaNguoiDung.Enabled = false; // Mã tự sinh nên khóa lại
-            ToggleInputs(false);
+            txtMaNguoiDung.Enabled = false; // Mã tự sinh từ DB nên không cho người dùng tự gõ
+            ToggleInputs(false);            // Khóa toàn bộ các ô nhập liệu vì chưa vào chế độ Thêm/Sửa
             
-            btnAdd.Enabled = true;
-            btnEdit.Enabled = false;
-            btnDelete.Enabled = false;
-            btnSave.Enabled = false;
-            btnCancel.Enabled = false;
+            // 4. Thiết lập trạng thái các nút chức năng ban đầu
+            btnAdd.Enabled = true;          // Bật nút Thêm mới
+            btnEdit.Enabled = false;        // Tắt Sửa (Vì chưa chọn dòng nào)
+            btnDelete.Enabled = false;      // Tắt Xóa
+            btnSave.Enabled = false;        // Tắt Lưu
+            btnCancel.Enabled = false;      // Tắt Hủy
         }
 
-        private void ToggleInputs(bool isEnabled)
-        {
-            txtTenNguoiDung.Enabled = isEnabled;
-            txtSoDienThoai.Enabled = isEnabled;
-            txtEmail.Enabled = isEnabled;
-            txtMatKhau.Enabled = isEnabled;
-            cboVaiTro.Enabled = isEnabled;
-            cboTrangThai.Enabled = isEnabled;
-        }
+        #endregion
 
-        // 5.2.3. Viết thủ tục Load_DataGridView
+        #region 2. CÁC HÀM HỖ TRỢ GIAO DIỆN VÀ DỮ LIỆU (HELPER METHODS)
+
+        /// <summary>
+        /// Truy vấn dữ liệu từ bảng NguoiDung và đổ lên giao diện DataGridView.
+        /// Tại đây chứa toàn bộ cấu hình Binding (ánh xạ cột) để tách biệt với Designer.
+        /// </summary>
         private void Load_DataGridView()
         {
-            // Lấy dữ liệu (Không lấy cột MatKhau để bảo mật trên lưới)
+            // Truy vấn lấy dữ liệu cần thiết (Cố tình không lấy cột MatKhau để bảo mật dữ liệu hiển thị trên lưới)
             string sql = "SELECT MaNguoiDung, TenNguoiDung, SoDienThoai, Email, VaiTro, TrangThai, NgayTao FROM NguoiDung";
             DataTable tblND = DbContext.GetDataToTable(sql);
             
-            // Tắt tính năng tự sinh cột
+            // QUAN TRỌNG: Tắt tính năng tự động đẻ thêm cột từ DataTable (Để không phá vỡ thiết kế cột trên Designer)
             dgvUsers.AutoGenerateColumns = false;
             dgvUsers.DataSource = tblND;
 
-            // Map dữ liệu vào các cột có sẵn trên Designer
+            // ÁNH XẠ DỮ LIỆU (Data Binding): Nối các trường từ DB vào đúng vị trí cột trên lưới
             dgvUsers.Columns[0].DataPropertyName = "MaNguoiDung";
             dgvUsers.Columns[1].DataPropertyName = "TenNguoiDung";
             dgvUsers.Columns[2].DataPropertyName = "SoDienThoai";
@@ -63,7 +75,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dgvUsers.Columns[5].DataPropertyName = "TrangThai";
             dgvUsers.Columns[6].DataPropertyName = "NgayTao";
 
-            // Đặt tên tiêu đề cột cho rõ ràng, dễ nhìn
+            // ĐẶT TIÊU ĐỀ CỘT: Cập nhật nhãn hiển thị cho rõ nghĩa
             dgvUsers.Columns[0].HeaderText = "Mã ND";
             dgvUsers.Columns[1].HeaderText = "Tên Người Dùng";
             dgvUsers.Columns[2].HeaderText = "Số Điện Thoại";
@@ -72,8 +84,8 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dgvUsers.Columns[5].HeaderText = "Trạng Thái";
             dgvUsers.Columns[6].HeaderText = "Ngày Tạo";
 
-            // Định dạng lề và kích thước để không bị mất chữ
-            // Bước quan trọng: Tắt chế độ AutoSize toàn cục để tránh các cột ép nhau
+            // CĂN CHỈNH CHIỀU RỘNG VÀ HIỂN THỊ CỘT
+            // Bước quan trọng: Tắt chế độ AutoSize toàn cục để tránh các cột tự ép nhau quá nhỏ
             dgvUsers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
             dgvUsers.Columns[0].Width = 80;
@@ -88,7 +100,7 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dgvUsers.Columns[2].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             
             dgvUsers.Columns[3].MinimumWidth = 150;
-            dgvUsers.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; // Email giãn tự động
+            dgvUsers.Columns[3].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; // Email giãn tự động lấp khoảng trống
             
             dgvUsers.Columns[4].Width = 130;
             dgvUsers.Columns[4].MinimumWidth = 130;
@@ -102,18 +114,22 @@ namespace AssignmentApp.GUI.UserControls.Admin
             dgvUsers.Columns[6].MinimumWidth = 180;
             dgvUsers.Columns[6].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-            // Định dạng Header và Dòng
-            dgvUsers.RowTemplate.Height = 40;
+            // ĐỊNH DẠNG CHUNG CỦA LƯỚI
+            dgvUsers.RowTemplate.Height = 40; // Chiều cao mỗi dòng dữ liệu
             dgvUsers.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F);
             dgvUsers.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             dgvUsers.ColumnHeadersHeight = 40;
             dgvUsers.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False;
 
-            dgvUsers.AllowUserToAddRows = false;
-            dgvUsers.EditMode = DataGridViewEditMode.EditProgrammatically;
+            // CHẾ ĐỘ BẢO VỆ LƯỚI
+            dgvUsers.AllowUserToAddRows = false; // Không cho thêm trực tiếp ở dòng cuối cùng của lưới
+            dgvUsers.EditMode = DataGridViewEditMode.EditProgrammatically; // Chỉ cho phép cập nhật thông qua code/Form, cấm gõ trực tiếp
         }
 
-        // 5.2.4. Viết thủ tục ResetValues
+        /// <summary>
+        /// Đưa toàn bộ các ô nhập liệu về trạng thái trống hoặc giá trị mặc định.
+        /// Dùng khi Thêm mới hoặc khi Hủy thao tác.
+        /// </summary>
         private void ResetValues()
         {
             txtMaNguoiDung.Text = "";
@@ -121,23 +137,70 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtSoDienThoai.Text = "";
             txtEmail.Text = "";
             txtMatKhau.Text = "";
-            cboVaiTro.SelectedIndex = -1;
+            cboVaiTro.SelectedIndex = -1; // Reset ComboBox về trạng thái chưa chọn
             cboTrangThai.SelectedIndex = -1;
         }
 
-        // 5.2.5. Viết thủ tục DataGridView_Click
+        /// <summary>
+        /// Bật/Tắt khả năng chỉnh sửa của các ô nhập liệu trên form.
+        /// </summary>
+        /// <param name="isEnabled">true: Cho phép nhập/chỉnh sửa, false: Khóa lại (Read-only mờ)</param>
+        private void ToggleInputs(bool isEnabled)
+        {
+            txtTenNguoiDung.Enabled = isEnabled;
+            txtSoDienThoai.Enabled = isEnabled;
+            txtEmail.Enabled = isEnabled;
+            txtMatKhau.Enabled = isEnabled;
+            cboVaiTro.Enabled = isEnabled;
+            cboTrangThai.Enabled = isEnabled;
+        }
+
+        /// <summary>
+        /// Hàm kiểm tra tính hợp lệ của dữ liệu đầu vào (Validation).
+        /// Hàm này giúp tập trung logic kiểm duyệt vào một nơi, tránh lặp lại code ở cả nút Thêm và Sửa.
+        /// </summary>
+        private bool ValidateUserInputs(bool isAddingNew)
+        {
+            // Kiểm tra Tên người dùng (Bắt buộc)
+            if (txtTenNguoiDung.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Vui lòng nhập tên người dùng", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtTenNguoiDung.Focus();
+                return false;
+            }
+
+            // Kiểm tra Mật khẩu (Bắt buộc khi Thêm mới. Khi Sửa thì có thể để trống nếu không muốn đổi pass)
+            if (isAddingNew && txtMatKhau.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Vui lòng thiết lập mật khẩu ban đầu", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtMatKhau.Focus();
+                return false;
+            }
+
+            return true; // Dữ liệu hợp lệ
+        }
+
+        #endregion
+
+        #region 3. CÁC SỰ KIỆN TƯƠNG TÁC GIAO DIỆN (EVENTS)
+
+        /// <summary>
+        /// Sự kiện Click vào một ô bất kỳ trong lưới danh sách.
+        /// Dùng để đồng bộ dữ liệu từ dòng được chọn lên các TextBox phía trên (Binding ngược).
+        /// </summary>
         private void dgvUsers_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            // Kiểm tra nếu click hợp lệ (không phải click vào tiêu đề cột rowIndex = -1)
             if (e.RowIndex >= 0)
             {
-                // Thoát chế độ tìm kiếm nếu đang bật
+                // THOÁT CHẾ ĐỘ TÌM KIẾM (Nếu Form đang ở trạng thái Tìm kiếm)
                 if (txtMaNguoiDung.Enabled == true)
                 {
                     txtMaNguoiDung.Enabled = false;
                     btnAdd.Enabled = true;
                 }
 
-                // Đổ dữ liệu lên TextBox dựa vào số thứ tự cột (0 đến 6)
+                // ĐẨY DỮ LIỆU TỪ DÒNG ĐƯỢC CHỌN LÊN TEXTBOX DỰA VÀO VỊ TRÍ CỘT
                 txtMaNguoiDung.Text = dgvUsers.Rows[e.RowIndex].Cells[0].Value.ToString();
                 txtTenNguoiDung.Text = dgvUsers.Rows[e.RowIndex].Cells[1].Value.ToString();
                 txtSoDienThoai.Text = dgvUsers.Rows[e.RowIndex].Cells[2].Value.ToString();
@@ -145,30 +208,38 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 cboVaiTro.Text = dgvUsers.Rows[e.RowIndex].Cells[4].Value.ToString();
                 cboTrangThai.Text = dgvUsers.Rows[e.RowIndex].Cells[5].Value.ToString();
                 
-                // Lưu ý: Không hiển thị mật khẩu ngược lên ô txtMatKhau để bảo mật
+                // Lưu ý cực kỳ quan trọng: Luôn để trống mật khẩu khi hiển thị lại để bảo mật!
                 txtMatKhau.Text = ""; 
                 
-                ToggleInputs(true);
+                // CHUYỂN ĐỔI TRẠNG THÁI GIAO DIỆN
+                ToggleInputs(true);             // Mở khóa các ô để người dùng có thể chỉnh sửa
                 
-                btnEdit.Enabled = true;
-                btnDelete.Enabled = true;
-                btnCancel.Enabled = true;
+                btnEdit.Enabled = true;         // Có dòng được chọn -> Được quyền Sửa
+                btnDelete.Enabled = true;       // Có dòng được chọn -> Được quyền Xóa
+                btnCancel.Enabled = true;       // Bật Hủy để bỏ qua lựa chọn
                 
-                btnAdd.Enabled = false;
-                btnSave.Enabled = false;
+                btnAdd.Enabled = false;         // Đang chọn dòng cũ thì cấm ấn Thêm mới
+                btnSave.Enabled = false;        // Nút Lưu chỉ dành cho tính năng Thêm mới
             }
         }
 
-        // 5.2.6. Viết thủ tục btnThem_Click (Nút Thêm mới)
+        #endregion
+
+        #region 4. CÁC HÀM XỬ LÝ NÚT BẤM (BUTTON CLICK HANDLERS)
+
+        /// <summary>
+        /// Nút Thêm: Đưa Form vào chế độ sẵn sàng nhập liệu người dùng mới.
+        /// </summary>
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            ResetValues();
+            ResetValues(); // Xóa sạch rác còn sót trên form
             
             txtMaNguoiDung.Enabled = false; 
-            txtMaNguoiDung.Text = "Tự động sinh";
+            txtMaNguoiDung.Text = "Tự động sinh"; // Thông báo mã sẽ do DB tự cấp
             
-            ToggleInputs(true);
+            ToggleInputs(true); // Mở khóa nhập liệu
             
+            // Chuyển nút bấm sang trạng thái "Đang chờ Lưu"
             btnSave.Enabled = true;
             btnCancel.Enabled = true;
             
@@ -176,37 +247,35 @@ namespace AssignmentApp.GUI.UserControls.Admin
             btnEdit.Enabled = false;
             btnDelete.Enabled = false;
 
-            txtTenNguoiDung.Focus();
+            txtTenNguoiDung.Focus(); // Đưa con trỏ chuột vào ô Tên đầu tiên
         }
 
-        // 5.2.7. Viết thủ tục btnLuu_Click (Nút Lưu)
+        /// <summary>
+        /// Nút Lưu: Thực thi quá trình đẩy dữ liệu mới (Insert) vào Database.
+        /// </summary>
         private void btnSave_Click(object sender, EventArgs e)
         {
-            if (txtTenNguoiDung.Text.Trim().Length == 0)
+            // 1. Kiểm tra tính hợp lệ của dữ liệu (truyền true vì đang ở chế độ Thêm mới)
+            if (ValidateUserInputs(true) == false)
             {
-                MessageBox.Show("Vui lòng nhập tên người dùng", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTenNguoiDung.Focus();
-                return;
-            }
-            if (txtMatKhau.Text.Trim().Length == 0)
-            {
-                MessageBox.Show("Vui lòng thiết lập mật khẩu ban đầu", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtMatKhau.Focus();
-                return;
+                return; // Nếu dữ liệu sai, ngắt hàm luôn
             }
 
+            // 2. Tạo câu lệnh SQL Insert
             string sql = $@"INSERT INTO NguoiDung(TenNguoiDung, SoDienThoai, Email, MatKhau, VaiTro, TrangThai, NgayTao) 
                             VALUES(N'{txtTenNguoiDung.Text}', '{txtSoDienThoai.Text}', '{txtEmail.Text}', 
                                    '{txtMatKhau.Text}', N'{cboVaiTro.Text}', N'{cboTrangThai.Text}', GETDATE())";
                   
+            // 3. Thực thi lưu vào CSDL
             DbContext.RunSql(sql);
-            
             MessageBox.Show("Thêm người dùng mới thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             
+            // 4. Cập nhật lại giao diện và khóa form
             Load_DataGridView();
             ResetValues();
             ToggleInputs(false);
             
+            // 5. Trả nút bấm về mặc định
             btnAdd.Enabled = true;
             btnDelete.Enabled = false;
             btnEdit.Enabled = false;
@@ -215,21 +284,25 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtMaNguoiDung.Enabled = false;
         }
 
-        // 5.2.8. Viết thủ tục btnSua_Click (Nút Sửa)
+        /// <summary>
+        /// Nút Sửa: Thực thi quá trình cập nhật (Update) dữ liệu của người dùng đang chọn.
+        /// </summary>
         private void btnEdit_Click(object sender, EventArgs e)
         {
+            // 1. Kiểm tra xem người dùng đã chọn người nào trên lưới chưa
             if (dgvUsers.Rows.Count == 0 || txtMaNguoiDung.Text == "" || txtMaNguoiDung.Text == "Tự động sinh")
             {
                 MessageBox.Show("Bạn chưa chọn bản ghi nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            if (txtTenNguoiDung.Text.Trim().Length == 0)
+
+            // 2. Kiểm tra tính hợp lệ (truyền false vì đang ở chế độ Sửa, không bắt buộc nhập mật khẩu mới)
+            if (ValidateUserInputs(false) == false)
             {
-                MessageBox.Show("Không được để trống tên người dùng", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtTenNguoiDung.Focus();
-                return;
+                return; 
             }
 
+            // 3. Khởi tạo câu truy vấn Update cơ bản
             string sql = $@"UPDATE NguoiDung SET 
                             TenNguoiDung = N'{txtTenNguoiDung.Text}', 
                             SoDienThoai = '{txtSoDienThoai.Text}', 
@@ -237,17 +310,20 @@ namespace AssignmentApp.GUI.UserControls.Admin
                             VaiTro = N'{cboVaiTro.Text}', 
                             TrangThai = N'{cboTrangThai.Text}'";
                             
+            // 4. Kiểm tra riêng Mật khẩu: Nếu người dùng có gõ pass mới thì mới Update, không thì giữ nguyên pass cũ trong DB
             if (txtMatKhau.Text.Trim() != "")
             {
                 sql += $", MatKhau = '{txtMatKhau.Text}'";
             }
             
+            // 5. Thêm điều kiện khóa chính (Cực kỳ quan trọng để không update nhầm cả bảng)
             sql += $" WHERE MaNguoiDung = {txtMaNguoiDung.Text}";
 
+            // 6. Thực thi
             DbContext.RunSql(sql);
-            
             MessageBox.Show("Cập nhật thông tin người dùng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             
+            // 7. Cập nhật giao diện
             Load_DataGridView();
             ResetValues();
             ToggleInputs(false);
@@ -259,17 +335,22 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtMaNguoiDung.Enabled = false;
         }
 
-        // 5.2.9. Viết thủ tục btnXoa_Click (Nút Xóa)
+        /// <summary>
+        /// Nút Xóa: Thực thi quy trình Xóa Mềm (Soft Delete) bằng cách khóa tài khoản thay vì xóa mất khỏi DB.
+        /// </summary>
         private void btnDelete_Click(object sender, EventArgs e)
         {
+            // 1. Đảm bảo đã chọn đúng bản ghi
             if (dgvUsers.Rows.Count == 0 || txtMaNguoiDung.Text == "" || txtMaNguoiDung.Text == "Tự động sinh")
             {
                 MessageBox.Show("Bạn chưa chọn bản ghi nào!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
+            // 2. Hiện hộp thoại cảnh báo chống bấm nhầm
             if (MessageBox.Show("Bạn có chắc chắn muốn khóa người dùng này?", "Cảnh báo", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
+                // Update trạng thái thành 'Khóa'
                 string sql = $"UPDATE NguoiDung SET TrangThai = N'Khóa' WHERE MaNguoiDung = {txtMaNguoiDung.Text}";
                 
                 DbContext.RunSql(sql);
@@ -284,7 +365,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
             }
         }
 
-        // 5.2.10. Viết thủ tục btnBoqua_Click (Nút Bỏ qua)
+        /// <summary>
+        /// Nút Hủy / Bỏ qua: Thoát khỏi trạng thái Thêm/Sửa đang dở dang và đưa Form về trạng thái nghỉ.
+        /// </summary>
         private void btnCancel_Click(object sender, EventArgs e)
         {
             ResetValues();
@@ -298,15 +381,17 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtMaNguoiDung.Enabled = false;
         }
 
-        // 5.2.11. Viết thủ tục btnTimkiem_Click (Nút Tìm kiếm)
+        /// <summary>
+        /// Nút Tìm Kiếm: Kích hoạt chế độ tìm kiếm hoặc thực thi tìm kiếm theo các ô đã nhập.
+        /// </summary>
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            // Lần 1: Kích hoạt chế độ tìm kiếm
+            // Lần 1 (PHASE 1): Kích hoạt chế độ điền thông tin tìm kiếm
             if (txtMaNguoiDung.Enabled == false)
             {
                 ResetValues();
                 ToggleInputs(true);
-                txtMaNguoiDung.Enabled = true;
+                txtMaNguoiDung.Enabled = true; // Mở khóa ô mã để có thể tìm bằng ID
 
                 btnCancel.Enabled = false;
                 btnAdd.Enabled = false;
@@ -314,12 +399,12 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 btnDelete.Enabled = false;
                 btnSave.Enabled = false;
 
-                MessageBox.Show("Chế độ tìm kiếm đã bật! Vui lòng nhập thông tin cần tìm kiếm vào các ô dữ liệu rồi ấn Tìm kiếm lần nữa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Chế độ tìm kiếm đã bật!\nVui lòng nhập thông tin cần tìm kiếm vào các ô dữ liệu rồi ấn Tìm kiếm lần nữa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 txtMaNguoiDung.Focus();
                 return;
             }
 
-            // Lần 2: Bắt đầu tìm kiếm
+            // Lần 2 (PHASE 2): Thực hiện tìm kiếm và đổ dữ liệu
             string idTerm = txtMaNguoiDung.Text.Trim();
             string nameTerm = txtTenNguoiDung.Text.Trim();
             string phoneTerm = txtSoDienThoai.Text.Trim();
@@ -327,29 +412,32 @@ namespace AssignmentApp.GUI.UserControls.Admin
             string roleTerm = cboVaiTro.Text;
             string statusTerm = cboTrangThai.Text;
 
+            // Xây dựng câu SQL gốc
             string sql = "SELECT MaNguoiDung, TenNguoiDung, SoDienThoai, Email, VaiTro, TrangThai, NgayTao FROM NguoiDung WHERE 1=1";
             
-            if (!string.IsNullOrEmpty(idTerm))
+            // Nối thêm điều kiện (Sử dụng cấu trúc cơ bản nối chuỗi)
+            if (string.IsNullOrEmpty(idTerm) == false)
                 sql += $" AND MaNguoiDung = {idTerm}";
                 
-            if (!string.IsNullOrEmpty(nameTerm))
+            if (string.IsNullOrEmpty(nameTerm) == false)
                 sql += $" AND TenNguoiDung LIKE N'%{nameTerm}%'";
                 
-            if (!string.IsNullOrEmpty(phoneTerm))
+            if (string.IsNullOrEmpty(phoneTerm) == false)
                 sql += $" AND SoDienThoai LIKE '%{phoneTerm}%'";
                 
-            if (!string.IsNullOrEmpty(emailTerm))
+            if (string.IsNullOrEmpty(emailTerm) == false)
                 sql += $" AND Email LIKE '%{emailTerm}%'";
                 
-            if (!string.IsNullOrEmpty(roleTerm))
+            if (string.IsNullOrEmpty(roleTerm) == false)
                 sql += $" AND VaiTro = N'{roleTerm}'";
                 
-            if (!string.IsNullOrEmpty(statusTerm))
+            if (string.IsNullOrEmpty(statusTerm) == false)
                 sql += $" AND TrangThai = N'{statusTerm}'";
 
             DataTable tblND = DbContext.GetDataToTable(sql);
             dgvUsers.DataSource = tblND;
 
+            // Thông báo kết quả
             if (tblND.Rows.Count > 0)
             {
                 ResetValues();
@@ -364,7 +452,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
             btnCancel.Enabled = false;
         }
 
-        // 5.2.12. Viết thủ tục btnHienthi_Click (Nút Làm mới)
+        /// <summary>
+        /// Nút Làm mới (Refresh): Tải lại toàn bộ dữ liệu gốc và xóa chế độ tìm kiếm.
+        /// </summary>
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             Load_DataGridView();
@@ -379,8 +469,15 @@ namespace AssignmentApp.GUI.UserControls.Admin
             txtMaNguoiDung.Enabled = false;
         }
 
+        #endregion
+
+        #region 5. CÁC SỰ KIỆN TRỐNG (EMPTY HANDLERS)
+
+        // Hàm sự kiện trống lỡ tạo trong Designer
         private void dgvUsers_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
         }
+
+        #endregion
     }
 }

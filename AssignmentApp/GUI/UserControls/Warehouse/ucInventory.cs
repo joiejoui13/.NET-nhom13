@@ -1,76 +1,93 @@
 using System;
-using System.Data;
+using System.Data; // Thư viện để thao tác với bảng dữ liệu
 using System.Windows.Forms;
-using AssignmentApp.DAL.Core; // Để sử dụng DbContext kết nối cơ sở dữ liệu
+using AssignmentApp.DAL.Core; // Thư viện tương tác CSDL
 
 namespace AssignmentApp.GUI.UserControls.Warehouse
 {
     public partial class ucInventory : UserControl
     {
+        #region 1. KHỞI TẠO VÀ TẢI FORM (INITIALIZATION & LOAD)
+
+        /// <summary>
+        /// Hàm khởi tạo UserControl Quản lý Tồn kho.
+        /// Thực thi đầu tiên để vẽ giao diện và cấu hình các danh sách lựa chọn tĩnh.
+        /// </summary>
         public ucInventory()
         {
             InitializeComponent();
 
-            // Extracted from Designer
+            // CẤU HÌNH COMBOBOX: Gắn danh sách thả xuống cứng (Tách từ Designer sang đây để dễ quản lý)
             cboLoaiThayDoi.Items.AddRange(new object[] { "Nhập kho", "Xuất kho bán", "Xuất hủy" });
             cboTrangThai.Items.AddRange(new object[] { "Đang hoạt động", "Đã khóa" });
         }
 
-        // 5.2.2. Viết thủ tục Form_Load của ucInventory
+        /// <summary>
+        /// Sự kiện Load Form: Chạy một lần duy nhất khi màn hình Lịch sử kho hiển thị.
+        /// </summary>
         private void ucInventory_Load(object sender, EventArgs e)
         {
             DbContext.Ketnoi();
 
-            // Đăng ký sự kiện thay đổi dữ liệu để tự động tính toán số lượng tồn kho trước/sau
+            // 1. Đăng ký sự kiện thay đổi dữ liệu để TỰ ĐỘNG TÍNH TOÁN tồn kho
             cboSanPham.SelectedIndexChanged += cboSanPham_SelectedIndexChanged;
             txtSoLuongThayDoi.TextChanged += txtSoLuongThayDoi_TextChanged;
 
-            // Nạp dữ liệu vào ComboBox Sản phẩm
+            // 2. Tải danh sách Sản phẩm động từ CSDL lên ComboBox
             Load_cboSanPham();
             
-            // Nạp dữ liệu lên lưới DataGridView
-            Load_DataGridView();
+            // 3. Tải lịch sử nhập xuất lên DataGridView
+            Load_DataGridView(null);
 
-            // Reset các giá trị trên giao diện nhập liệu
+            // 4. Xóa trắng các ô nhập liệu và thiết lập trạng thái nghỉ (Read-only)
             ResetValues();
 
-            // Khóa các trường mã tự sinh và các trường tự động tính toán
-            txtMaLichSu.Enabled = false;
-            txtSoLuongTruoc.Enabled = false;
-            txtSoLuongSau.Enabled = false;
+            txtMaLichSu.Enabled = false;   // Cột tự tăng Identity
+            txtSoLuongTruoc.Enabled = false; // Tự động tính, không cho tự nhập tay
+            txtSoLuongSau.Enabled = false;   // Tự động tính, không cho tự nhập tay
 
             ToggleInputs(false);
 
-            // Trạng thái nút bấm ban đầu
-            btnAdd.Enabled = true;          // Cho phép Thêm mới
-            btnEdit.Enabled = false;        // Chưa chọn bản ghi nào thì không cho Sửa
-            btnDelete.Enabled = false;      // Chưa chọn bản ghi nào thì không cho Xóa
-            btnSave.Enabled = false;        // Chưa bắt đầu thao tác thì khóa Lưu
-            btnCancel.Enabled = false;      // Chưa bắt đầu thao tác thì khóa Bỏ qua
+            // 5. Cấu hình trạng thái nút bấm ban đầu
+            btnAdd.Enabled = true;          
+            btnEdit.Enabled = false;        
+            btnDelete.Enabled = false;      
+            btnSave.Enabled = false;        
+            btnCancel.Enabled = false;      
         }
 
-        // Tự động tải danh sách sản phẩm từ cơ sở dữ liệu lên ComboBox
+        #endregion
+
+        #region 2. CÁC HÀM HỖ TRỢ GIAO DIỆN VÀ DỮ LIỆU (HELPER METHODS)
+
+        /// <summary>
+        /// Lấy toàn bộ sản phẩm đang có trong CSDL để đổ vào ComboBox cho người dùng chọn.
+        /// </summary>
         private void Load_cboSanPham()
         {
             string sql = "SELECT MaSanPham, TenSanPham FROM SanPham ORDER BY TenSanPham ASC";
             DataTable tblSP = DbContext.GetDataToTable(sql);
             
             cboSanPham.DataSource = tblSP;
-            cboSanPham.ValueMember = "MaSanPham";
-            cboSanPham.DisplayMember = "TenSanPham";
-            cboSanPham.SelectedIndex = -1;
+            cboSanPham.ValueMember = "MaSanPham";   // Mã chìm ẩn phía dưới
+            cboSanPham.DisplayMember = "TenSanPham"; // Tên hiển thị lên mặt ComboBox
+            cboSanPham.SelectedIndex = -1; // Mặc định không chọn cái nào
         }
 
-        // 5.2.3. Viết thủ tục Load_DataGridView
-        private void Load_DataGridView(DataTable customTable = null)
+        /// <summary>
+        /// Kéo dữ liệu Lịch sử Kho từ CSDL và đổ vào lưới hiển thị (DataGridView).
+        /// Hỗ trợ cả 2 chế độ: Nạp toàn bộ hoặc Nạp dữ liệu tìm kiếm (customTable).
+        /// </summary>
+        private void Load_DataGridView(DataTable customTable)
         {
             DataTable tblLS;
             if (customTable != null)
             {
-                tblLS = customTable;
+                tblLS = customTable; // Dùng dữ liệu được truyền vào (khi lọc/tìm kiếm)
             }
             else
             {
+                // Lấy tất cả dữ liệu lịch sử kèm theo Tên sản phẩm từ bảng SanPham
                 string sql = @"SELECT l.MaLichSu, l.MaSanPham, s.TenSanPham, l.ThayDoi, l.SoLuongTruoc, l.SoLuongSau, l.LoaiGiaoDich, l.MaThamChieu, l.TrangThai, l.Thoigian 
                                FROM LichSuNhapKho l 
                                LEFT JOIN SanPham s ON l.MaSanPham = s.MaSanPham
@@ -78,6 +95,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 tblLS = DbContext.GetDataToTable(sql);
             }
 
+            // BINDING DỮ LIỆU: Ánh xạ dữ liệu vào đúng vị trí cột trên giao diện
             if (dgvLichSu.Columns.Contains("colMaLichSu")) dgvLichSu.Columns["colMaLichSu"].DataPropertyName = "MaLichSu";
             if (dgvLichSu.Columns.Contains("colMaSanPham")) dgvLichSu.Columns["colMaSanPham"].DataPropertyName = "MaSanPham";
             if (dgvLichSu.Columns.Contains("colTenSanPham")) dgvLichSu.Columns["colTenSanPham"].DataPropertyName = "TenSanPham";
@@ -89,17 +107,17 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             if (dgvLichSu.Columns.Contains("colTrangThai")) dgvLichSu.Columns["colTrangThai"].DataPropertyName = "TrangThai";
             if (dgvLichSu.Columns.Contains("colNgay")) dgvLichSu.Columns["colNgay"].DataPropertyName = "Thoigian";
 
-            // Tắt tự động tạo cột trên DataGridView
+            // Tắt chế độ lưới tự sinh thêm cột
             dgvLichSu.AutoGenerateColumns = false;
             dgvLichSu.DataSource = tblLS;
 
-            // Định dạng hiển thị thời gian
+            // ĐỊNH DẠNG HIỂN THỊ
             if (dgvLichSu.Columns.Contains("colNgay"))
             {
                 dgvLichSu.Columns["colNgay"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
             }
 
-            // Định dạng lề, WrapMode và kích thước các cột để không bị mất chữ giống ucPromotion
+            // ĐỊNH DẠNG LỀ VÀ KÍCH THƯỚC CỘT (Tắt AutoSize toàn cục để tránh cột ép nhau)
             dgvLichSu.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
 
             if (dgvLichSu.Columns.Contains("colMaLichSu"))
@@ -115,7 +133,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             if (dgvLichSu.Columns.Contains("colTenSanPham"))
             {
                 dgvLichSu.Columns["colTenSanPham"].MinimumWidth = 180;
-                dgvLichSu.Columns["colTenSanPham"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; // Tự động co giãn theo form
+                dgvLichSu.Columns["colTenSanPham"].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill; // Tên SP giãn lấp đầy bảng
             }
             if (dgvLichSu.Columns.Contains("colSoLuongThayDoi"))
             {
@@ -153,16 +171,19 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 dgvLichSu.Columns["colNgay"].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             }
 
-            // Đồng bộ giao diện cao cấp và chuyên nghiệp giống ucPromotion
+            // Giao diện Row & Header
             dgvLichSu.RowTemplate.Height = 40;
             dgvLichSu.DefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F);
             dgvLichSu.ColumnHeadersDefaultCellStyle.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             dgvLichSu.ColumnHeadersHeight = 40; 
-            dgvLichSu.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False; // Tắt tự động xuống dòng ở Header gây mất chữ
+            dgvLichSu.ColumnHeadersDefaultCellStyle.WrapMode = DataGridViewTriState.False; 
             dgvLichSu.AllowUserToAddRows = false;
             dgvLichSu.EditMode = DataGridViewEditMode.EditProgrammatically;
         }
 
+        /// <summary>
+        /// Mở hoặc khóa các ô TextBox và ComboBox.
+        /// </summary>
         private void ToggleInputs(bool isEnabled)
         {
             cboSanPham.Enabled = isEnabled;
@@ -172,7 +193,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             cboTrangThai.Enabled = isEnabled;
         }
 
-        // 5.2.4. Viết thủ tục ResetValues
+        /// <summary>
+        /// Đưa toàn bộ ô nhập liệu về rỗng hoặc trạng thái trống.
+        /// </summary>
         private void ResetValues()
         {
             txtMaLichSu.Text = "";
@@ -187,24 +210,40 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             if (cboTrangThai.Items.Count > 0) cboTrangThai.SelectedIndex = -1;
         }
 
-        // Tự động tính toán số lượng tồn kho trước/sau dựa trên sản phẩm và thay đổi số lượng nhập/xuất
+        /// <summary>
+        /// HÀM TÍNH TOÁN LOGIC NGHIỆP VỤ (Vô cùng quan trọng).
+        /// Lấy Số lượng tồn thực tế của Sản Phẩm từ DB, sau đó cộng/trừ ảo để hiển thị cho người dùng thấy trước Số lượng trước/sau.
+        /// </summary>
         private void UpdateComputedStock()
         {
-            if (cboSanPham.SelectedValue != null && int.TryParse(cboSanPham.SelectedValue.ToString(), out int maSP))
+            // Kiểm tra xem đã chọn Sản phẩm nào chưa
+            if (cboSanPham.SelectedValue != null)
             {
-                string sql = $"SELECT SoLuongTon FROM SanPham WHERE MaSanPham = {maSP}";
-                string currentStockStr = DbContext.GetFieldValues(sql);
-                
-                if (!string.IsNullOrEmpty(currentStockStr))
+                // Ép kiểu an toàn (int.TryParse) lấy mã SP
+                int maSP = 0;
+                if (int.TryParse(cboSanPham.SelectedValue.ToString(), out maSP) == true)
                 {
-                    txtSoLuongTruoc.Text = currentStockStr;
-                    if (int.TryParse(txtSoLuongThayDoi.Text.Trim(), out int change))
+                    // Truy vấn lấy tồn kho hiện tại
+                    string sql = $"SELECT SoLuongTon FROM SanPham WHERE MaSanPham = {maSP}";
+                    string currentStockStr = DbContext.GetFieldValues(sql);
+                    
+                    if (string.IsNullOrEmpty(currentStockStr) == false)
                     {
-                        txtSoLuongSau.Text = (int.Parse(currentStockStr) + change).ToString();
-                    }
-                    else
-                    {
-                        txtSoLuongSau.Text = currentStockStr;
+                        // 1. Gán số lượng trước
+                        txtSoLuongTruoc.Text = currentStockStr;
+                        
+                        // 2. Tính số lượng sau
+                        int change = 0;
+                        if (int.TryParse(txtSoLuongThayDoi.Text.Trim(), out change) == true)
+                        {
+                            int currentStock = int.Parse(currentStockStr);
+                            int computedAfter = currentStock + change;
+                            txtSoLuongSau.Text = computedAfter.ToString();
+                        }
+                        else
+                        {
+                            txtSoLuongSau.Text = currentStockStr; // Không nhập số thay đổi thì trước sau như một
+                        }
                     }
                 }
             }
@@ -215,19 +254,83 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
         }
 
+        /// <summary>
+        /// Hàm tập trung kiểm duyệt thông tin nhập liệu đầu vào. Giúp tối giản code cho nút Lưu/Sửa.
+        /// </summary>
+        private bool ValidateInventoryInputs(out int thayDoi, out int refId)
+        {
+            thayDoi = 0;
+            refId = 0;
+
+            if (cboSanPham.SelectedValue == null || cboSanPham.SelectedIndex == -1)
+            {
+                MessageBox.Show("Bạn phải chọn sản phẩm điều chỉnh!", "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cboSanPham.Focus();
+                return false;
+            }
+
+            if (txtSoLuongThayDoi.Text.Trim().Length == 0)
+            {
+                MessageBox.Show("Bạn phải nhập số lượng thay đổi!", "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtSoLuongThayDoi.Focus();
+                return false;
+            }
+
+            if (int.TryParse(txtSoLuongThayDoi.Text.Trim(), out thayDoi) == false || thayDoi == 0)
+            {
+                MessageBox.Show("Số lượng thay đổi phải là một số nguyên khác 0!", "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtSoLuongThayDoi.Focus();
+                return false;
+            }
+
+            if (cboLoaiThayDoi.SelectedIndex == -1 || string.IsNullOrEmpty(cboLoaiThayDoi.Text) == true)
+            {
+                MessageBox.Show("Bạn phải chọn loại giao dịch thay đổi!", "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cboLoaiThayDoi.Focus();
+                return false;
+            }
+
+            string refIdStr = txtMaThamChieu.Text.Trim();
+            if (refIdStr.Length == 0) refIdStr = "0";
+            if (int.TryParse(refIdStr, out refId) == false)
+            {
+                MessageBox.Show("Mã tham chiếu bắt buộc phải là số nguyên!", "Thông báo lỗi", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                txtMaThamChieu.Focus();
+                return false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region 3. CÁC SỰ KIỆN TƯƠNG TÁC GIAO DIỆN (EVENTS)
+
+        /// <summary>
+        /// Sự kiện kích hoạt khi người dùng vừa đổi lựa chọn sản phẩm trong ComboBox.
+        /// Gây ra việc gọi hàm UpdateComputedStock để tính lại tồn kho trước/sau.
+        /// </summary>
         private void cboSanPham_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateComputedStock();
         }
 
+        /// <summary>
+        /// Sự kiện kích hoạt mỗi khi gõ phím vào ô Số lượng thay đổi.
+        /// Tính toán Real-time (thời gian thực) cho người dùng thấy tồn kho sẽ ra sao.
+        /// </summary>
         private void txtSoLuongThayDoi_TextChanged(object sender, EventArgs e)
         {
             UpdateComputedStock();
         }
 
-        // 5.2.5. Viết thủ tục DataGridView_CellClick
+        /// <summary>
+        /// Sự kiện nhấn chuột vào DataGridView.
+        /// Đồng bộ ngược dữ liệu từ dòng được chọn lên trên các TextBox.
+        /// </summary>
         private void dgvLichSu_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            // Kiểm tra click hợp lệ vào dòng dữ liệu
             if (e.RowIndex >= 0)
             {
                 // Thoát chế độ tìm kiếm nếu đang bật
@@ -239,21 +342,49 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
                 DataGridViewRow row = dgvLichSu.Rows[e.RowIndex];
 
-                txtMaLichSu.Text = row.Cells["colMaLichSu"].Value?.ToString() ?? "";
-                txtMaThamChieu.Text = row.Cells["colMaThamChieu"].Value?.ToString() ?? "";
+                // Gán dữ liệu dùng cấu trúc if-else rất tường minh, không dùng "??"
+                if (row.Cells["colMaLichSu"].Value != null)
+                {
+                    txtMaLichSu.Text = row.Cells["colMaLichSu"].Value.ToString();
+                }
+
+                if (row.Cells["colMaThamChieu"].Value != null)
+                {
+                    txtMaThamChieu.Text = row.Cells["colMaThamChieu"].Value.ToString();
+                }
                 
-                // Xử lý nạp Sản phẩm vào ComboBox
+                // Đồng bộ sản phẩm vào ComboBox
                 if (row.Cells["colMaSanPham"].Value != null)
                 {
                     cboSanPham.SelectedValue = row.Cells["colMaSanPham"].Value;
                 }
                 
-                txtSoLuongThayDoi.Text = row.Cells["colSoLuongThayDoi"].Value?.ToString() ?? "";
-                txtSoLuongTruoc.Text = row.Cells["colSoLuongTruoc"].Value?.ToString() ?? "";
-                txtSoLuongSau.Text = row.Cells["colSoLuongSau"].Value?.ToString() ?? "";
-                cboLoaiThayDoi.Text = row.Cells["colLoai"].Value?.ToString() ?? "";
-                cboTrangThai.Text = row.Cells["colTrangThai"].Value?.ToString() ?? "";
+                if (row.Cells["colSoLuongThayDoi"].Value != null)
+                {
+                    txtSoLuongThayDoi.Text = row.Cells["colSoLuongThayDoi"].Value.ToString();
+                }
 
+                if (row.Cells["colSoLuongTruoc"].Value != null)
+                {
+                    txtSoLuongTruoc.Text = row.Cells["colSoLuongTruoc"].Value.ToString();
+                }
+
+                if (row.Cells["colSoLuongSau"].Value != null)
+                {
+                    txtSoLuongSau.Text = row.Cells["colSoLuongSau"].Value.ToString();
+                }
+
+                if (row.Cells["colLoai"].Value != null)
+                {
+                    cboLoaiThayDoi.Text = row.Cells["colLoai"].Value.ToString();
+                }
+
+                if (row.Cells["colTrangThai"].Value != null)
+                {
+                    cboTrangThai.Text = row.Cells["colTrangThai"].Value.ToString();
+                }
+
+                // Mở giao diện cho phép thao tác Sửa/Xóa
                 ToggleInputs(true);
                 
                 btnEdit.Enabled = true;
@@ -265,7 +396,13 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
         }
 
-        // 5.2.6. Viết thủ tục btnAdd_Click (Nút Thêm mới)
+        #endregion
+
+        #region 4. CÁC HÀM XỬ LÝ NÚT BẤM (BUTTON CLICK HANDLERS)
+
+        /// <summary>
+        /// Nút Thêm mới.
+        /// </summary>
         private void btnAdd_Click(object sender, EventArgs e)
         {
             ResetValues();
@@ -286,77 +423,60 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             cboSanPham.Focus();
         }
 
-        // 5.2.7. Viết thủ tục btnSave_Click (Nút Lưu thay đổi)
+        /// <summary>
+        /// Nút Lưu (INSERT): Thực hiện lưu Lịch sử Điều chỉnh Kho mới, VÀ đồng thời cập nhật Số lượng Tồn vào bảng Sản Phẩm.
+        /// Nghiệp vụ rất khắt khe: Không cho phép tồn kho âm.
+        /// </summary>
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // Kiểm tra dữ liệu đầu vào
-            if (cboSanPham.SelectedValue == null || cboSanPham.SelectedIndex == -1)
+            // 1. Kiểm duyệt đầu vào chung
+            int thayDoi = 0;
+            int refId = 0;
+            if (ValidateInventoryInputs(out thayDoi, out refId) == false)
             {
-                MessageBox.Show("Bạn phải chọn sản phẩm điều chỉnh!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cboSanPham.Focus();
-                return;
+                return; // Có lỗi thì ngừng lưu
             }
 
-            if (txtSoLuongThayDoi.Text.Trim().Length == 0)
-            {
-                MessageBox.Show("Bạn phải nhập số lượng thay đổi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtSoLuongThayDoi.Focus();
-                return;
-            }
-
-            if (!int.TryParse(txtSoLuongThayDoi.Text.Trim(), out int thayDoi) || thayDoi == 0)
-            {
-                MessageBox.Show("Số lượng thay đổi phải là số nguyên khác 0!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtSoLuongThayDoi.Focus();
-                return;
-            }
-
-            if (cboLoaiThayDoi.SelectedIndex == -1 || string.IsNullOrEmpty(cboLoaiThayDoi.Text))
-            {
-                MessageBox.Show("Bạn phải chọn loại giao dịch thay đổi!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                cboLoaiThayDoi.Focus();
-                return;
-            }
-
-            string refIdStr = txtMaThamChieu.Text.Trim();
-            if (refIdStr.Length == 0) refIdStr = "0";
-            if (!int.TryParse(refIdStr, out int refId))
-            {
-                MessageBox.Show("Mã tham chiếu phải là số nguyên!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                txtMaThamChieu.Focus();
-                return;
-            }
-
+            // Gán trạng thái mặc định nếu người dùng để trống
             string trangThai = cboTrangThai.Text;
-            if (string.IsNullOrEmpty(trangThai)) trangThai = "Đang hoạt động";
+            if (string.IsNullOrEmpty(trangThai) == true) 
+            {
+                trangThai = "Đang hoạt động";
+            }
 
-            // Kiểm tra và lấy số lượng tồn hiện tại của sản phẩm
+            // 2. NGHIỆP VỤ TỒN KHO: Lấy tồn hiện tại trong CSDL và tính toán xem Tồn Sau Cùng có bị âm không?
             int maSP = Convert.ToInt32(cboSanPham.SelectedValue);
             string sqlCheck = $"SELECT SoLuongTon FROM SanPham WHERE MaSanPham = {maSP}";
             string currentStockStr = DbContext.GetFieldValues(sqlCheck);
-            int truoc = string.IsNullOrEmpty(currentStockStr) ? 0 : Convert.ToInt32(currentStockStr);
+            
+            int truoc = 0;
+            if (string.IsNullOrEmpty(currentStockStr) == false)
+            {
+                truoc = Convert.ToInt32(currentStockStr);
+            }
             int sau = truoc + thayDoi;
 
+            // NẾU TỒN KHO BỊ ÂM -> Cấm không cho lưu
             if (sau < 0)
             {
-                MessageBox.Show("Tồn kho sau khi điều chỉnh không thể nhỏ hơn 0!", "Lỗi tồn kho âm", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Tồn kho sau khi điều chỉnh không thể nhỏ hơn 0! Vui lòng xem lại số lượng thay đổi.", "Lỗi tồn kho âm", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 txtSoLuongThayDoi.Focus();
                 return;
             }
 
-            // Bước 2: Tạo câu lệnh SQL INSERT lưu lịch sử
+            // 3. TẠO LỊCH SỬ KHO (INSERT)
             string sqlInsert = $@"INSERT INTO LichSuNhapKho (MaSanPham, Thoigian, ThayDoi, SoLuongTruoc, SoLuongSau, LoaiGiaoDich, MaThamChieu, TrangThai) 
-                                 VALUES ({maSP}, GETDATE(), {thayDoi}, {truoc}, {sau}, N'{cboLoaiThayDoi.Text}', {refId}, N'{trangThai}')";
+                                  VALUES ({maSP}, GETDATE(), {thayDoi}, {truoc}, {sau}, N'{cboLoaiThayDoi.Text}', {refId}, N'{trangThai}')";
             DbContext.RunSql(sqlInsert);
 
-            // Bước 3: Cập nhật trực tiếp số tồn mới của sản phẩm trong bảng SanPham
+            // 4. CẬP NHẬT TỒN KHO THỰC TẾ VÀO BẢNG SẢN PHẨM (UPDATE)
             string sqlUpdateStock = $"UPDATE SanPham SET SoLuongTon = {sau} WHERE MaSanPham = {maSP}";
             DbContext.RunSql(sqlUpdateStock);
 
             MessageBox.Show("Thêm bản ghi điều chỉnh và cập nhật tồn kho thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            // Tải lại Grid và đưa các nút về trạng thái mặc định
-            Load_DataGridView();
+            // 5. Kết thúc quy trình, tải lại form
+            Load_DataGridView(null);
             ResetValues();
             ToggleInputs(false);
 
@@ -368,7 +488,11 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtMaLichSu.Enabled = false;
         }
 
-        // 5.2.8. Viết thủ tục btnEdit_Click (Nút Sửa bản ghi)
+        /// <summary>
+        /// Nút Sửa (UPDATE): Cực kỳ phức tạp.
+        /// Quy trình: Rút lại (Revert) thay đổi cũ -> Tính số lượng mới -> Áp dụng lại (Apply).
+        /// Cần phải ngăn ngừa trường hợp Revert làm Tồn kho âm, hoặc Apply mới làm Tồn kho âm.
+        /// </summary>
         private void btnEdit_Click(object sender, EventArgs e)
         {
             if (dgvLichSu.Rows.Count == 0)
@@ -382,31 +506,18 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 return;
             }
 
-            // Kiểm tra đầu vào hợp lệ
-            if (cboSanPham.SelectedValue == null)
+            // 1. Kiểm duyệt đầu vào chung
+            int newThayDoi = 0;
+            int newRefId = 0;
+            if (ValidateInventoryInputs(out newThayDoi, out newRefId) == false)
             {
-                MessageBox.Show("Bạn phải chọn sản phẩm điều chỉnh!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            if (!int.TryParse(txtSoLuongThayDoi.Text.Trim(), out int newThayDoi) || newThayDoi == 0)
-            {
-                MessageBox.Show("Số lượng thay đổi phải là số nguyên khác 0!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-
-            string refIdStr = txtMaThamChieu.Text.Trim();
-            if (refIdStr.Length == 0) refIdStr = "0";
-            if (!int.TryParse(refIdStr, out int newRefId))
-            {
-                MessageBox.Show("Mã tham chiếu phải là số nguyên!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                return; 
             }
 
             int currentMaLichSu = Convert.ToInt32(txtMaLichSu.Text);
             int newMaSP = Convert.ToInt32(cboSanPham.SelectedValue);
 
-            // Bước 1: Lấy thông tin bản ghi cũ trong cơ sở dữ liệu để thực hiện nghiệp vụ hoàn trả số lượng (Revert)
+            // 2. LẤY LỊCH SỬ CŨ TỪ CSDL ĐỂ REVERT
             string sqlGetOld = $"SELECT MaSanPham, ThayDoi, TrangThai FROM LichSuNhapKho WHERE MaLichSu = {currentMaLichSu}";
             DataTable tblOld = DbContext.GetDataToTable(sqlGetOld);
             if (tblOld.Rows.Count == 0)
@@ -415,33 +526,36 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 return;
             }
 
-            string oldTrangThai = tblOld.Rows[0]["TrangThai"]?.ToString() ?? "";
-            if (oldTrangThai == "Đã khóa")
+            // Không cho phép sửa nếu bản ghi đã bị Đã Khóa / Đã hủy
+            string oldTrangThai = tblOld.Rows[0]["TrangThai"].ToString();
+            if (oldTrangThai == "Đã khóa" || oldTrangThai == "Đã hủy")
             {
-                MessageBox.Show("Bản ghi lịch sử này đã bị khóa hệ thống, không thể chỉnh sửa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Bản ghi lịch sử này đã bị chốt (khóa hoặc hủy), không thể chỉnh sửa!", "Bảo vệ hệ thống", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             int oldMaSP = Convert.ToInt32(tblOld.Rows[0]["MaSanPham"]);
             int oldThayDoi = Convert.ToInt32(tblOld.Rows[0]["ThayDoi"]);
 
-            // Bước 2: Tính toán tồn kho giả lập để chống âm tồn kho
-            // 2.1 Lấy tồn kho thực tế hiện tại của sản phẩm cũ
+            // 3. TÍNH TOÁN GIẢ LẬP ĐỂ CHỐNG TỒN KHO ÂM (QUAN TRỌNG)
+            // Lấy tồn hiện tại của sản phẩm cũ
             string sqlStockOld = $"SELECT SoLuongTon FROM SanPham WHERE MaSanPham = {oldMaSP}";
             int currentStockOld = Convert.ToInt32(DbContext.GetFieldValues(sqlStockOld));
+            
+            // Số lượng tồn sau khi RÚT LẠI (Revert) thay đổi cũ
             int stockOldReverted = currentStockOld - oldThayDoi;
 
             if (stockOldReverted < 0)
             {
-                MessageBox.Show("Không thể sửa vì việc thu hồi thay đổi của sản phẩm cũ khiến tồn kho bị âm!", "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không thể sửa! Nếu hủy lệnh cũ thì sản phẩm bị âm tồn kho (có thể đã xuất bán).", "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // 2.2 Lấy tồn kho của sản phẩm mới
-            int currentStockNew;
+            // Số lượng tồn hiện tại của sản phẩm mới (Nếu sửa khác mặt hàng)
+            int currentStockNew = 0;
             if (newMaSP == oldMaSP)
             {
-                currentStockNew = stockOldReverted; // Nếu cùng sản phẩm, tồn kho ban đầu chính là tồn đã hoàn trả
+                currentStockNew = stockOldReverted; // Nếu cùng 1 sản phẩm thì kế thừa luôn
             }
             else
             {
@@ -449,28 +563,30 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 currentStockNew = Convert.ToInt32(DbContext.GetFieldValues(sqlStockNew));
             }
 
+            // Tính tồn mới sau cùng
             int finalStockNew = currentStockNew + newThayDoi;
             if (finalStockNew < 0)
             {
-                MessageBox.Show("Không thể sửa vì số lượng thay đổi mới làm tồn kho sản phẩm mới bị âm!", "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không thể sửa vì thay đổi mới làm tồn kho của sản phẩm bị âm!", "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            // Bước 3: Áp dụng nghiệp vụ hoàn trả & lưu số lượng mới vào DB
-            // 3.1 Hoàn trả số lượng cũ của sản phẩm cũ
+            // 4. ÁP DỤNG NGHIỆP VỤ VÀO DB (KHI ĐÃ VƯỢT QUA CÁC BÀI KIỂM TRA CHỐNG ÂM KHO)
+            
+            // Bước 4.1: Revert cũ
             string sqlRevertOld = $"UPDATE SanPham SET SoLuongTon = SoLuongTon - {oldThayDoi} WHERE MaSanPham = {oldMaSP}";
             DbContext.RunSql(sqlRevertOld);
 
-            // 3.2 Lấy tồn kho thực tế mới nhất (sau khi hoàn trả) để tính số lượng trước/sau chính xác
+            // Bước 4.2: Tính lại thông tin trước/sau một lần nữa cho chính xác chuẩn nhất
             string sqlLatestStock = $"SELECT SoLuongTon FROM SanPham WHERE MaSanPham = {newMaSP}";
             int latestTruoc = Convert.ToInt32(DbContext.GetFieldValues(sqlLatestStock));
             int latestSau = latestTruoc + newThayDoi;
 
-            // 3.3 Cộng số lượng thay đổi mới cho sản phẩm mới
+            // Bước 4.3: Apply mới
             string sqlApplyNew = $"UPDATE SanPham SET SoLuongTon = SoLuongTon + {newThayDoi} WHERE MaSanPham = {newMaSP}";
             DbContext.RunSql(sqlApplyNew);
 
-            // 3.4 Cập nhật thông tin chi tiết điều chỉnh kho
+            // Bước 4.4: Update lịch sử
             string sqlUpdateHistory = $@"UPDATE LichSuNhapKho SET 
                                     MaSanPham = {newMaSP}, 
                                     ThayDoi = {newThayDoi}, 
@@ -484,7 +600,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
             MessageBox.Show("Cập nhật bản ghi điều chỉnh và tồn kho thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            Load_DataGridView();
+            Load_DataGridView(null);
             ResetValues();
             ToggleInputs(false);
 
@@ -495,7 +611,10 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtMaLichSu.Enabled = false;
         }
 
-        // 5.2.9. Viết thủ tục btnDelete_Click (Nút Xóa bản ghi)
+        /// <summary>
+        /// Nút Xóa (DELETE): Cập nhật trạng thái 'Đã hủy' (Xóa mềm).
+        /// Đồng thời sẽ TỰ ĐỘNG THU HỒI lại Số lượng vào bảng Sản Phẩm.
+        /// </summary>
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (dgvLichSu.Rows.Count == 0)
@@ -520,40 +639,41 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 return;
             }
 
-            string oldTrangThai = tblOld.Rows[0]["TrangThai"]?.ToString() ?? "";
-            if (oldTrangThai == "Đã khóa")
+            string oldTrangThai = tblOld.Rows[0]["TrangThai"].ToString();
+            if (oldTrangThai == "Đã khóa" || oldTrangThai == "Đã hủy")
             {
-                MessageBox.Show("Bản ghi lịch sử kho này đã bị khóa hệ thống, không thể xóa bỏ!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Bản ghi này đã bị khóa hệ thống hoặc bị hủy từ trước, không thể tác động!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             int oldMaSP = Convert.ToInt32(tblOld.Rows[0]["MaSanPham"]);
             int oldThayDoi = Convert.ToInt32(tblOld.Rows[0]["ThayDoi"]);
 
-            // Kiểm tra xem nếu thu hồi (revert) thay đổi này có làm tồn kho bị âm không
+            // Tính tồn kho giả lập sau khi thu hồi để tránh làm Tồn Kho bị âm
             string sqlStock = $"SELECT SoLuongTon FROM SanPham WHERE MaSanPham = {oldMaSP}";
             int currentStock = Convert.ToInt32(DbContext.GetFieldValues(sqlStock));
             int stockReverted = currentStock - oldThayDoi;
 
             if (stockReverted < 0)
             {
-                MessageBox.Show("Không thể xóa bản ghi vì việc thu hồi thay đổi của nó làm tồn kho sản phẩm bị âm!", "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không thể xóa bản ghi vì việc thu hồi sẽ làm Tồn kho của sản phẩm rớt xuống dưới 0 (Âm kho)!", "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
-            if (MessageBox.Show("Bạn có chắc chắn muốn hủy bản ghi này? Số lượng tồn kho của sản phẩm sẽ được tự động hoàn trả.", "Xác nhận hủy", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+            // Hỏi xác nhận lần cuối
+            if (MessageBox.Show("Bạn có chắc chắn muốn hủy bản ghi này? Số lượng tồn kho của sản phẩm sẽ được HỆ THỐNG TỰ ĐỘNG THU HỒI.", "Xác nhận hủy", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
             {
-                // Bước 1: Thu hồi số lượng thay đổi trong bảng SanPham
+                // Thu hồi trong bảng SanPham
                 string sqlRevertStock = $"UPDATE SanPham SET SoLuongTon = SoLuongTon - {oldThayDoi} WHERE MaSanPham = {oldMaSP}";
                 DbContext.RunSql(sqlRevertStock);
 
-                // Bước 2: Hủy bản ghi lịch sử kho (Soft delete)
+                // Xóa mềm Lịch sử
                 string sqlDelete = $"UPDATE LichSuNhapKho SET TrangThai = N'Đã hủy' WHERE MaLichSu = {currentMaLichSu}";
                 DbContext.RunSql(sqlDelete);
 
                 MessageBox.Show("Hủy bản ghi điều chỉnh kho và hoàn trả tồn kho thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                Load_DataGridView();
+                Load_DataGridView(null);
                 ResetValues();
                 ToggleInputs(false);
 
@@ -564,11 +684,12 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             }
         }
 
-        // 5.2.10. Viết thủ tục btnCancel_Click (Nút Hủy / Bỏ qua)
+        /// <summary>
+        /// Nút Hủy thao tác nhập liệu.
+        /// </summary>
         private void btnCancel_Click(object sender, EventArgs e)
         {
             ResetValues();
-            
             ToggleInputs(false);
 
             btnCancel.Enabled = false;
@@ -580,15 +701,17 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             txtMaLichSu.Enabled = false;
         }
 
-        // 5.2.11. Viết thủ tục btnSearch_Click (Nút Tìm kiếm)
+        /// <summary>
+        /// Nút Tìm Kiếm (Hoạt động 2 pha).
+        /// </summary>
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            // Lần 1: Kích hoạt chế độ tìm kiếm
+            // PHASE 1: Bật các ô cho phép nhập điều kiện tìm kiếm
             if (txtMaLichSu.Enabled == false)
             {
                 ResetValues();
                 ToggleInputs(true);
-                txtMaLichSu.Enabled = true;
+                txtMaLichSu.Enabled = true; // Cho phép tìm theo ID Lịch Sử
 
                 btnCancel.Enabled = false;
                 btnAdd.Enabled = false;
@@ -596,33 +719,33 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 btnDelete.Enabled = false;
                 btnSave.Enabled = false;
 
-                MessageBox.Show("Chế độ tìm kiếm đã bật! Vui lòng nhập thông tin cần tìm kiếm vào các ô dữ liệu rồi ấn Tìm kiếm lần nữa.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Chế độ tìm kiếm đã bật!\nVui lòng nhập thông tin cần lọc vào các ô trống rồi ấn nút Tìm kiếm lần nữa.", "Thông báo Hướng dẫn", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 txtMaLichSu.Focus();
                 return;
             }
 
-            // Lần 2: Bắt đầu tìm kiếm
+            // PHASE 2: Thực thi truy vấn
             string idTerm = txtMaLichSu.Text.Trim();
             string refTerm = txtMaThamChieu.Text.Trim();
             
             string sql = @"SELECT l.MaLichSu, l.MaSanPham, s.TenSanPham, l.ThayDoi, l.SoLuongTruoc, l.SoLuongSau, l.LoaiGiaoDich, l.MaThamChieu, l.TrangThai, l.Thoigian 
                            FROM LichSuNhapKho l 
                            LEFT JOIN SanPham s ON l.MaSanPham = s.MaSanPham
-                           WHERE 1=1";
+                           WHERE 1=1"; // Công thức 'WHERE 1=1' giúp việc nối chuỗi 'AND ...' phía sau cực kì dễ dàng
 
-            if (!string.IsNullOrEmpty(idTerm))
+            if (string.IsNullOrEmpty(idTerm) == false)
                 sql += $" AND l.MaLichSu = {idTerm}";
 
-            if (!string.IsNullOrEmpty(refTerm))
+            if (string.IsNullOrEmpty(refTerm) == false)
                 sql += $" AND l.MaThamChieu = {refTerm}";
 
             if (cboSanPham.SelectedValue != null && cboSanPham.SelectedIndex != -1)
                 sql += $" AND l.MaSanPham = {cboSanPham.SelectedValue}";
 
-            if (cboLoaiThayDoi.SelectedIndex != -1 && !string.IsNullOrEmpty(cboLoaiThayDoi.Text))
+            if (cboLoaiThayDoi.SelectedIndex != -1 && string.IsNullOrEmpty(cboLoaiThayDoi.Text) == false)
                 sql += $" AND l.LoaiGiaoDich = N'{cboLoaiThayDoi.Text}'";
 
-            if (cboTrangThai.SelectedIndex != -1 && !string.IsNullOrEmpty(cboTrangThai.Text))
+            if (cboTrangThai.SelectedIndex != -1 && string.IsNullOrEmpty(cboTrangThai.Text) == false)
                 sql += $" AND l.TrangThai = N'{cboTrangThai.Text}'";
 
             sql += " ORDER BY l.Thoigian DESC";
@@ -632,27 +755,28 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             if (tblSearch.Rows.Count > 0)
             {
                 ResetValues();
-                MessageBox.Show($"Tìm thấy {tblSearch.Rows.Count} bản ghi thỏa mãn điều kiện!!!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Tìm thấy {tblSearch.Rows.Count} bản ghi thỏa mãn yêu cầu!!!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             else
             {
                 ResetValues();
-                MessageBox.Show("Không tìm thấy bản ghi nào khớp với các tiêu chí tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Không tìm thấy dữ liệu nào khớp với thông tin đã nhập!", "Không có kết quả", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
+            // Gửi dữ liệu tìm được vào DataGridView (Sử dụng tham số customTable)
             Load_DataGridView(tblSearch);
         }
 
-        // 5.2.12. Viết thủ tục btnRefresh_Click (Nút Làm mới)
+        /// <summary>
+        /// Nút Làm mới (Tải lại).
+        /// </summary>
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            // Tải lại toàn bộ lưới dữ liệu gốc
-            Load_DataGridView();
+            // Tải lại dữ liệu rỗng (Không truyền tham số customTable thì nó tự load SQL gốc)
+            Load_DataGridView(null);
             ResetValues();
-
             ToggleInputs(false);
 
-            // Khôi phục trạng thái nút bấm
             btnCancel.Enabled = false;
             btnAdd.Enabled = true;
             btnDelete.Enabled = false;
@@ -661,5 +785,12 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             
             txtMaLichSu.Enabled = false;
         }
+
+        #endregion
+
+        #region 5. CÁC SỰ KIỆN TRỐNG (EMPTY HANDLERS)
+
+        // Nếu bạn lỡ click nhầm ở Designer sinh ra hàm này, không sao cả, để nguyên đây không xóa để chống lỗi Designer.
+        #endregion
     }
 }

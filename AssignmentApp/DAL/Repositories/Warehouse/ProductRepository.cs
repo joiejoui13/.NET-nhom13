@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data;
 using System.Threading.Tasks;
 using AssignmentApp.DAL.Core;
@@ -132,6 +132,42 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
             return await DbContext.Conn.QueryAsync<Product>(sql, parameters);
         }
 
+                public async Task<IEnumerable<Product>> SearchByTextAsync(string keyword, string catIdText, string catNameText, string status)
+        {
+            if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
+
+            string sql = @"SELECT s.MaSanPham, s.TenSanPham, s.MaDanhMuc, d.TenDanhMuc, s.GiaNhap, s.GiaBan, 
+                                  s.SoLuongTon, s.MoTa, s.Anh, s.TrangThai, s.NgayTao, s.NgayCapNhat 
+                           FROM SanPham s 
+                           LEFT JOIN DanhMuc d ON s.MaDanhMuc = d.MaDanhMuc 
+                           WHERE 1=1";
+            var parameters = new Dapper.DynamicParameters();
+
+            if (!string.IsNullOrEmpty(keyword))
+            {
+                sql += " AND (CAST(s.MaSanPham AS VARCHAR) LIKE @Keyword OR s.TenSanPham LIKE @Keyword)";
+                parameters.Add("Keyword", $"%{keyword}%");
+            }
+            if (!string.IsNullOrEmpty(catIdText))
+            {
+                sql += " AND CAST(s.MaDanhMuc AS VARCHAR) LIKE @CatIdText";
+                parameters.Add("CatIdText", $"%{catIdText}%");
+            }
+            if (!string.IsNullOrEmpty(catNameText))
+            {
+                sql += " AND d.TenDanhMuc LIKE @CatNameText";
+                parameters.Add("CatNameText", $"%{catNameText}%");
+            }
+            if (!string.IsNullOrEmpty(status))
+            {
+                sql += " AND s.TrangThai = @Status";
+                parameters.Add("Status", status);
+            }
+            
+            sql += " ORDER BY s.NgayTao DESC";
+            return await DbContext.Conn.QueryAsync<Product>(sql, parameters);
+        }
+
         public async Task<DataTable> GetCategoriesForComboBoxAsync()
         {
             return await Task.Run(() => 
@@ -142,4 +178,5 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
         }
     }
 }
+
 

@@ -767,10 +767,10 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             tabProductDetail.BackColor = Color.White;
             tabProductDetail.Controls.Add(pnlProductDetailCard);
-            tabProductDetail.Location = new Point(4, 24);
+            tabProductDetail.Location = new Point(4, 28);
             tabProductDetail.Name = "tabProductDetail";
             tabProductDetail.Padding = new Padding(10);
-            tabProductDetail.Size = new Size(604, 507);
+            tabProductDetail.Size = new Size(604, 503);
             tabProductDetail.TabIndex = 1;
             tabProductDetail.Text = "Chi tiết sản phẩm";
             // 
@@ -788,7 +788,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             pnlProductDetailCard.Location = new Point(13, 20);
             pnlProductDetailCard.Name = "pnlProductDetailCard";
             pnlProductDetailCard.ShadowDecoration.CustomizableEdges = customizableEdges38;
-            pnlProductDetailCard.Size = new Size(578, 471);
+            pnlProductDetailCard.Size = new Size(578, 467);
             pnlProductDetailCard.TabIndex = 0;
             // 
             // picProductDetail
@@ -827,7 +827,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             lblProductDetailDesc.ForeColor = Color.FromArgb(127, 140, 141);
             lblProductDetailDesc.Location = new Point(240, 20);
             lblProductDetailDesc.Name = "lblProductDetailDesc";
-            lblProductDetailDesc.Size = new Size(323, 439);
+            lblProductDetailDesc.Size = new Size(323, 435);
             lblProductDetailDesc.TabIndex = 2;
             lblProductDetailDesc.Text = "Mã SP: --\nThông tin chi tiết về sản phẩm sẽ được cập nhật ở đây.";
             lblProductDetailDesc.Click += lblProductDetailDesc_Click;

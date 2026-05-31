@@ -78,26 +78,34 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
         private async Task Load_DataGridViewAsync(IEnumerable<InventoryLog> customData = null)
         {
-            var data = customData ?? await _inventoryService.GetAllLogsAsync();
+            try
+            {
+                var data = customData ?? await _inventoryService.GetAllLogsAsync();
+                var dataList = data != null ? new System.Collections.Generic.List<InventoryLog>(data) : new System.Collections.Generic.List<InventoryLog>();
 
-            if (dgvLichSu.Columns.Contains("colMaLichSu")) dgvLichSu.Columns["colMaLichSu"].DataPropertyName = "MaLichSu";
-            if (dgvLichSu.Columns.Contains("colMaSanPham")) dgvLichSu.Columns["colMaSanPham"].DataPropertyName = "MaSanPham";
-            if (dgvLichSu.Columns.Contains("colTenSanPham")) dgvLichSu.Columns["colTenSanPham"].DataPropertyName = "TenSanPham";
-            if (dgvLichSu.Columns.Contains("colSoLuongThayDoi")) dgvLichSu.Columns["colSoLuongThayDoi"].DataPropertyName = "ThayDoi";
-            if (dgvLichSu.Columns.Contains("colSoLuongTruoc")) dgvLichSu.Columns["colSoLuongTruoc"].DataPropertyName = "SoLuongTruoc";
-            if (dgvLichSu.Columns.Contains("colSoLuongSau")) dgvLichSu.Columns["colSoLuongSau"].DataPropertyName = "SoLuongSau";
-            if (dgvLichSu.Columns.Contains("colLoai")) dgvLichSu.Columns["colLoai"].DataPropertyName = "LoaiGiaoDich";
-            if (dgvLichSu.Columns.Contains("colMaThamChieu")) dgvLichSu.Columns["colMaThamChieu"].DataPropertyName = "MaThamChieu";
-            if (dgvLichSu.Columns.Contains("colTrangThai")) dgvLichSu.Columns["colTrangThai"].DataPropertyName = "TrangThai";
-            if (dgvLichSu.Columns.Contains("colNgay")) dgvLichSu.Columns["colNgay"].DataPropertyName = "Thoigian";
+                if (dgvLichSu.Columns.Contains("colMaLichSu")) dgvLichSu.Columns["colMaLichSu"].DataPropertyName = "MaLichSu";
+                if (dgvLichSu.Columns.Contains("colMaSanPham")) dgvLichSu.Columns["colMaSanPham"].DataPropertyName = "MaSanPham";
+                if (dgvLichSu.Columns.Contains("colTenSanPham")) dgvLichSu.Columns["colTenSanPham"].DataPropertyName = "TenSanPham";
+                if (dgvLichSu.Columns.Contains("colSoLuongThayDoi")) dgvLichSu.Columns["colSoLuongThayDoi"].DataPropertyName = "ThayDoi";
+                if (dgvLichSu.Columns.Contains("colSoLuongTruoc")) dgvLichSu.Columns["colSoLuongTruoc"].DataPropertyName = "SoLuongTruoc";
+                if (dgvLichSu.Columns.Contains("colSoLuongSau")) dgvLichSu.Columns["colSoLuongSau"].DataPropertyName = "SoLuongSau";
+                if (dgvLichSu.Columns.Contains("colLoai")) dgvLichSu.Columns["colLoai"].DataPropertyName = "LoaiGiaoDich";
+                if (dgvLichSu.Columns.Contains("colMaThamChieu")) dgvLichSu.Columns["colMaThamChieu"].DataPropertyName = "MaThamChieu";
+                if (dgvLichSu.Columns.Contains("colTrangThai")) dgvLichSu.Columns["colTrangThai"].DataPropertyName = "TrangThai";
+                if (dgvLichSu.Columns.Contains("colNgay")) dgvLichSu.Columns["colNgay"].DataPropertyName = "Thoigian";
 
-            dgvLichSu.AutoGenerateColumns = false;
-            dgvLichSu.DataSource = data;
+                dgvLichSu.AutoGenerateColumns = false;
+                dgvLichSu.DataSource = dataList;
 
-            if (dgvLichSu.Columns.Contains("colNgay"))
-                dgvLichSu.Columns["colNgay"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+                if (dgvLichSu.Columns.Contains("colNgay"))
+                    dgvLichSu.Columns["colNgay"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
 
-            dgvLichSu.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+                dgvLichSu.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi tải dữ liệu lưới: " + ex.Message);
+            }
 
             if (dgvLichSu.Columns.Contains("colMaLichSu"))
             {

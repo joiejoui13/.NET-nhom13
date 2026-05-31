@@ -74,6 +74,11 @@ namespace AssignmentApp.BLL.Services.Warehouse
             return await _productRepository.GetCategoriesForComboBoxAsync();
         }
 
+        public async Task<IEnumerable<Product>> SearchProductsByTextAsync(string keyword, string catIdText, string catNameText, string status)
+        {
+            return await _productRepository.SearchByTextAsync(keyword, catIdText, catNameText, status);
+        }
+
         private void ValidateProduct(Product p)
         {
             if (string.IsNullOrWhiteSpace(p.TenSanPham))
@@ -96,3 +101,4 @@ namespace AssignmentApp.BLL.Services.Warehouse
         }
     }
 }
+

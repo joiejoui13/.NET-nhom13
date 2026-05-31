@@ -54,6 +54,35 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         /// </summary>
         private async void ucStockIn_Load(object sender, EventArgs e)
         {
+            // Inject new textboxes programmatically for CatId and CatName
+            if (txtProductSearch != null && txtProductSearch.Parent != null)
+            {
+                txtProductSearch.Size = new System.Drawing.Size(150, 36);
+                txtProductSearch.PlaceholderText = "Tên/Mã SP...";
+
+                var txtCatId = new Guna.UI2.WinForms.Guna2TextBox
+                {
+                    Name = "txtCatIdSearch",
+                    PlaceholderText = "Mã DM...",
+                    Size = new System.Drawing.Size(90, 36),
+                    Location = new System.Drawing.Point(txtProductSearch.Right + 10, txtProductSearch.Top),
+                    BorderRadius = 5
+                };
+                txtCatId.TextChanged += txtProductSearch_TextChanged;
+                txtProductSearch.Parent.Controls.Add(txtCatId);
+
+                var txtCatName = new Guna.UI2.WinForms.Guna2TextBox
+                {
+                    Name = "txtCatNameSearch",
+                    PlaceholderText = "Tên DM...",
+                    Size = new System.Drawing.Size(130, 36),
+                    Location = new System.Drawing.Point(txtCatId.Right + 10, txtProductSearch.Top),
+                    BorderRadius = 5
+                };
+                txtCatName.TextChanged += txtProductSearch_TextChanged;
+                txtProductSearch.Parent.Controls.Add(txtCatName);
+            }
+
             guna2Button1.Click += btnStockInSearch_Click;
             guna2Button2.Click += btnStockInRefresh_Click;
             
@@ -786,9 +815,21 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         private async void txtProductSearch_TextChanged(object sender, EventArgs e)
         {
             string keyword = txtProductSearch.Text.Trim();
+            
+            string catIdText = "";
+            string catNameText = "";
+            if (txtProductSearch.Parent != null)
+            {
+                var txtCatId = txtProductSearch.Parent.Controls["txtCatIdSearch"] as Guna.UI2.WinForms.Guna2TextBox;
+                if (txtCatId != null) catIdText = txtCatId.Text.Trim();
+
+                var txtCatName = txtProductSearch.Parent.Controls["txtCatNameSearch"] as Guna.UI2.WinForms.Guna2TextBox;
+                if (txtCatName != null) catNameText = txtCatName.Text.Trim();
+            }
+
             try
             {
-                var list = await _productService.SearchProductsAsync(keyword, keyword, -1, "Đang bán", 0, 0);
+                var list = await _productService.SearchProductsByTextAsync(keyword, catIdText, catNameText, "Đang bán");
                 await LoadProductsSelectionGridAsync(list);
             }
             catch (Exception)

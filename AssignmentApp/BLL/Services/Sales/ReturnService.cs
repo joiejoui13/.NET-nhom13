@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AssignmentApp.DAL.Repositories.Sales;
+using AssignmentApp.DAL.Repositories.Warehouse;
 using AssignmentApp.DTO;
 
 namespace AssignmentApp.BLL.Services.Sales
@@ -9,10 +10,12 @@ namespace AssignmentApp.BLL.Services.Sales
     public class ReturnService : IReturnService
     {
         private readonly IReturnRepository _repository;
+        private readonly IProductRepository _productRepository;
 
-        public ReturnService(IReturnRepository repository)
+        public ReturnService(IReturnRepository repository, IProductRepository productRepository)
         {
             _repository = repository;
+            _productRepository = productRepository;
         }
 
         public Task<IEnumerable<Return>> GetAllReturnsAsync()
@@ -58,10 +61,33 @@ namespace AssignmentApp.BLL.Services.Sales
             return _repository.DeleteReturnTransactionAsync(maTraHang);
         }
 
-        public Task<bool> SaveReturnDetailsTransactionAsync(int maTraHang, List<ReturnDetail> details, decimal tongTienHoanThucTe, string loaiGiaoDich)
+                public async Task<bool> SaveReturnDetailsTransactionAsync(int maTraHang, List<ReturnDetail> details, decimal tongTienHoanThucTe, string loaiGiaoDich)
         {
             if (maTraHang <= 0) throw new ArgumentException("Mã phiếu trả không hợp lệ.");
-            return _repository.SaveReturnDetailsTransactionAsync(maTraHang, details, tongTienHoanThucTe, loaiGiaoDich);
+            
+            bool result = await _repository.SaveReturnDetailsTransactionAsync(maTraHang, details, tongTienHoanThucTe, loaiGiaoDich);
+            
+            if (result)
+            {
+                // Sync Inventory based on Transaction Type
+                foreach (var detail in details)
+                {
+                    if (loaiGiaoDich == "Đổi hàng")
+                    {
+                        // Exchange: We give the customer a new item from stock, so we deduct stock.
+                        // Defective items are NOT added to stock automatically.
+                        await _productRepository.UpdateStockAsync(detail.MaSanPham, -detail.SoLuong);
+                    }
+                    else if (loaiGiaoDich == "Hoàn tiền")
+                    {
+                        // Return: The customer returns an item in good condition for a refund, so we add it back to stock.
+                        await _productRepository.UpdateStockAsync(detail.MaSanPham, detail.SoLuong);
+                    }
+                }
+            }
+            
+            return result;
         }
     }
 }
+

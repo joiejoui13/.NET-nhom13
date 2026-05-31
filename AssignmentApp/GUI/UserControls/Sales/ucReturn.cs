@@ -1,4 +1,4 @@
-using AssignmentApp.DAL.Core;
+﻿using AssignmentApp.DAL.Core;
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Linq;
 using AssignmentApp.DTO;
 using AssignmentApp.BLL.Services.Sales;
+using AssignmentApp.BLL.Services.Warehouse;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AssignmentApp.GUI.UserControls.Sales
@@ -22,6 +23,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         BindingList<ReturnDetail> listCart;           
         
         private readonly IReturnService _returnService;
+        private readonly IProductService _productService;
 
         // Biến lưu trữ mã của Phiếu Trả Hàng đang được thao tác (nếu = 0 nghĩa là chưa chọn phiếu nào)
         int maTraHangHienTai = 0;  
@@ -44,6 +46,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             
             if (Program.ServiceProvider != null)
                 _returnService = Program.ServiceProvider.GetRequiredService<IReturnService>();
+            if (Program.ServiceProvider != null)
+                _productService = Program.ServiceProvider.GetRequiredService<IProductService>();
             
             // Đăng ký sự kiện: Khi người dùng đổi ngày trả hàng thì gọi hàm dtpNgayTra_ValueChanged
             dtpNgayTra.ValueChanged += dtpNgayTra_ValueChanged;
@@ -881,7 +885,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         /// - Kiểm tra xem số lượng muốn trả có vượt quá (Số lượng đã mua - Số lượng đã trả trước đó) hay không.
         /// - Cập nhật giỏ hàng: Nếu đã có thì cộng dồn số lượng, nếu chưa thì thêm dòng mới.
         /// </summary>
-        private void btnAddToCart_Click(object sender, EventArgs e)
+        private async void btnAddToCart_Click(object sender, EventArgs e)
         {
             // Bước 1: Kiểm tra tính hợp lệ
             if (txtSelMaSP.Text.Trim() == "")
@@ -1255,7 +1259,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private void dgvReturns_CellContentClick(object sender, DataGridViewCellEventArgs e)
         { dgvReturns_CellClick(sender, e); }
 
-        private void btnSuaCT_Click(object sender, EventArgs e) 
+        private async void btnSuaCT_Click(object sender, EventArgs e) 
         {
             if (txtSelMaSP.Text.Trim() == "")
             {
@@ -1284,6 +1288,20 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     }
                 }
             }
+            
+            if (cboLoaiGiaoDich.Text.Trim() == "Đổi hàng")
+            {
+                if (_productService != null)
+                {
+                    var product = await _productService.GetProductByIdAsync(maSP);
+                    if (product == null || product.SoLuongTon < soLuongTra)
+                    {
+                        MessageBox.Show($"Trong kho chỉ còn {product?.SoLuongTon ?? 0} sản phẩm mới để đổi. Không đủ số lượng!", "Cảnh báo tồn kho", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+            }
+
             int soLuongToiDa = slMua - daTra;
             
             if (listCart != null)
@@ -1335,3 +1353,4 @@ namespace AssignmentApp.GUI.UserControls.Sales
         #endregion
     }
 }
+

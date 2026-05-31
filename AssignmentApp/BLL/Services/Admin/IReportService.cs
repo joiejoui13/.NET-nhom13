@@ -5,6 +5,10 @@ using AssignmentApp.DTO.Models;
 
 namespace AssignmentApp.BLL.Services.Admin
 {
+    /// <summary>
+    /// Interface định nghĩa các nghiệp vụ (Business Logic Layer).
+    /// Giao diện (GUI) sẽ gọi đến interface này thay vì gọi trực tiếp xuống Database.
+    /// </summary>
     public interface IReportService
     {
         Task<decimal> GetRevenueAsync(DateTime start, DateTime end);

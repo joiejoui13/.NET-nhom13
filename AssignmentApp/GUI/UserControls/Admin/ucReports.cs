@@ -44,6 +44,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
         /// Sự kiện Load: Kích hoạt khi UserControl lần đầu được hiển thị.
         /// Thiết lập các mốc thời gian mặc định và tự động tải dữ liệu báo cáo lần đầu tiên.
         /// </summary>
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Kích hoạt khi giao diện vừa được tải lên. Khởi tạo cấu hình và gọi BLL để lấy dữ liệu đổ vào Grid.
+        /// </summary>
         private async void ucReports_Load(object sender, EventArgs e)
         {
             // 1. Thiết lập giá trị mặc định cho bộ lọc báo cáo
@@ -232,6 +235,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
         /// <summary>
         /// Nút Lọc/Tìm kiếm: Kích hoạt tải lại toàn bộ báo cáo dựa trên khoảng thời gian mới vừa chọn.
         /// </summary>
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnSearch_Click(object sender, EventArgs e)
         {
             await LoadReportDataAsync();
@@ -239,6 +245,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
 
         /// <summary>
         /// Nút Xuất Báo Cáo: Trích xuất dữ liệu đang hiển thị trên lưới DataGridView thành file Excel (.CSV).
+        /// </summary>
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
         /// </summary>
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -345,9 +354,21 @@ namespace AssignmentApp.GUI.UserControls.Admin
 
         // Đây là các sự kiện đã lỡ liên kết trong Designer nhưng hiện tại không dùng tới.
         // Giữ lại các hàm trống này để Visual Studio Designer không bị báo lỗi thiếu hàm.
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnAdd_Click(object sender, EventArgs e) { }
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnEdit_Click(object sender, EventArgs e) { }
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnDelete_Click(object sender, EventArgs e) { }
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnCancel_Click(object sender, EventArgs e) { }
         private void dgvReports_CellContentClick(object sender, DataGridViewCellEventArgs e) { }
 

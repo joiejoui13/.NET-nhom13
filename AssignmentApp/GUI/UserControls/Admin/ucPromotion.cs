@@ -39,6 +39,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
         /// Sự kiện Load: Kích hoạt khi UserControl lần đầu được nạp lên giao diện.
         /// Sử dụng async/await để tránh làm đơ giao diện khi tải dữ liệu từ CSDL.
         /// </summary>
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Kích hoạt khi giao diện vừa được tải lên. Khởi tạo cấu hình và gọi BLL để lấy dữ liệu đổ vào Grid.
+        /// </summary>
         private async void ucPromotion_Load(object sender, EventArgs e)
         {
             // 1. Tải toàn bộ dữ liệu danh sách khuyến mãi lên DataGridView thông qua BLL
@@ -200,6 +203,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
         /// <summary>
         /// Sự kiện Click vào một ô bất kỳ trong lưới danh sách Khuyến Mãi.
         /// </summary>
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng chọn một dòng trên bảng (DataGridView). Dữ liệu sẽ được trích xuất và hiển thị ngược lên các ô nhập liệu.
+        /// </summary>
         private async void dgvPromotion_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -249,7 +255,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
         #endregion
 
         #region 4. CÁC HÀM XỬ LÝ NÚT BẤM (BUTTON CLICK HANDLERS)
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnAdd_Click(object sender, EventArgs e)
         {
             ResetValues(); 
@@ -270,7 +278,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
 
             txtTenKhuyenMai.Focus(); 
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnSave_Click(object sender, EventArgs e)
         {
             try
@@ -301,7 +311,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 MessageBox.Show(ex.Message, "Lỗi Nghiệp Vụ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnEdit_Click(object sender, EventArgs e)
         {
             if (dgvPromotion.Rows.Count == 0 || string.IsNullOrEmpty(txtMaKhuyenMai.Text) || txtMaKhuyenMai.Text == "Tự động sinh")
@@ -335,7 +347,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 MessageBox.Show(ex.Message, "Lỗi Nghiệp Vụ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnDelete_Click(object sender, EventArgs e)
         {
             if (dgvPromotion.Rows.Count == 0 || string.IsNullOrEmpty(txtMaKhuyenMai.Text))
@@ -372,7 +386,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
                 }
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnCancel_Click(object sender, EventArgs e)
         {
             ResetValues();
@@ -385,7 +401,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
             btnSave.Enabled = false;
             txtMaKhuyenMai.Enabled = false;
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnSearch_Click(object sender, EventArgs e)
         {
             if (txtMaKhuyenMai.Enabled == false && btnAdd.Enabled == true)
@@ -447,7 +465,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
             
             btnCancel.Enabled = false; 
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnRefresh_Click(object sender, EventArgs e)
         {
             await Load_DataGridViewAsync(); 

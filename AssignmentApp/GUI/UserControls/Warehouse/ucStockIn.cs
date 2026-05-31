@@ -12,6 +12,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AssignmentApp.GUI.UserControls.Warehouse
 {
+    /// <summary>
+    /// Giao diện người dùng (Tầng GUI - Presentation Layer).
+    /// Chịu trách nhiệm hiển thị dữ liệu và tiếp nhận thao tác từ người dùng.
+    /// Thiết kế chuẩn 3-Tier: Hoàn toàn không chứa câu lệnh SQL. Mọi thao tác xử lý nghiệp vụ đều gọi thông qua các Service (BLL) bằng Dependency Injection.
+    /// Ứng dụng triệt để cơ chế xử lý bất đồng bộ (async/await) để tránh làm đơ (freeze) giao diện khi tải dữ liệu.
+    /// </summary>
     public partial class ucStockIn : UserControl
     {
         private readonly IStockInService _stockInService;
@@ -43,7 +49,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             cboTrangThai.SelectedIndex = 0;
             cboTrangThai.DropDownStyle = ComboBoxStyle.DropDownList;
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Kích hoạt khi giao diện vừa được tải lên. Khởi tạo cấu hình và gọi BLL để lấy dữ liệu đổ vào Grid.
+        /// </summary>
         private async void ucStockIn_Load(object sender, EventArgs e)
         {
             guna2Button1.Click += btnStockInSearch_Click;
@@ -220,7 +228,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 MessageBox.Show("Lỗi tải chi tiết phiếu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng chọn một dòng trên bảng (DataGridView). Dữ liệu sẽ được trích xuất và hiển thị ngược lên các ô nhập liệu.
+        /// </summary>
         private async void dgvDetails_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -261,7 +271,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 dtNgayNhap.CustomFormat = "dd/MM/yyyy";
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnAdd_Click(object sender, EventArgs e)
         {
             if (isEditing == false)
@@ -296,7 +308,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 ResetTab2State(); 
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnEdit_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) || txtMaPhieuNhap.Text == "Tự động sinh") return;
@@ -329,7 +343,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 MessageBox.Show(ex.Message, "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnDelete_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) || txtMaPhieuNhap.Text == "Tự động sinh") return;
@@ -360,7 +376,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 }
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnSave_Click(object sender, EventArgs e)
         {
             if (!int.TryParse(txtNguoiDung.Text.Trim(), out int userId))
@@ -393,12 +411,16 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 MessageBox.Show(ex.Message, "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnCancel_Click(object sender, EventArgs e)
         {
             ResetTab1State(); 
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnSearch_Click(object sender, EventArgs e)
         {
             if (txtMaPhieuNhap.Enabled == false)
@@ -450,13 +472,17 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 MessageBox.Show(ex.Message, "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnRefresh_Click(object sender, EventArgs e)
         {
             ResetTab1State(); 
             await LoadReceiptsGridAsync(null);
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnChooseProducts_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) == true)
@@ -645,7 +671,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 }
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng chọn một dòng trên bảng (DataGridView). Dữ liệu sẽ được trích xuất và hiển thị ngược lên các ô nhập liệu.
+        /// </summary>
         private async void dgvProductsSelection_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -714,7 +742,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 }
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng chọn một dòng trên bảng (DataGridView). Dữ liệu sẽ được trích xuất và hiển thị ngược lên các ô nhập liệu.
+        /// </summary>
         private void dgvCurrentDetails_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -766,7 +796,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 // Silent catch on rapid typing
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnAddToCart_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) == true)
@@ -857,7 +889,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 ResetTab2State();
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnRemoveFromCart_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) == true) return;
@@ -875,12 +909,16 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 ResetTab2State();
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnResetCartForm_Click(object sender, EventArgs e)
         {
             ResetTab2State();
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnStockInSearch_Click(object sender, EventArgs e)
         {
             if (txtSelMaSP.ReadOnly == true && txtSelTenSP.ReadOnly == true)
@@ -908,14 +946,18 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             await FilterProductsAsync();
             MessageBox.Show($"Tôi đã tìm thấy {dgvProductsSelection.Rows.Count} sản phẩm khớp với bạn rồi đó!", "OK nhe", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnStockInRefresh_Click(object sender, EventArgs e)
         {
             txtProductSearch.Text = "";
             ResetTab2State();
             await LoadProductsSelectionGridAsync(null);
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnSelectProduct_Click(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(txtSelMaSP.Text) && int.TryParse(txtSelMaSP.Text, out _))
@@ -925,7 +967,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 txtSelSoLuong.SelectAll();
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnBackToReceipt_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) == true)

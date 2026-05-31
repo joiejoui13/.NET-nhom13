@@ -5,6 +5,12 @@ using System.Windows.Forms;
 
 namespace AssignmentApp.GUI.UserControls.Sales
 {
+    /// <summary>
+    /// Giao diện người dùng (Tầng GUI - Presentation Layer).
+    /// Chịu trách nhiệm hiển thị dữ liệu và tiếp nhận thao tác từ người dùng.
+    /// Thiết kế chuẩn 3-Tier: Hoàn toàn không chứa câu lệnh SQL. Mọi thao tác xử lý nghiệp vụ đều gọi thông qua các Service (BLL) bằng Dependency Injection.
+    /// Ứng dụng triệt để cơ chế xử lý bất đồng bộ (async/await) để tránh làm đơ (freeze) giao diện khi tải dữ liệu.
+    /// </summary>
     public partial class ucCustomer : UserControl
     {
         public class MockCustomer
@@ -26,7 +32,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             InitializeComponent();
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Kích hoạt khi giao diện vừa được tải lên. Khởi tạo cấu hình và gọi BLL để lấy dữ liệu đổ vào Grid.
+        /// </summary>
         private void ucCustomer_Load(object sender, EventArgs e)
         {
             InitializeMockData();
@@ -161,7 +169,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtEmail.Text = "";
             txtDiaChi.Text = "";
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng chọn một dòng trên bảng (DataGridView). Dữ liệu sẽ được trích xuất và hiển thị ngược lên các ô nhập liệu.
+        /// </summary>
         private void dgvCustomers_CellClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0 && !isEditing)
@@ -169,7 +179,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 SelectCustomerRow(e.RowIndex);
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnAdd_Click(object? sender, EventArgs e)
         {
             isAddingNew = true;
@@ -182,7 +194,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             SetEditState(true);
             txtTenKhachHang.Focus();
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnEdit_Click(object? sender, EventArgs e)
         {
             if (selectedCustomer == null)
@@ -194,7 +208,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             SetEditState(true);
             txtTenKhachHang.Focus();
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnDelete_Click(object? sender, EventArgs e)
         {
             if (selectedCustomer == null)
@@ -220,7 +236,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 }
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnRefresh_Click(object? sender, EventArgs e)
         {
             ClearInputs();
@@ -231,7 +249,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 SelectCustomerRow(0);
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnCancel_Click(object? sender, EventArgs e)
         {
             isAddingNew = false;
@@ -249,7 +269,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 ClearInputs();
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnSearch_Click(object? sender, EventArgs e)
         {
             // Search criteria can be entered in TenKhachHang or SoDienThoai textboxes
@@ -289,7 +311,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 MessageBox.Show("Không tìm thấy khách hàng phù hợp!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnSave_Click(object? sender, EventArgs e)
         {
             string name = txtTenKhachHang.Text.Trim();

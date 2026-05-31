@@ -7,8 +7,16 @@ using Dapper;
 
 namespace AssignmentApp.DAL.Repositories.Warehouse
 {
+    /// <summary>
+    /// Class thao tác trực tiếp với CSDL (Tầng DAL - Data Access Layer).
+    /// Áp dụng Pattern Repository và thư viện Micro-ORM Dapper để tối ưu hóa hiệu năng truy vấn.
+    /// Mọi câu lệnh SQL đều dùng Parameterized Query để chống SQL Injection.
+    /// </summary>
     public class ProductRepository : IProductRepository
     {
+/// <summary>
+        /// [CHI TIẾT] Lấy toàn bộ danh sách dữ liệu. Sử dụng bất đồng bộ (Task) để tối ưu hiệu suất và không chặn luồng chính (Main Thread).
+        /// </summary>
         public async Task<IEnumerable<Product>> GetAllAsync()
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
@@ -19,7 +27,9 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
                            ORDER BY s.NgayTao DESC";
             return await DbContext.Conn.QueryAsync<Product>(sql);
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lấy thông tin chi tiết của một bản ghi dựa trên Khóa chính (ID).
+        /// </summary>
         public async Task<Product> GetByIdAsync(int id)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
@@ -30,7 +40,9 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
                            WHERE s.MaSanPham = @MaSanPham";
             return await DbContext.Conn.QuerySingleOrDefaultAsync<Product>(sql, new { MaSanPham = id });
         }
-
+/// <summary>
+        /// [CHI TIẾT] Thêm mới một bản ghi. Trước khi lưu, dữ liệu đã được kiểm duyệt chặt chẽ (Validation) để đảm bảo tính toàn vẹn.
+        /// </summary>
         public async Task<int> AddAsync(Product p)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
@@ -38,7 +50,9 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
                            VALUES (@TenSanPham, @MaDanhMuc, @GiaNhap, @GiaBan, @SoLuongTon, @MoTa, @Anh, @TrangThai, GETDATE())";
             return await DbContext.Conn.ExecuteAsync(sql, p);
         }
-
+/// <summary>
+        /// [CHI TIẾT] Cập nhật thông tin của bản ghi hiện có. Sử dụng Parameterized Query để bảo mật dữ liệu.
+        /// </summary>
         public async Task<int> UpdateAsync(Product p)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
@@ -62,7 +76,9 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
             string sql = "UPDATE SanPham SET TrangThai = N'Ngưng bán' WHERE MaSanPham = @MaSanPham";
             return await DbContext.Conn.ExecuteAsync(sql, new { MaSanPham = id });
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lọc và tìm kiếm dữ liệu dựa trên các tiêu chí đầu vào. Hỗ trợ tìm kiếm tương đối (LIKE) và bảo mật tham số.
+        /// </summary>
         public async Task<IEnumerable<Product>> SearchAsync(string idTerm, string nameTerm, int catId, string statusTerm, double priceLimit, int stockLimit)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();

@@ -8,8 +8,16 @@ using Dapper;
 
 namespace AssignmentApp.DAL.Repositories.Warehouse
 {
+    /// <summary>
+    /// Class thao tác trực tiếp với CSDL (Tầng DAL - Data Access Layer).
+    /// Áp dụng Pattern Repository và thư viện Micro-ORM Dapper để tối ưu hóa hiệu năng truy vấn.
+    /// Mọi câu lệnh SQL đều dùng Parameterized Query để chống SQL Injection.
+    /// </summary>
     public class StockInRepository : IStockInRepository
     {
+/// <summary>
+        /// [CHI TIẾT] Lấy toàn bộ danh sách dữ liệu. Sử dụng bất đồng bộ (Task) để tối ưu hiệu suất và không chặn luồng chính (Main Thread).
+        /// </summary>
         public async Task<IEnumerable<StockInReceipt>> GetAllReceiptsAsync()
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
@@ -18,7 +26,9 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
                            ORDER BY p.NgayNhap DESC";
             return await DbContext.Conn.QueryAsync<StockInReceipt>(sql);
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lấy thông tin chi tiết của một bản ghi dựa trên Khóa chính (ID).
+        /// </summary>
         public async Task<StockInReceipt> GetReceiptByIdAsync(int id)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
@@ -37,7 +47,9 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
                            WHERE c.MaPhieuNhap = @MaPhieuNhap";
             return await DbContext.Conn.QueryAsync<StockInDetailModel>(sql, new { MaPhieuNhap = receiptId });
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lọc và tìm kiếm dữ liệu dựa trên các tiêu chí đầu vào. Hỗ trợ tìm kiếm tương đối (LIKE) và bảo mật tham số.
+        /// </summary>
         public async Task<IEnumerable<StockInReceipt>> SearchReceiptsAsync(int? receiptId, int? userId, string status, string date)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();

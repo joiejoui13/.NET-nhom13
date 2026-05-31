@@ -5,6 +5,10 @@ using AssignmentApp.DTO.Models;
 
 namespace AssignmentApp.DAL.Repositories.Admin
 {
+    /// <summary>
+    /// Interface (Giao diện) định nghĩa các hợp đồng (contract) thao tác với CSDL.
+    /// Áp dụng mẫu thiết kế Repository Pattern.
+    /// </summary>
     public interface IReportRepository
     {
         Task<decimal> GetRevenueAsync(DateTime start, DateTime end);

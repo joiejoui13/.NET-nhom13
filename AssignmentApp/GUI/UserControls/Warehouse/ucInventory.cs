@@ -8,6 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AssignmentApp.GUI.UserControls.Warehouse
 {
+    /// <summary>
+    /// Giao diện người dùng (Tầng GUI - Presentation Layer).
+    /// Chịu trách nhiệm hiển thị dữ liệu và tiếp nhận thao tác từ người dùng.
+    /// Thiết kế chuẩn 3-Tier: Hoàn toàn không chứa câu lệnh SQL. Mọi thao tác xử lý nghiệp vụ đều gọi thông qua các Service (BLL) bằng Dependency Injection.
+    /// Ứng dụng triệt để cơ chế xử lý bất đồng bộ (async/await) để tránh làm đơ (freeze) giao diện khi tải dữ liệu.
+    /// </summary>
     public partial class ucInventory : UserControl
     {
         private readonly IInventoryService _inventoryService;
@@ -25,7 +31,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             cboLoaiThayDoi.Items.AddRange(new object[] { "Nhập kho", "Xuất kho bán", "Xuất hủy" });
             cboTrangThai.Items.AddRange(new object[] { "Đang hoạt động", "Đã khóa" });
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Kích hoạt khi giao diện vừa được tải lên. Khởi tạo cấu hình và gọi BLL để lấy dữ liệu đổ vào Grid.
+        /// </summary>
         private async void ucInventory_Load(object sender, EventArgs e)
         {
             cboSanPham.SelectedIndexChanged += cboSanPham_SelectedIndexChanged;
@@ -263,7 +271,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         {
             UpdateComputedStockAsync();
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng chọn một dòng trên bảng (DataGridView). Dữ liệu sẽ được trích xuất và hiển thị ngược lên các ô nhập liệu.
+        /// </summary>
         private void dgvLichSu_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -317,7 +327,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         #endregion
 
         #region 4. CÁC HÀM XỬ LÝ NÚT BẤM (BUTTON CLICK HANDLERS)
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnAdd_Click(object sender, EventArgs e)
         {
             ResetValues();
@@ -337,7 +349,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
             cboSanPham.Focus();
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnSave_Click(object sender, EventArgs e)
         {
             if (!ValidateInventoryInputs(out int thayDoi, out int refId))
@@ -382,7 +396,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                     txtSoLuongThayDoi.Focus();
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnEdit_Click(object sender, EventArgs e)
         {
             if (dgvLichSu.Rows.Count == 0 || txtMaLichSu.Text == "")
@@ -428,7 +444,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 MessageBox.Show(ex.Message, "Lỗi nghiệp vụ", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnDelete_Click(object sender, EventArgs e)
         {
             if (dgvLichSu.Rows.Count == 0 || txtMaLichSu.Text == "")
@@ -465,7 +483,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 }
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnCancel_Click(object sender, EventArgs e)
         {
             ResetValues();
@@ -479,7 +499,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             
             txtMaLichSu.Enabled = false;
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnSearch_Click(object sender, EventArgs e)
         {
             if (txtMaLichSu.Enabled == false)
@@ -529,7 +551,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 MessageBox.Show("Lỗi khi tìm kiếm: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private async void btnRefresh_Click(object sender, EventArgs e)
         {
             await Load_DataGridViewAsync();

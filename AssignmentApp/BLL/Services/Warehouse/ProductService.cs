@@ -7,6 +7,11 @@ using AssignmentApp.DTO;
 
 namespace AssignmentApp.BLL.Services.Warehouse
 {
+    /// <summary>
+    /// Class xử lý các nghiệp vụ (Business Logic Layer).
+    /// Đứng giữa giao diện và cơ sở dữ liệu để kiểm tra, làm sạch dữ liệu trước khi lưu.
+    /// Kỹ thuật Dependency Injection (DI) được áp dụng qua Constructor.
+    /// </summary>
     public class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
@@ -15,25 +20,33 @@ namespace AssignmentApp.BLL.Services.Warehouse
         {
             _productRepository = productRepository;
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lấy toàn bộ danh sách dữ liệu. Sử dụng bất đồng bộ (Task) để tối ưu hiệu suất và không chặn luồng chính (Main Thread).
+        /// </summary>
         public async Task<IEnumerable<Product>> GetAllProductsAsync()
         {
             return await _productRepository.GetAllAsync();
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lấy thông tin chi tiết của một bản ghi dựa trên Khóa chính (ID).
+        /// </summary>
         public async Task<Product> GetProductByIdAsync(int id)
         {
             if (id <= 0) throw new ArgumentException("Mã sản phẩm không hợp lệ.");
             return await _productRepository.GetByIdAsync(id);
         }
-
+/// <summary>
+        /// [CHI TIẾT] Thêm mới một bản ghi. Trước khi lưu, dữ liệu đã được kiểm duyệt chặt chẽ (Validation) để đảm bảo tính toàn vẹn.
+        /// </summary>
         public async Task<bool> AddProductAsync(Product p)
         {
             ValidateProduct(p);
             int rowsAffected = await _productRepository.AddAsync(p);
             return rowsAffected > 0;
         }
-
+/// <summary>
+        /// [CHI TIẾT] Cập nhật thông tin của bản ghi hiện có. Sử dụng Parameterized Query để bảo mật dữ liệu.
+        /// </summary>
         public async Task<bool> UpdateProductAsync(Product p)
         {
             if (p.MaSanPham <= 0) throw new ArgumentException("Mã sản phẩm không hợp lệ để cập nhật.");
@@ -48,7 +61,9 @@ namespace AssignmentApp.BLL.Services.Warehouse
             int rowsAffected = await _productRepository.SoftDeleteAsync(id);
             return rowsAffected > 0;
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lọc và tìm kiếm dữ liệu dựa trên các tiêu chí đầu vào. Hỗ trợ tìm kiếm tương đối (LIKE) và bảo mật tham số.
+        /// </summary>
         public async Task<IEnumerable<Product>> SearchProductsAsync(string idTerm, string nameTerm, int catId, string statusTerm, double priceLimit, int stockLimit)
         {
             return await _productRepository.SearchAsync(idTerm, nameTerm, catId, statusTerm, priceLimit, stockLimit);

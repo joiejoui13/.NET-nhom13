@@ -4,6 +4,10 @@ using AssignmentApp.DTO.Models;
 
 namespace AssignmentApp.DAL.Repositories.Warehouse
 {
+    /// <summary>
+    /// Interface (Giao diện) định nghĩa các hợp đồng (contract) thao tác với CSDL.
+    /// Áp dụng mẫu thiết kế Repository Pattern.
+    /// </summary>
     public interface IStockInRepository
     {
         Task<IEnumerable<StockInReceipt>> GetAllReceiptsAsync();

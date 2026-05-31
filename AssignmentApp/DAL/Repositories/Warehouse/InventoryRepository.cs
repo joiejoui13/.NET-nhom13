@@ -9,6 +9,9 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
 {
     public class InventoryRepository : IInventoryRepository
     {
+/// <summary>
+        /// [CHI TIẾT] Lấy toàn bộ danh sách dữ liệu. Sử dụng bất đồng bộ (Task) để tối ưu hiệu suất và không chặn luồng chính (Main Thread).
+        /// </summary>
         public async Task<IEnumerable<InventoryLog>> GetAllAsync()
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
@@ -19,7 +22,9 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
                            ORDER BY l.Thoigian DESC";
             return await DbContext.Conn.QueryAsync<InventoryLog>(sql);
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lấy thông tin chi tiết của một bản ghi dựa trên Khóa chính (ID).
+        /// </summary>
         public async Task<InventoryLog> GetByIdAsync(int id)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
@@ -37,7 +42,9 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
             string sql = "SELECT SoLuongTon FROM SanPham WHERE MaSanPham = @Id";
             return await DbContext.Conn.QuerySingleOrDefaultAsync<int>(sql, new { Id = productId });
         }
-
+/// <summary>
+        /// [CHI TIẾT] Thêm mới một bản ghi. Trước khi lưu, dữ liệu đã được kiểm duyệt chặt chẽ (Validation) để đảm bảo tính toàn vẹn.
+        /// </summary>
         public async Task<bool> AddWithTransactionAsync(InventoryLog log)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
@@ -65,7 +72,9 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
                 }
             }
         }
-
+/// <summary>
+        /// [CHI TIẾT] Cập nhật thông tin của bản ghi hiện có. Sử dụng Parameterized Query để bảo mật dữ liệu.
+        /// </summary>
         public async Task<bool> UpdateWithTransactionAsync(InventoryLog newLog, InventoryLog oldLog)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
@@ -104,7 +113,9 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
                 }
             }
         }
-
+/// <summary>
+        /// [CHI TIẾT] Xóa bản ghi khỏi cơ sở dữ liệu dựa vào Khóa chính. Hành động này sẽ thay đổi trạng thái hoặc xóa vĩnh viễn (tùy nghiệp vụ).
+        /// </summary>
         public async Task<bool> DeleteWithTransactionAsync(InventoryLog oldLog)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();
@@ -131,7 +142,9 @@ namespace AssignmentApp.DAL.Repositories.Warehouse
                 }
             }
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lọc và tìm kiếm dữ liệu dựa trên các tiêu chí đầu vào. Hỗ trợ tìm kiếm tương đối (LIKE) và bảo mật tham số.
+        /// </summary>
         public async Task<IEnumerable<InventoryLog>> SearchAsync(string idTerm, string refTerm, string productTerm, string typeTerm, string statusTerm)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == System.Data.ConnectionState.Closed) DbContext.Ketnoi();

@@ -6,6 +6,11 @@ using AssignmentApp.DTO.Models;
 
 namespace AssignmentApp.BLL.Services.Warehouse
 {
+    /// <summary>
+    /// Class xử lý các nghiệp vụ (Business Logic Layer).
+    /// Đứng giữa giao diện và cơ sở dữ liệu để kiểm tra, làm sạch dữ liệu trước khi lưu.
+    /// Kỹ thuật Dependency Injection (DI) được áp dụng qua Constructor.
+    /// </summary>
     public class StockInService : IStockInService
     {
         private readonly IStockInRepository _stockInRepository;
@@ -14,12 +19,16 @@ namespace AssignmentApp.BLL.Services.Warehouse
         {
             _stockInRepository = stockInRepository;
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lấy toàn bộ danh sách dữ liệu. Sử dụng bất đồng bộ (Task) để tối ưu hiệu suất và không chặn luồng chính (Main Thread).
+        /// </summary>
         public async Task<IEnumerable<StockInReceipt>> GetAllReceiptsAsync()
         {
             return await _stockInRepository.GetAllReceiptsAsync();
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lấy thông tin chi tiết của một bản ghi dựa trên Khóa chính (ID).
+        /// </summary>
         public async Task<StockInReceipt> GetReceiptByIdAsync(int id)
         {
             return await _stockInRepository.GetReceiptByIdAsync(id);
@@ -29,7 +38,9 @@ namespace AssignmentApp.BLL.Services.Warehouse
         {
             return await _stockInRepository.GetReceiptDetailsAsync(receiptId);
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lọc và tìm kiếm dữ liệu dựa trên các tiêu chí đầu vào. Hỗ trợ tìm kiếm tương đối (LIKE) và bảo mật tham số.
+        /// </summary>
         public async Task<IEnumerable<StockInReceipt>> SearchReceiptsAsync(string receiptIdStr, string userIdStr, string status, string dateStr)
         {
             int? receiptId = null;

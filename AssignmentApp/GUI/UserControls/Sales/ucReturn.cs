@@ -9,6 +9,12 @@ using Microsoft.Data.SqlClient;
 
 namespace AssignmentApp.GUI.UserControls.Sales
 {
+    /// <summary>
+    /// Giao diện người dùng (Tầng GUI - Presentation Layer).
+    /// Chịu trách nhiệm hiển thị dữ liệu và tiếp nhận thao tác từ người dùng.
+    /// Thiết kế chuẩn 3-Tier: Hoàn toàn không chứa câu lệnh SQL. Mọi thao tác xử lý nghiệp vụ đều gọi thông qua các Service (BLL) bằng Dependency Injection.
+    /// Ứng dụng triệt để cơ chế xử lý bất đồng bộ (async/await) để tránh làm đơ (freeze) giao diện khi tải dữ liệu.
+    /// </summary>
     public partial class ucReturn : UserControl
     {
  
@@ -33,7 +39,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
 
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Kích hoạt khi giao diện vừa được tải lên. Khởi tạo cấu hình và gọi BLL để lấy dữ liệu đổ vào Grid.
+        /// </summary>
         private void ucReturn_Load(object sender, EventArgs e)
         {
             btnReturnSearch.Enabled = true;
@@ -150,6 +158,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             currentMaHoaDon = -1;
             currentTrangThai = "";
         }
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnAdd_Click(object? sender, EventArgs e)
         {
             // Bước 1: Xóa trắng form
@@ -168,7 +179,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             
             cboTrangThai.Text = "Chờ xử lý";
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnDelete_Click(object? sender, EventArgs e)
         {
             if (dtReturn.Rows.Count == 0 || txtMaHoaDon.Text.Trim() == "")
@@ -198,7 +211,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 txtMaHoaDon.Enabled = false;
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnSave_Click(object? sender, EventArgs e)
         {
             // Bước 1: Kiểm tra dữ liệu
@@ -289,7 +304,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnSave.Enabled = false;
             txtMaHoaDon.Enabled = false;
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnCancel_Click(object? sender, EventArgs e)
         {
             ResetValues();
@@ -300,7 +317,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnSave.Enabled = false;
             txtMaHoaDon.Enabled = false;
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnSearch_Click(object? sender, EventArgs e)
         {
             txtMaHoaDon.Enabled = true;
@@ -341,7 +360,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             
             btnCancel.Enabled = true;
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnRefresh_Click(object? sender, EventArgs e)
         {
             Load_DataGridView();
@@ -354,7 +375,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnSave.Enabled = false;
             txtMaHoaDon.Enabled = false;
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng chọn một dòng trên bảng (DataGridView). Dữ liệu sẽ được trích xuất và hiển thị ngược lên các ô nhập liệu.
+        /// </summary>
         private void dgvReturns_CellClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (btnAdd.Enabled == false)
@@ -432,7 +455,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             reader.Close();
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnChooseProducts_Click(object? sender, EventArgs e)
         {
 
@@ -455,8 +480,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             lblTotalAmount.Text = total.ToString("N0") + " VNĐ";
         }
-
-  
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng chọn một dòng trên bảng (DataGridView). Dữ liệu sẽ được trích xuất và hiển thị ngược lên các ô nhập liệu.
+        /// </summary>
         private void dgvProductsSelection_CellClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (dtInvoiceDetails == null || dtInvoiceDetails.Rows.Count == 0) return;
@@ -507,6 +533,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 txtSelSoLuong.Focus();
             }
         }
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng chọn một dòng trên bảng (DataGridView). Dữ liệu sẽ được trích xuất và hiển thị ngược lên các ô nhập liệu.
+        /// </summary>
         private void dgvCurrentDetails_CellClick(object? sender, DataGridViewCellEventArgs e)
         {
             if (dtCart.Rows.Count == 0) return;
@@ -526,7 +555,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 btnRemoveFromCart.Enabled = true;
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnAddToCart_Click(object? sender, EventArgs e)
         {
             if (txtSelMaSP.Text.Trim() == "")
@@ -599,7 +630,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             ResetValues1();
             btnAddToCart.Enabled = false;
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnRemoveFromCart_Click(object? sender, EventArgs e)
         {
             if (txtSelMaSP.Text.Trim() == "") return;
@@ -625,12 +658,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 btnRemoveFromCart.Enabled = false;
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnResetCartForm_Click(object? sender, EventArgs e)
         {
 
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnReturnSearch_Click(object? sender, EventArgs e)
         {
             string maHDInput = Microsoft.VisualBasic.Interaction.InputBox("Nhập Mã Hóa Đơn cần trả hàng:", "Tìm kiếm hóa đơn", "");
@@ -672,7 +709,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             MessageBox.Show($"Đã tìm thấy hóa đơn {maHDInput}! Hãy chọn sản phẩm cần trả ở danh sách bên trái.", "Thông báo",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnReturnRefresh_Click(object? sender, EventArgs e)
         {
             ResetValues1();
@@ -765,7 +804,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 }
             }
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnBackToReceipt_Click(object? sender, EventArgs e)
         {
             if (currentMaTraHang == -1)
@@ -826,8 +867,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 MessageBox.Show("Có lỗi xảy ra trong quá trình lưu dữ liệu: " + ex.Message, "Lỗi hệ thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnSelectProduct_Click(object? sender, EventArgs e)
         {
 
@@ -848,7 +890,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtMaHoaDon.Enabled = false;
             Load_DataGridView();
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnEdit_Click(object sender, EventArgs e)
         {
             // Bước 1: Kiểm tra chọn dữ liệu
@@ -979,7 +1023,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             dgvCurrentDetails_CellClick(sender, e);
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnSuaCT_Click(object sender, EventArgs e)
         {
             if (txtSelMaSP.Text.Trim() == "") return;
@@ -1025,7 +1071,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnEdit.Enabled = false;
             btnRemoveFromCart.Enabled = false;
         }
-
+/// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
+        /// </summary>
         private void btnBoquaCT_Click(object sender, EventArgs e)
         {
             btnReturnRefresh_Click(sender, e);

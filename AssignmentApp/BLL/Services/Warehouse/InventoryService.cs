@@ -14,12 +14,16 @@ namespace AssignmentApp.BLL.Services.Warehouse
         {
             _inventoryRepository = inventoryRepository;
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lấy toàn bộ danh sách dữ liệu. Sử dụng bất đồng bộ (Task) để tối ưu hiệu suất và không chặn luồng chính (Main Thread).
+        /// </summary>
         public async Task<IEnumerable<InventoryLog>> GetAllLogsAsync()
         {
             return await _inventoryRepository.GetAllAsync();
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lấy thông tin chi tiết của một bản ghi dựa trên Khóa chính (ID).
+        /// </summary>
         public async Task<InventoryLog> GetLogByIdAsync(int id)
         {
             return await _inventoryRepository.GetByIdAsync(id);
@@ -29,7 +33,9 @@ namespace AssignmentApp.BLL.Services.Warehouse
         {
             return await _inventoryRepository.GetProductStockAsync(productId);
         }
-
+/// <summary>
+        /// [CHI TIẾT] Thêm mới một bản ghi. Trước khi lưu, dữ liệu đã được kiểm duyệt chặt chẽ (Validation) để đảm bảo tính toàn vẹn.
+        /// </summary>
         public async Task<bool> AddLogAsync(InventoryLog log)
         {
             // Kiểm duyệt đầu vào (validation) đã được thực hiện phần lớn ở GUI (để tiện báo lỗi các ô),
@@ -48,7 +54,9 @@ namespace AssignmentApp.BLL.Services.Warehouse
 
             return await _inventoryRepository.AddWithTransactionAsync(log);
         }
-
+/// <summary>
+        /// [CHI TIẾT] Cập nhật thông tin của bản ghi hiện có. Sử dụng Parameterized Query để bảo mật dữ liệu.
+        /// </summary>
         public async Task<bool> UpdateLogAsync(InventoryLog newLog)
         {
             var oldLog = await _inventoryRepository.GetByIdAsync(newLog.MaLichSu);
@@ -85,7 +93,9 @@ namespace AssignmentApp.BLL.Services.Warehouse
 
             return await _inventoryRepository.UpdateWithTransactionAsync(newLog, oldLog);
         }
-
+/// <summary>
+        /// [CHI TIẾT] Xóa bản ghi khỏi cơ sở dữ liệu dựa vào Khóa chính. Hành động này sẽ thay đổi trạng thái hoặc xóa vĩnh viễn (tùy nghiệp vụ).
+        /// </summary>
         public async Task<bool> DeleteLogAsync(int id)
         {
             var oldLog = await _inventoryRepository.GetByIdAsync(id);
@@ -103,7 +113,9 @@ namespace AssignmentApp.BLL.Services.Warehouse
 
             return await _inventoryRepository.DeleteWithTransactionAsync(oldLog);
         }
-
+/// <summary>
+        /// [CHI TIẾT] Lọc và tìm kiếm dữ liệu dựa trên các tiêu chí đầu vào. Hỗ trợ tìm kiếm tương đối (LIKE) và bảo mật tham số.
+        /// </summary>
         public async Task<IEnumerable<InventoryLog>> SearchLogsAsync(string idTerm, string refTerm, string productTerm, string typeTerm, string statusTerm)
         {
             return await _inventoryRepository.SearchAsync(idTerm, refTerm, productTerm, typeTerm, statusTerm);

@@ -1,8 +1,12 @@
 using AssignmentApp.DAL.Core;
 using System;
-using System.Data;
+using System.ComponentModel;
+using System.Collections.Generic;
 using System.Windows.Forms;
-using Microsoft.Data.SqlClient;
+using System.Linq;
+using AssignmentApp.DTO;
+using AssignmentApp.BLL.Services.Sales;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace AssignmentApp.GUI.UserControls.Sales
 {
@@ -11,11 +15,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
         #region 1. KHAI BÁO BIẾN & KHỞI TẠO (DÙNG CHUNG)
     
         // Bảng dữ liệu chứa danh sách các phiếu trả hàng
-        DataTable dtReturn;        
+        BindingList<Return> listReturn;        
         // Bảng dữ liệu chứa danh sách chi tiết sản phẩm của hóa đơn gốc
-        DataTable dtInvoiceDetails; 
+        BindingList<ReturnInvoiceProduct> listInvoiceDetails; 
         // Bảng dữ liệu đóng vai trò như 'Giỏ hàng' chứa các sản phẩm được chọn để trả
-        DataTable dtCart;           
+        BindingList<ReturnDetail> listCart;           
+        
+        private readonly IReturnService _returnService;
 
         // Biến lưu trữ mã của Phiếu Trả Hàng đang được thao tác (nếu = 0 nghĩa là chưa chọn phiếu nào)
         int maTraHangHienTai = 0;  
@@ -35,6 +41,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             // Lệnh bắt buộc để vẽ các thành phần giao diện (nút, bảng, chữ,...)
             InitializeComponent();
+            
+            if (Program.ServiceProvider != null)
+                _returnService = Program.ServiceProvider.GetRequiredService<IReturnService>();
             
             // Đăng ký sự kiện: Khi người dùng đổi ngày trả hàng thì gọi hàm dtpNgayTra_ValueChanged
             dtpNgayTra.ValueChanged += dtpNgayTra_ValueChanged;
@@ -74,26 +83,22 @@ namespace AssignmentApp.GUI.UserControls.Sales
         // Hàm khởi tạo giỏ hàng (Chỉ tạo cấu trúc các cột, chưa có dữ liệu)
         private void KhoiTaoGioHang()
         {
-            dtCart = new DataTable();
-            // Khai báo các cột cho bảng giỏ hàng với kiểu dữ liệu tương ứng (int, string, decimal)
-            dtCart.Columns.Add("colCurMaSP", typeof(int));
-            dtCart.Columns.Add("colCurTenSP", typeof(string));
-            dtCart.Columns.Add("colCurSoLuong", typeof(int));
-            dtCart.Columns.Add("colCurDonGia", typeof(decimal));
-            dtCart.Columns.Add("colCurTinhTrang", typeof(string));
-            // Cột Thành tiền tự động tính bằng Số lượng x Đơn giá
-            dtCart.Columns.Add("colCurThanhTien", typeof(decimal), "colCurSoLuong * colCurDonGia");
+            listCart = new BindingList<ReturnDetail>();
 
             // Liên kết các cột vừa tạo vào các cột trên giao diện DataGridView (Bảng bên phải ở Tab 2)
-            colCurMaSP.DataPropertyName = "colCurMaSP";
-            colCurTenSP.DataPropertyName = "colCurTenSP";
-            colCurSoLuong.DataPropertyName = "colCurSoLuong";
-            colCurDonGia.DataPropertyName = "colCurDonGia";
-            colCurTinhTrang.DataPropertyName = "colCurTinhTrang";
-            colCurThanhTien.DataPropertyName = "colCurThanhTien";
+            colCurMaSP.DataPropertyName = "MaSanPham";
+            colCurTenSP.DataPropertyName = "TenSanPham";
+            colCurSoLuong.DataPropertyName = "SoLuong";
+            colCurDonGia.DataPropertyName = "DonGia";
+            colCurTinhTrang.DataPropertyName = "TinhTrang";
+            
+            // Note: DataGridView needs CellFormatting or a calculated property for ThanhTien if not mapped directly.
+            // BindingList won't auto-calculate an expression column like DataTable did.
+            // We will calculate it in code or DataGridView CellFormatting.
+            colCurThanhTien.DataPropertyName = "TienHoan";
 
             dgvCurrentDetails.AutoGenerateColumns = false; // Tắt tự động sinh cột để dùng cột mình tự cấu hình
-            dgvCurrentDetails.DataSource = dtCart;         // Đổ dữ liệu của dtCart vào bảng
+            dgvCurrentDetails.DataSource = listCart;         // Đổ dữ liệu của dtCart vào bảng
             dgvCurrentDetails.AllowUserToAddRows = false;  // Không cho người dùng tự gõ thêm hàng trống vào cuối bảng
         }
 
@@ -210,46 +215,23 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblTotalAmount.Text = "TỔNG TIỀN HOÀN TRẢ TẠM TÍNH: 0 đ";
 
             // Xóa sạch giỏ hàng tạm
-            if (dtCart != null)
-                dtCart.Rows.Clear();
+            if (listCart != null)
+                listCart.Clear();
 
             // Xóa sạch danh sách sản phẩm hiển thị của hóa đơn gốc
-            if (dtInvoiceDetails != null)
-                dtInvoiceDetails.Rows.Clear();
+            if (listInvoiceDetails != null)
+                listInvoiceDetails.Clear();
 
             lblReturnTitle.Text = "MÃ PHIẾU: ";
         }
 
    
         // Hàm tải toàn bộ danh sách Phiếu trả hàng từ SQL Database lên bảng (Grid)
-        private void NapDanhSachPhieu()
+        private async void NapDanhSachPhieu()
         {
-            // Câu lệnh SQL: Lấy thông tin phiếu trả, join với các bảng khác để lấy tên nhân viên, khách hàng
-            string sql = @"
-                SELECT 
-                    th.MaTraHang,
-                    th.MaHoaDon,
-                    th.TrangThai,
-                    th.LoaiGiaoDich,
-                    th.TongTienHoan,
-                    nd.TenNguoiDung AS NhanVien,
-                    th.NgayTra,
-                    th.LyDo,
-                    kh.TenKhachHang AS KhachHang
-                FROM TraHang th
-                JOIN NguoiDung  nd ON th.MaNguoiDung = nd.MaNguoiDung
-                JOIN HoaDon     hd ON th.MaHoaDon    = hd.MaHoaDon
-                JOIN KhachHang  kh ON hd.MaKhachHang = kh.MaKhachHang
-                ORDER BY th.MaTraHang DESC"; // Sắp xếp phiếu mới nhất lên đầu
-
-            // Kiểm tra kết nối Database, nếu đóng thì mở ra
-            if (DbContext.Conn.State == ConnectionState.Closed)
-                DbContext.Ketnoi();
-
-            // Dùng DataAdapter để kéo dữ liệu từ SQL về
-            SqlDataAdapter da = new SqlDataAdapter(sql, (SqlConnection)DbContext.Conn);
-            dtReturn = new DataTable();
-            da.Fill(dtReturn); // Đổ dữ liệu vào bảng dtReturn
+            if (_returnService == null) return;
+            var returns = await _returnService.GetAllReturnsAsync();
+            listReturn = new BindingList<Return>(new List<Return>(returns));
 
             // Gắn các cột dữ liệu vào giao diện bảng (Grid)
             colMaTraHang.DataPropertyName = "MaTraHang";
@@ -262,39 +244,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colLyDo.DataPropertyName = "LyDo";
 
             dgvReturns.AutoGenerateColumns = false;
-            dgvReturns.DataSource = dtReturn;
+            dgvReturns.DataSource = listReturn;
         }
 
     
-        private void NapSanPhamHoaDon(int maHoaDon)
+        private async void NapSanPhamHoaDon(int maHoaDon)
         {
-            
-            string sql = @"
-                SELECT 
-                    cthd.MaSanPham,
-                    sp.TenSanPham,
-                    cthd.SoLuong     AS SLMua,
-                    ISNULL(SUM(ctth.SoLuong), 0) AS DaTra,
-                    cthd.DonGia,
-                    sp.Anh
-                FROM ChiTietHoaDon cthd
-                JOIN SanPham sp ON cthd.MaSanPham = sp.MaSanPham
-                LEFT JOIN ChiTietTraHang ctth ON ctth.MaSanPham = cthd.MaSanPham
-                    AND ctth.MaTraHang IN (
-                        SELECT MaTraHang FROM TraHang WHERE MaHoaDon = @mahd
-                    )
-                WHERE cthd.MaHoaDon = @mahd
-                GROUP BY cthd.MaSanPham, sp.TenSanPham, cthd.SoLuong, cthd.DonGia, sp.Anh";
-
-            if (DbContext.Conn.State == ConnectionState.Closed)
-                DbContext.Ketnoi();
-
-            SqlDataAdapter da = new SqlDataAdapter(sql, (SqlConnection)DbContext.Conn);
-            da.SelectCommand.Parameters.AddWithValue("@mahd", maHoaDon);
-
-            dtInvoiceDetails = new DataTable();
-            da.Fill(dtInvoiceDetails);
-
+            if (_returnService == null) return;
+            var products = await _returnService.GetInvoiceProductsAsync(maHoaDon);
+            listInvoiceDetails = new BindingList<ReturnInvoiceProduct>(new List<ReturnInvoiceProduct>(products));
         
             colSelMaSP.DataPropertyName = "MaSanPham";
             colSelTenSP.DataPropertyName = "TenSanPham";
@@ -303,17 +261,19 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colSelDonGia.DataPropertyName = "DonGia";
 
             dgvProductsSelection.AutoGenerateColumns = false;
-            dgvProductsSelection.DataSource = dtInvoiceDetails;
+            dgvProductsSelection.DataSource = listInvoiceDetails;
         }
 
      
         private void TinhTongTienHoanTra()
         {
             decimal tongTien = 0;
-            for (int i = 0; i < dtCart.Rows.Count; i++)
+            if (listCart != null)
             {
-                if (dtCart.Rows[i]["colCurThanhTien"] != DBNull.Value)
-                    tongTien += Convert.ToDecimal(dtCart.Rows[i]["colCurThanhTien"]);
+                foreach (var item in listCart)
+                {
+                    tongTien += item.TienHoan;
+                }
             }
             lblTotalAmount.Text = "TỔNG TIỀN HOÀN TRẢ TẠM TÍNH: " + tongTien.ToString("N0") + " đ";
         }
@@ -331,21 +291,21 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
-            if (e.RowIndex < 0 || dtReturn == null || dtReturn.Rows.Count == 0) return;
+            if (e.RowIndex < 0 || listReturn == null || listReturn.Count == 0) return;
 
          
-            DataRow dong = dtReturn.Rows[e.RowIndex];
+            var dong = listReturn[e.RowIndex];
 
-            txtMaHoaDon.Text = dong["MaHoaDon"].ToString();
-            txtLyDo.Text = dong["LyDo"].ToString();
-            txtTongTienHoan.Text = Convert.ToDecimal(dong["TongTienHoan"]).ToString("N0") + " đ";
-            dtpNgayTra.Value = Convert.ToDateTime(dong["NgayTra"]);
-            txtNhanVien.Text = dong["NhanVien"].ToString();
-            txtKhachHang.Text = dong["KhachHang"].ToString();
+            txtMaHoaDon.Text = dong.MaHoaDon.ToString();
+            txtLyDo.Text = dong.LyDo;
+            txtTongTienHoan.Text = dong.TongTienHoan.ToString("N0") + " đ";
+            dtpNgayTra.Value = dong.NgayTra;
+            txtNhanVien.Text = dong.NhanVien;
+            txtKhachHang.Text = dong.KhachHang;
 
         
-            string trangThai = dong["TrangThai"].ToString().Trim();
-            string loaiGD = dong["LoaiGiaoDich"].ToString().Trim();
+            string trangThai = dong.TrangThai.Trim();
+            string loaiGD = dong.LoaiGiaoDich.Trim();
 
             cboTrangThai.SelectedIndex = -1;
             for (int i = 0; i < cboTrangThai.Items.Count; i++)
@@ -361,8 +321,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 { cboLoaiGiaoDich.SelectedIndex = i; break; }
             }
 
-            maTraHangHienTai = Convert.ToInt32(dong["MaTraHang"]);
-            int maHoaDonChon = Convert.ToInt32(dong["MaHoaDon"]);
+            maTraHangHienTai = dong.MaTraHang;
+            int maHoaDonChon = dong.MaHoaDon;
             lblReturnTitle.Text = "MÃ PHIẾU: " + maTraHangHienTai;
 
             KhoaONhapTab0(false);
@@ -409,60 +369,23 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
     
-        private void NapChiTietDaTra(int maTraHang)
+        private async void NapChiTietDaTra(int maTraHang)
         {
+            if (listCart != null)
+                listCart.Clear();
+
+            if (_returnService == null) return;
+            var details = await _returnService.GetReturnDetailsAsync(maTraHang);
             
-            if (dtCart != null)
-                dtCart.Rows.Clear();
-
-            string sql = @"
-                SELECT 
-                    ctth.MaSanPham,
-                    sp.TenSanPham,
-                    ctth.SoLuong,
-                    ctth.TienHoan,
-                    ctth.TinhTrang
-                FROM ChiTietTraHang ctth
-                JOIN SanPham sp ON ctth.MaSanPham = sp.MaSanPham
-                WHERE ctth.MaTraHang = @matrahang";
-
-            if (DbContext.Conn.State == ConnectionState.Closed)
-                DbContext.Ketnoi();
-
-            SqlDataAdapter da = new SqlDataAdapter(sql, (SqlConnection)DbContext.Conn);
-            da.SelectCommand.Parameters.AddWithValue("@matrahang", maTraHang);
-
-            DataTable dtChiTiet = new DataTable();
-            da.Fill(dtChiTiet);
-
-            for (int i = 0; i < dtChiTiet.Rows.Count; i++)
+            foreach (var d in details)
             {
-                DataRow nguon = dtChiTiet.Rows[i];
-                int soLuong = Convert.ToInt32(nguon["SoLuong"]);
-                decimal tienHoan = Convert.ToDecimal(nguon["TienHoan"]);
-                decimal donGia = 0;
-                if (soLuong > 0)
-                {
-                    donGia = tienHoan / soLuong;
-                }
-                else
-                {
-                    donGia = 0;
-                }
-
-                DataRow dongMoi = dtCart.NewRow();
-                dongMoi["colCurMaSP"] = Convert.ToInt32(nguon["MaSanPham"]);
-                dongMoi["colCurTenSP"] = nguon["TenSanPham"].ToString();
-                dongMoi["colCurSoLuong"] = soLuong;
-                dongMoi["colCurDonGia"] = donGia;
-                dongMoi["colCurTinhTrang"] = nguon["TinhTrang"].ToString();
-                dtCart.Rows.Add(dongMoi);
+                listCart.Add(d);
             }
 
             TinhTongTienHoanTra();
         }
 
-        private void txtMaHoaDon_Leave(object sender, EventArgs e)
+        private async void txtMaHoaDon_Leave(object sender, EventArgs e)
         {
             if (txtMaHoaDon.Text.Trim() == "") return;
 
@@ -474,31 +397,22 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
-            string sql = @"
-                SELECT kh.TenKhachHang
-                FROM   HoaDon    hd
-                JOIN   KhachHang kh ON hd.MaKhachHang = kh.MaKhachHang
-                WHERE  hd.MaHoaDon = @mahd";
+            if (_returnService == null) return;
+            string khachHang = await _returnService.GetCustomerNameByInvoiceAsync(maHD);
 
-            SqlCommand cmd = new SqlCommand(sql, (SqlConnection)DbContext.Conn);
-            cmd.Parameters.AddWithValue("@mahd", maHD);
-            SqlDataReader reader = cmd.ExecuteReader();
-
-            if (reader.Read())
+            if (!string.IsNullOrEmpty(khachHang))
             {
                 if (AssignmentApp.BLL.Session.UserSession.CurrentUser != null)
                     txtNhanVien.Text = AssignmentApp.BLL.Session.UserSession.CurrentUser.TenNguoiDung;
                 else
                     txtNhanVien.Text = "(Không rõ)";
 
-                txtKhachHang.Text = reader["TenKhachHang"].ToString();
+                txtKhachHang.Text = khachHang;
 
-                reader.Close();
                 NapSanPhamHoaDon(maHD);
             }
             else
             {
-                reader.Close();
                 MessageBox.Show("Không tìm thấy hóa đơn số " + maHD + "!", "Cảnh báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 txtNhanVien.Text = "(Không tìm thấy)";
@@ -516,7 +430,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
        
-        private void btnEdit_Click(object sender, EventArgs e)
+        private async void btnEdit_Click(object sender, EventArgs e)
         {
             if (maTraHangHienTai == 0)
             {
@@ -525,17 +439,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
-            if (DbContext.Conn.State == ConnectionState.Closed)
-                DbContext.Ketnoi();
+            if (_returnService == null) return;
 
-            string sqlCheck = "SELECT TrangThai FROM TraHang WHERE MaTraHang = @matrahang";
-            SqlCommand cmdCheck = new SqlCommand(sqlCheck, (SqlConnection)DbContext.Conn);
-            cmdCheck.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
-            string trangThaiHienTai = cmdCheck.ExecuteScalar()?.ToString();
-
-            if (trangThaiHienTai == "Hoàn thành" || trangThaiHienTai == "Đã hủy")
+            if (cboTrangThai.Text == "Hoàn thành" || cboTrangThai.Text == "Đã hủy")
             {
-                MessageBox.Show("Phiếu trả đã '" + trangThaiHienTai + "', không thể sửa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Phiếu trả đã '" + cboTrangThai.Text + "', không thể sửa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -548,22 +456,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
-            if (DbContext.Conn.State == ConnectionState.Closed)
-                DbContext.Ketnoi();
-
-            string sqlUpdate = @"
-                UPDATE TraHang SET
-                    LyDo         = @lydo,
-                    LoaiGiaoDich = @loaigd,
-                    TrangThai    = @trangthai
-                WHERE MaTraHang = @matrahang";
-
-            SqlCommand cmdUpdate = new SqlCommand(sqlUpdate, (SqlConnection)DbContext.Conn);
-            cmdUpdate.Parameters.AddWithValue("@lydo", txtLyDo.Text.Trim());
-            cmdUpdate.Parameters.AddWithValue("@loaigd", cboLoaiGiaoDich.Text.Trim());
-            cmdUpdate.Parameters.AddWithValue("@trangthai", cboTrangThai.Text.Trim());
-            cmdUpdate.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
-            cmdUpdate.ExecuteNonQuery();
+            var r = new Return { MaTraHang = maTraHangHienTai, LyDo = txtLyDo.Text.Trim(), LoaiGiaoDich = cboLoaiGiaoDich.Text.Trim(), TrangThai = cboTrangThai.Text.Trim() };
+            await _returnService.UpdateReturnAsync(r);
 
             MessageBox.Show("Cập nhật phiếu trả thành công!", "Thông báo",
                 MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -572,8 +466,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             SetTrangThaiBanDau();
         }
 
-       
-        private void btnDelete_Click(object sender, EventArgs e)
+        private async void btnDelete_Click(object sender, EventArgs e)
         {
             if (maTraHangHienTai == 0)
             {
@@ -582,17 +475,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
-            if (DbContext.Conn.State == ConnectionState.Closed)
-                DbContext.Ketnoi();
+            if (_returnService == null) return;
 
-            string sqlCheck = "SELECT TrangThai FROM TraHang WHERE MaTraHang = @matrahang";
-            SqlCommand cmdCheck = new SqlCommand(sqlCheck, (SqlConnection)DbContext.Conn);
-            cmdCheck.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
-            string trangThaiHienTai = cmdCheck.ExecuteScalar()?.ToString();
-
-            if (trangThaiHienTai == "Hoàn thành" || trangThaiHienTai == "Đã hủy")
+            if (cboTrangThai.Text == "Hoàn thành" || cboTrangThai.Text == "Đã hủy")
             {
-                MessageBox.Show("Phiếu trả đã '" + trangThaiHienTai + "', không thể xóa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Phiếu trả đã '" + cboTrangThai.Text + "', không thể xóa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -601,15 +488,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 "Xác nhận hủy phiếu", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
                 return;
 
-            if (DbContext.Conn.State == ConnectionState.Closed)
-                DbContext.Ketnoi();
-
             try
             {
-                string sqlUpdate = "UPDATE TraHang SET TrangThai = N'Đã hủy' WHERE MaTraHang = @matrahang";
-                SqlCommand cmd = new SqlCommand(sqlUpdate, (SqlConnection)DbContext.Conn);
-                cmd.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
-                cmd.ExecuteNonQuery();
+                var r = new Return { MaTraHang = maTraHangHienTai, LyDo = txtLyDo.Text.Trim(), LoaiGiaoDich = cboLoaiGiaoDich.Text.Trim(), TrangThai = "Đã hủy" };
+                await _returnService.UpdateReturnAsync(r);
 
                 MessageBox.Show("Hủy phiếu trả thành công!", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -626,7 +508,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
       
         // Hàm xử lý sự kiện khi bấm nút Lưu ở Tab 1 (Dùng để Tạo mới phiếu trả)
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
             // Bước 1: Kiểm tra dữ liệu đầu vào (Validate)
             if (txtMaHoaDon.Text.Trim() == "")
@@ -652,7 +534,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
-
             if (cboLoaiGiaoDich.Text.Trim() == "")
             {
                 MessageBox.Show("Vui lòng chọn loại giao dịch!", "Cảnh báo",
@@ -668,48 +549,50 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
-            // Bước 3: Mở kết nối Database
-            if (DbContext.Conn.State == ConnectionState.Closed)
-                DbContext.Ketnoi();
+            if (_returnService == null) return;
 
-            // Bước 4: Tạo câu lệnh SQL Insert (Thêm phiếu mới vào bảng TraHang)
-            string sqlInsert = @"
-                INSERT INTO TraHang (MaHoaDon, MaNguoiDung, LyDo, TongTienHoan, NgayTra, TrangThai, LoaiGiaoDich)
-                VALUES (@mahd, @manguoidung, @lydo, 0, GETDATE(), @trangthai, @loaigd);
-                SELECT SCOPE_IDENTITY();"; // SCOPE_IDENTITY() trả về ID của phiếu vừa được tạo
+            var returnObj = new Return
+            {
+                MaHoaDon = maHD,
+                MaNguoiDung = AssignmentApp.BLL.Session.UserSession.CurrentUser.MaNguoiDung,
+                LyDo = txtLyDo.Text.Trim(),
+                TongTienHoan = 0,
+                NgayTra = DateTime.Now,
+                TrangThai = cboTrangThai.Text.Trim(),
+                LoaiGiaoDich = cboLoaiGiaoDich.Text.Trim()
+            };
 
-            SqlCommand cmdInsert = new SqlCommand(sqlInsert, (SqlConnection)DbContext.Conn);
-            cmdInsert.Parameters.AddWithValue("@mahd", maHD);
-            cmdInsert.Parameters.AddWithValue("@manguoidung", AssignmentApp.BLL.Session.UserSession.CurrentUser.MaNguoiDung);
-            cmdInsert.Parameters.AddWithValue("@lydo", txtLyDo.Text.Trim());
-            cmdInsert.Parameters.AddWithValue("@trangthai", cboTrangThai.Text.Trim());
-            cmdInsert.Parameters.AddWithValue("@loaigd", cboLoaiGiaoDich.Text.Trim());
+            try 
+            {
+                int newMaTraHang = await _returnService.CreateReturnAsync(returnObj);
 
-            // Thực thi và lưu lại Mã Phiếu vừa tạo vào biến maTraHangHienTai
-            int newMaTraHang = Convert.ToInt32(cmdInsert.ExecuteScalar());
+                MessageBox.Show(
+                    "Đã khởi tạo phiếu trả #" + newMaTraHang + " thành công!\n" +
+                    "Vui lòng chuyển sang Tab 'Chọn sản phẩm trả' để tiếp tục.",
+                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-            MessageBox.Show(
-                "Đã khởi tạo phiếu trả #" + newMaTraHang + " thành công!\n" +
-                "Vui lòng chuyển sang Tab 'Chọn sản phẩm trả' để tiếp tục.",
-                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Bước 5: Cập nhật lại giao diện
+                NapDanhSachPhieu(); // Tải lại danh sách để phiếu mới hiện lên grid
+                SetTrangThaiBanDau(); // Reset form
+                
+                // Giữ nguyên phiếu vừa tạo để thao tác tiếp
+                maTraHangHienTai = newMaTraHang;
+                cboTrangThai.Text = "Đang xử lý";
+                KhoaONhapTab0(false); // Mở khóa các ô nhập
 
-            // Bước 5: Cập nhật lại giao diện
-            NapDanhSachPhieu(); // Tải lại danh sách để phiếu mới hiện lên grid
-            SetTrangThaiBanDau(); // Reset form
-            
-            // Giữ nguyên phiếu vừa tạo để thao tác tiếp
-            maTraHangHienTai = newMaTraHang;
-            cboTrangThai.Text = "Đang xử lý";
-            KhoaONhapTab0(false); // Mở khóa các ô nhập
+                // Hiển thị tiêu đề phiếu bên Tab 2
+                lblReturnTitle.Text = "MÃ PHIẾU: " + maTraHangHienTai;
+                // Tải danh sách sản phẩm thuộc hóa đơn này lên Tab 2
+                NapSanPhamHoaDon(maHD); 
+                KhoaTab1(false); // Mở khóa các nút bên Tab 2
 
-            // Hiển thị tiêu đề phiếu bên Tab 2
-            lblReturnTitle.Text = "MÃ PHIẾU: " + maTraHangHienTai;
-            // Tải danh sách sản phẩm thuộc hóa đơn này lên Tab 2
-            NapSanPhamHoaDon(maHD); 
-            KhoaTab1(false); // Mở khóa các nút bên Tab 2
-
-            // Bước 6: Tự động chuyển sang Tab 2 để chọn sản phẩm
-            tabMain.SelectedIndex = 1;
+                // Bước 6: Tự động chuyển sang Tab 2 để chọn sản phẩm
+                tabMain.SelectedIndex = 1;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi thêm phiếu: " + ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
      
@@ -719,7 +602,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             NapDanhSachPhieu();
         }
 
-        private void btnSearch_Click(object sender, EventArgs e)
+        private async void btnSearch_Click(object sender, EventArgs e)
         {
             if (btnAdd.Enabled || btnEdit.Enabled || btnDelete.Enabled || btnSave.Enabled || btnCancel.Enabled)
             {
@@ -773,63 +656,31 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
-            string sql = @"
-                SELECT 
-                    th.MaTraHang, th.MaHoaDon, th.TrangThai, th.LoaiGiaoDich,
-                    th.TongTienHoan, nd.TenNguoiDung AS NhanVien,
-                    th.NgayTra, th.LyDo, kh.TenKhachHang AS KhachHang
-                FROM TraHang th
-                JOIN NguoiDung nd ON th.MaNguoiDung = nd.MaNguoiDung
-                JOIN HoaDon    hd ON th.MaHoaDon    = hd.MaHoaDon
-                JOIN KhachHang kh ON hd.MaKhachHang = kh.MaKhachHang
-                WHERE 1=1 ";
-
-            if (maHD != "") sql += " AND (th.MaHoaDon LIKE @mahd OR th.MaTraHang LIKE @mahd) ";
-            if (khach != "") sql += " AND kh.TenKhachHang LIKE @khach ";
-            if (nhanVien != "") sql += " AND nd.TenNguoiDung LIKE @nhanVien ";
-            if (lydo != "") sql += " AND th.LyDo LIKE @lydo ";
-            if (cboTrangThai.SelectedIndex != -1) sql += " AND th.TrangThai = @trangthai ";
-            if (cboLoaiGiaoDich.SelectedIndex != -1) sql += " AND th.LoaiGiaoDich = @loaigd ";
-            
-            if (tongTienStr != "" && tongTienStr != "0")
-            {
-                if (decimal.TryParse(tongTienStr, out decimal tien))
-                    sql += " AND th.TongTienHoan = @tien ";
-            }
-
-            if (dtpNgayTra.Format != DateTimePickerFormat.Custom)
-            {
-                sql += " AND CAST(th.NgayTra AS DATE) = @ngaytra ";
-            }
-
-            if (DbContext.Conn.State == ConnectionState.Closed)
-                DbContext.Ketnoi();
-
-            SqlDataAdapter da = new SqlDataAdapter(sql, (SqlConnection)DbContext.Conn);
-            if (maHD != "") da.SelectCommand.Parameters.AddWithValue("@mahd", "%" + maHD + "%");
-            if (khach != "") da.SelectCommand.Parameters.AddWithValue("@khach", "%" + khach + "%");
-            if (nhanVien != "") da.SelectCommand.Parameters.AddWithValue("@nhanVien", "%" + nhanVien + "%");
-            if (lydo != "") da.SelectCommand.Parameters.AddWithValue("@lydo", "%" + lydo + "%");
-            if (cboTrangThai.SelectedIndex != -1) da.SelectCommand.Parameters.AddWithValue("@trangthai", cboTrangThai.Text);
-            if (cboLoaiGiaoDich.SelectedIndex != -1) da.SelectCommand.Parameters.AddWithValue("@loaigd", cboLoaiGiaoDich.Text);
-            
+            decimal? tongTien = null;
             if (tongTienStr != "" && tongTienStr != "0" && decimal.TryParse(tongTienStr, out decimal t))
-                da.SelectCommand.Parameters.AddWithValue("@tien", t);
-                
+            {
+                tongTien = t;
+            }
+
+            DateTime? ngayTra = null;
             if (dtpNgayTra.Format != DateTimePickerFormat.Custom)
-                da.SelectCommand.Parameters.AddWithValue("@ngaytra", dtpNgayTra.Value.Date);
+            {
+                ngayTra = dtpNgayTra.Value.Date;
+            }
 
-            DataTable dtSearch = new DataTable();
-            da.Fill(dtSearch);
+            if (_returnService == null) return;
+            var searchResults = await _returnService.SearchReturnsAsync(maHD, khach, nhanVien, lydo, cboTrangThai.Text, cboLoaiGiaoDich.Text, tongTien, ngayTra);
 
-            if (dtSearch.Rows.Count == 0)
+            listReturn = new BindingList<Return>(new List<Return>(searchResults));
+
+            if (listReturn.Count == 0)
             {
                 MessageBox.Show("Không tìm thấy phiếu trả phù hợp!", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            dgvReturns.DataSource = dtSearch;
+            dgvReturns.DataSource = listReturn;
         }
 
      
@@ -845,19 +696,19 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private void dgvProductsSelection_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dtInvoiceDetails == null || dtInvoiceDetails.Rows.Count == 0) return;
+            if (listInvoiceDetails == null || listInvoiceDetails.Count == 0) return;
             if (e.RowIndex < 0) return;
 
-            DataRowView rowView = (DataRowView)dgvProductsSelection.Rows[e.RowIndex].DataBoundItem;
+            var rowView = listInvoiceDetails[e.RowIndex];
 
-            txtSelMaSP.Text = rowView["MaSanPham"].ToString();
-            txtSelTenSP.Text = rowView["TenSanPham"].ToString();
-            txtSelDonGia.Text = rowView["DonGia"].ToString();
+            txtSelMaSP.Text = rowView.MaSanPham.ToString();
+            txtSelTenSP.Text = rowView.TenSanPham;
+            txtSelDonGia.Text = rowView.DonGia.ToString();
             txtSelSoLuong.Text = "";
             txtSelTinhTrang.Text = "";
 
          
-            string tenAnh = rowView["Anh"]?.ToString();
+            string tenAnh = rowView.Anh;
             if (tenAnh != null && tenAnh != "")
             {
                 string duongDan1 = System.IO.Path.Combine(Application.StartupPath, "GUI", "Resources", tenAnh);
@@ -895,15 +746,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
    
         private void dgvCurrentDetails_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dtCart == null || dtCart.Rows.Count == 0) return;
+            if (listCart == null || listCart.Count == 0) return;
             if (e.RowIndex < 0) return;
 
-            DataGridViewRow dong = dgvCurrentDetails.Rows[e.RowIndex];
-            txtSelMaSP.Text = dong.Cells["colCurMaSP"].Value?.ToString();
-            txtSelTenSP.Text = dong.Cells["colCurTenSP"].Value?.ToString();
-            txtSelSoLuong.Text = dong.Cells["colCurSoLuong"].Value?.ToString();
-            txtSelDonGia.Text = dong.Cells["colCurDonGia"].Value?.ToString();
-            txtSelTinhTrang.Text = dong.Cells["colCurTinhTrang"].Value?.ToString();
+            var dong = listCart[e.RowIndex];
+            txtSelMaSP.Text = dong.MaSanPham.ToString();
+            txtSelTenSP.Text = dong.TenSanPham;
+            txtSelSoLuong.Text = dong.SoLuong.ToString();
+            txtSelDonGia.Text = dong.DonGia.ToString();
+            txtSelTinhTrang.Text = dong.TinhTrang;
             
             // State management
             if (maTraHangHienTai != 0)
@@ -949,12 +800,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // Bước 2: Lấy số lượng đã mua và đã trả trước đó để đối chiếu
             int slMua = 0;
             int slDaTra = 0;
-            foreach (DataRow row in dtInvoiceDetails.Rows)
+            foreach (var row in listInvoiceDetails)
             {
-                if (Convert.ToInt32(row["MaSanPham"]) == maSP)
+                if (row.MaSanPham == maSP)
                 {
-                    slMua = Convert.ToInt32(row["SLMua"]);
-                    slDaTra = Convert.ToInt32(row["DaTra"]);
+                    slMua = row.SLMua;
+                    slDaTra = row.DaTra;
                     break;
                 }
             }
@@ -964,12 +815,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             // Bước 3: Kiểm tra xem sản phẩm này đã có trong giỏ hàng tạm chưa
             bool daCoTrong = false;
-            foreach (DataRow r in dtCart.Rows)
+            foreach (var r in listCart)
             {
-                if (Convert.ToInt32(r["colCurMaSP"]) == maSP)
+                if (r.MaSanPham == maSP)
                 {
                     daCoTrong = true;
-                    int slCu = Convert.ToInt32(r["colCurSoLuong"]);
+                    int slCu = r.SoLuong;
                     int tongSLSauKhiThem = slCu + soLuongTra;
 
                     // Nếu tổng số lượng đòi trả vượt quá số lượng được phép trả -> Báo lỗi
@@ -982,8 +833,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     }
                     
                     // Cập nhật số lượng và tình trạng mới
-                    r["colCurSoLuong"] = tongSLSauKhiThem;
-                    r["colCurTinhTrang"] = txtSelTinhTrang.Text.Trim();
+                    r.SoLuong = tongSLSauKhiThem;
+                    r.TinhTrang = txtSelTinhTrang.Text.Trim();
+                    r.TienHoan = r.SoLuong * r.DonGia;
                     break;
                 }
             }
@@ -999,14 +851,20 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // Bước 4: Thêm vào giỏ hàng nếu hợp lệ
             if (!daCoTrong)
             {
-                DataRow dongMoi = dtCart.NewRow();
-                dongMoi["colCurMaSP"] = maSP;
-                dongMoi["colCurTenSP"] = txtSelTenSP.Text.Trim();
-                dongMoi["colCurSoLuong"] = soLuongTra;
-                dongMoi["colCurDonGia"] = donGia;
-                dongMoi["colCurTinhTrang"] = txtSelTinhTrang.Text.Trim();
-                dtCart.Rows.Add(dongMoi); // Đẩy dòng mới vào bảng giỏ hàng
+                var newDetail = new ReturnDetail
+                {
+                    MaSanPham = maSP,
+                    TenSanPham = txtSelTenSP.Text.Trim(),
+                    SoLuong = soLuongTra,
+                    DonGia = donGia,
+                    TinhTrang = txtSelTinhTrang.Text.Trim(),
+                    TienHoan = soLuongTra * donGia
+                };
+                listCart.Add(newDetail);
             }
+
+            // Đảm bảo UI update
+            listCart.ResetBindings();
 
             // Bật nút Lưu thay đổi
             btnLuuCT.Enabled = true;
@@ -1042,15 +900,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
             int maSP = int.Parse(txtSelMaSP.Text.Trim());
 
           
-            for (int i = dtCart.Rows.Count - 1; i >= 0; i--)
+            for (int i = listCart.Count - 1; i >= 0; i--)
             {
-                if (Convert.ToInt32(dtCart.Rows[i]["colCurMaSP"]) == maSP)
+                if (listCart[i].MaSanPham == maSP)
                 {
-                    dtCart.Rows[i].Delete();
+                    listCart.RemoveAt(i);
                     break;
                 }
             }
-            dtCart.AcceptChanges();
 
             isCartModified = true;
             btnLuuCT.Enabled = true;
@@ -1069,7 +926,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         // Hàm xử lý khi bấm nút "Hoàn tất & Trở về"
         private void btnBackToReceipt_Click(object sender, EventArgs e)
         {
-            if (dtCart == null || dtCart.Rows.Count == 0)
+            if (listCart == null || listCart.Count == 0)
             {
                 MessageBox.Show("Danh sách hàng trả lại đang trống! Vui lòng thêm sản phẩm.",
                     "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -1097,98 +954,35 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         
         // Hàm lưu toàn bộ giỏ hàng vào Database
-        private void btnLuuCT_Click(object sender, EventArgs e)
+        private async void btnLuuCT_Click(object sender, EventArgs e)
         {
-            if (dtCart.Rows.Count == 0)
+            if (listCart == null || listCart.Count == 0)
             {
                 MessageBox.Show("Danh sách sản phẩm trống, không có gì để lưu!",
                     "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            if (DbContext.Conn.State == ConnectionState.Closed)
-                DbContext.Ketnoi();
-
-            // Sử dụng Transaction (Giao dịch): Đảm bảo hoặc là lưu thành công TẤT CẢ, hoặc là KHÔNG LƯU gì cả nếu có lỗi (tránh lưu nửa chừng)
-            SqlTransaction giaoDich = ((SqlConnection)DbContext.Conn).BeginTransaction();
+            if (_returnService == null) return;
 
             try
             {
                 decimal tongTienHoan = 0;
-                // Tính tổng tiền hoàn thực tế từ giỏ hàng
-                for (int i = 0; i < dtCart.Rows.Count; i++)
-                    tongTienHoan += Convert.ToDecimal(dtCart.Rows[i]["colCurThanhTien"]);
-
-                // Bước 1: Khôi phục tồn kho cũ (trả lại kho) của các sản phẩm TRƯỚC KHI XÓA
-                // (Vì mình sẽ xóa sạch chi tiết cũ rồi chèn lại toàn bộ chi tiết mới từ giỏ)
-                string sqlKhoiPhucTon = @"
-                    UPDATE SanPham
-                    SET SoLuongTon = SoLuongTon - ct.SoLuong
-                    FROM SanPham sp
-                    JOIN ChiTietTraHang ct ON sp.MaSanPham = ct.MaSanPham
-                    WHERE ct.MaTraHang = @matrahang";
-                SqlCommand cmdKhoiPhuc = new SqlCommand(sqlKhoiPhucTon, (SqlConnection)DbContext.Conn, giaoDich);
-                cmdKhoiPhuc.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
-                cmdKhoiPhuc.ExecuteNonQuery();
-
-                // Bước 2: Xóa sạch các chi tiết trả hàng cũ của mã phiếu này trong Database
-                string sqlXoaCT = "DELETE FROM ChiTietTraHang WHERE MaTraHang = @matrahang";
-                SqlCommand cmdXoa = new SqlCommand(sqlXoaCT, (SqlConnection)DbContext.Conn, giaoDich);
-                cmdXoa.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
-                cmdXoa.ExecuteNonQuery();
-
-                // Bước 3: Lưu lại toàn bộ các sản phẩm đang có trong giỏ hàng (dtCart) vào Database
-                for (int i = 0; i < dtCart.Rows.Count; i++)
+                foreach (var item in listCart)
                 {
-                    DataRow dong = dtCart.Rows[i];
-                    int msp = Convert.ToInt32(dong["colCurMaSP"]);
-                    int sl = Convert.ToInt32(dong["colCurSoLuong"]);
-                    decimal dg = Convert.ToDecimal(dong["colCurDonGia"]);
-                    string tt = dong["colCurTinhTrang"]?.ToString();
-                    decimal tienHoan = Convert.ToDecimal(dong["colCurThanhTien"]);
-
-                    // Thêm vào bảng ChiTietTraHang
-                    string sqlThemCT = @"INSERT INTO ChiTietTraHang(MaTraHang, MaSanPham, SoLuong, TinhTrang, TienHoan)
-                                         VALUES(@matrahang, @masp, @soluong, @tinhtrang, @tienhoan)";
-                    SqlCommand cmdThemCT = new SqlCommand(sqlThemCT, (SqlConnection)DbContext.Conn, giaoDich);
-                    cmdThemCT.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
-                    cmdThemCT.Parameters.AddWithValue("@masp", msp);
-                    cmdThemCT.Parameters.AddWithValue("@soluong", sl);
-                    cmdThemCT.Parameters.AddWithValue("@tinhtrang", tt);
-                    cmdThemCT.Parameters.AddWithValue("@tienhoan", tienHoan);
-                    cmdThemCT.ExecuteNonQuery();
-
-                    // Cập nhật lại tồn kho (+ số lượng trả vào số lượng tồn)
-                    string sqlCapNhatKho = @"UPDATE SanPham SET SoLuongTon = SoLuongTon + @soluong WHERE MaSanPham = @masp";
-                    SqlCommand cmdKho = new SqlCommand(sqlCapNhatKho, (SqlConnection)DbContext.Conn, giaoDich);
-                    cmdKho.Parameters.AddWithValue("@soluong", sl);
-                    cmdKho.Parameters.AddWithValue("@masp", msp);
-                    cmdKho.ExecuteNonQuery();
+                    tongTienHoan += item.TienHoan;
                 }
-
-                decimal tienHoanThucTe = tongTienHoan; 
 
                 string loaiGD = cboLoaiGiaoDich.Text.Trim();
                 if (loaiGD == "Đổi hàng (1:1)")
                 {
-                    tienHoanThucTe = 0;
+                    tongTienHoan = 0;
                 }
 
-                // Bước 4: Cập nhật lại tổng tiền cho phiếu trả gốc
-                string sqlCapNhatPhieu = @"UPDATE TraHang SET
-                    TongTienHoan = @tong,
-                    NgayTra      = GETDATE()
-                    WHERE MaTraHang = @matrahang";
-                SqlCommand cmdPhieu = new SqlCommand(sqlCapNhatPhieu, (SqlConnection)DbContext.Conn, giaoDich);
-                cmdPhieu.Parameters.AddWithValue("@tong", tienHoanThucTe);
-                cmdPhieu.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
-                cmdPhieu.ExecuteNonQuery();
-
-                // Xác nhận lưu dữ liệu (Commit Transaction)
-                giaoDich.Commit();
+                await _returnService.SaveReturnDetailsTransactionAsync(maTraHangHienTai, new List<ReturnDetail>(listCart), tongTienHoan, cboLoaiGiaoDich.Text.Trim());
 
                 // Cập nhật UI
-                txtTongTienHoan.Text = tienHoanThucTe.ToString("N0") + " đ";
+                txtTongTienHoan.Text = tongTienHoan.ToString("N0") + " đ";
                 dtpNgayTra.Value = DateTime.Now;
                 
                 isCartModified = false;
@@ -1201,8 +995,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
             catch (Exception ex)
             {
-                // Nếu có lỗi, hủy toàn bộ giao dịch (Rollback)
-                giaoDich.Rollback();
                 MessageBox.Show("Có lỗi khi lưu dữ liệu:\n" + ex.Message, "Lỗi hệ thống",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -1240,7 +1032,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
             else
             {
-                if (dtInvoiceDetails == null) return;
+                if (listInvoiceDetails == null) return;
 
                 string tuKhoaTen = txtSelTenSP.Text.Trim().ToLower();
                 string tuKhoaMa = txtSelMaSP.Text.Trim();
@@ -1252,19 +1044,24 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     return;
                 }
 
-                string filter = "";
-                if (tuKhoaMa != "") filter += "MaSanPham = " + tuKhoaMa;
+                var filteredList = new List<ReturnInvoiceProduct>(listInvoiceDetails);
+
+                if (tuKhoaMa != "") 
+                {
+                    if (int.TryParse(tuKhoaMa, out int ma))
+                        filteredList = filteredList.Where(x => x.MaSanPham == ma).ToList();
+                }
+
                 if (tuKhoaTen != "")
                 {
-                    if (filter != "") filter += " AND ";
-                    filter += "TenSanPham LIKE '%" + tuKhoaTen + "%'";
+                    filteredList = filteredList.Where(x => x.TenSanPham.ToLower().Contains(tuKhoaTen)).ToList();
                 }
+
                 if (tuKhoaSL != "")
                 {
                     if (int.TryParse(tuKhoaSL, out int sl))
                     {
-                        if (filter != "") filter += " AND ";
-                        filter += "DaTra = " + sl;
+                        filteredList = filteredList.Where(x => x.DaTra == sl).ToList();
                     }
                     else
                     {
@@ -1273,8 +1070,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     }
                 }
                 
-                dtInvoiceDetails.DefaultView.RowFilter = filter;
-                dgvProductsSelection.DataSource = dtInvoiceDetails.DefaultView.ToTable();
+                dgvProductsSelection.DataSource = new BindingList<ReturnInvoiceProduct>(filteredList);
 
                 if (dgvProductsSelection.Rows.Count == 0)
                 {
@@ -1295,10 +1091,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelTinhTrang.Enabled = true;
             txtSelTinhTrang.ReadOnly = false;
 
-            if (dtInvoiceDetails != null)
+            if (listInvoiceDetails != null)
             {
-                dtInvoiceDetails.DefaultView.RowFilter = "";
-                dgvProductsSelection.DataSource = dtInvoiceDetails;
+                dgvProductsSelection.DataSource = listInvoiceDetails;
             }
 
             if (maTraHangHienTai != 0 && cboTrangThai.Text != "Hoàn thành" && cboTrangThai.Text != "Đã hủy")
@@ -1359,31 +1154,38 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             int slMua = 0;
             int daTra = 0;
-            for (int i = 0; i < dgvProductsSelection.Rows.Count; i++)
+            if (listInvoiceDetails != null)
             {
-                if (dgvProductsSelection.Rows[i].Cells["colSelMaSP"].Value != null &&
-                    Convert.ToInt32(dgvProductsSelection.Rows[i].Cells["colSelMaSP"].Value) == maSP)
+                foreach (var row in listInvoiceDetails)
                 {
-                    slMua = Convert.ToInt32(dgvProductsSelection.Rows[i].Cells["colSelSoLuongMua"].Value);
-                    daTra = Convert.ToInt32(dgvProductsSelection.Rows[i].Cells["colSelDaTra"].Value);
-                    break;
+                    if (row.MaSanPham == maSP)
+                    {
+                        slMua = row.SLMua;
+                        daTra = row.DaTra;
+                        break;
+                    }
                 }
             }
             int soLuongToiDa = slMua - daTra;
             
-            for (int i = 0; i < dtCart.Rows.Count; i++)
+            if (listCart != null)
             {
-                if (Convert.ToInt32(dtCart.Rows[i]["colCurMaSP"]) == maSP)
+                foreach (var r in listCart)
                 {
-                    if (soLuongTra > soLuongToiDa)
+                    if (r.MaSanPham == maSP)
                     {
-                        MessageBox.Show("Số lượng trả vượt quá giới hạn! Tối đa: " + soLuongToiDa, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
+                        if (soLuongTra > soLuongToiDa)
+                        {
+                            MessageBox.Show("Số lượng trả vượt quá giới hạn! Tối đa: " + soLuongToiDa, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                        r.SoLuong = soLuongTra;
+                        r.TinhTrang = txtSelTinhTrang.Text.Trim();
+                        r.TienHoan = r.SoLuong * r.DonGia;
+                        break;
                     }
-                    dtCart.Rows[i]["colCurSoLuong"] = soLuongTra;
-                    dtCart.Rows[i]["colCurTinhTrang"] = txtSelTinhTrang.Text.Trim();
-                    break;
                 }
+                listCart.ResetBindings();
             }
             
             isCartModified = true;

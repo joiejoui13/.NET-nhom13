@@ -75,6 +75,8 @@ static class Program
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<IDeliveryRepository, DeliveryRepository>();
         services.AddScoped<IDeliveryService, DeliveryService>();
+        services.AddScoped<IReturnRepository, ReturnRepository>();
+        services.AddScoped<IReturnService, ReturnService>();
 
         // Đăng ký Service nghiệp vụ (BLL)
         services.AddTransient<IAuthService, AuthService>();

@@ -172,16 +172,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colCurThanhTien = new DataGridViewTextBoxColumn();
             lblSelMaSP = new Label();
             txtSelMaSP = new Guna.UI2.WinForms.Guna2TextBox();
-            lblSelMaDanhMuc = new Label();
-            txtSelMaDanhMuc = new Guna.UI2.WinForms.Guna2TextBox();
-            lblSelTenDanhMuc = new Label();
-            txtSelTenDanhMuc = new Guna.UI2.WinForms.Guna2TextBox();
             lblSelTenSP = new Label();
             txtSelTenSP = new Guna.UI2.WinForms.Guna2TextBox();
             lblSelSoLuong = new Label();
             txtSelSoLuong = new Guna.UI2.WinForms.Guna2TextBox();
             lblSelGiaNhap = new Label();
             txtSelGiaNhap = new Guna.UI2.WinForms.Guna2TextBox();
+            lblSelMaDanhMuc = new Label();
+            txtSelMaDanhMuc = new Guna.UI2.WinForms.Guna2TextBox();
+            lblSelTenDanhMuc = new Label();
+            txtSelTenDanhMuc = new Guna.UI2.WinForms.Guna2TextBox();
             lblTotalAmount = new Label();
             colDetailMaSP = new DataGridViewTextBoxColumn();
             colDetailTenSP = new DataGridViewTextBoxColumn();
@@ -238,7 +238,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             pnlInputCard.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             pnlInputCard.BackColor = Color.Transparent;
-
             pnlInputCard.Controls.Add(lblInputTitle);
             pnlInputCard.Controls.Add(lblMaHoaDon);
             pnlInputCard.Controls.Add(txtMaHoaDon);
@@ -459,7 +458,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblGiamGia.ForeColor = Color.FromArgb(64, 64, 64);
             lblGiamGia.Location = new Point(170, 150);
             lblGiamGia.Name = "lblGiamGia";
-            lblGiamGia.Size = new Size(58, 15);
+            lblGiamGia.Size = new Size(94, 15);
             lblGiamGia.TabIndex = 9;
             lblGiamGia.Text = "Mã khuyến mãi:";
             // 
@@ -836,7 +835,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             pnlPOSTop.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pnlPOSTop.BackColor = Color.Transparent;
-
             pnlPOSTop.Controls.Add(lblPOSTitle);
             pnlPOSTop.Controls.Add(btnPOSSearch);
             pnlPOSTop.Controls.Add(btnPOSRefresh);
@@ -895,7 +893,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             pnlChonLeft.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnlChonLeft.BackColor = Color.Transparent;
-
             pnlChonLeft.Controls.Add(tabSelectionContainer);
             pnlChonLeft.CustomizableEdges = customizableEdges49;
             pnlChonLeft.FillColor = Color.White;
@@ -1069,13 +1066,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblProductDetailDesc.Name = "lblProductDetailDesc";
             lblProductDetailDesc.Size = new Size(339, 481);
             lblProductDetailDesc.TabIndex = 1;
-            lblProductDetailDesc.Text = "Chi tiết mặt hàng: Máy tính Casio chính hãng chất lượng cao bán chạy nhất.";
+            lblProductDetailDesc.Text = "Chi tiết mặt hàng";
             // 
             // pnlChonRight
             // 
             pnlChonRight.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             pnlChonRight.BackColor = Color.Transparent;
-
             pnlChonRight.Controls.Add(guna2Button3);
             pnlChonRight.Controls.Add(guna2Button4);
             pnlChonRight.Controls.Add(btnAddToCart);
@@ -1399,10 +1395,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             lblSelMaDanhMuc.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             lblSelMaDanhMuc.AutoSize = true;
-            lblSelMaDanhMuc.Font = new Font("Segoe UI", 9F);
+            lblSelMaDanhMuc.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblSelMaDanhMuc.ForeColor = Color.FromArgb(64, 64, 64);
             lblSelMaDanhMuc.Location = new Point(9, 213);
             lblSelMaDanhMuc.Name = "lblSelMaDanhMuc";
-            lblSelMaDanhMuc.Size = new Size(57, 15);
+            lblSelMaDanhMuc.Size = new Size(50, 15);
             lblSelMaDanhMuc.TabIndex = 21;
             lblSelMaDanhMuc.Text = "Mã DM:";
             // 
@@ -1412,11 +1409,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelMaDanhMuc.BorderRadius = 5;
             txtSelMaDanhMuc.CustomizableEdges = customizableEdges68;
             txtSelMaDanhMuc.DefaultText = "";
+            txtSelMaDanhMuc.Enabled = false;
             txtSelMaDanhMuc.Font = new Font("Segoe UI", 9F);
             txtSelMaDanhMuc.Location = new Point(9, 231);
             txtSelMaDanhMuc.Name = "txtSelMaDanhMuc";
+            txtSelMaDanhMuc.PlaceholderText = "";
             txtSelMaDanhMuc.ReadOnly = true;
-            txtSelMaDanhMuc.Enabled = false;
+            txtSelMaDanhMuc.SelectedText = "";
             txtSelMaDanhMuc.ShadowDecoration.CustomizableEdges = customizableEdges68;
             txtSelMaDanhMuc.Size = new Size(118, 30);
             txtSelMaDanhMuc.TabIndex = 22;
@@ -1425,10 +1424,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             lblSelTenDanhMuc.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             lblSelTenDanhMuc.AutoSize = true;
-            lblSelTenDanhMuc.Font = new Font("Segoe UI", 9F);
+            lblSelTenDanhMuc.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lblSelTenDanhMuc.ForeColor = Color.FromArgb(64, 64, 64);
             lblSelTenDanhMuc.Location = new Point(148, 213);
             lblSelTenDanhMuc.Name = "lblSelTenDanhMuc";
-            lblSelTenDanhMuc.Size = new Size(59, 15);
+            lblSelTenDanhMuc.Size = new Size(53, 15);
             lblSelTenDanhMuc.TabIndex = 23;
             lblSelTenDanhMuc.Text = "Tên DM:";
             // 
@@ -1438,11 +1438,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelTenDanhMuc.BorderRadius = 5;
             txtSelTenDanhMuc.CustomizableEdges = customizableEdges68;
             txtSelTenDanhMuc.DefaultText = "";
+            txtSelTenDanhMuc.Enabled = false;
             txtSelTenDanhMuc.Font = new Font("Segoe UI", 9F);
             txtSelTenDanhMuc.Location = new Point(148, 231);
             txtSelTenDanhMuc.Name = "txtSelTenDanhMuc";
+            txtSelTenDanhMuc.PlaceholderText = "";
             txtSelTenDanhMuc.ReadOnly = true;
-            txtSelTenDanhMuc.Enabled = false;
+            txtSelTenDanhMuc.SelectedText = "";
             txtSelTenDanhMuc.ShadowDecoration.CustomizableEdges = customizableEdges68;
             txtSelTenDanhMuc.Size = new Size(179, 30);
             txtSelTenDanhMuc.TabIndex = 24;

@@ -213,6 +213,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelDonGia.Text = "";
             txtSelTinhTrang.Text = "";
             lblTotalAmount.Text = "TỔNG TIỀN HOÀN TRẢ TẠM TÍNH: 0 đ";
+            lblProductDetailDesc.Text = "Mã SP: --\nThông tin chi tiết về sản phẩm sẽ được cập nhật ở đây.";
+            if (picAnh.Image != null)
+            {
+                picAnh.Image.Dispose();
+                picAnh.Image = null;
+            }
 
             // Xóa sạch giỏ hàng tạm
             if (listCart != null)
@@ -723,7 +729,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 picAnh.Image = null;
             }
 
-            // ... load image ...
+            lblProductDetailDesc.Text = $"Mã sản phẩm: {rowView.MaSanPham}\n" +
+                                        $"Tên sản phẩm: {rowView.TenSanPham ?? "Không rõ"}\n" +
+                                        $"Đơn giá mua: {rowView.DonGia.ToString("N0")} VNĐ\n" +
+                                        $"Số lượng đã mua: {rowView.SLMua} | Số lượng đã trả trước đây: {rowView.DaTra}\n" +
+                                        $"Bạn có thể trả tối đa: {rowView.SLMua - rowView.DaTra} sản phẩm nữa.";
+
             tabSelectionContainer.SelectedIndex = 1;
             
             // State management
@@ -755,6 +766,43 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelSoLuong.Text = dong.SoLuong.ToString();
             txtSelDonGia.Text = dong.DonGia.ToString();
             txtSelTinhTrang.Text = dong.TinhTrang;
+            
+            int slMua = 0;
+            int slDaTra = 0;
+            if (listInvoiceDetails != null)
+            {
+                foreach (var row in listInvoiceDetails)
+                {
+                    if (row.MaSanPham == dong.MaSanPham)
+                    {
+                        slMua = row.SLMua;
+                        slDaTra = row.DaTra;
+                        
+                        string tenAnh = row.Anh;
+                        if (tenAnh != null && tenAnh != "")
+                        {
+                            string duongDan1 = System.IO.Path.Combine(Application.StartupPath, "GUI", "Resources", tenAnh);
+                            string duongDan2 = System.IO.Path.Combine(Application.StartupPath, @"..\..\..\GUI\Resources", tenAnh);
+                            if (System.IO.File.Exists(duongDan1)) picAnh.Image = System.Drawing.Image.FromFile(duongDan1);
+                            else if (System.IO.File.Exists(duongDan2)) picAnh.Image = System.Drawing.Image.FromFile(duongDan2);
+                            else picAnh.Image = null;
+                        }
+                        else
+                        {
+                            picAnh.Image = null;
+                        }
+                        break;
+                    }
+                }
+            }
+
+            lblProductDetailDesc.Text = $"Mã sản phẩm: {dong.MaSanPham}\n" +
+                                        $"Tên sản phẩm: {dong.TenSanPham ?? "Không rõ"}\n" +
+                                        $"Đơn giá mua: {dong.DonGia.ToString("N0")} VNĐ\n" +
+                                        $"Số lượng đã mua: {slMua} | Số lượng đã trả trước đây: {slDaTra}\n" +
+                                        $"Bạn có thể trả tối đa: {slMua - slDaTra} sản phẩm nữa.";
+
+            tabSelectionContainer.SelectedIndex = 1;
             
             // State management
             if (maTraHangHienTai != 0)
@@ -950,6 +998,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelSoLuong.Text = "";
             txtSelDonGia.Text = "";
             txtSelTinhTrang.Text = "";
+            lblProductDetailDesc.Text = "Mã SP: --\nThông tin chi tiết về sản phẩm sẽ được cập nhật ở đây.";
+            if (picAnh.Image != null)
+            {
+                picAnh.Image.Dispose();
+                picAnh.Image = null;
+            }
         }
 
         

@@ -150,6 +150,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colSelDonGia = new DataGridViewTextBoxColumn();
             tabProductDetail = new TabPage();
             picAnh = new Guna.UI2.WinForms.Guna2PictureBox();
+            lblProductDetailDesc = new Label();
             pnlChonRight = new Guna.UI2.WinForms.Guna2Panel();
             btnBoquaCT = new Guna.UI2.WinForms.Guna2Button();
             btnSuaCT = new Guna.UI2.WinForms.Guna2Button();
@@ -954,10 +955,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             tabProductDetail.BackColor = Color.White;
             tabProductDetail.Controls.Add(picAnh);
-            tabProductDetail.Location = new Point(4, 24);
+            tabProductDetail.Controls.Add(lblProductDetailDesc);
+            tabProductDetail.Location = new Point(4, 28);
             tabProductDetail.Name = "tabProductDetail";
             tabProductDetail.Padding = new Padding(10);
-            tabProductDetail.Size = new Size(622, 529);
+            tabProductDetail.Size = new Size(622, 525);
             tabProductDetail.TabIndex = 1;
             tabProductDetail.Text = "Chi tiết sản phẩm";
             // 
@@ -965,13 +967,25 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             picAnh.CustomizableEdges = customizableEdges41;
             picAnh.ImageRotate = 0F;
-            picAnh.Location = new Point(7, 6);
+            picAnh.Location = new Point(26, 15);
             picAnh.Margin = new Padding(3, 2, 3, 2);
             picAnh.Name = "picAnh";
             picAnh.ShadowDecoration.CustomizableEdges = customizableEdges42;
-            picAnh.Size = new Size(328, 188);
+            picAnh.Size = new Size(220, 188);
+            picAnh.SizeMode = PictureBoxSizeMode.Zoom;
             picAnh.TabIndex = 0;
             picAnh.TabStop = false;
+            // 
+            // lblProductDetailDesc
+            // 
+            lblProductDetailDesc.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            lblProductDetailDesc.Font = new Font("Segoe UI", 10F);
+            lblProductDetailDesc.ForeColor = Color.FromArgb(64, 64, 64);
+            lblProductDetailDesc.Location = new Point(262, 10);
+            lblProductDetailDesc.Name = "lblProductDetailDesc";
+            lblProductDetailDesc.Size = new Size(337, 503);
+            lblProductDetailDesc.TabIndex = 1;
+            lblProductDetailDesc.Text = "Mã SP: --\nThông tin chi tiết về sản phẩm sẽ được cập nhật ở đây.";
             // 
             // pnlChonRight
             // 
@@ -1017,8 +1031,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnBoquaCT.ShadowDecoration.CustomizableEdges = customizableEdges46;
             btnBoquaCT.Size = new Size(306, 35);
             btnBoquaCT.TabIndex = 18;
-            btnBoquaCT.Click += btnBoquaCT_Click;
             btnBoquaCT.Text = "BỎ QUA";
+            btnBoquaCT.Click += btnBoquaCT_Click;
             // 
             // btnSuaCT
             // 
@@ -1163,13 +1177,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelMaSP.BorderRadius = 5;
             txtSelMaSP.CustomizableEdges = customizableEdges49;
             txtSelMaSP.DefaultText = "";
+            txtSelMaSP.Enabled = false;
             txtSelMaSP.Font = new Font("Segoe UI", 9F);
             txtSelMaSP.Location = new Point(19, 302);
             txtSelMaSP.Margin = new Padding(3, 4, 3, 4);
             txtSelMaSP.Name = "txtSelMaSP";
             txtSelMaSP.PlaceholderText = "";
             txtSelMaSP.ReadOnly = true;
-            txtSelMaSP.Enabled = false;
             txtSelMaSP.SelectedText = "";
             txtSelMaSP.ShadowDecoration.CustomizableEdges = customizableEdges50;
             txtSelMaSP.Size = new Size(124, 27);
@@ -1193,13 +1207,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelTenSP.BorderRadius = 5;
             txtSelTenSP.CustomizableEdges = customizableEdges51;
             txtSelTenSP.DefaultText = "";
+            txtSelTenSP.Enabled = false;
             txtSelTenSP.Font = new Font("Segoe UI", 9F);
             txtSelTenSP.Location = new Point(19, 254);
             txtSelTenSP.Margin = new Padding(3, 4, 3, 4);
             txtSelTenSP.Name = "txtSelTenSP";
             txtSelTenSP.PlaceholderText = "";
             txtSelTenSP.ReadOnly = true;
-            txtSelTenSP.Enabled = false;
             txtSelTenSP.SelectedText = "";
             txtSelTenSP.ShadowDecoration.CustomizableEdges = customizableEdges52;
             txtSelTenSP.Size = new Size(302, 27);
@@ -1251,13 +1265,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelDonGia.BorderRadius = 5;
             txtSelDonGia.CustomizableEdges = customizableEdges55;
             txtSelDonGia.DefaultText = "";
+            txtSelDonGia.Enabled = false;
             txtSelDonGia.Font = new Font("Segoe UI", 9F);
             txtSelDonGia.Location = new Point(161, 302);
             txtSelDonGia.Margin = new Padding(3, 4, 3, 4);
             txtSelDonGia.Name = "txtSelDonGia";
             txtSelDonGia.PlaceholderText = "";
             txtSelDonGia.ReadOnly = true;
-            txtSelDonGia.Enabled = false;
             txtSelDonGia.SelectedText = "";
             txtSelDonGia.ShadowDecoration.CustomizableEdges = customizableEdges56;
             txtSelDonGia.Size = new Size(160, 27);
@@ -1481,6 +1495,7 @@ private Guna.UI2.WinForms.Guna2TextBox txtNhanVien;
 
         private Guna.UI2.WinForms.Guna2Panel pnlChonLeft;
         private System.Windows.Forms.Label lblChonLeftTitle;
+        private System.Windows.Forms.Label lblProductDetailDesc;
         private Guna.UI2.WinForms.Guna2DataGridView dgvProductsSelection;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSelMaSP;
         private System.Windows.Forms.DataGridViewTextBoxColumn colSelTenSP;

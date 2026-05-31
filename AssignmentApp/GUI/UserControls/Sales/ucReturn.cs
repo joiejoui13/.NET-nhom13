@@ -8,13 +8,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
 {
     public partial class ucReturn : UserControl
     {
-      
-        DataTable dtReturn;         
+    
+        DataTable dtReturn;        
         DataTable dtInvoiceDetails; 
-        DataTable dtCart;          
+        DataTable dtCart;           
 
-        int maTraHangHienTai = 0;   
-        bool isAdding = false;     
+        int maTraHangHienTai = 0;  
+        bool isAdding = false;   
         bool isEditing = false;    
 
         public ucReturn()
@@ -22,18 +22,18 @@ namespace AssignmentApp.GUI.UserControls.Sales
             InitializeComponent();
         }
 
-        
+       
         private void ucReturn_Load(object sender, EventArgs e)
         {
-          
+            
             btnSuaCT.Visible = false;
             guna2Button2.Visible = false;
+
             KhoiTaoGioHang();
             NapDanhSachPhieu();
             SetTrangThaiBanDau();
         }
 
-      
         private void KhoiTaoGioHang()
         {
             dtCart = new DataTable();
@@ -61,31 +61,30 @@ namespace AssignmentApp.GUI.UserControls.Sales
             isAdding = false;
             isEditing = false;
 
-            KhoaONhapTab0(false);
+            KhoaONhapTab0(true);
 
             btnAdd.Visible = true;
             btnEdit.Visible = true;
             btnDelete.Visible = true;
-            btnSave.Visible = false;   
-            btnCancel.Visible = false;  
+            btnSave.Visible = false;
+            btnCancel.Visible = false;
 
             btnAdd.Enabled = true;
-            btnEdit.Enabled = false;  
-            btnDelete.Enabled = false;   
-            btnSearch.Enabled = true;
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
+            btnSearch.Enabled = true;   
             btnRefresh.Enabled = true;
 
             KhoaTab1(true);
             XoaTrangTab0();
+            XoaTrangTab1();
         }
 
-  
+      
         private void SetTrangThaiDangNhap()
         {
-           
             KhoaONhapTab0(false);
 
-    
             btnAdd.Visible = false;
             btnEdit.Visible = false;
             btnDelete.Visible = false;
@@ -95,10 +94,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnCancel.Enabled = true;
         }
 
-    
         private void KhoaONhapTab0(bool khoa)
         {
-            txtMaHoaDon.ReadOnly = khoa;
+            txtMaHoaDon.ReadOnly = false;
             txtLyDo.ReadOnly = khoa;
             dtpNgayTra.Enabled = false;
             cboTrangThai.Enabled = false;
@@ -106,7 +104,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtTongTienHoan.ReadOnly = true;
         }
 
-    
+      
         private void KhoaTab1(bool khoa)
         {
             btnAddToCart.Enabled = !khoa;
@@ -115,14 +113,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             txtSelSoLuong.ReadOnly = khoa;
             txtSelTinhTrang.ReadOnly = khoa;
-
-            if (khoa)
-            {
-                XoaTrangTab1();
-            }
         }
 
-   
+      
         private void XoaTrangTab0()
         {
             txtMaHoaDon.Text = "";
@@ -130,8 +123,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtTongTienHoan.Text = "0 đ";
             dtpNgayTra.Value = DateTime.Now; 
 
-            
-            cboTrangThai.SelectedIndex = 1;
+          
+            cboTrangThai.SelectedIndex = 1; 
 
             cboLoaiGiaoDich.SelectedIndex = -1; 
             lblKhachHang.Text = "Khách hàng: (Trống)";
@@ -139,7 +132,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             maTraHangHienTai = 0;
         }
 
-   
+       
         private void XoaTrangTab1()
         {
             txtSelMaSP.Text = "";
@@ -158,7 +151,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblReturnTitle.Text = "MÃ PHIẾU: ";
         }
 
-    
+   
         private void NapDanhSachPhieu()
         {
             string sql = @"
@@ -185,6 +178,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dtReturn = new DataTable();
             da.Fill(dtReturn);
 
+         
             colMaTraHang.DataPropertyName = "MaTraHang";
             colMaHoaDon.DataPropertyName = "MaHoaDon";
             colTrangThai.DataPropertyName = "TrangThai";
@@ -198,9 +192,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvReturns.DataSource = dtReturn;
         }
 
-   
+    
         private void NapSanPhamHoaDon(int maHoaDon)
         {
+            
             string sql = @"
                 SELECT 
                     cthd.MaSanPham,
@@ -227,6 +222,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dtInvoiceDetails = new DataTable();
             da.Fill(dtInvoiceDetails);
 
+        
             colSelMaSP.DataPropertyName = "MaSanPham";
             colSelTenSP.DataPropertyName = "TenSanPham";
             colSelSoLuongMua.DataPropertyName = "SLMua";
@@ -237,6 +233,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvProductsSelection.DataSource = dtInvoiceDetails;
         }
 
+     
         private void TinhTongTienHoanTra()
         {
             decimal tongTien = 0;
@@ -248,7 +245,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblTotalAmount.Text = "TỔNG TIỀN HOÀN TRẢ TẠM TÍNH: " + tongTien.ToString("N0") + " đ";
         }
 
-   
+     
         private void dgvReturns_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (isAdding || isEditing)
@@ -260,6 +257,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             if (e.RowIndex < 0 || dtReturn == null || dtReturn.Rows.Count == 0) return;
 
+         
             DataRow dong = dtReturn.Rows[e.RowIndex];
 
             txtMaHoaDon.Text = dong["MaHoaDon"].ToString();
@@ -269,6 +267,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblNhanVien.Text = "Nhân viên: " + dong["NhanVien"].ToString();
             lblKhachHang.Text = "Khách hàng: " + dong["KhachHang"].ToString();
 
+        
             string trangThai = dong["TrangThai"].ToString().Trim();
             string loaiGD = dong["LoaiGiaoDich"].ToString().Trim();
 
@@ -287,10 +286,83 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
 
             maTraHangHienTai = Convert.ToInt32(dong["MaTraHang"]);
+            int maHoaDonChon = Convert.ToInt32(dong["MaHoaDon"]);
             lblReturnTitle.Text = "MÃ PHIẾU: " + maTraHangHienTai;
 
-            btnEdit.Enabled = true;
-            btnDelete.Enabled = true;
+            btnEdit.Enabled = (trangThai == "Chờ xử lý"); 
+            btnDelete.Enabled = (trangThai == "Chờ xử lý");
+
+          
+            NapSanPhamHoaDon(maHoaDonChon);
+
+         
+            NapChiTietDaTra(maTraHangHienTai);
+
+          
+            if (trangThai == "Hoàn thành" || trangThai == "Đã hủy")
+            {
+                
+                btnAddToCart.Enabled = false;
+                btnRemoveFromCart.Enabled = false;
+                btnLuuCT.Enabled = false;
+                txtSelSoLuong.ReadOnly = true;
+                txtSelTinhTrang.ReadOnly = true;
+            }
+            else 
+            {
+             
+                btnAddToCart.Enabled = true;
+                btnRemoveFromCart.Enabled = true;
+                btnLuuCT.Enabled = true;
+                txtSelSoLuong.ReadOnly = false;
+                txtSelTinhTrang.ReadOnly = false;
+            }
+        }
+
+    
+        private void NapChiTietDaTra(int maTraHang)
+        {
+            
+            if (dtCart != null)
+                dtCart.Rows.Clear();
+
+            string sql = @"
+                SELECT 
+                    ctth.MaSanPham,
+                    sp.TenSanPham,
+                    ctth.SoLuong,
+                    ctth.TienHoan,
+                    ctth.TinhTrang
+                FROM ChiTietTraHang ctth
+                JOIN SanPham sp ON ctth.MaSanPham = sp.MaSanPham
+                WHERE ctth.MaTraHang = @matrahang";
+
+            if (DbContext.Conn.State == ConnectionState.Closed)
+                DbContext.Ketnoi();
+
+            SqlDataAdapter da = new SqlDataAdapter(sql, (SqlConnection)DbContext.Conn);
+            da.SelectCommand.Parameters.AddWithValue("@matrahang", maTraHang);
+
+            DataTable dtChiTiet = new DataTable();
+            da.Fill(dtChiTiet);
+
+            for (int i = 0; i < dtChiTiet.Rows.Count; i++)
+            {
+                DataRow nguon = dtChiTiet.Rows[i];
+                int soLuong = Convert.ToInt32(nguon["SoLuong"]);
+                decimal tienHoan = Convert.ToDecimal(nguon["TienHoan"]);
+                decimal donGia = (soLuong > 0) ? tienHoan / soLuong : 0;
+
+                DataRow dongMoi = dtCart.NewRow();
+                dongMoi["colCurMaSP"] = Convert.ToInt32(nguon["MaSanPham"]);
+                dongMoi["colCurTenSP"] = nguon["TenSanPham"].ToString();
+                dongMoi["colCurSoLuong"] = soLuong;
+                dongMoi["colCurDonGia"] = donGia;
+                dongMoi["colCurTinhTrang"] = nguon["TinhTrang"].ToString();
+                dtCart.Rows.Add(dongMoi);
+            }
+
+            TinhTongTienHoanTra();
         }
 
         private void txtMaHoaDon_Leave(object sender, EventArgs e)
@@ -342,6 +414,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtMaHoaDon.Focus();
         }
 
+       
         private void btnEdit_Click(object sender, EventArgs e)
         {
             if (maTraHangHienTai == 0)
@@ -357,6 +430,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtLyDo.Focus();
         }
 
+       
         private void btnDelete_Click(object sender, EventArgs e)
         {
             if (maTraHangHienTai == 0)
@@ -374,9 +448,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
             if (DbContext.Conn.State == ConnectionState.Closed)
                 DbContext.Ketnoi();
 
+        
             SqlTransaction giaoDich = ((SqlConnection)DbContext.Conn).BeginTransaction();
             try
             {
+              
                 string sqlXoaCT = "DELETE FROM ChiTietTraHang WHERE MaTraHang = @matrahang";
                 SqlCommand cmdCT = new SqlCommand(sqlXoaCT, (SqlConnection)DbContext.Conn, giaoDich);
                 cmdCT.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
@@ -403,8 +479,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             SetTrangThaiBanDau();
         }
 
+      
         private void btnSave_Click(object sender, EventArgs e)
         {
+          
             if (txtMaHoaDon.Text.Trim() == "")
             {
                 MessageBox.Show("Vui lòng nhập mã hóa đơn gốc!", "Cảnh báo",
@@ -443,6 +521,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             if (isAdding)
             {
+         
                 string sqlCheck = "SELECT COUNT(*) FROM TraHang WHERE MaHoaDon = @mahd";
                 SqlCommand cmdCheck = new SqlCommand(sqlCheck, (SqlConnection)DbContext.Conn);
                 cmdCheck.Parameters.AddWithValue("@mahd", maHD);
@@ -455,15 +534,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     return;
                 }
 
+            
                 string sqlInsert = @"
                     INSERT INTO TraHang (MaHoaDon, MaNguoiDung, LyDo, TongTienHoan, NgayTra, TrangThai, LoaiGiaoDich)
                     VALUES (@mahd, 1, @lydo, 0, GETDATE(), N'Chờ xử lý', @loaigd);
-                    SELECT SCOPE_IDENTITY();"; 
+                    SELECT SCOPE_IDENTITY();"; // Lấy MaTraHang vừa tạo
 
                 SqlCommand cmdInsert = new SqlCommand(sqlInsert, (SqlConnection)DbContext.Conn);
                 cmdInsert.Parameters.AddWithValue("@mahd", maHD);
                 cmdInsert.Parameters.AddWithValue("@lydo", txtLyDo.Text.Trim());
-          
+             
                 cmdInsert.Parameters.AddWithValue("@loaigd", cboLoaiGiaoDich.Text.Trim());
 
                 maTraHangHienTai = Convert.ToInt32(cmdInsert.ExecuteScalar());
@@ -475,7 +555,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
             else
             {
-              
+             
                 string sqlUpdate = @"
                     UPDATE TraHang SET
                         LyDo         = @lydo,
@@ -492,8 +572,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
 
+           
             NapDanhSachPhieu();
 
+          
             isAdding = false;
             isEditing = false;
             btnAdd.Visible = true;
@@ -501,12 +583,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnDelete.Visible = true;
             btnSave.Visible = false;
             btnCancel.Visible = false;
-            KhoaONhapTab0(true);
+            KhoaONhapTab0(false);
 
+           
             lblReturnTitle.Text = "MÃ PHIẾU: " + maTraHangHienTai;
             NapSanPhamHoaDon(maHD); 
             KhoaTab1(false);        
 
+         
             tabMain.SelectedIndex = 1;
         }
 
@@ -517,7 +601,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             NapDanhSachPhieu();
         }
 
-     
         private void btnSearch_Click(object sender, EventArgs e)
         {
             string tuKhoa = txtMaHoaDon.Text.Trim();
@@ -558,13 +641,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvReturns.DataSource = dtSearch;
         }
 
+     
         private void btnRefresh_Click(object sender, EventArgs e)
         {
             NapDanhSachPhieu();
             SetTrangThaiBanDau();
         }
 
-      
+     
         private void dgvProductsSelection_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dtInvoiceDetails == null || dtInvoiceDetails.Rows.Count == 0) return;
@@ -578,6 +662,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelSoLuong.Text = "";
             txtSelTinhTrang.Text = "";
 
+         
             string tenAnh = rowView["Anh"]?.ToString();
             if (tenAnh != null && tenAnh != "")
             {
@@ -593,9 +678,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 picAnh.Image = null;
             }
 
-            txtSelSoLuong.Focus();
+        
+            tabSelectionContainer.SelectedIndex = 1;
         }
 
+   
         private void dgvCurrentDetails_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dtCart == null || dtCart.Rows.Count == 0) return;
@@ -609,6 +696,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelTinhTrang.Text = dong.Cells["colCurTinhTrang"].Value?.ToString();
         }
 
+     
         private void btnAddToCart_Click(object sender, EventArgs e)
         {
             if (txtSelMaSP.Text.Trim() == "")
@@ -618,6 +706,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
+         
             int soLuongTra;
             if (!int.TryParse(txtSelSoLuong.Text.Trim(), out soLuongTra) || soLuongTra <= 0)
             {
@@ -650,7 +739,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 }
             }
 
-            int soLuongToiDa = slMua - daTra; 
+            int soLuongToiDa = slMua - daTra;
             if (soLuongTra > soLuongToiDa)
             {
                 MessageBox.Show(
@@ -662,12 +751,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             decimal donGia = 0;
             decimal.TryParse(txtSelDonGia.Text.Trim(), out donGia);
 
+           
             bool daCoTrong = false;
             for (int i = 0; i < dtCart.Rows.Count; i++)
             {
                 if (Convert.ToInt32(dtCart.Rows[i]["colCurMaSP"]) == maSP)
                 {
-                    
+                
                     int slHienTai = Convert.ToInt32(dtCart.Rows[i]["colCurSoLuong"]);
                     if (slHienTai + soLuongTra > soLuongToiDa)
                     {
@@ -678,7 +768,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
                         return;
                     }
 
-               
                     dtCart.Rows[i]["colCurSoLuong"] = slHienTai + soLuongTra;
                     dtCart.Rows[i]["colCurTinhTrang"] = txtSelTinhTrang.Text.Trim();
                     daCoTrong = true;
@@ -686,7 +775,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 }
             }
 
-         
+           
             if (!daCoTrong)
             {
                 DataRow dongMoi = dtCart.NewRow();
@@ -701,6 +790,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             TinhTongTienHoanTra();
             XoaTrangTab1SanPham(); 
         }
+
 
         private void btnRemoveFromCart_Click(object sender, EventArgs e)
         {
@@ -717,6 +807,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             int maSP = int.Parse(txtSelMaSP.Text.Trim());
 
+          
             for (int i = dtCart.Rows.Count - 1; i >= 0; i--)
             {
                 if (Convert.ToInt32(dtCart.Rows[i]["colCurMaSP"]) == maSP)
@@ -731,6 +822,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             XoaTrangTab1SanPham();
         }
 
+       
         private void XoaTrangTab1SanPham()
         {
             txtSelMaSP.Text = "";
@@ -740,6 +832,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelTinhTrang.Text = "";
         }
 
+        
         private void btnBackToReceipt_Click(object sender, EventArgs e)
         {
             if (dtCart == null || dtCart.Rows.Count == 0)
@@ -763,12 +856,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             try
             {
-         
+              
                 decimal tongTienHoan = 0;
                 for (int i = 0; i < dtCart.Rows.Count; i++)
                     tongTienHoan += Convert.ToDecimal(dtCart.Rows[i]["colCurThanhTien"]);
 
-             
+              
                 string sqlXoaCT = "DELETE FROM ChiTietTraHang WHERE MaTraHang = @matrahang";
                 SqlCommand cmdXoa = new SqlCommand(sqlXoaCT, (SqlConnection)DbContext.Conn, giaoDich);
                 cmdXoa.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
@@ -783,7 +876,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     decimal thanhTien = Convert.ToDecimal(dong["colCurThanhTien"]);
                     string tinhTrang = dong["colCurTinhTrang"].ToString();
 
-
+                   
                     string sqlCT = @"INSERT INTO ChiTietTraHang (MaTraHang, MaSanPham, SoLuong, TienHoan, TinhTrang)
                                      VALUES (@matrahang, @masp, @sl, @tien, @tinhtrang)";
                     SqlCommand cmdCT = new SqlCommand(sqlCT, (SqlConnection)DbContext.Conn, giaoDich);
@@ -794,7 +887,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     cmdCT.Parameters.AddWithValue("@tinhtrang", tinhTrang);
                     cmdCT.ExecuteNonQuery();
 
-                  
+               
                     string sqlTon = "SELECT SoLuongTon FROM SanPham WHERE MaSanPham = @masp";
                     SqlCommand cmdTon = new SqlCommand(sqlTon, (SqlConnection)DbContext.Conn, giaoDich);
                     cmdTon.Parameters.AddWithValue("@masp", maSP);
@@ -808,7 +901,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     cmdCapNhat.ExecuteNonQuery();
                 }
 
-              
+             
                 decimal tienHoanThucTe = tongTienHoan; 
 
                 string loaiGD = cboLoaiGiaoDich.Text.Trim();
@@ -816,7 +909,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 {
                     tienHoanThucTe = 0;
                 }
-            
+
                 string sqlCapNhatPhieu = @"UPDATE TraHang SET
                     TongTienHoan = @tong,
                     TrangThai    = N'Hoàn thành',
@@ -853,7 +946,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
         }
 
-   
         private void btnReturnSearch_Click(object sender, EventArgs e)
         {
             string input = Microsoft.VisualBasic.Interaction.InputBox(
@@ -882,15 +974,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-     
         private void btnReturnRefresh_Click(object sender, EventArgs e)
         {
             XoaTrangTab1();
         }
 
-       
         private void tabSelectionContainer_SelectedIndexChanged(object sender, EventArgs e)
         {
+
             if (tabSelectionContainer.SelectedIndex == 1 && txtSelMaSP.Text.Trim() == "")
                 tabSelectionContainer.SelectedIndex = 0;
         }
@@ -901,7 +992,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelSoLuong.Focus();
         }
 
-     
+    
         private void cboLoaiGiaoDich_SelectedIndexChanged(object sender, EventArgs e) { }
         private void btnChooseProducts_Click(object sender, EventArgs e) { }
         private void btnResetCartForm_Click(object sender, EventArgs e) { }

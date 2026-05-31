@@ -254,6 +254,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
     
+        /// <summary>
+        /// [NGHIỆP VỤ] Tải danh sách các sản phẩm (chi tiết) thuộc một Hóa đơn cụ thể.
+        /// Dữ liệu này dùng để chọn đưa vào giỏ hàng trả lại.
+        /// </summary>
+        /// <param name="maHoaDon">Mã hóa đơn cần lấy danh sách sản phẩm</param>
         private async void NapSanPhamHoaDon(int maHoaDon)
         {
             if (_returnService == null) return;
@@ -271,6 +276,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
      
+        /// <summary>
+        /// [TIỆN ÍCH] Duyệt qua danh sách các sản phẩm trong giỏ hàng (listCart) 
+        /// để tính tổng số tiền hoàn trả tạm tính và cập nhật lên nhãn (Label) hiển thị.
+        /// </summary>
         private void TinhTongTienHoanTra()
         {
             decimal tongTien = 0;
@@ -288,6 +297,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         #region 3. TAB 1: QUẢN LÝ PHIẾU TRẢ HÀNG
 
+        /// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng click vào một dòng trên bảng Danh sách Phiếu trả (Tab 1).
+        /// - Đẩy dữ liệu từ dòng được chọn lên các ô nhập liệu (TextBox, ComboBox).
+        /// - Chặn thao tác nếu hệ thống đang ở chế độ Thêm/Sửa.
+        /// </summary>
         private void dgvReturns_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (isAdding || isEditing)
@@ -514,6 +528,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
       
         // Hàm xử lý sự kiện khi bấm nút Lưu ở Tab 1 (Dùng để Tạo mới phiếu trả)
+        /// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Khi người dùng bấm nút LƯU THAY ĐỔI (Tab 1).
+        /// - Nếu đang Thêm Mới: Tạo một thực thể Return mới và insert xuống Database, lấy mã vừa tạo và chuyển sang Tab 2 để nhập chi tiết.
+        /// - Nếu đang Sửa: Cập nhật thông tin phiếu (Lý do, Trạng thái, LoaiGiaoDich) xuống Database, sau đó cập nhật lại Grid.
+        /// </summary>
         private async void btnSave_Click(object sender, EventArgs e)
         {
             // Bước 1: Kiểm tra dữ liệu đầu vào (Validate)
@@ -700,6 +719,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         #region 4. TAB 2: QUẢN LÝ CHI TIẾT SẢN PHẨM TRẢ
 
+        /// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Khi người dùng chọn một dòng bên danh sách sản phẩm của hóa đơn gốc.
+        /// - Lấy thông tin sản phẩm (Mã, Tên, Đơn giá).
+        /// - Tìm và load ảnh sản phẩm từ đường dẫn tuyệt đối (tránh file lock) hoặc từ thư mục Resources dự phòng.
+        /// - Cập nhật nội dung mô tả chi tiết sản phẩm và số lượng tối đa có thể trả.
+        /// </summary>
         private void dgvProductsSelection_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             if (listInvoiceDetails == null || listInvoiceDetails.Count == 0) return;
@@ -713,20 +738,33 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelSoLuong.Text = "";
             txtSelTinhTrang.Text = "";
 
-         
-            string tenAnh = rowView.Anh;
-            if (tenAnh != null && tenAnh != "")
+            string imagePath = rowView.Anh;
+            if (picAnh.Image != null)
             {
-                string duongDan1 = System.IO.Path.Combine(Application.StartupPath, "GUI", "Resources", tenAnh);
-                string duongDan2 = System.IO.Path.Combine(Application.StartupPath, @"..\..\..\GUI\Resources", tenAnh);
-
-                if (System.IO.File.Exists(duongDan1)) picAnh.Image = System.Drawing.Image.FromFile(duongDan1);
-                else if (System.IO.File.Exists(duongDan2)) picAnh.Image = System.Drawing.Image.FromFile(duongDan2);
-                else picAnh.Image = null;
-            }
-            else
-            {
+                picAnh.Image.Dispose();
                 picAnh.Image = null;
+            }
+
+            if (!string.IsNullOrEmpty(imagePath))
+            {
+                if (System.IO.File.Exists(imagePath))
+                {
+                    try
+                    {
+                        byte[] bytes = System.IO.File.ReadAllBytes(imagePath);
+                        System.IO.MemoryStream ms = new System.IO.MemoryStream(bytes);
+                        picAnh.Image = System.Drawing.Image.FromStream(ms);
+                    }
+                    catch { picAnh.Image = null; }
+                }
+                else
+                {
+                    // Fallback to Resources folder if it's just a filename
+                    string duongDan1 = System.IO.Path.Combine(Application.StartupPath, "GUI", "Resources", imagePath);
+                    string duongDan2 = System.IO.Path.Combine(Application.StartupPath, @"..\..\..\GUI\Resources", imagePath);
+                    if (System.IO.File.Exists(duongDan1)) picAnh.Image = System.Drawing.Image.FromFile(duongDan1);
+                    else if (System.IO.File.Exists(duongDan2)) picAnh.Image = System.Drawing.Image.FromFile(duongDan2);
+                }
             }
 
             lblProductDetailDesc.Text = $"Mã sản phẩm: {rowView.MaSanPham}\n" +
@@ -778,18 +816,32 @@ namespace AssignmentApp.GUI.UserControls.Sales
                         slMua = row.SLMua;
                         slDaTra = row.DaTra;
                         
-                        string tenAnh = row.Anh;
-                        if (tenAnh != null && tenAnh != "")
+                        string imagePath = row.Anh;
+                        if (picAnh.Image != null)
                         {
-                            string duongDan1 = System.IO.Path.Combine(Application.StartupPath, "GUI", "Resources", tenAnh);
-                            string duongDan2 = System.IO.Path.Combine(Application.StartupPath, @"..\..\..\GUI\Resources", tenAnh);
-                            if (System.IO.File.Exists(duongDan1)) picAnh.Image = System.Drawing.Image.FromFile(duongDan1);
-                            else if (System.IO.File.Exists(duongDan2)) picAnh.Image = System.Drawing.Image.FromFile(duongDan2);
-                            else picAnh.Image = null;
-                        }
-                        else
-                        {
+                            picAnh.Image.Dispose();
                             picAnh.Image = null;
+                        }
+
+                        if (!string.IsNullOrEmpty(imagePath))
+                        {
+                            if (System.IO.File.Exists(imagePath))
+                            {
+                                try
+                                {
+                                    byte[] bytes = System.IO.File.ReadAllBytes(imagePath);
+                                    System.IO.MemoryStream ms = new System.IO.MemoryStream(bytes);
+                                    picAnh.Image = System.Drawing.Image.FromStream(ms);
+                                }
+                                catch { picAnh.Image = null; }
+                            }
+                            else
+                            {
+                                string duongDan1 = System.IO.Path.Combine(Application.StartupPath, "GUI", "Resources", imagePath);
+                                string duongDan2 = System.IO.Path.Combine(Application.StartupPath, @"..\..\..\GUI\Resources", imagePath);
+                                if (System.IO.File.Exists(duongDan1)) picAnh.Image = System.Drawing.Image.FromFile(duongDan1);
+                                else if (System.IO.File.Exists(duongDan2)) picAnh.Image = System.Drawing.Image.FromFile(duongDan2);
+                            }
                         }
                         break;
                     }
@@ -823,6 +875,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
      
         // Hàm xử lý khi bấm nút "Thêm vào giỏ" ở Tab 2
+        /// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Khi người dùng bấm nút THÊM sản phẩm vào giỏ hàng trả (Tab 2).
+        /// - Validate (Kiểm tra) số lượng nhập vào (phải là số hợp lệ, > 0).
+        /// - Kiểm tra xem số lượng muốn trả có vượt quá (Số lượng đã mua - Số lượng đã trả trước đó) hay không.
+        /// - Cập nhật giỏ hàng: Nếu đã có thì cộng dồn số lượng, nếu chưa thì thêm dòng mới.
+        /// </summary>
         private void btnAddToCart_Click(object sender, EventArgs e)
         {
             // Bước 1: Kiểm tra tính hợp lệ
@@ -972,6 +1030,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
         // Hàm xử lý khi bấm nút "Hoàn tất & Trở về"
+        /// <summary>
+        /// [SỰ KIỆN GIAO DIỆN] Khi người dùng bấm nút LƯU CHI TIẾT PHIẾU (Tab 2).
+        /// - Xóa toàn bộ chi tiết cũ (nếu có) của phiếu đang thao tác.
+        /// - Lặp qua giỏ hàng (listCart) và lưu từng sản phẩm vào bảng ChiTietTraHang.
+        /// - Kết thúc quá trình sửa chi tiết, reload lại danh sách bên Tab 1 và làm mới giao diện.
+        /// </summary>
         private void btnBackToReceipt_Click(object sender, EventArgs e)
         {
             if (listCart == null || listCart.Count == 0)

@@ -819,7 +819,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblTotalAmount.Text = $"TỔNG TIỀN TẠM TÍNH: {total.ToString("N0")} đ";
         }
 
-        private void btnAddToCart_Click(object? sender, EventArgs e)
+        private async void btnAddToCart_Click(object? sender, EventArgs e)
         {
             string id = txtSelMaSP.Text;
             if (string.IsNullOrEmpty(id))
@@ -842,6 +842,21 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
+            if (int.TryParse(id, out int productId))
+            {
+                var prod = await _productService.GetProductByIdAsync(productId);
+                if (prod != null)
+                {
+                    var existingCheck = currentDetails.FirstOrDefault(d => d.MaSanPham == id);
+                    int newTotalQty = (existingCheck != null ? existingCheck.SoLuong : 0) + qty;
+                    if (newTotalQty > prod.SoLuongTon)
+                    {
+                        MessageBox.Show($"Số lượng vượt quá tồn kho!\nTồn kho hiện tại: {prod.SoLuongTon}", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+            }
+
             var existing = currentDetails.FirstOrDefault(d => d.MaSanPham == id);
             if (existing != null)
             {
@@ -860,12 +875,27 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
 
             LoadCurrentDetailsGrid();
-            isCartModified = true;
-            SetCartButtonsState("Init", isCartModified);
+            
+            if (!isAddingNew && _selectedOrder != null)
+            {
+                await UpdateTotalAmountAsync();
+                if (decimal.TryParse(txtTongTien.Text.Replace(" đ", "").Replace(",", ""), out decimal newTotal))
+                    _selectedOrder.TongTien = newTotal;
+                    
+                await _orderService.UpdateOrderCartAsync(_selectedOrder, currentDetails);
+                _ = LoadProductsSelectionGridAsync();
+                MessageBox.Show("Đã thêm sản phẩm và cập nhật tồn kho thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                isCartModified = true;
+                SetCartButtonsState("Init", isCartModified);
+            }
+            
             btnResetCartForm_Click(null, EventArgs.Empty);
         }
 
-        private void guna2Button4_Click(object? sender, EventArgs e)
+        private async void guna2Button4_Click(object? sender, EventArgs e)
         {
             string id = txtSelMaSP.Text;
             if (string.IsNullOrEmpty(id)) return;
@@ -874,6 +904,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
             {
                 if (int.TryParse(txtSelSoLuong.Text, out int qty) && qty > 0)
                 {
+                    if (int.TryParse(id, out int productId))
+                    {
+                        var prod = await _productService.GetProductByIdAsync(productId);
+                        if (prod != null && qty > prod.SoLuongTon)
+                        {
+                            MessageBox.Show($"Số lượng vượt quá tồn kho!\nTồn kho hiện tại: {prod.SoLuongTon}", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+
                     existing.SoLuong = qty;
                     existing.ThanhTien = existing.SoLuong * existing.DonGia;
                 }
@@ -883,8 +923,22 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     existing.ThanhTien = existing.SoLuong * existing.DonGia;
                 }
                 LoadCurrentDetailsGrid();
-                isCartModified = true;
-                SetCartButtonsState("Init", isCartModified);
+                
+                if (!isAddingNew && _selectedOrder != null)
+                {
+                    await UpdateTotalAmountAsync();
+                    if (decimal.TryParse(txtTongTien.Text.Replace(" đ", "").Replace(",", ""), out decimal newTotal))
+                        _selectedOrder.TongTien = newTotal;
+                        
+                    await _orderService.UpdateOrderCartAsync(_selectedOrder, currentDetails);
+                    _ = LoadProductsSelectionGridAsync();
+                    MessageBox.Show("Đã cập nhật số lượng và tồn kho thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    isCartModified = true;
+                    SetCartButtonsState("Init", isCartModified);
+                }
                 btnResetCartForm_Click(null, EventArgs.Empty);
             }
         }
@@ -895,7 +949,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             SetCartButtonsState("Init", isCartModified);
         }
 
-        private void btnRemoveFromCart_Click(object? sender, EventArgs e)
+        private async void btnRemoveFromCart_Click(object? sender, EventArgs e)
         {
             string id = txtSelMaSP.Text;
             if (string.IsNullOrEmpty(id))
@@ -907,10 +961,30 @@ namespace AssignmentApp.GUI.UserControls.Sales
             var item = currentDetails.FirstOrDefault(d => d.MaSanPham == id);
             if (item != null)
             {
+                if (!isAddingNew && _selectedOrder != null)
+                {
+                    var confirm = MessageBox.Show("Hóa đơn đã được lưu! Xóa sản phẩm này sẽ trực tiếp khôi phục số lượng tồn kho. Bạn có chắc chắn?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (confirm != DialogResult.Yes) return;
+                }
+
                 currentDetails.Remove(item);
                 LoadCurrentDetailsGrid();
-                isCartModified = true;
-                SetCartButtonsState("Init", isCartModified);
+                
+                if (!isAddingNew && _selectedOrder != null)
+                {
+                    await UpdateTotalAmountAsync();
+                    if (decimal.TryParse(txtTongTien.Text.Replace(" đ", "").Replace(",", ""), out decimal newTotal))
+                        _selectedOrder.TongTien = newTotal;
+                        
+                    await _orderService.UpdateOrderCartAsync(_selectedOrder, currentDetails);
+                    _ = LoadProductsSelectionGridAsync();
+                    MessageBox.Show("Đã xóa sản phẩm và khôi phục tồn kho thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    isCartModified = true;
+                    SetCartButtonsState("Init", isCartModified);
+                }
                 btnResetCartForm_Click(this, EventArgs.Empty);
             }
             else

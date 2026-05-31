@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -83,7 +83,7 @@ namespace AssignmentApp.BLL.Services.Sales
             await _orderRepo.DeleteDetailsByOrderIdAsync(order.MaHoaDon.ToString());
             
             decimal total = newDetails.Sum(d => d.ThanhTien);
-            order.TongTien = total;
+            // Không tự động ghi đè order.TongTien = total; để UI có thể tính toán chiết khấu trước khi truyền vào order.
             
             // Note: discount recalculation should be handled in UI or passed in, 
             // but we expect the UI to have already set order.TongTien if it recalculates.

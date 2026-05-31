@@ -10,6 +10,8 @@ using AssignmentApp.DAL.Repositories.Admin;
 using AssignmentApp.BLL.Services.Admin;
 using AssignmentApp.DAL.Repositories.Warehouse;
 using AssignmentApp.BLL.Services.Warehouse;
+using AssignmentApp.DAL.Repositories.Sales;
+using AssignmentApp.BLL.Services.Sales;
 
 static class Program
 {
@@ -65,8 +67,14 @@ static class Program
         // Đăng ký cho module Quản lý Sản Phẩm (Product)
         services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IStockInRepository, StockInRepository>();
-        services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IStockInService, StockInService>();
+
+        // Đăng ký cho module Bán hàng (Sales)
+        services.AddScoped<ICustomerRepository, CustomerRepository>();
+        services.AddScoped<ICustomerService, CustomerService>();
+        services.AddScoped<IDeliveryRepository, DeliveryRepository>();
+        services.AddScoped<IDeliveryService, DeliveryService>();
 
         // Đăng ký Service nghiệp vụ (BLL)
         services.AddTransient<IAuthService, AuthService>();

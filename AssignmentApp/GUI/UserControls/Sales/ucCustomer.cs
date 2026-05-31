@@ -7,18 +7,20 @@ namespace AssignmentApp.GUI.UserControls.Sales
 {
     public partial class ucCustomer : UserControl
     {
+        private readonly BLL.Services.Sales.ICustomerService _customerService;
         private bool isAddingNew = false;
 
         public ucCustomer()
         {
             InitializeComponent();
+            _customerService = Microsoft.Extensions.DependencyInjection.ServiceProviderServiceExtensions.GetRequiredService<BLL.Services.Sales.ICustomerService>(Program.ServiceProvider);
         }
 
-        private void ucCustomer_Load(object sender, EventArgs e)
+        private async void ucCustomer_Load(object sender, EventArgs e)
         {
             dtpNgayTao.ValueChanged -= dtpNgayTao_ValueChanged;
             dtpNgayTao.ValueChanged += dtpNgayTao_ValueChanged;
-            LoadData();
+            await LoadDataAsync();
             ResetState();
         }
 
@@ -30,29 +32,21 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
         }
 
-        private void LoadData()
+        private async Task LoadDataAsync()
         {
             dgvCustomers.Rows.Clear();
             try
             {
-                AssignmentApp.DAL.Core.DbContext.Ketnoi();
-                System.Data.DataTable dt = AssignmentApp.DAL.Core.DbContext.GetDataToTable("SELECT * FROM KhachHang");
-                foreach (System.Data.DataRow row in dt.Rows)
+                var customers = await _customerService.GetAllCustomersAsync();
+                foreach (var c in customers)
                 {
-                    string maKhachHang = row["MaKhachHang"].ToString();
-                    string tenKhachHang = row["TenKhachHang"].ToString();
-                    string sdt = row["SoDienThoai"] != DBNull.Value ? row["SoDienThoai"].ToString() : "";
-                    string email = row["Email"] != DBNull.Value ? row["Email"].ToString() : "";
-                    string diaChi = row["DiaChi"] != DBNull.Value ? row["DiaChi"].ToString() : "";
-                    string ngayTao = row["NgayTao"] != DBNull.Value ? Convert.ToDateTime(row["NgayTao"]).ToString("dd/MM/yyyy") : "";
-                    string trangThai = row["TrangThai"] != DBNull.Value ? row["TrangThai"].ToString() : "";
-
-                    dgvCustomers.Rows.Add(maKhachHang, tenKhachHang, sdt, email, diaChi, ngayTao, trangThai);
+                    string ngayTao = c.NgayTao != DateTime.MinValue ? c.NgayTao.ToString("dd/MM/yyyy") : "";
+                    dgvCustomers.Rows.Add(c.MaKhachHang.ToString(), c.TenKhachHang, c.SoDienThoai ?? "", c.Email ?? "", c.DiaChi ?? "", ngayTao, c.TrangThai ?? "");
                 }
             }
             catch (Exception ex)
             {
-                // Bỏ qua lỗi nếu bảng chưa tồn tại
+                MessageBox.Show("Lỗi khi tải dữ liệu: " + ex.Message);
             }
         }
 
@@ -137,13 +131,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             ResetValues();
             ToggleInputs(true);
 
-            // Lấy mã tự sinh
-            string nextId = AssignmentApp.DAL.Core.DbContext.GetFieldValues("SELECT ISNULL(MAX(MaKhachHang), 0) + 1 FROM KhachHang");
-
-            txtMaKhachHang.Text = nextId;
-            txtMaKhachHang.Enabled = false; // khóa không cho click
-            dtpNgayTao.Enabled = false; // khóa vì tự động lấy ngày hiện tại
-            cboTrangThai.Text = "Hoạt động"; // trạng thái mặc định
+            txtMaKhachHang.Text = "Tự động sinh";
+            txtMaKhachHang.Enabled = false; 
+            dtpNgayTao.Enabled = false; 
+            cboTrangThai.Text = "Hoạt động"; 
 
             btnSave.Enabled = true;
             btnCancel.Enabled = true;
@@ -156,63 +147,66 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtTenKhachHang.Focus();
         }
 
-        private void btnEdit_Click(object sender, EventArgs e)
+        private async void btnEdit_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtMaKhachHang.Text) || isAddingNew)
+            if (string.IsNullOrEmpty(txtMaKhachHang.Text) || isAddingNew || txtMaKhachHang.Text == "Tự động sinh")
             {
                 MessageBox.Show("Vui lòng chọn một khách hàng để chỉnh sửa!");
                 return;
             }
 
-            string ten = txtTenKhachHang.Text.Trim();
-            string sdt = txtSoDienThoai.Text.Trim();
-            string email = txtEmail.Text.Trim();
-            string diaChi = txtDiaChi.Text.Trim();
-            string trangThai = cboTrangThai.Text;
-            string maKH = txtMaKhachHang.Text;
-
-            if (string.IsNullOrEmpty(ten))
+            var customer = new DTO.Customer
             {
-                MessageBox.Show("Vui lòng nhập tên khách hàng!");
-                return;
+                MaKhachHang = int.Parse(txtMaKhachHang.Text),
+                TenKhachHang = txtTenKhachHang.Text.Trim(),
+                SoDienThoai = txtSoDienThoai.Text.Trim(),
+                Email = txtEmail.Text.Trim(),
+                DiaChi = txtDiaChi.Text.Trim(),
+                TrangThai = cboTrangThai.Text
+            };
+
+            try
+            {
+                await _customerService.UpdateCustomerAsync(customer);
+                MessageBox.Show("Lưu thay đổi thành công!");
+                await LoadDataAsync();
+                ResetState();
             }
-
-            string sql = $"UPDATE KhachHang SET TenKhachHang = N'{ten}', SoDienThoai = '{sdt}', Email = '{email}', DiaChi = N'{diaChi}', TrangThai = N'{trangThai}' WHERE MaKhachHang = '{maKH}'";
-            AssignmentApp.DAL.Core.DbContext.RunSql(sql);
-            MessageBox.Show("Lưu thay đổi thành công!");
-
-            LoadData();
-            ResetState();
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
             if (!isAddingNew) return;
 
-            string ten = txtTenKhachHang.Text.Trim();
-            string sdt = txtSoDienThoai.Text.Trim();
-            string email = txtEmail.Text.Trim();
-            string diaChi = txtDiaChi.Text.Trim();
-            string ngay = DateTime.Now.ToString("yyyy-MM-dd");
-            string trangThai = cboTrangThai.Text;
-
-            if (string.IsNullOrEmpty(ten))
+            var customer = new DTO.Customer
             {
-                MessageBox.Show("Vui lòng nhập tên khách hàng!");
-                return;
-            }
+                TenKhachHang = txtTenKhachHang.Text.Trim(),
+                SoDienThoai = txtSoDienThoai.Text.Trim(),
+                Email = txtEmail.Text.Trim(),
+                DiaChi = txtDiaChi.Text.Trim(),
+                TrangThai = cboTrangThai.Text
+            };
 
-            string sql = $"INSERT INTO KhachHang (TenKhachHang, SoDienThoai, Email, DiaChi, NgayTao, TrangThai) VALUES (N'{ten}', '{sdt}', '{email}', N'{diaChi}', '{ngay}', N'{trangThai}')";
-            AssignmentApp.DAL.Core.DbContext.RunSql(sql);
-            MessageBox.Show("Thêm khách hàng thành công! Mã khách hàng đã được tự động sinh.");
-            
-            LoadData();
-            ResetState();
+            try
+            {
+                await _customerService.AddCustomerAsync(customer);
+                MessageBox.Show("Thêm khách hàng thành công!");
+                await LoadDataAsync();
+                ResetState();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
-        private void btnDelete_Click(object sender, EventArgs e)
+        private async void btnDelete_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtMaKhachHang.Text))
+            if (string.IsNullOrEmpty(txtMaKhachHang.Text) || txtMaKhachHang.Text == "Tự động sinh")
             {
                 MessageBox.Show("Vui lòng chọn một khách hàng để xóa!");
                 return;
@@ -221,20 +215,27 @@ namespace AssignmentApp.GUI.UserControls.Sales
             var confirm = MessageBox.Show("Bạn có chắc chắn muốn xóa (chuyển trạng thái sang Ngừng hoạt động) khách hàng này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (confirm == DialogResult.Yes)
             {
-                AssignmentApp.DAL.Core.DbContext.RunSql($"UPDATE KhachHang SET TrangThai = N'Ngừng hoạt động' WHERE MaKhachHang = '{txtMaKhachHang.Text}'");
-                MessageBox.Show("Đã xóa bản ghi (chuyển trạng thái) thành công!");
-                LoadData();
-                ResetState();
+                try
+                {
+                    await _customerService.SoftDeleteCustomerAsync(int.Parse(txtMaKhachHang.Text));
+                    MessageBox.Show("Đã xóa bản ghi (chuyển trạng thái) thành công!");
+                    await LoadDataAsync();
+                    ResetState();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message);
+                }
             }
         }
 
-        private void btnRefresh_Click(object sender, EventArgs e)
+        private async void btnRefresh_Click(object sender, EventArgs e)
         {
-            LoadData();
+            await LoadDataAsync();
             ResetState();
         }
 
-        private void btnSearch_Click(object sender, EventArgs e)
+        private async void btnSearch_Click(object sender, EventArgs e)
         {
             if (txtMaKhachHang.Enabled == false)
             {
@@ -251,58 +252,34 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 dtpNgayTao.Format = DateTimePickerFormat.Custom;
                 dtpNgayTao.CustomFormat = " "; // Đặt ngày tạo về null
 
-                MessageBox.Show("Chế độ tìm kiếm đã BẬT!\nVui lòng nhập các tiêu chí cần lọc vào ô nhập liệu rồi bấm 'Tìm Kiếm' lần nữa.", "Hướng dẫn", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                txtMaKhachHang.Focus();
+                MessageBox.Show("Chế độ tìm kiếm đã BẬT!\nVui lòng nhập Tên hoặc SĐT rồi bấm 'Tìm Kiếm' lần nữa.", "Hướng dẫn", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtTenKhachHang.Focus();
                 return;
             }
 
-            if (string.IsNullOrEmpty(txtMaKhachHang.Text.Trim()) &&
-                string.IsNullOrEmpty(txtTenKhachHang.Text.Trim()) &&
-                string.IsNullOrEmpty(txtSoDienThoai.Text.Trim()) &&
-                string.IsNullOrEmpty(txtEmail.Text.Trim()) &&
-                string.IsNullOrEmpty(txtDiaChi.Text.Trim()) &&
-                cboTrangThai.SelectedIndex == -1 &&
-                dtpNgayTao.CustomFormat == " ")
+            string ten = txtTenKhachHang.Text.Trim();
+            string sdt = txtSoDienThoai.Text.Trim();
+
+            if (string.IsNullOrEmpty(ten) && string.IsNullOrEmpty(sdt))
             {
-                MessageBox.Show("Vui lòng nhập/chọn ít nhất một thông tin để tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng nhập Tên Khách Hàng hoặc Số Điện Thoại để tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
             dgvCustomers.Rows.Clear();
-            string sql = "SELECT * FROM KhachHang WHERE 1=1 ";
-            
-            if (!string.IsNullOrEmpty(txtMaKhachHang.Text.Trim()))
-                sql += $" AND MaKhachHang = '{txtMaKhachHang.Text.Trim()}' ";
-            if (!string.IsNullOrEmpty(txtTenKhachHang.Text.Trim()))
-                sql += $" AND TenKhachHang LIKE N'%{txtTenKhachHang.Text.Trim()}%' ";
-            if (!string.IsNullOrEmpty(txtSoDienThoai.Text.Trim()))
-                sql += $" AND SoDienThoai LIKE '%{txtSoDienThoai.Text.Trim()}%' ";
-            if (!string.IsNullOrEmpty(txtEmail.Text.Trim()))
-                sql += $" AND Email LIKE '%{txtEmail.Text.Trim()}%' ";
-            if (!string.IsNullOrEmpty(txtDiaChi.Text.Trim()))
-                sql += $" AND DiaChi LIKE N'%{txtDiaChi.Text.Trim()}%' ";
-            if (cboTrangThai.SelectedIndex != -1)
-                sql += $" AND TrangThai = N'{cboTrangThai.Text}' ";
-            if (dtpNgayTao.CustomFormat != " ")
-                sql += $" AND CONVERT(date, NgayTao) = '{dtpNgayTao.Value.ToString("yyyy-MM-dd")}' ";
-
             try
             {
-                System.Data.DataTable dt = AssignmentApp.DAL.Core.DbContext.GetDataToTable(sql);
-                foreach (System.Data.DataRow row in dt.Rows)
+                var customers = await _customerService.SearchCustomersAsync(ten, sdt);
+                foreach (var c in customers)
                 {
-                    string maKhachHang = row["MaKhachHang"].ToString();
-                    string tenKhachHang = row["TenKhachHang"].ToString();
-                    string sdt = row["SoDienThoai"] != DBNull.Value ? row["SoDienThoai"].ToString() : "";
-                    string email = row["Email"] != DBNull.Value ? row["Email"].ToString() : "";
-                    string diaChi = row["DiaChi"] != DBNull.Value ? row["DiaChi"].ToString() : "";
-                    string ngayTao = row["NgayTao"] != DBNull.Value ? Convert.ToDateTime(row["NgayTao"]).ToString("dd/MM/yyyy") : "";
-                    string trangThai = row["TrangThai"] != DBNull.Value ? row["TrangThai"].ToString() : "";
-
-                    dgvCustomers.Rows.Add(maKhachHang, tenKhachHang, sdt, email, diaChi, ngayTao, trangThai);
+                    string ngayTao = c.NgayTao != DateTime.MinValue ? c.NgayTao.ToString("dd/MM/yyyy") : "";
+                    dgvCustomers.Rows.Add(c.MaKhachHang.ToString(), c.TenKhachHang, c.SoDienThoai ?? "", c.Email ?? "", c.DiaChi ?? "", ngayTao, c.TrangThai ?? "");
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tìm kiếm: " + ex.Message);
+            }
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

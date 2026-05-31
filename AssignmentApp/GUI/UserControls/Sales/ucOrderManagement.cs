@@ -964,11 +964,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 (string.IsNullOrEmpty(keyword) ||
                  p.MaSanPham.ToString() == keyword ||
                  p.TenSanPham.ToLower().Contains(keyword) ||
-                 p.MaDanhMuc.ToString() == keyword) &&
+                 p.MaDanhMuc.ToString() == keyword ||
+                 (p.TenDanhMuc != null && p.TenDanhMuc.ToLower().Contains(keyword))) &&
                 (string.IsNullOrEmpty(maSP) || p.MaSanPham.ToString() == maSP) &&
                 (string.IsNullOrEmpty(tenSP) || p.TenSanPham.ToLower().Contains(tenSP)) &&
                 (string.IsNullOrEmpty(maDM) || p.MaDanhMuc.ToString() == maDM) &&
-                (string.IsNullOrEmpty(tenDM) || p.TenDanhMuc.ToLower().Contains(tenDM))
+                (string.IsNullOrEmpty(tenDM) || (p.TenDanhMuc != null && p.TenDanhMuc.ToLower().Contains(tenDM)))
             ).ToList();
 
             _ = LoadProductsSelectionGridAsync(filtered);

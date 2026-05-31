@@ -18,10 +18,22 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private async void ucCustomer_Load(object sender, EventArgs e)
         {
+            // Wire up real-time validation events
+            txtSoDienThoai.KeyPress += TxtSoDienThoai_KeyPress;
+
             dtpNgayTao.ValueChanged -= dtpNgayTao_ValueChanged;
             dtpNgayTao.ValueChanged += dtpNgayTao_ValueChanged;
             await LoadDataAsync();
             ResetState();
+        }
+
+        private void TxtSoDienThoai_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Chỉ cho phép nhập số và phím điều khiển (như Backspace)
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
 
         private void dtpNgayTao_ValueChanged(object sender, EventArgs e)

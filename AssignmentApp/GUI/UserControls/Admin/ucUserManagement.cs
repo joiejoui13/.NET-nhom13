@@ -36,6 +36,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
         /// </summary>
         private async void ucUserManagement_Load(object sender, EventArgs e)
         {
+            // Wire up real-time validation events
+            txtSoDienThoai.KeyPress += TxtSoDienThoai_KeyPress;
+
             await Load_DataGridViewAsync();
             
             ResetValues();
@@ -47,6 +50,15 @@ namespace AssignmentApp.GUI.UserControls.Admin
             btnDelete.Enabled = false;      
             btnSave.Enabled = false;        
             btnCancel.Enabled = false;      
+        }
+
+        private void TxtSoDienThoai_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Chỉ cho phép nhập số và phím điều khiển (như Backspace)
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
         }
 
         #endregion

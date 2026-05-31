@@ -36,9 +36,14 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 /// <summary>
         /// [SỰ KIỆN GIAO DIỆN] Kích hoạt khi giao diện vừa được tải lên. Khởi tạo cấu hình và gọi BLL để lấy dữ liệu đổ vào Grid.
         /// </summary>
+        private void NumericOnly_KeyPress(object sender, KeyPressEventArgs e) { if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar)) { e.Handled = true; } }
+
+        private void NoLeadingSpace_KeyPress(object sender, KeyPressEventArgs e) { if (e.KeyChar == ' ' && ((Guna.UI2.WinForms.Guna2TextBox)sender).SelectionStart == 0) { e.Handled = true; } }
+
         private async void ucProductList_Load(object sender, EventArgs e)
         {
             // 1. Nạp dữ liệu vào ComboBox Danh Mục từ CSDL
+            if (txtGiaNhap != null) txtGiaNhap.KeyPress += NumericOnly_KeyPress; if (txtGiaBan != null) txtGiaBan.KeyPress += NumericOnly_KeyPress; if (txtSoLuongTon != null) txtSoLuongTon.KeyPress += NumericOnly_KeyPress; if (txtTenSanPham != null) txtTenSanPham.KeyPress += NoLeadingSpace_KeyPress; if (txtMoTa != null) txtMoTa.KeyPress += NoLeadingSpace_KeyPress;
             await Load_cboDanhMucAsync();
 
             // 2. Tải toàn bộ danh sách Sản phẩm lên DataGridView

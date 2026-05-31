@@ -34,9 +34,12 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 /// <summary>
         /// [SỰ KIỆN GIAO DIỆN] Kích hoạt khi giao diện vừa được tải lên. Khởi tạo cấu hình và gọi BLL để lấy dữ liệu đổ vào Grid.
         /// </summary>
+        private void NumericOnly_KeyPress(object sender, KeyPressEventArgs e) { if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar) && e.KeyChar != '-') { e.Handled = true; } }
+
         private async void ucInventory_Load(object sender, EventArgs e)
         {
             cboSanPham.SelectedIndexChanged += cboSanPham_SelectedIndexChanged;
+            if (txtSoLuongThayDoi != null) txtSoLuongThayDoi.KeyPress += NumericOnly_KeyPress; if (txtMaThamChieu != null) txtMaThamChieu.KeyPress += NumericOnly_KeyPress;
             txtSoLuongThayDoi.TextChanged += txtSoLuongThayDoi_TextChanged;
 
             await Load_cboSanPhamAsync();

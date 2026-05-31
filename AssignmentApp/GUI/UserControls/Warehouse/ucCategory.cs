@@ -35,6 +35,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 /// <summary>
         /// [SỰ KIỆN GIAO DIỆN] Kích hoạt khi giao diện vừa được tải lên. Khởi tạo cấu hình và gọi BLL để lấy dữ liệu đổ vào Grid.
         /// </summary>
+        private void NoLeadingSpace_KeyPress(object sender, KeyPressEventArgs e) { if (e.KeyChar == ' ' && ((Guna.UI2.WinForms.Guna2TextBox)sender).SelectionStart == 0) { e.Handled = true; } }
+
         private async void ucCategory_Load(object sender, EventArgs e)
         {
             await Load_DataGridViewAsync();

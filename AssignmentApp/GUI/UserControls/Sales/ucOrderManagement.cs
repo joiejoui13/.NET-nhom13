@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -110,8 +110,23 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
         }
 
+        private void NumericOnly_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Chỉ cho phép nhập số và phím điều khiển (như Backspace)
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
         private void ucOrderManagement_Load(object sender, EventArgs e)
         {
+            // Wire up real-time validation events
+            if (txtTongTien != null) txtTongTien.KeyPress += NumericOnly_KeyPress;
+            if (txtGiamGia != null) txtGiamGia.KeyPress += NumericOnly_KeyPress;
+            if (txtSelSoLuong != null) txtSelSoLuong.KeyPress += NumericOnly_KeyPress;
+            if (txtSelGiaNhap != null) txtSelGiaNhap.KeyPress += NumericOnly_KeyPress;
+
             SetControlState("Init");
             _ = LoadOrdersGridAsync();
             _ = LoadProductsSelectionGridAsync();

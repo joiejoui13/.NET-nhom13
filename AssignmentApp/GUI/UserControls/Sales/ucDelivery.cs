@@ -18,6 +18,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private async void ucDelivery_Load(object sender, EventArgs e)
         {
+            // Wire up real-time validation events
+            txtMaHoaDon.KeyPress += TxtMaHoaDon_KeyPress;
+            guna2TextBox1.KeyPress += TxtMaHoaDon_KeyPress;
+            txtDiaChiGiao.KeyPress += TxtDiaChiGiao_KeyPress;
+
             // Thiết lập ComboBox trạng thái
             cboTrangThaiGiao.Items.Clear();
             cboTrangThaiGiao.Items.AddRange(new object[] { "Chờ giao", "Đang giao", "Đã giao", "Đã hủy" });
@@ -38,6 +43,24 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             await LoadDataAsync();
             ResetState();
+        }
+
+        private void TxtMaHoaDon_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Chỉ cho phép nhập số và phím điều khiển
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void TxtDiaChiGiao_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Chặn khoảng trắng ở đầu
+            if (e.KeyChar == ' ' && txtDiaChiGiao.SelectionStart == 0)
+            {
+                e.Handled = true;
+            }
         }
 
         private void dtpNgayGiao_ValueChanged(object sender, EventArgs e)

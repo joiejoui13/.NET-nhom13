@@ -44,6 +44,10 @@ namespace AssignmentApp.GUI.UserControls.Admin
         /// </summary>
         private async void ucPromotion_Load(object sender, EventArgs e)
         {
+            // Wire up real-time validation events
+            txtPhanTramGiamGia.KeyPress += TxtPhanTramGiamGia_KeyPress;
+            txtPhanTramGiamGia.TextChanged += TxtPhanTramGiamGia_TextChanged;
+
             // 1. Tải toàn bộ dữ liệu danh sách khuyến mãi lên DataGridView thông qua BLL
             await Load_DataGridViewAsync();
             
@@ -58,6 +62,28 @@ namespace AssignmentApp.GUI.UserControls.Admin
             btnDelete.Enabled = false;      // Tắt Xóa
             btnSave.Enabled = false;        // Tắt Lưu
             btnCancel.Enabled = false;      // Tắt Hủy
+        }
+
+        private void TxtPhanTramGiamGia_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Chỉ cho phép nhập số và phím điều khiển (như Backspace)
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void TxtPhanTramGiamGia_TextChanged(object sender, EventArgs e)
+        {
+            // Đảm bảo giá trị không vượt quá 100
+            if (int.TryParse(txtPhanTramGiamGia.Text.Trim(), out int val))
+            {
+                if (val > 100)
+                {
+                    txtPhanTramGiamGia.Text = "100";
+                    txtPhanTramGiamGia.SelectionStart = txtPhanTramGiamGia.Text.Length;
+                }
+            }
         }
 
         #endregion

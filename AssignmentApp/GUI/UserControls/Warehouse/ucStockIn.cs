@@ -52,8 +52,21 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 /// <summary>
         /// [SỰ KIỆN GIAO DIỆN] Kích hoạt khi giao diện vừa được tải lên. Khởi tạo cấu hình và gọi BLL để lấy dữ liệu đổ vào Grid.
         /// </summary>
+        private void NumericOnly_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Chỉ cho phép nhập số và phím điều khiển (như Backspace)
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
         private async void ucStockIn_Load(object sender, EventArgs e)
         {
+            // Wire up real-time validation events
+            txtSelSoLuong.KeyPress += NumericOnly_KeyPress;
+            txtSelGiaNhap.KeyPress += NumericOnly_KeyPress;
+
             // Inject new textboxes programmatically for CatId and CatName
             if (txtProductSearch != null && txtProductSearch.Parent != null)
             {

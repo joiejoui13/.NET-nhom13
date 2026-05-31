@@ -17,12 +17,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private void InitializeComponent()
         {
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesEmail1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesEmail2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesDiaChi1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdgesDiaChi2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges1 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges2 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges3 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
@@ -41,12 +37,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges16 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges17 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges18 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges25 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges26 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges19 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges20 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges21 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges22 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges23 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
-            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges24 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges29 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges30 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges25 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges26 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges27 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            Guna.UI2.WinForms.Suite.CustomizableEdges customizableEdges28 = new Guna.UI2.WinForms.Suite.CustomizableEdges();
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
@@ -62,6 +62,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtEmail = new Guna.UI2.WinForms.Guna2TextBox();
             lblDiaChi = new Label();
             txtDiaChi = new Guna.UI2.WinForms.Guna2TextBox();
+            lblNgayTao = new Label();
+            dtpNgayTao = new Guna.UI2.WinForms.Guna2DateTimePicker();
             btnAdd = new Guna.UI2.WinForms.Guna2Button();
             btnEdit = new Guna.UI2.WinForms.Guna2Button();
             btnDelete = new Guna.UI2.WinForms.Guna2Button();
@@ -78,6 +80,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colEmail = new DataGridViewTextBoxColumn();
             colDiaChi = new DataGridViewTextBoxColumn();
             colNgayTao = new DataGridViewTextBoxColumn();
+            lblTrangThai = new Label();
+            cboTrangThai = new Guna.UI2.WinForms.Guna2ComboBox();
+            colTrangThai = new DataGridViewTextBoxColumn();
             pnlInputCard.SuspendLayout();
             pnlGridCard.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dgvCustomers).BeginInit();
@@ -85,7 +90,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // pnlInputCard
             // 
-            pnlInputCard.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             pnlInputCard.BackColor = Color.Transparent;
             pnlInputCard.BorderRadius = 10;
             pnlInputCard.Controls.Add(lblInputTitle);
@@ -99,16 +103,21 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlInputCard.Controls.Add(txtEmail);
             pnlInputCard.Controls.Add(lblDiaChi);
             pnlInputCard.Controls.Add(txtDiaChi);
+            pnlInputCard.Controls.Add(lblNgayTao);
+            pnlInputCard.Controls.Add(dtpNgayTao);
+            pnlInputCard.Controls.Add(lblTrangThai);
+            pnlInputCard.Controls.Add(cboTrangThai);
             pnlInputCard.Controls.Add(btnAdd);
             pnlInputCard.Controls.Add(btnEdit);
             pnlInputCard.Controls.Add(btnDelete);
             pnlInputCard.Controls.Add(btnSave);
             pnlInputCard.Controls.Add(btnCancel);
-            pnlInputCard.CustomizableEdges = customizableEdges19;
+            pnlInputCard.CustomizableEdges = customizableEdges23;
+            pnlInputCard.Dock = DockStyle.Left;
             pnlInputCard.FillColor = Color.White;
             pnlInputCard.Location = new Point(20, 20);
             pnlInputCard.Name = "pnlInputCard";
-            pnlInputCard.ShadowDecoration.CustomizableEdges = customizableEdges20;
+            pnlInputCard.ShadowDecoration.CustomizableEdges = customizableEdges24;
             pnlInputCard.Size = new Size(320, 660);
             pnlInputCard.TabIndex = 0;
             // 
@@ -211,14 +220,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblEmail.ForeColor = Color.FromArgb(64, 64, 64);
             lblEmail.Location = new Point(15, 225);
             lblEmail.Name = "lblEmail";
-            lblEmail.Size = new Size(38, 15);
+            lblEmail.Size = new Size(39, 15);
             lblEmail.TabIndex = 4;
             lblEmail.Text = "Email:";
             // 
             // txtEmail
             // 
             txtEmail.BorderRadius = 5;
-            txtEmail.CustomizableEdges = customizableEdgesEmail1;
+            txtEmail.CustomizableEdges = customizableEdges7;
             txtEmail.DefaultText = "";
             txtEmail.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtEmail.Font = new Font("Segoe UI", 9F);
@@ -227,7 +236,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtEmail.Name = "txtEmail";
             txtEmail.PlaceholderText = "Nhập email...";
             txtEmail.SelectedText = "";
-            txtEmail.ShadowDecoration.CustomizableEdges = customizableEdgesEmail2;
+            txtEmail.ShadowDecoration.CustomizableEdges = customizableEdges8;
             txtEmail.Size = new Size(290, 30);
             txtEmail.TabIndex = 4;
             // 
@@ -245,7 +254,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // txtDiaChi
             // 
             txtDiaChi.BorderRadius = 5;
-            txtDiaChi.CustomizableEdges = customizableEdgesDiaChi1;
+            txtDiaChi.CustomizableEdges = customizableEdges9;
             txtDiaChi.DefaultText = "";
             txtDiaChi.FocusedState.BorderColor = Color.FromArgb(0, 126, 249);
             txtDiaChi.Font = new Font("Segoe UI", 9F);
@@ -254,21 +263,79 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtDiaChi.Name = "txtDiaChi";
             txtDiaChi.PlaceholderText = "Nhập địa chỉ...";
             txtDiaChi.SelectedText = "";
-            txtDiaChi.ShadowDecoration.CustomizableEdges = customizableEdgesDiaChi2;
+            txtDiaChi.ShadowDecoration.CustomizableEdges = customizableEdges10;
             txtDiaChi.Size = new Size(290, 30);
             txtDiaChi.TabIndex = 16;
             // 
+            // lblNgayTao
+            // 
+            lblNgayTao.AutoSize = true;
+            lblNgayTao.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblNgayTao.ForeColor = Color.FromArgb(64, 64, 64);
+            lblNgayTao.Location = new Point(15, 345);
+            lblNgayTao.Name = "lblNgayTao";
+            lblNgayTao.Size = new Size(59, 15);
+            lblNgayTao.TabIndex = 17;
+            lblNgayTao.Text = "Ngày tạo:";
+            // 
+            // dtpNgayTao
+            // 
+            dtpNgayTao.BorderRadius = 5;
+            dtpNgayTao.Checked = true;
+            dtpNgayTao.CustomizableEdges = customizableEdges11;
+            dtpNgayTao.FillColor = Color.White;
+            dtpNgayTao.Font = new Font("Segoe UI", 9F);
+            dtpNgayTao.Format = DateTimePickerFormat.Short;
+            dtpNgayTao.Location = new Point(15, 365);
+            dtpNgayTao.MaxDate = new DateTime(9998, 12, 31, 0, 0, 0, 0);
+            dtpNgayTao.MinDate = new DateTime(1753, 1, 1, 0, 0, 0, 0);
+            dtpNgayTao.Name = "dtpNgayTao";
+            dtpNgayTao.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            dtpNgayTao.Size = new Size(290, 30);
+            dtpNgayTao.TabIndex = 18;
+            dtpNgayTao.Value = new DateTime(2023, 1, 1, 0, 0, 0, 0);
+            // 
+            // lblTrangThai
+            // 
+            lblTrangThai.AutoSize = true;
+            lblTrangThai.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            lblTrangThai.ForeColor = Color.FromArgb(64, 64, 64);
+            lblTrangThai.Location = new Point(15, 405);
+            lblTrangThai.Name = "lblTrangThai";
+            lblTrangThai.Size = new Size(65, 15);
+            lblTrangThai.TabIndex = 19;
+            lblTrangThai.Text = "Trạng thái:";
+            // 
+            // cboTrangThai
+            // 
+            cboTrangThai.BackColor = Color.Transparent;
+            cboTrangThai.BorderRadius = 5;
+            cboTrangThai.CustomizableEdges = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            cboTrangThai.DrawMode = DrawMode.OwnerDrawFixed;
+            cboTrangThai.DropDownStyle = ComboBoxStyle.DropDownList;
+            cboTrangThai.FocusedColor = Color.FromArgb(94, 148, 255);
+            cboTrangThai.FocusedState.BorderColor = Color.FromArgb(94, 148, 255);
+            cboTrangThai.Font = new Font("Segoe UI", 10F);
+            cboTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
+            cboTrangThai.ItemHeight = 30;
+            cboTrangThai.Location = new Point(15, 425);
+            cboTrangThai.Name = "cboTrangThai";
+            cboTrangThai.ShadowDecoration.CustomizableEdges = new Guna.UI2.WinForms.Suite.CustomizableEdges();
+            cboTrangThai.Size = new Size(290, 36);
+            cboTrangThai.TabIndex = 20;
+            cboTrangThai.Items.AddRange(new object[] { "Hoạt động", "Ngừng hoạt động" });
+            // 
             // btnAdd
             // 
+            btnAdd.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnAdd.BorderRadius = 5;
-            btnAdd.CustomizableEdges = customizableEdges9;
+            btnAdd.CustomizableEdges = customizableEdges13;
             btnAdd.FillColor = Color.FromArgb(0, 126, 249);
             btnAdd.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnAdd.ForeColor = Color.White;
             btnAdd.Location = new Point(15, 510);
-            btnAdd.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnAdd.Name = "btnAdd";
-            btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges10;
+            btnAdd.ShadowDecoration.CustomizableEdges = customizableEdges14;
             btnAdd.Size = new Size(90, 36);
             btnAdd.TabIndex = 5;
             btnAdd.Text = "THÊM";
@@ -276,15 +343,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // btnEdit
             // 
+            btnEdit.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnEdit.BorderRadius = 5;
-            btnEdit.CustomizableEdges = customizableEdges11;
+            btnEdit.CustomizableEdges = customizableEdges15;
             btnEdit.FillColor = Color.FromArgb(0, 126, 249);
             btnEdit.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnEdit.ForeColor = Color.White;
             btnEdit.Location = new Point(115, 510);
-            btnEdit.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnEdit.Name = "btnEdit";
-            btnEdit.ShadowDecoration.CustomizableEdges = customizableEdges12;
+            btnEdit.ShadowDecoration.CustomizableEdges = customizableEdges16;
             btnEdit.Size = new Size(90, 36);
             btnEdit.TabIndex = 6;
             btnEdit.Text = "SỬA";
@@ -292,15 +359,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // btnDelete
             // 
+            btnDelete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDelete.BorderRadius = 5;
-            btnDelete.CustomizableEdges = customizableEdges13;
+            btnDelete.CustomizableEdges = customizableEdges17;
             btnDelete.FillColor = Color.FromArgb(244, 67, 54);
             btnDelete.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnDelete.ForeColor = Color.White;
             btnDelete.Location = new Point(215, 510);
-            btnDelete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnDelete.Name = "btnDelete";
-            btnDelete.ShadowDecoration.CustomizableEdges = customizableEdges14;
+            btnDelete.ShadowDecoration.CustomizableEdges = customizableEdges18;
             btnDelete.Size = new Size(90, 36);
             btnDelete.TabIndex = 7;
             btnDelete.Text = "XÓA";
@@ -308,15 +375,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // btnSave
             // 
+            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSave.BorderRadius = 5;
-            btnSave.CustomizableEdges = customizableEdges15;
+            btnSave.CustomizableEdges = customizableEdges19;
             btnSave.FillColor = Color.FromArgb(0, 126, 249);
             btnSave.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnSave.ForeColor = Color.White;
             btnSave.Location = new Point(15, 560);
-            btnSave.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnSave.Name = "btnSave";
-            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges16;
+            btnSave.ShadowDecoration.CustomizableEdges = customizableEdges20;
             btnSave.Size = new Size(290, 40);
             btnSave.TabIndex = 8;
             btnSave.Text = "LƯU THAY ĐỔI";
@@ -324,15 +391,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             // btnCancel
             // 
+            btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnCancel.BorderRadius = 5;
-            btnCancel.CustomizableEdges = customizableEdges17;
+            btnCancel.CustomizableEdges = customizableEdges21;
             btnCancel.FillColor = Color.FromArgb(108, 117, 125);
             btnCancel.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCancel.ForeColor = Color.White;
             btnCancel.Location = new Point(15, 610);
-            btnCancel.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnCancel.Name = "btnCancel";
-            btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges18;
+            btnCancel.ShadowDecoration.CustomizableEdges = customizableEdges22;
             btnCancel.Size = new Size(290, 35);
             btnCancel.TabIndex = 9;
             btnCancel.Text = "BỎ QUA";
@@ -347,12 +414,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlGridCard.Controls.Add(btnSearch);
             pnlGridCard.Controls.Add(btnRefresh);
             pnlGridCard.Controls.Add(dgvCustomers);
-            pnlGridCard.CustomizableEdges = customizableEdges25;
+            pnlGridCard.CustomizableEdges = customizableEdges29;
             pnlGridCard.FillColor = Color.White;
             pnlGridCard.Location = new Point(360, 20);
             pnlGridCard.Name = "pnlGridCard";
             pnlGridCard.Padding = new Padding(15);
-            pnlGridCard.ShadowDecoration.CustomizableEdges = customizableEdges26;
+            pnlGridCard.ShadowDecoration.CustomizableEdges = customizableEdges30;
             pnlGridCard.Size = new Size(620, 660);
             pnlGridCard.TabIndex = 10;
             // 
@@ -370,13 +437,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // btnSearch
             // 
             btnSearch.BorderRadius = 5;
-            btnSearch.CustomizableEdges = customizableEdges21;
+            btnSearch.CustomizableEdges = customizableEdges25;
             btnSearch.FillColor = Color.FromArgb(0, 126, 249);
             btnSearch.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnSearch.ForeColor = Color.White;
             btnSearch.Location = new Point(15, 45);
             btnSearch.Name = "btnSearch";
-            btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges22;
+            btnSearch.ShadowDecoration.CustomizableEdges = customizableEdges26;
             btnSearch.Size = new Size(100, 36);
             btnSearch.TabIndex = 12;
             btnSearch.Text = "TÌM KIẾM";
@@ -386,13 +453,13 @@ namespace AssignmentApp.GUI.UserControls.Sales
             // 
             btnRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRefresh.BorderRadius = 5;
-            btnRefresh.CustomizableEdges = customizableEdges23;
+            btnRefresh.CustomizableEdges = customizableEdges27;
             btnRefresh.FillColor = Color.FromArgb(108, 117, 125);
             btnRefresh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnRefresh.ForeColor = Color.White;
             btnRefresh.Location = new Point(505, 45);
             btnRefresh.Name = "btnRefresh";
-            btnRefresh.ShadowDecoration.CustomizableEdges = customizableEdges24;
+            btnRefresh.ShadowDecoration.CustomizableEdges = customizableEdges28;
             btnRefresh.Size = new Size(100, 36);
             btnRefresh.TabIndex = 13;
             btnRefresh.Text = "LÀM MỚI";
@@ -414,7 +481,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dataGridViewCellStyle2.WrapMode = DataGridViewTriState.True;
             dgvCustomers.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             dgvCustomers.ColumnHeadersHeight = 35;
-            dgvCustomers.Columns.AddRange(new DataGridViewColumn[] { colMaKhachHang, colTenKhachHang, colSoDienThoai, colEmail, colDiaChi, colNgayTao });
+            dgvCustomers.Columns.AddRange(new DataGridViewColumn[] { colMaKhachHang, colTenKhachHang, colSoDienThoai, colEmail, colDiaChi, colNgayTao, colTrangThai });
             dataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle3.BackColor = Color.White;
             dataGridViewCellStyle3.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
@@ -490,6 +557,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
             colNgayTao.Name = "colNgayTao";
             colNgayTao.ReadOnly = true;
             // 
+            // colTrangThai
+            // 
+            colTrangThai.HeaderText = "Trạng Thái";
+            colTrangThai.Name = "colTrangThai";
+            colTrangThai.ReadOnly = true;
+            // 
             // ucCustomer
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -524,6 +597,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private Guna.UI2.WinForms.Guna2TextBox txtEmail;
         private System.Windows.Forms.Label lblDiaChi;
         private Guna.UI2.WinForms.Guna2TextBox txtDiaChi;
+        private System.Windows.Forms.Label lblNgayTao;
+        private Guna.UI2.WinForms.Guna2DateTimePicker dtpNgayTao;
+        private System.Windows.Forms.Label lblTrangThai;
+        private Guna.UI2.WinForms.Guna2ComboBox cboTrangThai;
         private Guna.UI2.WinForms.Guna2Button btnAdd;
         private Guna.UI2.WinForms.Guna2Button btnEdit;
         private Guna.UI2.WinForms.Guna2Button btnDelete;
@@ -542,5 +619,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private System.Windows.Forms.DataGridViewTextBoxColumn colEmail;
         private System.Windows.Forms.DataGridViewTextBoxColumn colDiaChi;
         private System.Windows.Forms.DataGridViewTextBoxColumn colNgayTao;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colTrangThai;
     }
 }

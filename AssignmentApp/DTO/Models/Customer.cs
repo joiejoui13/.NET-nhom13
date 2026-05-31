@@ -7,7 +7,8 @@ namespace AssignmentApp.DTO
         public string MaKhachHang { get; set; } = string.Empty;
         public string TenKhachHang { get; set; } = string.Empty;
         public string? SoDienThoai { get; set; }
-        public int DiemTichLuy { get; set; }
+        public string? Email { get; set; }
+        public string? DiaChi { get; set; }
         public DateTime NgayTao { get; set; }
     }
 }

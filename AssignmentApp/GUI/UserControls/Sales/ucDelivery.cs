@@ -5,372 +5,419 @@ using System.Windows.Forms;
 
 namespace AssignmentApp.GUI.UserControls.Sales
 {
-    /// <summary>
-    /// Giao diện người dùng (Tầng GUI - Presentation Layer).
-    /// Chịu trách nhiệm hiển thị dữ liệu và tiếp nhận thao tác từ người dùng.
-    /// Thiết kế chuẩn 3-Tier: Hoàn toàn không chứa câu lệnh SQL. Mọi thao tác xử lý nghiệp vụ đều gọi thông qua các Service (BLL) bằng Dependency Injection.
-    /// Ứng dụng triệt để cơ chế xử lý bất đồng bộ (async/await) để tránh làm đơ (freeze) giao diện khi tải dữ liệu.
-    /// </summary>
     public partial class ucDelivery : UserControl
     {
-        public class MockDelivery
-        {
-            public int MaGiaoHang { get; set; }
-            public int MaHoaDon { get; set; }
-            public string DiaChiGiao { get; set; } = "";
-            public string TrangThaiGiao { get; set; } = "Chờ giao";
-            public DateTime? NgayGiao { get; set; }
-        }
-
-        private List<MockDelivery> mockDeliveries = new List<MockDelivery>();
-        private MockDelivery? selectedDelivery = null;
-        private bool isEditing = false;
         private bool isAddingNew = false;
 
         public ucDelivery()
         {
             InitializeComponent();
-
-            // Extracted from Designer
-            cboTrangThaiGiao.Items.AddRange(new object[] { "Chưa giao", "Đang chuẩn bị hàng", "Đang giao", "Đã giao" });
         }
-/// <summary>
-        /// [SỰ KIỆN GIAO DIỆN] Kích hoạt khi giao diện vừa được tải lên. Khởi tạo cấu hình và gọi BLL để lấy dữ liệu đổ vào Grid.
-        /// </summary>
+
         private void ucDelivery_Load(object sender, EventArgs e)
         {
-            InitializeMockDeliveries();
-
-            // Set up Status Combobox
+            // Thiết lập ComboBox trạng thái
             cboTrangThaiGiao.Items.Clear();
             cboTrangThaiGiao.Items.AddRange(new object[] { "Chờ giao", "Đang giao", "Đã giao", "Đã hủy" });
             cboTrangThaiGiao.SelectedIndex = 0;
 
-            LoadDeliveriesGrid();
-            SetEditState(false);
+            // Thiết lập sự kiện cho RadioButtons
+            guna2CustomRadioButton1.CheckedChanged += RadioButton_CheckedChanged;
+            guna2CustomRadioButton2.CheckedChanged += RadioButton_CheckedChanged;
 
-            if (dgvDeliveries.Rows.Count > 0)
+            // Mặc định chọn Mã hóa đơn
+            guna2CustomRadioButton1.Checked = true;
+
+            // Đổi tên cột trong GridView
+            dgvDeliveries.Columns["colMaHoaDon"].HeaderText = "Mã HĐ/ĐH";
+
+            dtpNgayGiao.ValueChanged -= dtpNgayGiao_ValueChanged;
+            dtpNgayGiao.ValueChanged += dtpNgayGiao_ValueChanged;
+
+            LoadData();
+            ResetState();
+        }
+
+        private void dtpNgayGiao_ValueChanged(object sender, EventArgs e)
+        {
+            if (dtpNgayGiao.CustomFormat == " ")
             {
-                SelectDeliveryRow(0);
+                dtpNgayGiao.Format = DateTimePickerFormat.Short;
             }
         }
 
-        private void InitializeMockDeliveries()
-        {
-            if (mockDeliveries.Count > 0) return;
-
-            mockDeliveries.Add(new MockDelivery
-            {
-                MaGiaoHang = 1,
-                MaHoaDon = 2,
-                DiaChiGiao = "Tòa nhà văn phòng Cầu Giấy, Hà Nội",
-                TrangThaiGiao = "Đang giao",
-                NgayGiao = null
-            });
-
-            mockDeliveries.Add(new MockDelivery
-            {
-                MaGiaoHang = 2,
-                MaHoaDon = 1,
-                DiaChiGiao = "Thanh Xuân, Hà Nội",
-                TrangThaiGiao = "Đã giao",
-                NgayGiao = DateTime.Now.AddDays(-2)
-            });
-        }
-
-        private void LoadDeliveriesGrid(List<MockDelivery>? dataSource = null)
+        private void LoadData()
         {
             dgvDeliveries.Rows.Clear();
-            var list = dataSource ?? mockDeliveries;
-            foreach (var del in list)
+            try
             {
-                dgvDeliveries.Rows.Add(
-                    del.MaGiaoHang,
-                    del.MaHoaDon,
-                    del.DiaChiGiao,
-                    del.TrangThaiGiao,
-                    del.NgayGiao?.ToString("dd/MM/yyyy HH:mm") ?? "Chưa giao"
-                );
+                AssignmentApp.DAL.Core.DbContext.Ketnoi();
+                System.Data.DataTable dt = AssignmentApp.DAL.Core.DbContext.GetDataToTable("SELECT * FROM GiaoHang");
+                foreach (System.Data.DataRow row in dt.Rows)
+                {
+                    string maGiaoHang = row["MaGiaoHang"].ToString();
+                    string maHoaDon = row["MaHoaDon"] != DBNull.Value ? row["MaHoaDon"].ToString() : "";
+                    string maTraHang = row["MaTraHang"] != DBNull.Value ? row["MaTraHang"].ToString() : "";
+                    string hienThiMa = !string.IsNullOrEmpty(maHoaDon) ? "HĐ: " + maHoaDon : "ĐH: " + maTraHang;
+
+                    string diaChi = row["DiaChiGiao"] != DBNull.Value ? row["DiaChiGiao"].ToString() : "";
+                    string trangThai = row["TrangThaiGiao"] != DBNull.Value ? row["TrangThaiGiao"].ToString() : "";
+                    string ngayGiao = row["NgayGiao"] != DBNull.Value ? Convert.ToDateTime(row["NgayGiao"]).ToString("dd/MM/yyyy") : "";
+
+                    dgvDeliveries.Rows.Add(maGiaoHang, hienThiMa, diaChi, trangThai, ngayGiao);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Bỏ qua lỗi
             }
         }
 
-        private void SelectDeliveryRow(int rowIndex)
-        {
-            if (rowIndex < 0 || rowIndex >= dgvDeliveries.Rows.Count) return;
-
-            dgvDeliveries.ClearSelection();
-            dgvDeliveries.Rows[rowIndex].Selected = true;
-
-            int deliveryId = Convert.ToInt32(dgvDeliveries.Rows[rowIndex].Cells[0].Value);
-            selectedDelivery = mockDeliveries.FirstOrDefault(d => d.MaGiaoHang == deliveryId);
-
-            if (selectedDelivery != null)
-            {
-                PopulateDeliveryDetails(selectedDelivery);
-            }
-        }
-
-        private void PopulateDeliveryDetails(MockDelivery del)
-        {
-            txtMaGiaoHang.Text = del.MaGiaoHang.ToString();
-            txtMaHoaDon.Text = del.MaHoaDon.ToString();
-            txtDiaChiGiao.Text = del.DiaChiGiao;
-            cboTrangThaiGiao.Text = del.TrangThaiGiao;
-            if (del.NgayGiao.HasValue)
-            {
-                dtpNgayGiao.Value = del.NgayGiao.Value;
-            }
-            else
-            {
-                dtpNgayGiao.Value = DateTime.Now;
-            }
-        }
-
-        private void SetEditState(bool editing)
-        {
-            isEditing = editing;
-
-            // Identity column is read-only
-            txtMaGiaoHang.ReadOnly = true;
-
-            // Toggle input controls
-            txtMaHoaDon.ReadOnly = !editing;
-            txtDiaChiGiao.ReadOnly = !editing;
-            cboTrangThaiGiao.Enabled = editing;
-            dtpNgayGiao.Enabled = editing;
-
-            // Make all buttons visible at all times
-            btnAdd.Visible = true;
-            btnEdit.Visible = true;
-            btnDelete.Visible = true;
-            btnSave.Visible = true;
-            btnCancel.Visible = true;
-
-            // Position them statically side-by-side
-            btnAdd.Location = new Point(15, 510);
-            btnEdit.Location = new Point(115, 510);
-            btnDelete.Location = new Point(215, 510);
-
-            btnSave.Location = new Point(15, 555);
-            btnSave.Size = new Size(140, 36);
-            btnCancel.Location = new Point(165, 555);
-            btnCancel.Size = new Size(140, 36);
-
-            // Enable/disable based on editing state
-            btnAdd.Enabled = !editing;
-            btnEdit.Enabled = !editing;
-            btnDelete.Enabled = !editing;
-
-            btnSave.Enabled = editing;
-            btnCancel.Enabled = editing;
-        }
-
-        private void ClearInputs()
+        private void ResetValues()
         {
             txtMaGiaoHang.Text = "";
             txtMaHoaDon.Text = "";
+            guna2TextBox1.Text = "";
             txtDiaChiGiao.Text = "";
-            cboTrangThaiGiao.SelectedIndex = 0;
+            
+            cboTrangThaiGiao.SelectedIndex = -1;
+            dtpNgayGiao.Format = DateTimePickerFormat.Short;
             dtpNgayGiao.Value = DateTime.Now;
-        }
-/// <summary>
-        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng chọn một dòng trên bảng (DataGridView). Dữ liệu sẽ được trích xuất và hiển thị ngược lên các ô nhập liệu.
-        /// </summary>
-        private void dgvDeliveries_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0 && !isEditing)
-            {
-                SelectDeliveryRow(e.RowIndex);
-            }
-        }
-/// <summary>
-        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
-        /// </summary>
-        private void btnAdd_Click(object sender, EventArgs e)
-        {
-            isAddingNew = true;
-            ClearInputs();
 
-            int nextId = mockDeliveries.Count > 0 ? mockDeliveries.Max(d => d.MaGiaoHang) + 1 : 1;
-            txtMaGiaoHang.Text = nextId.ToString();
-
-            SetEditState(true);
-            txtMaHoaDon.Focus();
+            guna2CustomRadioButton1.Checked = true;
         }
-/// <summary>
-        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
-        /// </summary>
-        private void btnEdit_Click(object sender, EventArgs e)
-        {
-            if (selectedDelivery == null)
-            {
-                MessageBox.Show("Vui lòng chọn một phiếu giao hàng để chỉnh sửa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
-            isAddingNew = false;
-            SetEditState(true);
-            txtDiaChiGiao.Focus();
-        }
-/// <summary>
-        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
-        /// </summary>
-        private void btnDelete_Click(object sender, EventArgs e)
-        {
-            if (selectedDelivery == null)
-            {
-                MessageBox.Show("Vui lòng chọn một phiếu giao hàng để xóa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
 
-            var confirmResult = MessageBox.Show($"Xác nhận xóa phiếu giao hàng #{selectedDelivery.MaGiaoHang}?", "Xác nhận xóa", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (confirmResult == DialogResult.Yes)
-            {
-                mockDeliveries.Remove(selectedDelivery);
-                MessageBox.Show("Xóa phiếu giao hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                LoadDeliveriesGrid();
+        private void ToggleInputs(bool isEnabled)
+        {
+            guna2CustomRadioButton1.Enabled = isEnabled;
+            guna2CustomRadioButton2.Enabled = isEnabled;
 
-                if (dgvDeliveries.Rows.Count > 0)
+            if (isEnabled)
+            {
+                if (guna2CustomRadioButton1.Checked)
                 {
-                    SelectDeliveryRow(0);
+                    txtMaHoaDon.Enabled = true;
+                    guna2TextBox1.Enabled = false;
                 }
                 else
                 {
-                    selectedDelivery = null;
-                    ClearInputs();
+                    txtMaHoaDon.Enabled = false;
+                    guna2TextBox1.Enabled = true;
+                }
+            }
+            else
+            {
+                txtMaHoaDon.Enabled = false;
+                guna2TextBox1.Enabled = false;
+            }
+
+            txtDiaChiGiao.Enabled = isEnabled;
+            cboTrangThaiGiao.Enabled = isEnabled;
+            dtpNgayGiao.Enabled = isEnabled;
+        }
+
+        private void ResetState()
+        {
+            isAddingNew = false;
+            ResetValues();
+
+            txtMaGiaoHang.Enabled = false;
+            ToggleInputs(false);
+
+            btnAdd.Enabled = true;
+            btnSearch.Enabled = true;
+            btnRefresh.Enabled = true;
+
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
+            btnSave.Enabled = false;
+            btnCancel.Enabled = false;
+        }
+
+        private void RadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            // Chỉ đổi trạng thái input khi form đang mở khóa nhập liệu (txtDiaChiGiao mở)
+            if (txtDiaChiGiao.Enabled)
+            {
+                if (guna2CustomRadioButton1.Checked)
+                {
+                    txtMaHoaDon.Enabled = true;
+                    guna2TextBox1.Enabled = false;
+                    guna2TextBox1.Text = "";
+                }
+                else
+                {
+                    txtMaHoaDon.Enabled = false;
+                    guna2TextBox1.Enabled = true;
+                    txtMaHoaDon.Text = "";
                 }
             }
         }
-/// <summary>
-        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
-        /// </summary>
-        private void btnRefresh_Click(object sender, EventArgs e)
+
+        private void dgvDeliveries_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            ClearInputs();
-            LoadDeliveriesGrid();
-            SetEditState(false);
-            if (dgvDeliveries.Rows.Count > 0)
+            if (e.RowIndex >= 0)
             {
-                SelectDeliveryRow(0);
+                DataGridViewRow row = dgvDeliveries.Rows[e.RowIndex];
+                txtMaGiaoHang.Text = row.Cells["colMaGiaoHang"].Value?.ToString();
+
+                try
+                {
+                    System.Data.DataTable dt = AssignmentApp.DAL.Core.DbContext.GetDataToTable($"SELECT * FROM GiaoHang WHERE MaGiaoHang = '{txtMaGiaoHang.Text}'");
+                    if (dt.Rows.Count > 0)
+                    {
+                        System.Data.DataRow dr = dt.Rows[0];
+                        if (dr["MaHoaDon"] != DBNull.Value && !string.IsNullOrEmpty(dr["MaHoaDon"].ToString()))
+                        {
+                            guna2CustomRadioButton1.Checked = true;
+                            txtMaHoaDon.Text = dr["MaHoaDon"].ToString();
+                            guna2TextBox1.Text = "";
+                        }
+                        else
+                        {
+                            guna2CustomRadioButton2.Checked = true;
+                            guna2TextBox1.Text = dr["MaTraHang"].ToString();
+                            txtMaHoaDon.Text = "";
+                        }
+                        txtDiaChiGiao.Text = dr["DiaChiGiao"].ToString();
+                        cboTrangThaiGiao.Text = dr["TrangThaiGiao"]?.ToString() ?? "Chờ giao";
+                        if (dr["NgayGiao"] != DBNull.Value) dtpNgayGiao.Value = Convert.ToDateTime(dr["NgayGiao"]);
+                    }
+                }
+                catch { }
+
+                ToggleInputs(true);
+                txtMaGiaoHang.Enabled = false;
+
+                btnAdd.Enabled = false;
+                btnSearch.Enabled = true;
+                btnRefresh.Enabled = true;
+                
+                btnEdit.Enabled = true;
+                btnDelete.Enabled = true;
+
+                btnSave.Enabled = false;
+                btnCancel.Enabled = true;
             }
         }
-/// <summary>
-        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
-        /// </summary>
-        private void btnCancel_Click(object sender, EventArgs e)
+
+        private void btnAdd_Click(object sender, EventArgs e)
         {
-            isAddingNew = false;
-            SetEditState(false);
-            if (selectedDelivery != null)
+            isAddingNew = true;
+            ResetValues();
+            ToggleInputs(true);
+
+            string nextId = AssignmentApp.DAL.Core.DbContext.GetFieldValues("SELECT ISNULL(MAX(MaGiaoHang), 0) + 1 FROM GiaoHang");
+            txtMaGiaoHang.Text = nextId;
+            txtMaGiaoHang.Enabled = false; 
+
+            dtpNgayGiao.Enabled = false; // Tự động lấy ngày hiện tại
+            cboTrangThaiGiao.Text = "Chờ giao"; // Mặc định
+
+            btnSave.Enabled = true;
+            btnCancel.Enabled = true;
+
+            btnAdd.Enabled = false;
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
+            btnSearch.Enabled = false;
+
+            if (txtMaHoaDon.Enabled) txtMaHoaDon.Focus();
+            else guna2TextBox1.Focus();
+        }
+
+        private void btnEdit_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtMaGiaoHang.Text) || isAddingNew)
             {
-                PopulateDeliveryDetails(selectedDelivery);
+                MessageBox.Show("Vui lòng chọn một đơn giao hàng để chỉnh sửa!");
+                return;
             }
-            else if (dgvDeliveries.Rows.Count > 0)
+
+            string trangThai = cboTrangThaiGiao.Text;
+            string ngay = dtpNgayGiao.Value.ToString("yyyy-MM-dd");
+            string diaChi = txtDiaChiGiao.Text.Replace("'", "''");
+            string maGH = txtMaGiaoHang.Text;
+
+            if (guna2CustomRadioButton1.Checked)
             {
-                SelectDeliveryRow(0);
+                string maHD = txtMaHoaDon.Text.Trim();
+                if (!AssignmentApp.DAL.Core.DbContext.CheckKey($"SELECT * FROM HoaDon WHERE MaHoaDon = '{maHD}'"))
+                {
+                    MessageBox.Show("Mã hóa đơn không tồn tại trong hệ thống!");
+                    return;
+                }
+                string sql = $"UPDATE GiaoHang SET MaHoaDon = '{maHD}', MaTraHang = NULL, DiaChiGiao = N'{diaChi}', TrangThaiGiao = N'{trangThai}', NgayGiao = '{ngay}' WHERE MaGiaoHang = '{maGH}'";
+                AssignmentApp.DAL.Core.DbContext.RunSql(sql);
             }
             else
             {
-                ClearInputs();
+                string maDH = guna2TextBox1.Text.Trim();
+                if (!AssignmentApp.DAL.Core.DbContext.CheckKey($"SELECT * FROM TraHang WHERE MaTraHang = '{maDH}'"))
+                {
+                    MessageBox.Show("Mã đổi hàng không tồn tại trong hệ thống!");
+                    return;
+                }
+                string sql = $"UPDATE GiaoHang SET MaTraHang = '{maDH}', MaHoaDon = NULL, DiaChiGiao = N'{diaChi}', TrangThaiGiao = N'{trangThai}', NgayGiao = '{ngay}' WHERE MaGiaoHang = '{maGH}'";
+                AssignmentApp.DAL.Core.DbContext.RunSql(sql);
             }
+
+            MessageBox.Show("Lưu thay đổi thành công!");
+
+            LoadData();
+            ResetState();
         }
-/// <summary>
-        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
-        /// </summary>
-        private void btnSearch_Click(object sender, EventArgs e)
-        {
-            string orderIdTerm = txtMaHoaDon.Text.Trim();
-            string addressTerm = txtDiaChiGiao.Text.Trim().ToLower();
 
-            var filteredInputs = mockDeliveries.Where(d =>
-            {
-                bool matchOrder = string.IsNullOrEmpty(orderIdTerm) || d.MaHoaDon.ToString() == orderIdTerm;
-                bool matchAddress = string.IsNullOrEmpty(addressTerm) || d.DiaChiGiao.ToLower().Contains(addressTerm);
-                return matchOrder && matchAddress;
-            }).ToList();
-
-            LoadDeliveriesGrid(filteredInputs);
-
-            if (dgvDeliveries.Rows.Count > 0)
-            {
-                SelectDeliveryRow(0);
-            }
-            else
-            {
-                selectedDelivery = null;
-                ClearInputs();
-                MessageBox.Show("Không tìm thấy phiếu giao hàng phù hợp!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-/// <summary>
-        /// [SỰ KIỆN GIAO DIỆN] Xử lý khi người dùng nhấn nút. Giao diện (GUI) sẽ thu thập dữ liệu và chuyển xuống tầng BLL để xử lý.
-        /// </summary>
         private void btnSave_Click(object sender, EventArgs e)
         {
-            string address = txtDiaChiGiao.Text.Trim();
-            string status = cboTrangThaiGiao.Text;
+            if (!isAddingNew) return;
 
-            if (!int.TryParse(txtMaHoaDon.Text, out int orderId) || orderId <= 0)
-            {
-                MessageBox.Show("Mã hóa đơn phải là số nguyên dương hợp lệ!", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtMaHoaDon.Focus();
-                return;
-            }
+            string trangThai = cboTrangThaiGiao.Text;
+            string ngay = DateTime.Now.ToString("yyyy-MM-dd");
+            string diaChi = txtDiaChiGiao.Text.Replace("'", "''");
 
-            if (string.IsNullOrEmpty(address))
+            if (guna2CustomRadioButton1.Checked)
             {
-                MessageBox.Show("Địa chỉ giao hàng không được để trống!", "Lỗi xác thực", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                txtDiaChiGiao.Focus();
-                return;
-            }
-
-            DateTime? deliveryDate = null;
-            if (status == "Đã giao")
-            {
-                deliveryDate = dtpNgayGiao.Value;
-            }
-
-            if (isAddingNew)
-            {
-                int newId = mockDeliveries.Count > 0 ? mockDeliveries.Max(d => d.MaGiaoHang) + 1 : 1;
-                var newDelivery = new MockDelivery
+                string maHD = txtMaHoaDon.Text.Trim();
+                if (string.IsNullOrEmpty(maHD))
                 {
-                    MaGiaoHang = newId,
-                    MaHoaDon = orderId,
-                    DiaChiGiao = address,
-                    TrangThaiGiao = status,
-                    NgayGiao = deliveryDate
-                };
+                    MessageBox.Show("Vui lòng nhập mã hóa đơn!");
+                    return;
+                }
+                if (!AssignmentApp.DAL.Core.DbContext.CheckKey($"SELECT * FROM HoaDon WHERE MaHoaDon = '{maHD}'"))
+                {
+                    MessageBox.Show("Mã hóa đơn không tồn tại trong hệ thống!");
+                    return;
+                }
 
-                mockDeliveries.Add(newDelivery);
-                selectedDelivery = newDelivery;
-                MessageBox.Show("Thêm mới phiếu giao hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string sql = $"INSERT INTO GiaoHang (MaHoaDon, DiaChiGiao, TrangThaiGiao, NgayGiao) VALUES ('{maHD}', N'{diaChi}', N'{trangThai}', '{ngay}')";
+                AssignmentApp.DAL.Core.DbContext.RunSql(sql);
             }
             else
             {
-                if (selectedDelivery != null)
+                string maDH = guna2TextBox1.Text.Trim();
+                if (string.IsNullOrEmpty(maDH))
                 {
-                    selectedDelivery.MaHoaDon = orderId;
-                    selectedDelivery.DiaChiGiao = address;
-                    selectedDelivery.TrangThaiGiao = status;
-                    selectedDelivery.NgayGiao = deliveryDate;
-                    MessageBox.Show("Cập nhật phiếu giao hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Vui lòng nhập mã đổi hàng!");
+                    return;
                 }
+                if (!AssignmentApp.DAL.Core.DbContext.CheckKey($"SELECT * FROM TraHang WHERE MaTraHang = '{maDH}'"))
+                {
+                    MessageBox.Show("Mã đổi hàng không tồn tại trong hệ thống!");
+                    return;
+                }
+
+                string sql = $"INSERT INTO GiaoHang (MaTraHang, DiaChiGiao, TrangThaiGiao, NgayGiao) VALUES ('{maDH}', N'{diaChi}', N'{trangThai}', '{ngay}')";
+                AssignmentApp.DAL.Core.DbContext.RunSql(sql);
             }
 
-            isAddingNew = false;
-            SetEditState(false);
-            LoadDeliveriesGrid();
+            MessageBox.Show("Thêm đơn giao hàng thành công! Mã giao hàng đã được tự động sinh.");
+            
+            LoadData();
+            ResetState();
+        }
 
-            // Re-select row
-            if (selectedDelivery != null)
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtMaGiaoHang.Text))
             {
-                int index = mockDeliveries.IndexOf(selectedDelivery);
-                if (index >= 0 && index < dgvDeliveries.Rows.Count)
+                MessageBox.Show("Vui lòng chọn một đơn giao hàng để xóa!");
+                return;
+            }
+
+            var confirm = MessageBox.Show("Bạn có chắc chắn muốn xóa (chuyển trạng thái sang Đã hủy) đơn giao hàng này?", "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (confirm == DialogResult.Yes)
+            {
+                AssignmentApp.DAL.Core.DbContext.RunSql($"UPDATE GiaoHang SET TrangThaiGiao = N'Đã hủy' WHERE MaGiaoHang = '{txtMaGiaoHang.Text}'");
+                MessageBox.Show("Đã xóa (hủy) đơn giao hàng thành công!");
+                LoadData();
+                ResetState();
+            }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadData();
+            ResetState();
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            if (txtMaGiaoHang.Enabled == false)
+            {
+                ResetValues();
+                ToggleInputs(true);
+                txtMaGiaoHang.Enabled = true; 
+
+                btnCancel.Enabled = false;
+                btnAdd.Enabled = false;
+                btnEdit.Enabled = false;
+                btnDelete.Enabled = false;
+                btnSave.Enabled = false;
+                
+                dtpNgayGiao.Format = DateTimePickerFormat.Custom;
+                dtpNgayGiao.CustomFormat = " ";
+
+                MessageBox.Show("Chế độ tìm kiếm đã BẬT!\nVui lòng nhập các tiêu chí cần lọc vào ô nhập liệu rồi bấm 'Tìm Kiếm' lần nữa.", "Hướng dẫn", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtMaGiaoHang.Focus();
+                return;
+            }
+
+            if (string.IsNullOrEmpty(txtMaGiaoHang.Text.Trim()) &&
+                string.IsNullOrEmpty(txtMaHoaDon.Text.Trim()) &&
+                string.IsNullOrEmpty(guna2TextBox1.Text.Trim()) &&
+                string.IsNullOrEmpty(txtDiaChiGiao.Text.Trim()) &&
+                cboTrangThaiGiao.SelectedIndex == -1 &&
+                dtpNgayGiao.CustomFormat == " ")
+            {
+                MessageBox.Show("Vui lòng nhập/chọn ít nhất một thông tin để tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            dgvDeliveries.Rows.Clear();
+            string sql = "SELECT * FROM GiaoHang WHERE 1=1 ";
+            
+            if (!string.IsNullOrEmpty(txtMaGiaoHang.Text.Trim()))
+                sql += $" AND MaGiaoHang = '{txtMaGiaoHang.Text.Trim()}' ";
+            if (!string.IsNullOrEmpty(txtMaHoaDon.Text.Trim()))
+                sql += $" AND MaHoaDon = '{txtMaHoaDon.Text.Trim()}' ";
+            if (!string.IsNullOrEmpty(guna2TextBox1.Text.Trim()))
+                sql += $" AND MaTraHang = '{guna2TextBox1.Text.Trim()}' ";
+            if (!string.IsNullOrEmpty(txtDiaChiGiao.Text.Trim()))
+                sql += $" AND DiaChiGiao LIKE N'%{txtDiaChiGiao.Text.Trim()}%' ";
+            if (cboTrangThaiGiao.SelectedIndex != -1)
+                sql += $" AND TrangThaiGiao = N'{cboTrangThaiGiao.Text}' ";
+            if (dtpNgayGiao.CustomFormat != " ")
+                sql += $" AND CONVERT(date, NgayGiao) = '{dtpNgayGiao.Value.ToString("yyyy-MM-dd")}' ";
+
+            try
+            {
+                System.Data.DataTable dt = AssignmentApp.DAL.Core.DbContext.GetDataToTable(sql);
+                foreach (System.Data.DataRow row in dt.Rows)
                 {
-                    SelectDeliveryRow(index);
+                    string maGiaoHang = row["MaGiaoHang"].ToString();
+                    string maHoaDon = row["MaHoaDon"] != DBNull.Value ? row["MaHoaDon"].ToString() : "";
+                    string maTraHang = row["MaTraHang"] != DBNull.Value ? row["MaTraHang"].ToString() : "";
+                    string hienThiMa = !string.IsNullOrEmpty(maHoaDon) ? "HĐ: " + maHoaDon : "ĐH: " + maTraHang;
+
+                    string diaChi = row["DiaChiGiao"] != DBNull.Value ? row["DiaChiGiao"].ToString() : "";
+                    string trangThai = row["TrangThaiGiao"] != DBNull.Value ? row["TrangThaiGiao"].ToString() : "";
+                    string ngayGiao = row["NgayGiao"] != DBNull.Value ? Convert.ToDateTime(row["NgayGiao"]).ToString("dd/MM/yyyy") : "";
+
+                    dgvDeliveries.Rows.Add(maGiaoHang, hienThiMa, diaChi, trangThai, ngayGiao);
                 }
             }
+            catch { }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            ResetState();
+        }
+
+        private void pnlGridCard_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }
-

@@ -293,7 +293,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
             cboVaiTro.Font = new Font("Segoe UI", 9F);
             cboVaiTro.ForeColor = Color.FromArgb(68, 88, 112);
             cboVaiTro.ItemHeight = 30;
-            cboVaiTro.Items.AddRange(new object[] { "ADMIN", "SALES", "WAREHOUSE" });
             cboVaiTro.Location = new Point(15, 335);
             cboVaiTro.Name = "cboVaiTro";
             cboVaiTro.ShadowDecoration.CustomizableEdges = customizableEdges12;
@@ -323,7 +322,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
             cboTrangThai.Font = new Font("Segoe UI", 9F);
             cboTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
             cboTrangThai.ItemHeight = 30;
-            cboTrangThai.Items.AddRange(new object[] { "Hoạt động", "Tạm khóa", "Nghỉ việc" });
             cboTrangThai.Location = new Point(15, 390);
             cboTrangThai.Name = "cboTrangThai";
             cboTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges14;

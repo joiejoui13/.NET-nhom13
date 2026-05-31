@@ -10,6 +10,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
         public ucPromotion()
         {
             InitializeComponent();
+
+            // Extracted from Designer
+            cboTrangThai.Items.AddRange(new object[] { "Hoạt động", "Không hoạt động" });
         }
 
         // 5.2.2. Viết thủ tục Form_Load của ucPromotion

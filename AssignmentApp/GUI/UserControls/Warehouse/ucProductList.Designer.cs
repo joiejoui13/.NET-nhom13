@@ -349,7 +349,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             cboTrangThai.Font = new Font("Segoe UI", 9F);
             cboTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
             cboTrangThai.ItemHeight = 24;
-            cboTrangThai.Items.AddRange(new object[] { "Hoạt động", "Ngừng hoạt động" });
             cboTrangThai.Location = new Point(170, 228);
             cboTrangThai.Name = "cboTrangThai";
             cboTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges16;

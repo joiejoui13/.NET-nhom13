@@ -31,6 +31,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         public ucStockIn()
         {
             InitializeComponent();
+
+            // Extracted from Designer
+            cboTrangThai.Items.AddRange(new object[] { "Chờ xử lý", "Đã hoàn thành", "Đã hủy" });
         }
 
         // 5.2.1. Nạp dữ liệu ban đầu khi Load UserControl

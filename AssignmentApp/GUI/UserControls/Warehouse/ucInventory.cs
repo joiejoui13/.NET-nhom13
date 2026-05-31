@@ -10,6 +10,10 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         public ucInventory()
         {
             InitializeComponent();
+
+            // Extracted from Designer
+            cboLoaiThayDoi.Items.AddRange(new object[] { "Nhập kho", "Xuất kho bán", "Xuất hủy" });
+            cboTrangThai.Items.AddRange(new object[] { "Đang hoạt động", "Đã khóa" });
         }
 
         // 5.2.2. Viết thủ tục Form_Load của ucInventory
@@ -74,11 +78,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 tblLS = DbContext.GetDataToTable(sql);
             }
 
-            // Tắt tự động tạo cột trên DataGridView
-            dgvLichSu.AutoGenerateColumns = false;
-            dgvLichSu.DataSource = tblLS;
-
-            // Gán DataPropertyName cho từng cột đã tạo sẵn trong Designer
             if (dgvLichSu.Columns.Contains("colMaLichSu")) dgvLichSu.Columns["colMaLichSu"].DataPropertyName = "MaLichSu";
             if (dgvLichSu.Columns.Contains("colMaSanPham")) dgvLichSu.Columns["colMaSanPham"].DataPropertyName = "MaSanPham";
             if (dgvLichSu.Columns.Contains("colTenSanPham")) dgvLichSu.Columns["colTenSanPham"].DataPropertyName = "TenSanPham";
@@ -89,6 +88,10 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             if (dgvLichSu.Columns.Contains("colMaThamChieu")) dgvLichSu.Columns["colMaThamChieu"].DataPropertyName = "MaThamChieu";
             if (dgvLichSu.Columns.Contains("colTrangThai")) dgvLichSu.Columns["colTrangThai"].DataPropertyName = "TrangThai";
             if (dgvLichSu.Columns.Contains("colNgay")) dgvLichSu.Columns["colNgay"].DataPropertyName = "Thoigian";
+
+            // Tắt tự động tạo cột trên DataGridView
+            dgvLichSu.AutoGenerateColumns = false;
+            dgvLichSu.DataSource = tblLS;
 
             // Định dạng hiển thị thời gian
             if (dgvLichSu.Columns.Contains("colNgay"))

@@ -342,7 +342,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboLoaiHoaDon.Font = new Font("Segoe UI", 9F);
             cboLoaiHoaDon.ForeColor = Color.FromArgb(68, 88, 112);
             cboLoaiHoaDon.ItemHeight = 24;
-            cboLoaiHoaDon.Items.AddRange(new object[] { "Đơn bán hàng", "Đơn đặt hàng" });
             cboLoaiHoaDon.Location = new Point(170, 55);
             cboLoaiHoaDon.Name = "cboLoaiHoaDon";
             cboLoaiHoaDon.ShadowDecoration.CustomizableEdges = customizableEdges4;
@@ -540,7 +539,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboTrangThai.Font = new Font("Segoe UI", 9F);
             cboTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
             cboTrangThai.ItemHeight = 24;
-            cboTrangThai.Items.AddRange(new object[] { "Chờ xử lý", "Đang giao hàng", "Đã giao", "Đã hoàn thành", "Đã huỷ" });
             cboTrangThai.Location = new Point(15, 275);
             cboTrangThai.Name = "cboTrangThai";
             cboTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges18;

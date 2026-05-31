@@ -45,6 +45,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
         public ucOrderManagement(bool defaultToPOS = false)
         {
             InitializeComponent();
+
+            // Extracted from Designer
+            cboLoaiHoaDon.Items.AddRange(new object[] { "Đơn bán hàng", "Đơn đặt hàng" });
+            cboTrangThai.Items.AddRange(new object[] { "Chờ xử lý", "Đang giao hàng", "Đã giao", "Đã hoàn thành", "Đã huỷ" });
             this.defaultToPOS = defaultToPOS;
             cboTrangThai.SelectedIndexChanged += cboTrangThai_SelectedIndexChanged;
         }

@@ -23,6 +23,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
         public ucReturn()
         {
             InitializeComponent();
+
+            // Extracted from Designer
+            cboTrangThai.Items.AddRange(new object[] { "Hoàn tất", "", "Chờ xử lý", "", "Đã hủy" });
+            cboLoaiGiaoDich.Items.AddRange(new object[] { "Trả hàng", "", "Đổi 1:1" });
         }
 
         private void cboLoaiGiaoDich_SelectedIndexChanged(object? sender, EventArgs e)

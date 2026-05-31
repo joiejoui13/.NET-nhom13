@@ -224,7 +224,6 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             cboTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
             cboTrangThai.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             cboTrangThai.ItemHeight = 30;
-            cboTrangThai.Items.AddRange(new object[] { "Hoạt động", "Ngưng hoạt động" });
             cboTrangThai.Location = new Point(15, 336);
             cboTrangThai.Name = "cboTrangThai";
             cboTrangThai.ShadowDecoration.CustomizableEdges = customizableEdges8;
@@ -431,7 +430,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // colMaDanhMuc
             // 
-            colMaDanhMuc.DataPropertyName = "MaDanhMuc";
+
             colMaDanhMuc.HeaderText = "Mã danh mục";
             colMaDanhMuc.MinimumWidth = 8;
             colMaDanhMuc.Name = "colMaDanhMuc";
@@ -439,7 +438,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // colTenDanhMuc
             // 
-            colTenDanhMuc.DataPropertyName = "TenDanhMuc";
+
             colTenDanhMuc.HeaderText = "Tên danh mục";
             colTenDanhMuc.MinimumWidth = 8;
             colTenDanhMuc.Name = "colTenDanhMuc";
@@ -447,7 +446,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // colMoTa
             // 
-            colMoTa.DataPropertyName = "MoTa";
+
             colMoTa.HeaderText = "Mô tả";
             colMoTa.MinimumWidth = 8;
             colMoTa.Name = "colMoTa";
@@ -455,7 +454,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // colTrangThai
             // 
-            colTrangThai.DataPropertyName = "TrangThai";
+
             colTrangThai.HeaderText = "Trạng thái";
             colTrangThai.MinimumWidth = 8;
             colTrangThai.Name = "colTrangThai";
@@ -463,7 +462,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // colNgayTao
             // 
-            colNgayTao.DataPropertyName = "NgayTao";
+
             colNgayTao.HeaderText = "Ngày tạo";
             colNgayTao.MinimumWidth = 8;
             colNgayTao.Name = "colNgayTao";
@@ -471,7 +470,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             // 
             // colNgayCapNhat
             // 
-            colNgayCapNhat.DataPropertyName = "NgayCapNhat";
+
             colNgayCapNhat.HeaderText = "Ngày Cập Nhật";
             colNgayCapNhat.MinimumWidth = 8;
             colNgayCapNhat.Name = "colNgayCapNhat";

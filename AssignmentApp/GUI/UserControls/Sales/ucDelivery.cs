@@ -24,6 +24,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
         public ucDelivery()
         {
             InitializeComponent();
+
+            // Extracted from Designer
+            cboTrangThaiGiao.Items.AddRange(new object[] { "Chưa giao", "Đang chuẩn bị hàng", "Đang giao", "Đã giao" });
         }
 
         private void ucDelivery_Load(object sender, EventArgs e)

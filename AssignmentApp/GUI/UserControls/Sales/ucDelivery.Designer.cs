@@ -236,7 +236,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboTrangThaiGiao.Font = new Font("Segoe UI", 9F);
             cboTrangThaiGiao.ForeColor = Color.FromArgb(68, 88, 112);
             cboTrangThaiGiao.ItemHeight = 30;
-            cboTrangThaiGiao.Items.AddRange(new object[] { "Chưa giao", "Đang chuẩn bị hàng", "Đang giao", "Đã giao" });
             cboTrangThaiGiao.Location = new Point(15, 306);
             cboTrangThaiGiao.Name = "cboTrangThaiGiao";
             cboTrangThaiGiao.ShadowDecoration.CustomizableEdges = customizableEdges12;

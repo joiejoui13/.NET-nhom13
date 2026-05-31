@@ -17,6 +17,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         public ucProductList()
         {
             InitializeComponent();
+
+            // Extracted from Designer
+            cboTrangThai.Items.AddRange(new object[] { "Hoạt động", "Ngừng hoạt động" });
         }
 
         // 5.2.1. Viết thủ tục ucProductList_Load khi tải Control

@@ -10,6 +10,10 @@ namespace AssignmentApp.GUI.UserControls.Admin
         public ucUserManagement()
         {
             InitializeComponent();
+
+            // Extracted from Designer
+            cboVaiTro.Items.AddRange(new object[] { "ADMIN", "SALES", "WAREHOUSE" });
+            cboTrangThai.Items.AddRange(new object[] { "Hoạt động", "Tạm khóa", "Nghỉ việc" });
         }
 
         // 5.2.2. Viết thủ tục Form_Load của ucUserManagement

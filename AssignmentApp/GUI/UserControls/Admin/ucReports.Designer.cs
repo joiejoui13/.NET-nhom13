@@ -228,7 +228,6 @@ namespace AssignmentApp.GUI.UserControls.Admin
             cboPeriod.Font = new Font("Segoe UI", 9F);
             cboPeriod.ForeColor = Color.FromArgb(68, 88, 112);
             cboPeriod.ItemHeight = 26;
-            cboPeriod.Items.AddRange(new object[] { "Ngày", "Tháng", "Năm" });
             cboPeriod.Location = new Point(15, 170);
             cboPeriod.Name = "cboPeriod";
             cboPeriod.ShadowDecoration.CustomizableEdges = customizableEdges6;

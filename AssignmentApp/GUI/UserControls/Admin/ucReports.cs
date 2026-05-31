@@ -19,6 +19,9 @@ namespace AssignmentApp.GUI.UserControls.Admin
         public ucReports()
         {
             InitializeComponent();
+
+            // Extracted from Designer
+            cboPeriod.Items.AddRange(new object[] { "Ngày", "Tháng", "Năm" });
             this.Load += ucReports_Load;
         }
 

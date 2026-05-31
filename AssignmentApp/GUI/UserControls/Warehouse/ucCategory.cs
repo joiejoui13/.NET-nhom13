@@ -10,6 +10,9 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         public ucCategory()
         {
             InitializeComponent();
+
+            // Extracted from Designer
+            cboTrangThai.Items.AddRange(new object[] { "Hoạt động", "Ngưng hoạt động" });
         }
 
         private void ucCategory_Load(object sender, EventArgs e)
@@ -36,6 +39,13 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
         private void Load_DataGridView()
         {
+            if (dgvDanhMuc.Columns.Contains("colMaDanhMuc")) dgvDanhMuc.Columns["colMaDanhMuc"].DataPropertyName = "MaDanhMuc";
+            if (dgvDanhMuc.Columns.Contains("colTenDanhMuc")) dgvDanhMuc.Columns["colTenDanhMuc"].DataPropertyName = "TenDanhMuc";
+            if (dgvDanhMuc.Columns.Contains("colMoTa")) dgvDanhMuc.Columns["colMoTa"].DataPropertyName = "MoTa";
+            if (dgvDanhMuc.Columns.Contains("colTrangThai")) dgvDanhMuc.Columns["colTrangThai"].DataPropertyName = "TrangThai";
+            if (dgvDanhMuc.Columns.Contains("colNgayTao")) dgvDanhMuc.Columns["colNgayTao"].DataPropertyName = "NgayTao";
+            if (dgvDanhMuc.Columns.Contains("colNgayCapNhat")) dgvDanhMuc.Columns["colNgayCapNhat"].DataPropertyName = "NgayCapNhat";
+
             string sql = "SELECT MaDanhMuc, TenDanhMuc, MoTa, TrangThai, NgayTao, NgayCapNhat FROM DanhMuc";
             DataTable tblDM = DbContext.GetDataToTable(sql);
             

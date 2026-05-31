@@ -444,7 +444,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboTrangThai.ForeColor = Color.FromArgb(68, 88, 112);
             cboTrangThai.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             cboTrangThai.ItemHeight = 24;
-            cboTrangThai.Items.AddRange(new object[] { "Hoàn tất", "", "Chờ xử lý", "", "Đã hủy" });
             cboTrangThai.Location = new Point(17, 440);
             cboTrangThai.Margin = new Padding(3, 4, 3, 4);
             cboTrangThai.Name = "cboTrangThai";
@@ -476,7 +475,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboLoaiGiaoDich.ForeColor = Color.FromArgb(68, 88, 112);
             cboLoaiGiaoDich.HoverState.BorderColor = Color.FromArgb(94, 148, 255);
             cboLoaiGiaoDich.ItemHeight = 24;
-            cboLoaiGiaoDich.Items.AddRange(new object[] { "Trả hàng", "", "Đổi 1:1" });
             cboLoaiGiaoDich.Location = new Point(17, 514);
             cboLoaiGiaoDich.Margin = new Padding(3, 4, 3, 4);
             cboLoaiGiaoDich.Name = "cboLoaiGiaoDich";

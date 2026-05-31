@@ -15,7 +15,7 @@ namespace AssignmentApp.DAL.Core
             try
             {
                 // Connection string do người dùng cung cấp
-                connstring = @"Data Source=LAPTOP-TEEPQA0B\SQLEXPRESS;Initial Catalog=CKNet;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
+                connstring = @"Data Source=ADMIN-PC;Initial Catalog=CKNet;Integrated Security=True;Encrypt=True;Trust Server Certificate=True";
                 Conn = new SqlConnection(connstring);
                 
                 if (Conn.State != ConnectionState.Open)

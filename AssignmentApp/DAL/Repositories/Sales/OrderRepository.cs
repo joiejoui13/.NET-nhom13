@@ -19,6 +19,21 @@ namespace AssignmentApp.DAL.Repositories.Sales
             return await DbContext.Conn.ExecuteScalarAsync<int>(sql, o);
         }
 
+        public async Task<int> UpdateAsync(Order o)
+        {
+            if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();
+            string sql = @"UPDATE HoaDon 
+                           SET MaKhachHang = @MaKhachHang, 
+                               MaKhuyenMai = @MaKhuyenMai, 
+                               TongTien = @TongTien, 
+                               TrangThai = @TrangThai, 
+                               PhuongThucThanhToan = @HinhThucThanhToan, 
+                               LoaiHoaDon = @LoaiHoaDon, 
+                               LyDoHuy = @LyDoHuy 
+                           WHERE MaHoaDon = @MaHoaDon";
+            return await DbContext.Conn.ExecuteAsync(sql, o);
+        }
+
         public async Task<int> AddDetailAsync(OrderDetail d)
         {
             if (DbContext.Conn == null || DbContext.Conn.State == ConnectionState.Closed) DbContext.Ketnoi();

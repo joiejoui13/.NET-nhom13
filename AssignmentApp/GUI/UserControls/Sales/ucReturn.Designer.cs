@@ -956,10 +956,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             tabProductDetail.BackColor = Color.White;
             tabProductDetail.Controls.Add(picAnh);
             tabProductDetail.Controls.Add(lblProductDetailDesc);
-            tabProductDetail.Location = new Point(4, 24);
+            tabProductDetail.Location = new Point(4, 28);
             tabProductDetail.Name = "tabProductDetail";
             tabProductDetail.Padding = new Padding(10);
-            tabProductDetail.Size = new Size(622, 529);
+            tabProductDetail.Size = new Size(622, 525);
             tabProductDetail.TabIndex = 1;
             tabProductDetail.Text = "Chi tiết sản phẩm";
             // 

@@ -1,27 +1,6 @@
 ﻿USE CKNet;
 GO
 
--- ========================================================
--- PHẦN 1: XÓA CÁC BẢNG CŨ (Theo thứ tự an toàn)
--- ========================================================
-IF OBJECT_ID('ChiTietDoiHang', 'U') IS NOT NULL DROP TABLE ChiTietDoiHang;
-IF OBJECT_ID('DoiHang', 'U') IS NOT NULL DROP TABLE DoiHang;
-IF OBJECT_ID('ChiTietTraHang', 'U') IS NOT NULL DROP TABLE ChiTietTraHang;
-IF OBJECT_ID('GiaoHang', 'U') IS NOT NULL DROP TABLE GiaoHang;
-IF OBJECT_ID('TraHang', 'U') IS NOT NULL DROP TABLE TraHang;
-IF OBJECT_ID('ChiTietHoaDon', 'U') IS NOT NULL DROP TABLE ChiTietHoaDon;
-IF OBJECT_ID('HoaDon', 'U') IS NOT NULL DROP TABLE HoaDon;
-IF OBJECT_ID('ChiTietNhapHang', 'U') IS NOT NULL DROP TABLE ChiTietNhapHang;
-IF OBJECT_ID('ChiTietPhieuNhap', 'U') IS NOT NULL DROP TABLE ChiTietPhieuNhap;
-IF OBJECT_ID('PhieuNhap', 'U') IS NOT NULL DROP TABLE PhieuNhap;
-IF OBJECT_ID('LichSuNhapKho', 'U') IS NOT NULL DROP TABLE LichSuNhapKho;
-IF OBJECT_ID('LichSuTonKho', 'U') IS NOT NULL DROP TABLE LichSuTonKho;
-IF OBJECT_ID('SanPham', 'U') IS NOT NULL DROP TABLE SanPham;
-IF OBJECT_ID('NguoiDung', 'U') IS NOT NULL DROP TABLE NguoiDung;
-IF OBJECT_ID('KhachHang', 'U') IS NOT NULL DROP TABLE KhachHang;
-IF OBJECT_ID('KhuyenMai', 'U') IS NOT NULL DROP TABLE KhuyenMai;
-IF OBJECT_ID('DanhMuc', 'U') IS NOT NULL DROP TABLE DanhMuc;
-GO
 
 -- ========================================================
 -- PHẦN 2: TẠO LẠI CẤU TRÚC BẢNG (Bản chốt)
@@ -411,4 +390,19 @@ INSERT INTO ChiTietTraHang (MaChiTietTra, MaTraHang, MaSanPham, SoLuong, TienHoa
 (2, 2, 4, 1, 120000, N'Không lên nguồn'),
 (3, 3, 1, 100, 500000, N'Nhầm bút đen thay vì xanh');
 SET IDENTITY_INSERT ChiTietTraHang OFF;
+GO
+-- 10. LichSuNhapKho
+SET IDENTITY_INSERT LichSuNhapKho ON;
+INSERT INTO LichSuNhapKho (MaLichSu, MaSanPham, Thoigian, ThayDoi, SoLuongTruoc, SoLuongSau, LoaiGiaoDich, MaThamChieu, TrangThai) VALUES
+(1, 1, GETDATE(), 1000, 0, 1000, N'Nhập kho', 1, N'Hoàn thành'),
+(2, 7, GETDATE(), 200, 300, 500, N'Nhập kho', 2, N'Hoàn thành'),
+(3, 12, GETDATE(), 10, 50, 60, N'Nhập kho', 3, N'Hoàn thành'),
+(4, 6, GETDATE(), 20, 60, 80, N'Nhập kho', 3, N'Hoàn thành'),
+(5, 9, GETDATE(), 100, 200, 300, N'Nhập kho', 4, N'Hoàn thành'),
+(6, 11, GETDATE(), 500, 500, 1000, N'Nhập kho', 4, N'Hoàn thành'),
+(7, 4, GETDATE(), 50, 50, 100, N'Nhập kho', 5, N'Hoàn thành'),
+(8, 3, GETDATE(), 10, 20, 30, N'Nhập kho', 5, N'Hoàn thành'),
+(9, 14, GETDATE(), 200, 200, 400, N'Nhập kho', 6, N'Hoàn thành'),
+(10, 2, GETDATE(), 30, 20, 50, N'Nhập kho', 7, N'Hoàn thành');
+SET IDENTITY_INSERT LichSuNhapKho OFF;
 GO

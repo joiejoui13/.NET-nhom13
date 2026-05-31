@@ -55,6 +55,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnAddToCart.Click += btnAddToCart_Click;
             btnRemoveFromCart.Click += btnRemoveFromCart_Click;
             btnBackToReceipt.Click += btnBackToReceipt_Click;
+            if (btnXuatbaocao != null) btnXuatbaocao.Click += btnXuatbaocao_Click;
         }
 
 
@@ -221,6 +222,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnDelete.Visible = true;
             btnSave.Visible = true;
             btnCancel.Visible = true;
+            if (btnXuatbaocao != null) btnXuatbaocao.Visible = (mode == "View" && _selectedOrder != null);
 
             txtMaKhachHang.Enabled = !isTextBoxReadonly;
             txtTenNguoiDung.Enabled = !isTextBoxReadonly;
@@ -1054,6 +1056,85 @@ namespace AssignmentApp.GUI.UserControls.Sales
             {
                 tabMain.SelectedTab = tabPhieuXuat;
                 _ = LoadOrdersGridAsync();
+            }
+        }
+
+        private void btnXuatbaocao_Click(object sender, EventArgs e)
+        {
+            if (_selectedOrder == null)
+            {
+                MessageBox.Show("Vui lòng chọn một hóa đơn để xuất!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "CSV files (*.csv)|*.csv|All files (*.*)|*.*";
+                sfd.FileName = $"HoaDon_{_selectedOrder.MaHoaDon}_{DateTime.Now:yyyyMMdd}.csv";
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        using (var sw = new System.IO.StreamWriter(sfd.FileName, false, System.Text.Encoding.UTF8))
+                        {
+                            sw.Write('\uFEFF');
+                            
+                            sw.WriteLine("--- THÔNG TIN HÓA ĐƠN ---");
+                            sw.WriteLine($"Mã Hóa Đơn:,\"{_selectedOrder.MaHoaDon}\"");
+                            sw.WriteLine($"Khách Hàng:,\"{txtMaKhachHang.Text}\"");
+                            sw.WriteLine($"Người Lập:,\"{txtTenNguoiDung.Text}\"");
+                            sw.WriteLine($"Ngày Tạo:,\"{_selectedOrder.NgayTao:dd/MM/yyyy HH:mm}\"");
+                            sw.WriteLine($"Tổng Tiền:,\"{_selectedOrder.TongTien:N2}\"");
+                            sw.WriteLine($"Thanh Toán:,\"{_selectedOrder.HinhThucThanhToan}\"");
+                            sw.WriteLine($"Trạng Thái:,\"{_selectedOrder.TrangThai}\"");
+                            
+                            sw.WriteLine();
+                            sw.WriteLine("--- CHI TIẾT SẢN PHẨM ---");
+                            ExportDataGridViewToCsv(dgvCurrentDetails, sw);
+                        }
+                        MessageBox.Show("Xuất hóa đơn thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Lỗi khi xuất file: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void ExportDataGridViewToCsv(DataGridView dgv, System.IO.StreamWriter sw)
+        {
+            if (dgv == null || dgv.Columns.Count == 0) return;
+            
+            // Lấy header
+            List<string> headers = new List<string>();
+            foreach (DataGridViewColumn col in dgv.Columns)
+            {
+                if (col.Visible) headers.Add($"\"{col.HeaderText}\"");
+            }
+            sw.WriteLine(string.Join(",", headers));
+            
+            // Lấy dòng
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                if (row.IsNewRow) continue;
+                List<string> cells = new List<string>();
+                foreach (DataGridViewColumn col in dgv.Columns)
+                {
+                    if (col.Visible)
+                    {
+                        object val = row.Cells[col.Index].Value;
+                        string text = "";
+                        if (val != null)
+                        {
+                            if (val is DateTime dt) text = dt.ToString("dd/MM/yyyy HH:mm");
+                            else if (val is decimal dec) text = dec.ToString("F2");
+                            else text = val.ToString();
+                        }
+                        cells.Add($"\"{text}\"");
+                    }
+                }
+                sw.WriteLine(string.Join(",", cells));
             }
         }
     }

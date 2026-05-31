@@ -16,10 +16,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
         int maTraHangHienTai = 0;  
         bool isAdding = false;   
         bool isEditing = false;    
+        bool isSearching = false;    
 
         public ucReturn()
         {
             InitializeComponent();
+            dtpNgayTra.ValueChanged += (s, e) => 
+            {
+                if (dtpNgayTra.Format == DateTimePickerFormat.Custom)
+                    dtpNgayTra.Format = DateTimePickerFormat.Short;
+            };
         }
 
        
@@ -57,6 +63,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             isAdding = false;
             isEditing = false;
+            isSearching = false;
 
             KhoaONhapTab0(true);
 
@@ -87,12 +94,21 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private void KhoaONhapTab0(bool khoa)
         {
-            txtMaHoaDon.ReadOnly = false;
+            txtMaHoaDon.ReadOnly = khoa;
+            txtMaHoaDon.Enabled = !khoa;
             txtLyDo.ReadOnly = khoa;
+            txtLyDo.Enabled = !khoa;
             dtpNgayTra.Enabled = false;
-            cboTrangThai.Enabled = false;
+            cboTrangThai.Enabled = !khoa;
             cboLoaiGiaoDich.Enabled = !khoa;
             txtTongTienHoan.ReadOnly = true;
+            txtTongTienHoan.Enabled = false;
+
+            txtKhachHang.ReadOnly = true;
+            txtKhachHang.Enabled = false;
+            
+            txtNhanVien.ReadOnly = true;
+            txtNhanVien.Enabled = false;
         }
 
       
@@ -113,13 +129,14 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtLyDo.Text = "";
             txtTongTienHoan.Text = "0 đ";
             dtpNgayTra.Value = DateTime.Now; 
+            dtpNgayTra.Format = DateTimePickerFormat.Short;
 
           
             cboTrangThai.SelectedIndex = 1; 
 
             cboLoaiGiaoDich.SelectedIndex = -1; 
-            lblKhachHang.Text = "Khách hàng: (Trống)";
-            lblNhanVien.Text = "Nhân viên: (Trống)";
+            txtKhachHang.Text = "";
+            txtNhanVien.Text = "";
             maTraHangHienTai = 0;
         }
 
@@ -255,8 +272,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtLyDo.Text = dong["LyDo"].ToString();
             txtTongTienHoan.Text = Convert.ToDecimal(dong["TongTienHoan"]).ToString("N0") + " đ";
             dtpNgayTra.Value = Convert.ToDateTime(dong["NgayTra"]);
-            lblNhanVien.Text = "Nhân viên: " + dong["NhanVien"].ToString();
-            lblKhachHang.Text = "Khách hàng: " + dong["KhachHang"].ToString();
+            txtNhanVien.Text = dong["NhanVien"].ToString();
+            txtKhachHang.Text = dong["KhachHang"].ToString();
 
         
             string trangThai = dong["TrangThai"].ToString().Trim();
@@ -280,8 +297,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
             int maHoaDonChon = Convert.ToInt32(dong["MaHoaDon"]);
             lblReturnTitle.Text = "MÃ PHIẾU: " + maTraHangHienTai;
 
-            btnEdit.Enabled = (trangThai == "Chờ xử lý"); 
-            btnDelete.Enabled = (trangThai == "Chờ xử lý");
+            KhoaONhapTab0(false);
+            txtMaHoaDon.ReadOnly = true;
+            txtMaHoaDon.Enabled = false;
+
+            btnAdd.Enabled = false;
+            btnSave.Enabled = false;
+
+            btnEdit.Enabled = true; 
+            btnDelete.Enabled = true;
+            btnCancel.Enabled = true;
 
           
             NapSanPhamHoaDon(maHoaDonChon);
@@ -369,9 +394,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
 
             string sql = @"
-                SELECT nd.TenNguoiDung, kh.TenKhachHang
+                SELECT kh.TenKhachHang
                 FROM   HoaDon    hd
-                JOIN   NguoiDung nd ON hd.MaNguoiDung = nd.MaNguoiDung
                 JOIN   KhachHang kh ON hd.MaKhachHang = kh.MaKhachHang
                 WHERE  hd.MaHoaDon = @mahd";
 
@@ -381,8 +405,12 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             if (reader.Read())
             {
-                lblNhanVien.Text = "Nhân viên: " + reader["TenNguoiDung"].ToString();
-                lblKhachHang.Text = "Khách hàng: " + reader["TenKhachHang"].ToString();
+                if (AssignmentApp.BLL.Session.UserSession.CurrentUser != null)
+                    txtNhanVien.Text = AssignmentApp.BLL.Session.UserSession.CurrentUser.TenNguoiDung;
+                else
+                    txtNhanVien.Text = "(Không rõ)";
+
+                txtKhachHang.Text = reader["TenKhachHang"].ToString();
 
                 reader.Close();
                 NapSanPhamHoaDon(maHD);
@@ -392,8 +420,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 reader.Close();
                 MessageBox.Show("Không tìm thấy hóa đơn số " + maHD + "!", "Cảnh báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                lblNhanVien.Text = "Nhân viên: (Không tìm thấy)";
-                lblKhachHang.Text = "Khách hàng: (Không tìm thấy)";
+                txtNhanVien.Text = "(Không tìm thấy)";
+                txtKhachHang.Text = "(Không tìm thấy)";
             }
         }
 
@@ -402,6 +430,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             isAdding = true;
             XoaTrangTab0();
             SetTrangThaiDangNhap();
+            cboLoaiGiaoDich.Text = "Trả hàng";
             txtMaHoaDon.Focus();
         }
 
@@ -415,10 +444,36 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
-            isEditing = true;
-            SetTrangThaiDangNhap();
-            txtMaHoaDon.ReadOnly = true; 
-            txtLyDo.Focus();
+            if (cboLoaiGiaoDich.Text.Trim() == "")
+            {
+                MessageBox.Show("Vui lòng chọn loại giao dịch!", "Cảnh báo",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                cboLoaiGiaoDich.Focus();
+                return;
+            }
+
+            if (DbContext.Conn.State == ConnectionState.Closed)
+                DbContext.Ketnoi();
+
+            string sqlUpdate = @"
+                UPDATE TraHang SET
+                    LyDo         = @lydo,
+                    LoaiGiaoDich = @loaigd,
+                    TrangThai    = @trangthai
+                WHERE MaTraHang = @matrahang";
+
+            SqlCommand cmdUpdate = new SqlCommand(sqlUpdate, (SqlConnection)DbContext.Conn);
+            cmdUpdate.Parameters.AddWithValue("@lydo", txtLyDo.Text.Trim());
+            cmdUpdate.Parameters.AddWithValue("@loaigd", cboLoaiGiaoDich.Text.Trim());
+            cmdUpdate.Parameters.AddWithValue("@trangthai", cboTrangThai.Text.Trim());
+            cmdUpdate.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
+            cmdUpdate.ExecuteNonQuery();
+
+            MessageBox.Show("Cập nhật phiếu trả thành công!", "Thông báo",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            NapDanhSachPhieu();
+            SetTrangThaiBanDau();
         }
 
        
@@ -432,38 +487,27 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
 
             if (MessageBox.Show(
-                "Xác nhận xóa phiếu trả #" + maTraHangHienTai + " và toàn bộ chi tiết liên quan?",
-                "Xác nhận xóa", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
+                "Xác nhận chuyển trạng thái phiếu trả #" + maTraHangHienTai + " thành 'Đã hủy'?",
+                "Xác nhận hủy phiếu", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
                 return;
 
             if (DbContext.Conn.State == ConnectionState.Closed)
                 DbContext.Ketnoi();
 
-        
-            SqlTransaction giaoDich = ((SqlConnection)DbContext.Conn).BeginTransaction();
             try
             {
-              
-                string sqlXoaCT = "DELETE FROM ChiTietTraHang WHERE MaTraHang = @matrahang";
-                SqlCommand cmdCT = new SqlCommand(sqlXoaCT, (SqlConnection)DbContext.Conn, giaoDich);
-                cmdCT.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
-                cmdCT.ExecuteNonQuery();
-
-                string sqlXoa = "DELETE FROM TraHang WHERE MaTraHang = @matrahang";
-                SqlCommand cmd = new SqlCommand(sqlXoa, (SqlConnection)DbContext.Conn, giaoDich);
+                string sqlUpdate = "UPDATE TraHang SET TrangThai = N'Đã hủy' WHERE MaTraHang = @matrahang";
+                SqlCommand cmd = new SqlCommand(sqlUpdate, (SqlConnection)DbContext.Conn);
                 cmd.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
                 cmd.ExecuteNonQuery();
 
-                giaoDich.Commit();
-                MessageBox.Show("Xóa phiếu trả thành công!", "Thông báo",
+                MessageBox.Show("Hủy phiếu trả thành công!", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                giaoDich.Rollback();
-                MessageBox.Show("Lỗi khi xóa: " + ex.Message, "Lỗi",
+                MessageBox.Show("Lỗi khi hủy: " + ex.Message, "Lỗi",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
             }
 
             NapDanhSachPhieu();
@@ -507,73 +551,36 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
+            if (AssignmentApp.BLL.Session.UserSession.CurrentUser == null)
+            {
+                MessageBox.Show("Lỗi: Không tìm thấy phiên đăng nhập!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             if (DbContext.Conn.State == ConnectionState.Closed)
                 DbContext.Ketnoi();
 
-            if (isAdding)
-            {
-         
-                string sqlCheck = "SELECT COUNT(*) FROM TraHang WHERE MaHoaDon = @mahd";
-                SqlCommand cmdCheck = new SqlCommand(sqlCheck, (SqlConnection)DbContext.Conn);
-                cmdCheck.Parameters.AddWithValue("@mahd", maHD);
-                int soPhieu = Convert.ToInt32(cmdCheck.ExecuteScalar());
+            string sqlInsert = @"
+                INSERT INTO TraHang (MaHoaDon, MaNguoiDung, LyDo, TongTienHoan, NgayTra, TrangThai, LoaiGiaoDich)
+                VALUES (@mahd, @manguoidung, @lydo, 0, GETDATE(), @trangthai, @loaigd);
+                SELECT SCOPE_IDENTITY();"; 
 
-                if (soPhieu > 0)
-                {
-                    MessageBox.Show("Hóa đơn này đã có phiếu trả rồi!", "Cảnh báo",
-                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
+            SqlCommand cmdInsert = new SqlCommand(sqlInsert, (SqlConnection)DbContext.Conn);
+            cmdInsert.Parameters.AddWithValue("@mahd", maHD);
+            cmdInsert.Parameters.AddWithValue("@manguoidung", AssignmentApp.BLL.Session.UserSession.CurrentUser.MaNguoiDung);
+            cmdInsert.Parameters.AddWithValue("@lydo", txtLyDo.Text.Trim());
+            cmdInsert.Parameters.AddWithValue("@trangthai", cboTrangThai.Text.Trim());
+            cmdInsert.Parameters.AddWithValue("@loaigd", cboLoaiGiaoDich.Text.Trim());
 
-            
-                string sqlInsert = @"
-                    INSERT INTO TraHang (MaHoaDon, MaNguoiDung, LyDo, TongTienHoan, NgayTra, TrangThai, LoaiGiaoDich)
-                    VALUES (@mahd, 1, @lydo, 0, GETDATE(), N'Chờ xử lý', @loaigd);
-                    SELECT SCOPE_IDENTITY();"; // Lấy MaTraHang vừa tạo
+            maTraHangHienTai = Convert.ToInt32(cmdInsert.ExecuteScalar());
 
-                SqlCommand cmdInsert = new SqlCommand(sqlInsert, (SqlConnection)DbContext.Conn);
-                cmdInsert.Parameters.AddWithValue("@mahd", maHD);
-                cmdInsert.Parameters.AddWithValue("@lydo", txtLyDo.Text.Trim());
-             
-                cmdInsert.Parameters.AddWithValue("@loaigd", cboLoaiGiaoDich.Text.Trim());
+            MessageBox.Show(
+                "Đã khởi tạo phiếu trả #" + maTraHangHienTai + " thành công!\n" +
+                "Vui lòng chuyển sang Tab 'Chọn sản phẩm trả' để tiếp tục.",
+                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                maTraHangHienTai = Convert.ToInt32(cmdInsert.ExecuteScalar());
-
-                MessageBox.Show(
-                    "Đã khởi tạo phiếu trả #" + maTraHangHienTai + " thành công!\n" +
-                    "Vui lòng chuyển sang Tab 'Chọn sản phẩm trả' để tiếp tục.",
-                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-             
-                string sqlUpdate = @"
-                    UPDATE TraHang SET
-                        LyDo         = @lydo,
-                        LoaiGiaoDich = @loaigd
-                    WHERE MaTraHang = @matrahang";
-
-                SqlCommand cmdUpdate = new SqlCommand(sqlUpdate, (SqlConnection)DbContext.Conn);
-                cmdUpdate.Parameters.AddWithValue("@lydo", txtLyDo.Text.Trim());
-                cmdUpdate.Parameters.AddWithValue("@loaigd", cboLoaiGiaoDich.Text.Trim());
-                cmdUpdate.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
-                cmdUpdate.ExecuteNonQuery();
-
-                MessageBox.Show("Cập nhật phiếu trả thành công!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-
-           
             NapDanhSachPhieu();
-
-          
-            isAdding = false;
-            isEditing = false;
-            btnAdd.Enabled = true;
-            btnEdit.Enabled = false;
-            btnDelete.Enabled = false;
-            btnSave.Enabled = false;
-            btnCancel.Enabled = false;
+            SetTrangThaiBanDau();
             KhoaONhapTab0(false);
 
            
@@ -594,11 +601,55 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            string tuKhoa = txtMaHoaDon.Text.Trim();
-            if (tuKhoa == "")
+            if (btnAdd.Enabled || btnEdit.Enabled || btnDelete.Enabled || btnSave.Enabled || btnCancel.Enabled)
             {
-                MessageBox.Show("Nhập mã hóa đơn để tìm!", "Thông báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                isSearching = true;
+
+                btnAdd.Enabled = false;
+                btnEdit.Enabled = false;
+                btnDelete.Enabled = false;
+                btnSave.Enabled = false;
+                btnCancel.Enabled = false;
+
+                KhoaONhapTab0(false);
+                XoaTrangTab0();
+                
+                txtKhachHang.Enabled = true;
+                txtKhachHang.ReadOnly = false;
+                txtNhanVien.Enabled = true;
+                txtNhanVien.ReadOnly = false;
+                txtTongTienHoan.Enabled = true;
+                txtTongTienHoan.ReadOnly = false;
+                dtpNgayTra.Enabled = true;
+                dtpNgayTra.ShowCheckBox = false;
+                dtpNgayTra.Format = DateTimePickerFormat.Custom;
+                dtpNgayTra.CustomFormat = " ";
+                
+                cboTrangThai.SelectedIndex = -1;
+                cboLoaiGiaoDich.SelectedIndex = -1;
+                
+                lblReturnTitle.Text = "CHẾ ĐỘ TÌM KIẾM";
+                MessageBox.Show("Đã chuyển sang chế độ tìm kiếm.\nVui lòng nhập thông tin tìm kiếm vào các ô tương ứng và ấn TÌM KIẾM lần nữa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                
+                txtMaHoaDon.Focus();
+                return;
+            }
+
+            string maHD = txtMaHoaDon.Text.Trim();
+            string khach = txtKhachHang.Text.Trim();
+            string nhanVien = txtNhanVien.Text.Trim();
+            string lydo = txtLyDo.Text.Trim();
+            string tongTienStr = txtTongTienHoan.Text.Replace(" đ", "").Replace(",", "").Replace(".", "").Trim();
+
+            bool isAnyFieldFilled = maHD != "" || khach != "" || nhanVien != "" || lydo != "" || 
+                                    (tongTienStr != "" && tongTienStr != "0") || 
+                                    cboTrangThai.SelectedIndex != -1 || 
+                                    cboLoaiGiaoDich.SelectedIndex != -1 || 
+                                    dtpNgayTra.Format != DateTimePickerFormat.Custom;
+
+            if (!isAnyFieldFilled)
+            {
+                MessageBox.Show("Vui lòng nhập hoặc chọn ít nhất một thông tin để tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -611,13 +662,42 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 JOIN NguoiDung nd ON th.MaNguoiDung = nd.MaNguoiDung
                 JOIN HoaDon    hd ON th.MaHoaDon    = hd.MaHoaDon
                 JOIN KhachHang kh ON hd.MaKhachHang = kh.MaKhachHang
-                WHERE th.MaHoaDon LIKE @mahd OR th.MaTraHang LIKE @mahd";
+                WHERE 1=1 ";
+
+            if (maHD != "") sql += " AND (th.MaHoaDon LIKE @mahd OR th.MaTraHang LIKE @mahd) ";
+            if (khach != "") sql += " AND kh.TenKhachHang LIKE @khach ";
+            if (nhanVien != "") sql += " AND nd.TenNguoiDung LIKE @nhanVien ";
+            if (lydo != "") sql += " AND th.LyDo LIKE @lydo ";
+            if (cboTrangThai.SelectedIndex != -1) sql += " AND th.TrangThai = @trangthai ";
+            if (cboLoaiGiaoDich.SelectedIndex != -1) sql += " AND th.LoaiGiaoDich = @loaigd ";
+            
+            if (tongTienStr != "" && tongTienStr != "0")
+            {
+                if (decimal.TryParse(tongTienStr, out decimal tien))
+                    sql += " AND th.TongTienHoan = @tien ";
+            }
+
+            if (dtpNgayTra.Format != DateTimePickerFormat.Custom)
+            {
+                sql += " AND CAST(th.NgayTra AS DATE) = @ngaytra ";
+            }
 
             if (DbContext.Conn.State == ConnectionState.Closed)
                 DbContext.Ketnoi();
 
             SqlDataAdapter da = new SqlDataAdapter(sql, (SqlConnection)DbContext.Conn);
-            da.SelectCommand.Parameters.AddWithValue("@mahd", "%" + tuKhoa + "%");
+            if (maHD != "") da.SelectCommand.Parameters.AddWithValue("@mahd", "%" + maHD + "%");
+            if (khach != "") da.SelectCommand.Parameters.AddWithValue("@khach", "%" + khach + "%");
+            if (nhanVien != "") da.SelectCommand.Parameters.AddWithValue("@nhanVien", "%" + nhanVien + "%");
+            if (lydo != "") da.SelectCommand.Parameters.AddWithValue("@lydo", "%" + lydo + "%");
+            if (cboTrangThai.SelectedIndex != -1) da.SelectCommand.Parameters.AddWithValue("@trangthai", cboTrangThai.Text);
+            if (cboLoaiGiaoDich.SelectedIndex != -1) da.SelectCommand.Parameters.AddWithValue("@loaigd", cboLoaiGiaoDich.Text);
+            
+            if (tongTienStr != "" && tongTienStr != "0" && decimal.TryParse(tongTienStr, out decimal t))
+                da.SelectCommand.Parameters.AddWithValue("@tien", t);
+                
+            if (dtpNgayTra.Format != DateTimePickerFormat.Custom)
+                da.SelectCommand.Parameters.AddWithValue("@ngaytra", dtpNgayTra.Value.Date);
 
             DataTable dtSearch = new DataTable();
             da.Fill(dtSearch);

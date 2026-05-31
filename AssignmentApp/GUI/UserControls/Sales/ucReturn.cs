@@ -17,6 +17,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
         bool isAdding = false;   
         bool isEditing = false;    
         bool isSearching = false;    
+        bool isCartModified = false;
+        bool isReturnSearching = false;
 
         public ucReturn()
         {
@@ -25,6 +27,15 @@ namespace AssignmentApp.GUI.UserControls.Sales
             {
                 if (dtpNgayTra.Format == DateTimePickerFormat.Custom)
                     dtpNgayTra.Format = DateTimePickerFormat.Short;
+            };
+            
+            tabMain.Selecting += (s, e) =>
+            {
+                if (e.TabPage == tabChonSanPham && maTraHangHienTai == 0)
+                {
+                    e.Cancel = true;
+                    MessageBox.Show("Vui lòng chọn hoặc tạo mới một phiếu trả trước khi chuyển sang tab chọn sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
             };
         }
 
@@ -114,9 +125,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
       
         private void KhoaTab1(bool khoa)
         {
-            btnAddToCart.Enabled = !khoa;
-            btnRemoveFromCart.Enabled = !khoa;
-            btnLuuCT.Enabled = !khoa;
+            btnAddToCart.Enabled = false;
+            btnSuaCT.Enabled = false;
+            btnRemoveFromCart.Enabled = false;
+            btnLuuCT.Enabled = false;
+            btnBoquaCT.Enabled = false;
 
             txtSelSoLuong.ReadOnly = khoa;
             txtSelTinhTrang.ReadOnly = khoa;
@@ -319,19 +332,24 @@ namespace AssignmentApp.GUI.UserControls.Sales
             {
                 
                 btnAddToCart.Enabled = false;
+                btnSuaCT.Enabled = false;
                 btnRemoveFromCart.Enabled = false;
                 btnLuuCT.Enabled = false;
+                btnBoquaCT.Enabled = false;
                 txtSelSoLuong.ReadOnly = true;
                 txtSelTinhTrang.ReadOnly = true;
             }
             else 
             {
              
-                btnAddToCart.Enabled = true;
-                btnRemoveFromCart.Enabled = true;
-                btnLuuCT.Enabled = true;
+                btnAddToCart.Enabled = false;
+                btnSuaCT.Enabled = false;
+                btnRemoveFromCart.Enabled = false;
+                btnLuuCT.Enabled = false;
+                btnBoquaCT.Enabled = false;
                 txtSelSoLuong.ReadOnly = false;
                 txtSelTinhTrang.ReadOnly = false;
+                isCartModified = false;
             }
         }
 
@@ -444,6 +462,21 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 return;
             }
 
+            if (DbContext.Conn.State == ConnectionState.Closed)
+                DbContext.Ketnoi();
+
+            string sqlCheck = "SELECT TrangThai FROM TraHang WHERE MaTraHang = @matrahang";
+            SqlCommand cmdCheck = new SqlCommand(sqlCheck, (SqlConnection)DbContext.Conn);
+            cmdCheck.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
+            string trangThaiHienTai = cmdCheck.ExecuteScalar()?.ToString();
+
+            if (trangThaiHienTai == "Hoàn thành" || trangThaiHienTai == "Đã hủy")
+            {
+                MessageBox.Show("Phiếu trả đã '" + trangThaiHienTai + "', không thể sửa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+
             if (cboLoaiGiaoDich.Text.Trim() == "")
             {
                 MessageBox.Show("Vui lòng chọn loại giao dịch!", "Cảnh báo",
@@ -483,6 +516,20 @@ namespace AssignmentApp.GUI.UserControls.Sales
             {
                 MessageBox.Show("Vui lòng chọn một phiếu trả từ danh sách!", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (DbContext.Conn.State == ConnectionState.Closed)
+                DbContext.Ketnoi();
+
+            string sqlCheck = "SELECT TrangThai FROM TraHang WHERE MaTraHang = @matrahang";
+            SqlCommand cmdCheck = new SqlCommand(sqlCheck, (SqlConnection)DbContext.Conn);
+            cmdCheck.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
+            string trangThaiHienTai = cmdCheck.ExecuteScalar()?.ToString();
+
+            if (trangThaiHienTai == "Hoàn thành" || trangThaiHienTai == "Đã hủy")
+            {
+                MessageBox.Show("Phiếu trả đã '" + trangThaiHienTai + "', không thể xóa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
@@ -572,15 +619,18 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cmdInsert.Parameters.AddWithValue("@trangthai", cboTrangThai.Text.Trim());
             cmdInsert.Parameters.AddWithValue("@loaigd", cboLoaiGiaoDich.Text.Trim());
 
-            maTraHangHienTai = Convert.ToInt32(cmdInsert.ExecuteScalar());
+            int newMaTraHang = Convert.ToInt32(cmdInsert.ExecuteScalar());
 
             MessageBox.Show(
-                "Đã khởi tạo phiếu trả #" + maTraHangHienTai + " thành công!\n" +
+                "Đã khởi tạo phiếu trả #" + newMaTraHang + " thành công!\n" +
                 "Vui lòng chuyển sang Tab 'Chọn sản phẩm trả' để tiếp tục.",
                 "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
             NapDanhSachPhieu();
             SetTrangThaiBanDau();
+            
+            maTraHangHienTai = newMaTraHang;
+            cboTrangThai.Text = "Đang xử lý";
             KhoaONhapTab0(false);
 
            
@@ -749,8 +799,24 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 picAnh.Image = null;
             }
 
-        
+            // ... load image ...
             tabSelectionContainer.SelectedIndex = 1;
+            
+            // State management
+            if (maTraHangHienTai != 0)
+            {
+                if (cboTrangThai.Text == "Hoàn thành" || cboTrangThai.Text == "Đã hủy")
+                {
+                    MessageBox.Show("Phiếu trả đã '" + cboTrangThai.Text + "', không thể thêm sản phẩm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    btnAddToCart.Enabled = true;
+                    btnSuaCT.Enabled = false;
+                    btnRemoveFromCart.Enabled = false;
+                    btnBoquaCT.Enabled = true;
+                }
+            }
         }
 
    
@@ -765,6 +831,22 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelSoLuong.Text = dong.Cells["colCurSoLuong"].Value?.ToString();
             txtSelDonGia.Text = dong.Cells["colCurDonGia"].Value?.ToString();
             txtSelTinhTrang.Text = dong.Cells["colCurTinhTrang"].Value?.ToString();
+            
+            // State management
+            if (maTraHangHienTai != 0)
+            {
+                if (cboTrangThai.Text == "Hoàn thành" || cboTrangThai.Text == "Đã hủy")
+                {
+                    MessageBox.Show("Phiếu trả đã '" + cboTrangThai.Text + "', không thể sửa hoặc xóa!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    btnAddToCart.Enabled = false;
+                    btnSuaCT.Enabled = true;
+                    btnRemoveFromCart.Enabled = true;
+                    btnBoquaCT.Enabled = true;
+                }
+            }
         }
 
      
@@ -858,8 +940,18 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 dtCart.Rows.Add(dongMoi);
             }
 
+            isCartModified = true;
+            btnLuuCT.Enabled = true;
             TinhTongTienHoanTra();
-            XoaTrangTab1SanPham(); 
+            XoaTrangTab1SanPham();
+            
+            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Hoàn thành" && cboTrangThai.Text != "Đã hủy")
+            {
+                btnAddToCart.Enabled = false;
+                btnSuaCT.Enabled = false;
+                btnRemoveFromCart.Enabled = false;
+                btnBoquaCT.Enabled = false;
+            }
         }
 
 
@@ -889,8 +981,18 @@ namespace AssignmentApp.GUI.UserControls.Sales
             }
             dtCart.AcceptChanges();
 
+            isCartModified = true;
+            btnLuuCT.Enabled = true;
             TinhTongTienHoanTra();
             XoaTrangTab1SanPham();
+            
+            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Hoàn thành" && cboTrangThai.Text != "Đã hủy")
+            {
+                btnAddToCart.Enabled = false;
+                btnSuaCT.Enabled = false;
+                btnRemoveFromCart.Enabled = false;
+                btnBoquaCT.Enabled = false;
+            }
         }
 
        
@@ -932,13 +1034,21 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 for (int i = 0; i < dtCart.Rows.Count; i++)
                     tongTienHoan += Convert.ToDecimal(dtCart.Rows[i]["colCurThanhTien"]);
 
-              
+                // Khôi phục tồn kho cũ trước khi xóa để tránh cộng dồn nếu lưu nhiều lần
+                string sqlKhoiPhucTon = @"
+                    UPDATE SanPham
+                    SET SoLuongTon = SoLuongTon - ct.SoLuong
+                    FROM SanPham sp
+                    JOIN ChiTietTraHang ct ON sp.MaSanPham = ct.MaSanPham
+                    WHERE ct.MaTraHang = @matrahang";
+                SqlCommand cmdKhoiPhuc = new SqlCommand(sqlKhoiPhucTon, (SqlConnection)DbContext.Conn, giaoDich);
+                cmdKhoiPhuc.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
+                cmdKhoiPhuc.ExecuteNonQuery();
+
                 string sqlXoaCT = "DELETE FROM ChiTietTraHang WHERE MaTraHang = @matrahang";
                 SqlCommand cmdXoa = new SqlCommand(sqlXoaCT, (SqlConnection)DbContext.Conn, giaoDich);
                 cmdXoa.Parameters.AddWithValue("@matrahang", maTraHangHienTai);
                 cmdXoa.ExecuteNonQuery();
-
-               
                 for (int i = 0; i < dtCart.Rows.Count; i++)
                 {
                     DataRow dong = dtCart.Rows[i];
@@ -983,7 +1093,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
                 string sqlCapNhatPhieu = @"UPDATE TraHang SET
                     TongTienHoan = @tong,
-                    TrangThai    = N'Hoàn thành',
                     NgayTra      = GETDATE()
                     WHERE MaTraHang = @matrahang";
                 SqlCommand cmdPhieu = new SqlCommand(sqlCapNhatPhieu, (SqlConnection)DbContext.Conn, giaoDich);
@@ -994,20 +1103,17 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 giaoDich.Commit();
 
                 txtTongTienHoan.Text = tienHoanThucTe.ToString("N0") + " đ";
-                for (int k = 0; k < cboTrangThai.Items.Count; k++)
-                {
-                    if (cboTrangThai.Items[k].ToString().Trim() == "Hoàn thành")
-                    { cboTrangThai.SelectedIndex = k; break; }
-                }
+
                 dtpNgayTra.Value = DateTime.Now;
 
+                isCartModified = false;
+                btnLuuCT.Enabled = false;
+                
                 MessageBox.Show("Lưu chi tiết phiếu trả thành công!", "Thông báo",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 NapDanhSachPhieu();
 
-                KhoaTab1(true);
-                tabMain.SelectedIndex = 0;
             }
             catch (Exception ex)
             {
@@ -1019,35 +1125,104 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
         private void btnReturnSearch_Click(object sender, EventArgs e)
         {
-            string input = Microsoft.VisualBasic.Interaction.InputBox(
-                "Nhập Mã Hóa Đơn cần xem sản phẩm:", "Tìm kiếm hóa đơn", "");
-
-            if (input.Trim() == "") return;
-
-            int maHD;
-            if (!int.TryParse(input.Trim(), out maHD))
+            if (maTraHangHienTai == 0 || cboTrangThai.Text == "Hoàn thành" || cboTrangThai.Text == "Đã hủy")
             {
-                MessageBox.Show("Mã hóa đơn phải là số nguyên!", "Cảnh báo",
-                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Vui lòng chọn một phiếu đang xử lý trước khi tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 
-            NapSanPhamHoaDon(maHD);
-
-            if (dtInvoiceDetails == null || dtInvoiceDetails.Rows.Count == 0)
+            if (!isReturnSearching)
             {
-                MessageBox.Show("Không tìm thấy hóa đơn hoặc hóa đơn không có sản phẩm!",
-                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
+                isReturnSearching = true;
+                XoaTrangTab1SanPham();
+                
+                txtSelMaSP.Enabled = true;
+                txtSelMaSP.ReadOnly = false;
+                txtSelTenSP.Enabled = true;
+                txtSelTenSP.ReadOnly = false;
+                txtSelSoLuong.Enabled = true;
+                txtSelSoLuong.ReadOnly = false;
 
-            MessageBox.Show("Đã tìm thấy hóa đơn " + maHD + "! Chọn sản phẩm cần trả ở danh sách bên trái.",
-                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                btnAddToCart.Enabled = false;
+                btnSuaCT.Enabled = false;
+                btnRemoveFromCart.Enabled = false;
+                btnBoquaCT.Enabled = false;
+                txtSelTinhTrang.Enabled = false;
+                txtSelTinhTrang.ReadOnly = true;
+
+                MessageBox.Show("Vui lòng nhập Mã, Tên sản phẩm hoặc Số lượng đã trả vào ô tương ứng bên phải, sau đó ấn TÌM KIẾM lần nữa!", "Hướng dẫn", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                txtSelTenSP.Focus();
+            }
+            else
+            {
+                if (dtInvoiceDetails == null) return;
+
+                string tuKhoaTen = txtSelTenSP.Text.Trim().ToLower();
+                string tuKhoaMa = txtSelMaSP.Text.Trim();
+                string tuKhoaSL = txtSelSoLuong.Text.Trim();
+                
+                if (tuKhoaTen == "" && tuKhoaMa == "" && tuKhoaSL == "")
+                {
+                    MessageBox.Show("Vui lòng nhập thông tin tìm kiếm!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string filter = "";
+                if (tuKhoaMa != "") filter += "MaSanPham = " + tuKhoaMa;
+                if (tuKhoaTen != "")
+                {
+                    if (filter != "") filter += " AND ";
+                    filter += "TenSanPham LIKE '%" + tuKhoaTen + "%'";
+                }
+                if (tuKhoaSL != "")
+                {
+                    if (int.TryParse(tuKhoaSL, out int sl))
+                    {
+                        if (filter != "") filter += " AND ";
+                        filter += "DaTra = " + sl;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Số lượng trả phải là số nguyên!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+                
+                dtInvoiceDetails.DefaultView.RowFilter = filter;
+                dgvProductsSelection.DataSource = dtInvoiceDetails.DefaultView.ToTable();
+
+                if (dgvProductsSelection.Rows.Count == 0)
+                {
+                    MessageBox.Show("Không tìm thấy sản phẩm nào phù hợp trong hóa đơn!", "Kết quả tìm kiếm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
         }
 
         private void btnReturnRefresh_Click(object sender, EventArgs e)
         {
-            XoaTrangTab1();
+            isReturnSearching = false;
+            XoaTrangTab1SanPham();
+            
+            txtSelMaSP.Enabled = false;
+            txtSelMaSP.ReadOnly = true;
+            txtSelTenSP.Enabled = false;
+            txtSelTenSP.ReadOnly = true;
+            txtSelTinhTrang.Enabled = true;
+            txtSelTinhTrang.ReadOnly = false;
+
+            if (dtInvoiceDetails != null)
+            {
+                dtInvoiceDetails.DefaultView.RowFilter = "";
+                dgvProductsSelection.DataSource = dtInvoiceDetails;
+            }
+
+            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Hoàn thành" && cboTrangThai.Text != "Đã hủy")
+            {
+                btnAddToCart.Enabled = false;
+                btnSuaCT.Enabled = false;
+                btnRemoveFromCart.Enabled = false;
+                btnBoquaCT.Enabled = false;
+            }
         }
 
         private void tabSelectionContainer_SelectedIndexChanged(object sender, EventArgs e)
@@ -1082,7 +1257,74 @@ namespace AssignmentApp.GUI.UserControls.Sales
         private void dgvReturns_CellContentClick(object sender, DataGridViewCellEventArgs e)
         { dgvReturns_CellClick(sender, e); }
 
-        private void btnSuaCT_Click(object sender, EventArgs e) { }
-        private void btnBoquaCT_Click(object sender, EventArgs e) { btnReturnRefresh_Click(sender, e); }
+        private void btnSuaCT_Click(object sender, EventArgs e) 
+        {
+            if (txtSelMaSP.Text.Trim() == "")
+            {
+                MessageBox.Show("Vui lòng chọn sản phẩm cần sửa từ giỏ hàng!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            int soLuongTra;
+            if (!int.TryParse(txtSelSoLuong.Text.Trim(), out soLuongTra) || soLuongTra <= 0)
+            {
+                MessageBox.Show("Số lượng trả phải là số nguyên dương!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+            int maSP = int.Parse(txtSelMaSP.Text.Trim());
+
+            int slMua = 0;
+            int daTra = 0;
+            for (int i = 0; i < dgvProductsSelection.Rows.Count; i++)
+            {
+                if (dgvProductsSelection.Rows[i].Cells["colSelMaSP"].Value != null &&
+                    Convert.ToInt32(dgvProductsSelection.Rows[i].Cells["colSelMaSP"].Value) == maSP)
+                {
+                    slMua = Convert.ToInt32(dgvProductsSelection.Rows[i].Cells["colSelSoLuongMua"].Value);
+                    daTra = Convert.ToInt32(dgvProductsSelection.Rows[i].Cells["colSelDaTra"].Value);
+                    break;
+                }
+            }
+            int soLuongToiDa = slMua - daTra;
+            
+            for (int i = 0; i < dtCart.Rows.Count; i++)
+            {
+                if (Convert.ToInt32(dtCart.Rows[i]["colCurMaSP"]) == maSP)
+                {
+                    if (soLuongTra > soLuongToiDa)
+                    {
+                        MessageBox.Show("Số lượng trả vượt quá giới hạn! Tối đa: " + soLuongToiDa, "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                    dtCart.Rows[i]["colCurSoLuong"] = soLuongTra;
+                    dtCart.Rows[i]["colCurTinhTrang"] = txtSelTinhTrang.Text.Trim();
+                    break;
+                }
+            }
+            
+            isCartModified = true;
+            btnLuuCT.Enabled = true;
+            TinhTongTienHoanTra();
+            XoaTrangTab1SanPham();
+            
+            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Hoàn thành" && cboTrangThai.Text != "Đã hủy")
+            {
+                btnAddToCart.Enabled = false;
+                btnSuaCT.Enabled = false;
+                btnRemoveFromCart.Enabled = false;
+                btnBoquaCT.Enabled = false;
+            }
+        }
+        
+        private void btnBoquaCT_Click(object sender, EventArgs e) 
+        { 
+            XoaTrangTab1SanPham();
+            if (maTraHangHienTai != 0 && cboTrangThai.Text != "Hoàn thành" && cboTrangThai.Text != "Đã hủy")
+            {
+                btnAddToCart.Enabled = false;
+                btnSuaCT.Enabled = false;
+                btnRemoveFromCart.Enabled = false;
+                btnBoquaCT.Enabled = false;
+            }
+        }
     }
 }

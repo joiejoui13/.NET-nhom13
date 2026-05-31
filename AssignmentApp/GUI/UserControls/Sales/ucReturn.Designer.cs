@@ -151,7 +151,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             tabProductDetail = new TabPage();
             picAnh = new Guna.UI2.WinForms.Guna2PictureBox();
             pnlChonRight = new Guna.UI2.WinForms.Guna2Panel();
-            guna2Button2 = new Guna.UI2.WinForms.Guna2Button();
+            btnBoquaCT = new Guna.UI2.WinForms.Guna2Button();
             btnSuaCT = new Guna.UI2.WinForms.Guna2Button();
             lblChonRightTitle = new Label();
             dgvCurrentDetails = new Guna.UI2.WinForms.Guna2DataGridView();
@@ -870,6 +870,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dataGridViewCellStyle5.BackColor = Color.FromArgb(0, 126, 249);
             dataGridViewCellStyle5.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             dataGridViewCellStyle5.ForeColor = Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = Color.FromArgb(0, 126, 249);
+            dataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText;
             dgvProductsSelection.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             dgvProductsSelection.ColumnHeadersHeight = 30;
             dgvProductsSelection.Columns.AddRange(new DataGridViewColumn[] { colSelMaSP, colSelTenSP, colSelSoLuongMua, colSelDaTra, colSelDonGia });
@@ -897,7 +899,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvProductsSelection.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
             dgvProductsSelection.ThemeStyle.BackColor = Color.White;
             dgvProductsSelection.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
-            dgvProductsSelection.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(100, 88, 255);
+            dgvProductsSelection.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(0, 126, 249);
             dgvProductsSelection.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvProductsSelection.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9F);
             dgvProductsSelection.ThemeStyle.HeaderStyle.ForeColor = Color.White;
@@ -976,7 +978,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlChonRight.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             pnlChonRight.BackColor = Color.Transparent;
             pnlChonRight.BorderRadius = 10;
-            pnlChonRight.Controls.Add(guna2Button2);
+            pnlChonRight.Controls.Add(btnBoquaCT);
             pnlChonRight.Controls.Add(btnSuaCT);
             pnlChonRight.Controls.Add(lblChonRightTitle);
             pnlChonRight.Controls.Add(dgvCurrentDetails);
@@ -1002,20 +1004,21 @@ namespace AssignmentApp.GUI.UserControls.Sales
             pnlChonRight.Size = new Size(336, 557);
             pnlChonRight.TabIndex = 1;
             // 
-            // guna2Button2
+            // btnBoquaCT
             // 
-            guna2Button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            guna2Button2.BorderRadius = 5;
-            guna2Button2.CustomizableEdges = customizableEdges45;
-            guna2Button2.FillColor = Color.FromArgb(108, 117, 125);
-            guna2Button2.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            guna2Button2.ForeColor = Color.White;
-            guna2Button2.Location = new Point(19, 509);
-            guna2Button2.Name = "guna2Button2";
-            guna2Button2.ShadowDecoration.CustomizableEdges = customizableEdges46;
-            guna2Button2.Size = new Size(306, 35);
-            guna2Button2.TabIndex = 18;
-            guna2Button2.Text = "BỎ QUA";
+            btnBoquaCT.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnBoquaCT.BorderRadius = 5;
+            btnBoquaCT.CustomizableEdges = customizableEdges45;
+            btnBoquaCT.FillColor = Color.FromArgb(108, 117, 125);
+            btnBoquaCT.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnBoquaCT.ForeColor = Color.White;
+            btnBoquaCT.Location = new Point(19, 509);
+            btnBoquaCT.Name = "btnBoquaCT";
+            btnBoquaCT.ShadowDecoration.CustomizableEdges = customizableEdges46;
+            btnBoquaCT.Size = new Size(306, 35);
+            btnBoquaCT.TabIndex = 18;
+            btnBoquaCT.Click += btnBoquaCT_Click;
+            btnBoquaCT.Text = "BỎ QUA";
             // 
             // btnSuaCT
             // 
@@ -1052,9 +1055,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvCurrentDetails.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle7;
             dgvCurrentDetails.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = Color.FromArgb(28, 30, 38);
+            dataGridViewCellStyle8.BackColor = Color.FromArgb(0, 126, 249);
             dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             dataGridViewCellStyle8.ForeColor = Color.White;
+            dataGridViewCellStyle8.SelectionBackColor = Color.FromArgb(0, 126, 249);
+            dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
             dgvCurrentDetails.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
             dgvCurrentDetails.ColumnHeadersHeight = 30;
             dgvCurrentDetails.Columns.AddRange(new DataGridViewColumn[] { colCurMaSP, colCurTenSP, colCurSoLuong, colCurDonGia, colCurTinhTrang, colCurThanhTien });
@@ -1082,7 +1087,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvCurrentDetails.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = Color.Empty;
             dgvCurrentDetails.ThemeStyle.BackColor = Color.White;
             dgvCurrentDetails.ThemeStyle.GridColor = Color.FromArgb(231, 229, 255);
-            dgvCurrentDetails.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(100, 88, 255);
+            dgvCurrentDetails.ThemeStyle.HeaderStyle.BackColor = Color.FromArgb(0, 126, 249);
             dgvCurrentDetails.ThemeStyle.HeaderStyle.BorderStyle = DataGridViewHeaderBorderStyle.None;
             dgvCurrentDetails.ThemeStyle.HeaderStyle.Font = new Font("Segoe UI", 9F);
             dgvCurrentDetails.ThemeStyle.HeaderStyle.ForeColor = Color.White;
@@ -1164,6 +1169,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelMaSP.Name = "txtSelMaSP";
             txtSelMaSP.PlaceholderText = "";
             txtSelMaSP.ReadOnly = true;
+            txtSelMaSP.Enabled = false;
             txtSelMaSP.SelectedText = "";
             txtSelMaSP.ShadowDecoration.CustomizableEdges = customizableEdges50;
             txtSelMaSP.Size = new Size(124, 27);
@@ -1193,6 +1199,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelTenSP.Name = "txtSelTenSP";
             txtSelTenSP.PlaceholderText = "";
             txtSelTenSP.ReadOnly = true;
+            txtSelTenSP.Enabled = false;
             txtSelTenSP.SelectedText = "";
             txtSelTenSP.ShadowDecoration.CustomizableEdges = customizableEdges52;
             txtSelTenSP.Size = new Size(302, 27);
@@ -1250,6 +1257,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelDonGia.Name = "txtSelDonGia";
             txtSelDonGia.PlaceholderText = "";
             txtSelDonGia.ReadOnly = true;
+            txtSelDonGia.Enabled = false;
             txtSelDonGia.SelectedText = "";
             txtSelDonGia.ShadowDecoration.CustomizableEdges = customizableEdges56;
             txtSelDonGia.Size = new Size(160, 27);
@@ -1509,7 +1517,7 @@ private Guna.UI2.WinForms.Guna2TextBox txtNhanVien;
 
         // Unused controls hidden
         private Guna.UI2.WinForms.Guna2Button btnSuaCT;
-        private Guna.UI2.WinForms.Guna2Button guna2Button2;
+        private Guna.UI2.WinForms.Guna2Button btnBoquaCT;
         private Guna.UI2.WinForms.Guna2PictureBox picAnh;
     }
 }

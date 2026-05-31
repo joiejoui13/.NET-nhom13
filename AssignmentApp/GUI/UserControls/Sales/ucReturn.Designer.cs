@@ -956,10 +956,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             tabProductDetail.BackColor = Color.White;
             tabProductDetail.Controls.Add(picAnh);
             tabProductDetail.Controls.Add(lblProductDetailDesc);
-            tabProductDetail.Location = new Point(4, 28);
+            tabProductDetail.Location = new Point(4, 24);
             tabProductDetail.Name = "tabProductDetail";
             tabProductDetail.Padding = new Padding(10);
-            tabProductDetail.Size = new Size(622, 525);
+            tabProductDetail.Size = new Size(622, 529);
             tabProductDetail.TabIndex = 1;
             tabProductDetail.Text = "Chi tiết sản phẩm";
             // 
@@ -983,7 +983,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             lblProductDetailDesc.ForeColor = Color.FromArgb(64, 64, 64);
             lblProductDetailDesc.Location = new Point(262, 10);
             lblProductDetailDesc.Name = "lblProductDetailDesc";
-            lblProductDetailDesc.Size = new Size(337, 503);
+            lblProductDetailDesc.Size = new Size(337, 507);
             lblProductDetailDesc.TabIndex = 1;
             lblProductDetailDesc.Text = "Mã SP: --\nThông tin chi tiết về sản phẩm sẽ được cập nhật ở đây.";
             // 
@@ -1070,7 +1070,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvCurrentDetails.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
             dataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle8.BackColor = Color.FromArgb(0, 126, 249);
-            dataGridViewCellStyle8.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            dataGridViewCellStyle8.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
             dataGridViewCellStyle8.ForeColor = Color.White;
             dataGridViewCellStyle8.SelectionBackColor = Color.FromArgb(0, 126, 249);
             dataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText;
@@ -1079,7 +1079,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvCurrentDetails.Columns.AddRange(new DataGridViewColumn[] { colCurMaSP, colCurTenSP, colCurSoLuong, colCurDonGia, colCurTinhTrang, colCurThanhTien });
             dataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle9.BackColor = Color.White;
-            dataGridViewCellStyle9.Font = new Font("Segoe UI", 9F);
+            dataGridViewCellStyle9.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
             dataGridViewCellStyle9.ForeColor = Color.FromArgb(71, 69, 94);
             dataGridViewCellStyle9.SelectionBackColor = Color.FromArgb(231, 229, 255);
             dataGridViewCellStyle9.SelectionForeColor = Color.FromArgb(71, 69, 94);

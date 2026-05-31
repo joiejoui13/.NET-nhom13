@@ -25,9 +25,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
        
         private void ucReturn_Load(object sender, EventArgs e)
         {
-            
-            btnSuaCT.Visible = false;
-            guna2Button2.Visible = false;
 
             KhoiTaoGioHang();
             NapDanhSachPhieu();
@@ -63,15 +60,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             KhoaONhapTab0(true);
 
-            btnAdd.Visible = true;
-            btnEdit.Visible = true;
-            btnDelete.Visible = true;
-            btnSave.Visible = false;
-            btnCancel.Visible = false;
-
             btnAdd.Enabled = true;
             btnEdit.Enabled = false;
             btnDelete.Enabled = false;
+            btnSave.Enabled = false;
+            btnCancel.Enabled = false;
             btnSearch.Enabled = true;   
             btnRefresh.Enabled = true;
 
@@ -85,11 +78,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             KhoaONhapTab0(false);
 
-            btnAdd.Visible = false;
-            btnEdit.Visible = false;
-            btnDelete.Visible = false;
-            btnSave.Visible = true;
-            btnCancel.Visible = true;
+            btnAdd.Enabled = false;
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
             btnSave.Enabled = true;
             btnCancel.Enabled = true;
         }
@@ -578,11 +569,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
           
             isAdding = false;
             isEditing = false;
-            btnAdd.Visible = true;
-            btnEdit.Visible = true;
-            btnDelete.Visible = true;
-            btnSave.Visible = false;
-            btnCancel.Visible = false;
+            btnAdd.Enabled = true;
+            btnEdit.Enabled = false;
+            btnDelete.Enabled = false;
+            btnSave.Enabled = false;
+            btnCancel.Enabled = false;
             KhoaONhapTab0(false);
 
            

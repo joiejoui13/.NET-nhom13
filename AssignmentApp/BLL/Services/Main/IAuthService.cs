@@ -11,5 +11,6 @@ namespace AssignmentApp.BLL.Services.Main
     public interface IAuthService
     {
         Task<User> LoginAsync(string manguoidung, string matkhau);
+        bool CheckDatabaseConnection();
     }
 }

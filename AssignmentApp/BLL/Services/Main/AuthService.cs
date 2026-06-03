@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 using AssignmentApp.DAL.Repositories.Main;
 using AssignmentApp.DTO;
 using AssignmentApp.BLL.Utils;
+using AssignmentApp.DAL.Core;
 
 namespace AssignmentApp.BLL.Services.Main
 {
@@ -34,6 +35,11 @@ namespace AssignmentApp.BLL.Services.Main
             }
             
             return null; // Đăng nhập thất bại
+        }
+
+        public bool CheckDatabaseConnection()
+        {
+            return DbContext.Ketnoi();
         }
     }
 }

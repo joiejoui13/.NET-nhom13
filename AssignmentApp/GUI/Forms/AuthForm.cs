@@ -3,7 +3,6 @@ using System.Windows.Forms;
 using Guna.UI2.WinForms;
 using AssignmentApp.BLL.Services.Main;
 using AssignmentApp.BLL.Session;
-using AssignmentApp.DAL.Core;
 using Microsoft.Extensions.DependencyInjection;
 using AssignmentApp.GUI.Forms;
 
@@ -22,7 +21,7 @@ namespace AssignmentApp.GUI
 
         private void AuthForm_Load(object sender, EventArgs e)
         {
-            if (DbContext.Ketnoi())
+            if (_authService.CheckDatabaseConnection())
             {
                 lblConnect.Text = "SERVER CONNECTION: SECURE";
                 lblConnect.FillColor = System.Drawing.Color.FromArgb(192, 255, 192);

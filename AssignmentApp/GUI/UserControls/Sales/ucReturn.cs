@@ -353,11 +353,25 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtMaHoaDon.ReadOnly = true;
             txtMaHoaDon.Enabled = false;
 
+            if (trangThai == "Hoàn thành" || trangThai == "Hoàn tất" || trangThai == "Đã hủy")
+            {
+                cboTrangThai.Enabled = false;
+                txtLyDo.ReadOnly = true;
+                cboLoaiGiaoDich.Enabled = false;
+                btnEdit.Enabled = false;
+                btnDelete.Enabled = false;
+            }
+            else
+            {
+                cboTrangThai.Enabled = true;
+                txtLyDo.ReadOnly = false;
+                cboLoaiGiaoDich.Enabled = true;
+                btnEdit.Enabled = true; 
+                btnDelete.Enabled = true;
+            }
+
             btnAdd.Enabled = false;
             btnSave.Enabled = false;
-
-            btnEdit.Enabled = true; 
-            btnDelete.Enabled = true;
             btnCancel.Enabled = true;
 
           
@@ -465,9 +479,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
 
             if (_returnService == null) return;
 
-            if (cboTrangThai.Text == "Hoàn thành" || cboTrangThai.Text == "Đã hủy")
+            if (!cboTrangThai.Enabled)
             {
-                MessageBox.Show("Phiếu trả đã '" + cboTrangThai.Text + "', không thể sửa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Phiếu trả đã bị đóng (Hoàn thành/Đã hủy), không thể sửa!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

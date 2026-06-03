@@ -55,8 +55,9 @@ namespace AssignmentApp.BLL.Services.Sales
         {
             await _orderRepo.UpdateAsync(order);
 
-            // Restore inventory if status changed to "Đã hủy"
-            if (oldStatus != "Đã hủy" && order.TrangThai == "Đã hủy")
+            // Restore inventory if status changed to "Đã hủy" (handling both unicode variants: "hủy" and "huỷ")
+            if (oldStatus != "Đã hủy" && oldStatus != "Đã huỷ" && 
+               (order.TrangThai == "Đã hủy" || order.TrangThai == "Đã huỷ"))
             {
                 var details = await _orderRepo.GetDetailsAsync(order.MaHoaDon.ToString());
                 foreach (var d in details)

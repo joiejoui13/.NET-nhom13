@@ -598,6 +598,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             MessageBox.Show("Cập nhật đơn hàng thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             SetControlState("Init");
             _ = LoadOrdersGridAsync();
+            _ = LoadProductsSelectionGridAsync();
         }
 
         private void btnDelete_Click(object? sender, EventArgs e)

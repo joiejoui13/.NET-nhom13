@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AssignmentApp.DAL.Repositories.Sales;
@@ -69,21 +69,7 @@ namespace AssignmentApp.BLL.Services.Sales
             
             if (result)
             {
-                // Sync Inventory based on Transaction Type
-                foreach (var detail in details)
-                {
-                    if (loaiGiaoDich == "Đổi hàng")
-                    {
-                        // Exchange: We give the customer a new item from stock, so we deduct stock.
-                        // Defective items are NOT added to stock automatically.
-                        await _productRepository.UpdateStockAsync(detail.MaSanPham, -detail.SoLuong);
-                    }
-                    else if (loaiGiaoDich == "Hoàn tiền")
-                    {
-                        // Return: The customer returns an item in good condition for a refund, so we add it back to stock.
-                        await _productRepository.UpdateStockAsync(detail.MaSanPham, detail.SoLuong);
-                    }
-                }
+                // Inventory logic has been successfully migrated to DAL to ensure Database Transaction Atomicity
             }
             
             return result;

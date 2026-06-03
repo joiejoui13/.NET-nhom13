@@ -165,15 +165,19 @@ namespace AssignmentApp.DAL.Repositories.Sales
             {
                 try
                 {
-                    // 1. Phục hồi số lượng tồn kho
+                    // 1. Phục hồi số lượng tồn kho dựa trên LoaiGiaoDich
                     string sqlKhoiPhucTon = @"
-                        UPDATE SanPham
-                        SET SoLuongTon = SoLuongTon - ct.SoLuong
-                        FROM SanPham sp
-                        JOIN ChiTietTraHang ct ON sp.MaSanPham = ct.MaSanPham
-                        WHERE ct.MaTraHang = @maTraHang";
+                        DECLARE @loaiGD NVARCHAR(50);
+                        SELECT @loaiGD = LoaiGiaoDich FROM TraHang WHERE MaTraHang = @maTraHang;
+                        
+                        IF @loaiGD = N'Trả hàng'
+                        BEGIN
+                            -- Trả hàng: khi tạo phiếu đã cộng tồn, giờ xóa phiếu thì phải trừ đi
+                            UPDATE SanPham SET SoLuongTon = SoLuongTon - ct.SoLuong
+                            FROM SanPham sp JOIN ChiTietTraHang ct ON sp.MaSanPham = ct.MaSanPham
+                            WHERE ct.MaTraHang = @maTraHang
+                        END";
                     await DbContext.Conn.ExecuteAsync(sqlKhoiPhucTon, new { maTraHang }, transaction);
-
                     // 2. Xóa các chi tiết trả hàng
                     string sqlXoaCT = "DELETE FROM ChiTietTraHang WHERE MaTraHang = @maTraHang";
                     await DbContext.Conn.ExecuteAsync(sqlXoaCT, new { maTraHang }, transaction);
@@ -202,13 +206,17 @@ namespace AssignmentApp.DAL.Repositories.Sales
                 {
                     // 1. Phục hồi tồn kho của các chi tiết cũ trước khi xóa
                     string sqlKhoiPhucTon = @"
-                        UPDATE SanPham
-                        SET SoLuongTon = SoLuongTon - ct.SoLuong
-                        FROM SanPham sp
-                        JOIN ChiTietTraHang ct ON sp.MaSanPham = ct.MaSanPham
-                        WHERE ct.MaTraHang = @maTraHang";
+                        DECLARE @loaiGDCu NVARCHAR(50);
+                        SELECT @loaiGDCu = LoaiGiaoDich FROM TraHang WHERE MaTraHang = @maTraHang;
+                        
+                        IF @loaiGDCu = N'Trả hàng'
+                        BEGIN
+                            -- Trả hàng: lúc trước cộng, giờ xóa đi làm lại thì trừ đi
+                            UPDATE SanPham SET SoLuongTon = SoLuongTon - ct.SoLuong
+                            FROM SanPham sp JOIN ChiTietTraHang ct ON sp.MaSanPham = ct.MaSanPham
+                            WHERE ct.MaTraHang = @maTraHang
+                        END";
                     await DbContext.Conn.ExecuteAsync(sqlKhoiPhucTon, new { maTraHang }, transaction);
-
                     // 2. Xóa sạch chi tiết trả hàng cũ
                     string sqlXoaCT = "DELETE FROM ChiTietTraHang WHERE MaTraHang = @maTraHang";
                     await DbContext.Conn.ExecuteAsync(sqlXoaCT, new { maTraHang }, transaction);
@@ -227,9 +235,15 @@ namespace AssignmentApp.DAL.Repositories.Sales
                             TinhTrang = d.TinhTrang,
                             TienHoan = d.TienHoan
                         }, transaction);
-
-                        string sqlCapNhatKho = "UPDATE SanPham SET SoLuongTon = SoLuongTon + @SoLuong WHERE MaSanPham = @MaSanPham";
-                        await DbContext.Conn.ExecuteAsync(sqlCapNhatKho, new { SoLuong = d.SoLuong, MaSanPham = d.MaSanPham }, transaction);
+                        string sqlCapNhatKho = "";
+                        // Nếu là Đổi hàng thì không cộng/trừ gì cả
+                        if (loaiGiaoDich == "Trả hàng") {
+                            sqlCapNhatKho = "UPDATE SanPham SET SoLuongTon = SoLuongTon + @SoLuong WHERE MaSanPham = @MaSanPham";
+                        }
+                        
+                        if (!string.IsNullOrEmpty(sqlCapNhatKho)) {
+                            await DbContext.Conn.ExecuteAsync(sqlCapNhatKho, new { SoLuong = d.SoLuong, MaSanPham = d.MaSanPham }, transaction);
+                        }
                     }
 
                     // 4. Cập nhật lại tổng tiền cho phiếu trả

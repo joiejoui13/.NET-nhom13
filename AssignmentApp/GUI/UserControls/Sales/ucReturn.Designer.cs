@@ -1363,7 +1363,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             btnLuuCT.Size = new Size(306, 36);
             btnLuuCT.TabIndex = 16;
             btnLuuCT.Text = "LƯU THAY ĐỔI";
-            btnLuuCT.Click += btnBackToReceipt_Click;
+            btnLuuCT.Click += btnLuuCT_Click;
             // 
             // lblChonLeftTitle
             // 

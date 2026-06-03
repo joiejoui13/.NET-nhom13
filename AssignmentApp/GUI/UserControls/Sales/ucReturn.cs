@@ -1,4 +1,4 @@
-﻿using AssignmentApp.DAL.Core;
+using AssignmentApp.DAL.Core;
 using System;
 using System.ComponentModel;
 using System.Collections.Generic;
@@ -1080,9 +1080,11 @@ namespace AssignmentApp.GUI.UserControls.Sales
         {
             if (listCart == null || listCart.Count == 0)
             {
-                MessageBox.Show("Danh sách sản phẩm trống, không có gì để lưu!",
-                    "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                if (MessageBox.Show("Giỏ hàng đang trống. Bạn có chắc chắn muốn xóa toàn bộ sản phẩm khỏi phiếu trả hàng này không?",
+                    "Xác nhận", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    return;
+                }
             }
 
             if (_returnService == null) return;

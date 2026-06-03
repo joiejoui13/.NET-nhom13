@@ -292,8 +292,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                 await SelectReceiptRowAsync(e.RowIndex);
 
                 txtMaPhieuNhap.Enabled = false; 
-                txtNguoiDung.Enabled = true;
-                txtNguoiDung.ReadOnly = false;
+                txtNguoiDung.ReadOnly = true;
+            txtNguoiDung.Enabled = false;
                 dtNgayNhap.Enabled = false;    
                 cboTrangThai.Enabled = true;
 

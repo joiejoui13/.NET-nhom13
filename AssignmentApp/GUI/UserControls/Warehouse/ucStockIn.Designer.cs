@@ -451,7 +451,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             pnlGridCard.Name = "pnlGridCard";
             pnlGridCard.Padding = new Padding(15);
             pnlGridCard.ShadowDecoration.CustomizableEdges = customizableEdges26;
-            pnlGridCard.Size = new Size(620, 602);
+            pnlGridCard.Size = new Size(611, 602);
             pnlGridCard.TabIndex = 1;
             // 
             // lblGridTitle
@@ -488,7 +488,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             btnRefresh.FillColor = Color.FromArgb(108, 117, 125);
             btnRefresh.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
             btnRefresh.ForeColor = Color.White;
-            btnRefresh.Location = new Point(505, 45);
+            btnRefresh.Location = new Point(496, 45);
             btnRefresh.Name = "btnRefresh";
             btnRefresh.ShadowDecoration.CustomizableEdges = customizableEdges24;
             btnRefresh.Size = new Size(100, 36);
@@ -527,7 +527,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
             dgvDetails.ReadOnly = true;
             dgvDetails.RowHeadersVisible = false;
             dgvDetails.RowTemplate.Height = 30;
-            dgvDetails.Size = new Size(590, 492);
+            dgvDetails.Size = new Size(581, 492);
             dgvDetails.TabIndex = 3;
             dgvDetails.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvDetails.ThemeStyle.AlternatingRowsStyle.Font = null;

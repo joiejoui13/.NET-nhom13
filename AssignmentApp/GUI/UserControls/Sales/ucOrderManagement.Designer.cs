@@ -738,7 +738,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             dgvOrders.ReadOnly = true;
             dgvOrders.RowHeadersVisible = false;
             dgvOrders.RowTemplate.Height = 30;
-            dgvOrders.Size = new Size(580, 518);
+            dgvOrders.Size = new Size(580, 512);
             dgvOrders.TabIndex = 14;
             dgvOrders.ThemeStyle.AlternatingRowsStyle.BackColor = Color.White;
             dgvOrders.ThemeStyle.AlternatingRowsStyle.Font = null;

@@ -77,7 +77,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             guna2Button4.Enabled = false; // Sửa
             btnRemoveFromCart.Enabled = false; // Xóa
             guna2Button3.Enabled = false; // Bỏ qua
-            btnBackToReceipt.Enabled = isModified; // Lưu thay đổi
+            btnBackToReceipt.Enabled = false; // Lưu thay đổi
 
             // Đóng tất cả textbox mặc định
             txtSelMaSP.Enabled = false;
@@ -86,6 +86,16 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtSelSoLuong.Enabled = false;
             txtSelMaDanhMuc.Enabled = false;
             txtSelTenDanhMuc.Enabled = false;
+
+            // Kiểm tra trạng thái đơn hàng (đóng các nút nếu không phải Chờ xử lý và không phải tạo mới)
+            bool isReadOnly = _selectedOrder != null && _selectedOrder.TrangThai != "Chờ xử lý" && !isAddingNew;
+            if (isReadOnly)
+            {
+                return;
+            }
+
+            // Nếu đơn hàng có thể sửa, nút Lưu/Trở về luôn hiển thị để quay lại hoặc lưu lại thay đổi (nếu có)
+            btnBackToReceipt.Enabled = true;
 
             if (state == "SelectingAvailable")
             {
@@ -310,7 +320,6 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboTrangThai.Text = order.TrangThai;
             txtLyDoHuy.Text = order.LyDoHuy;
 
-            // Load Details from DB
             var details = await _orderService.GetOrderDetailsAsync(order.MaHoaDon.ToString());
             currentDetails = details.ToList();
             
@@ -318,6 +327,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
             LoadCurrentDetailsGrid();
 
             UpdateConvertToSalesState();
+
+            // Reset tab 2 và cập nhật trạng thái các nút
+            btnResetCartForm_Click(null, EventArgs.Empty);
+            SetCartButtonsState("Init", false);
         }
 
         private void UpdateConvertToSalesState()
@@ -488,6 +501,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             cboTrangThai.SelectedIndex = -1;
             txtLyDoHuy.Text = "";
             lblPOSTitle.Text = "MÃ HÓA ĐƠN: ";
+            _selectedOrder = null;
         }
 
         private void btnAdd_Click(object? sender, EventArgs e)
@@ -885,6 +899,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 await _orderService.UpdateOrderCartAsync(_selectedOrder, currentDetails);
                 _ = LoadProductsSelectionGridAsync();
                 MessageBox.Show("Đã thêm sản phẩm và cập nhật tồn kho thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                SetCartButtonsState("Init", false);
             }
             else
             {
@@ -933,6 +948,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     await _orderService.UpdateOrderCartAsync(_selectedOrder, currentDetails);
                     _ = LoadProductsSelectionGridAsync();
                     MessageBox.Show("Đã cập nhật số lượng và tồn kho thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    SetCartButtonsState("Init", false);
                 }
                 else
                 {
@@ -979,6 +995,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     await _orderService.UpdateOrderCartAsync(_selectedOrder, currentDetails);
                     _ = LoadProductsSelectionGridAsync();
                     MessageBox.Show("Đã xóa sản phẩm và khôi phục tồn kho thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    SetCartButtonsState("Init", false);
                 }
                 else
                 {

@@ -18,7 +18,8 @@ namespace AssignmentApp.GUI.Forms
         {
             InitializeComponent();
             _mainService = mainService;
-            this.FormClosing += frmMain_FormClosing;
+            // Đăng ký sự kiện (event) khi Form chuẩn bị đóng
+            this.FormClosing += new FormClosingEventHandler(frmMain_FormClosing);
         }
 
         private void frmMain_Load(object sender, EventArgs e)
@@ -44,13 +45,28 @@ namespace AssignmentApp.GUI.Forms
             pnlMenuWarehouse.Visible = permissions.ShowWarehouse;
 
             // Đẩy menu tương ứng lên trên cùng
-            if (permissions.ShowAdmin) pnlMenuAdmin.BringToFront();
-            if (permissions.ShowSales) pnlMenuSales.BringToFront();
-            if (permissions.ShowWarehouse) pnlMenuWarehouse.BringToFront();
+            if (permissions.ShowAdmin == true)
+            {
+                pnlMenuAdmin.BringToFront();
+            }
+            if (permissions.ShowSales == true)
+            {
+                pnlMenuSales.BringToFront();
+            }
+            if (permissions.ShowWarehouse == true)
+            {
+                pnlMenuWarehouse.BringToFront();
+            }
 
             // Xóa trung tâm và hiển thị vai trò trên Header
             pnlContainer.Controls.Clear();
-            lblTitle.Text = $"QUYỀN TRUY CẬP: {(role?.Trim().ToUpper() ?? "")}";
+            
+            string roleName = "";
+            if (role != null)
+            {
+                roleName = role.Trim().ToUpper();
+            }
+            lblTitle.Text = "QUYỀN TRUY CẬP: " + roleName;
         }
 
         private void HighlightButton(object senderButton)
@@ -58,13 +74,16 @@ namespace AssignmentApp.GUI.Forms
             if (senderButton == null) return;
 
             // Reset màu cho tất cả các nút
-            Panel[] menus = { pnlMenuAdmin, pnlMenuSales, pnlMenuWarehouse };
-            foreach (var panel in menus)
+            Panel[] menus = new Panel[] { pnlMenuAdmin, pnlMenuSales, pnlMenuWarehouse };
+            for (int i = 0; i < menus.Length; i++)
             {
-                foreach (Control ctrl in panel.Controls)
+                Panel panel = menus[i];
+                for (int j = 0; j < panel.Controls.Count; j++)
                 {
-                    if (ctrl is Guna.UI2.WinForms.Guna2Button btn)
+                    Control ctrl = panel.Controls[j];
+                    if (ctrl is Guna.UI2.WinForms.Guna2Button)
                     {
+                        Guna.UI2.WinForms.Guna2Button btn = (Guna.UI2.WinForms.Guna2Button)ctrl;
                         btn.FillColor = System.Drawing.Color.Transparent;
                         btn.ForeColor = System.Drawing.Color.FromArgb(160, 164, 177); // Màu chữ xám mặc định
                     }
@@ -72,8 +91,9 @@ namespace AssignmentApp.GUI.Forms
             }
 
             // Đặt màu xanh cho nút được bấm
-            if (senderButton is Guna.UI2.WinForms.Guna2Button clickedBtn)
+            if (senderButton is Guna.UI2.WinForms.Guna2Button)
             {
+                Guna.UI2.WinForms.Guna2Button clickedBtn = (Guna.UI2.WinForms.Guna2Button)senderButton;
                 clickedBtn.FillColor = System.Drawing.Color.FromArgb(0, 126, 249); // Nền màu xanh
                 clickedBtn.ForeColor = System.Drawing.Color.White; // Chữ màu trắng cho nổi
             }

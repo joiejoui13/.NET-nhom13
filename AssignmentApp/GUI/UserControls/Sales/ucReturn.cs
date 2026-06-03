@@ -289,12 +289,25 @@ namespace AssignmentApp.GUI.UserControls.Sales
             decimal tongTien = 0;
             if (listCart != null)
             {
+                bool isDoi11 = (cboLoaiGiaoDich.Text.Trim() == "Đổi 1:1" || cboLoaiGiaoDich.Text.Trim() == "Đổi hàng (1:1)");
                 foreach (var item in listCart)
                 {
+                    if (isDoi11)
+                    {
+                        item.TienHoan = 0;
+                    }
+                    else
+                    {
+                        item.TienHoan = item.SoLuong * item.DonGia;
+                    }
                     tongTien += item.TienHoan;
                 }
             }
             lblTotalAmount.Text = "TỔNG TIỀN HOÀN TRẢ TẠM TÍNH: " + tongTien.ToString("N0") + " đ";
+            if (listCart != null)
+            {
+                listCart.ResetBindings();
+            }
         }
 
         #endregion
@@ -1257,7 +1270,10 @@ namespace AssignmentApp.GUI.UserControls.Sales
         }
 
     
-        private void cboLoaiGiaoDich_SelectedIndexChanged(object sender, EventArgs e) { }
+        private void cboLoaiGiaoDich_SelectedIndexChanged(object sender, EventArgs e) 
+        { 
+            TinhTongTienHoanTra();
+        }
         private void btnChooseProducts_Click(object sender, EventArgs e) { }
         private void btnResetCartForm_Click(object sender, EventArgs e) { }
         private void tabPhieuTra_Click(object sender, EventArgs e) { }

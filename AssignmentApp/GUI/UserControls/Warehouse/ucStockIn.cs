@@ -283,6 +283,8 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                     return;
                 }
 
+                ResetTab2State();
+
                 if (txtMaPhieuNhap.Enabled == true)
                 {
                     txtMaPhieuNhap.Enabled = false;
@@ -293,12 +295,22 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
 
                 txtMaPhieuNhap.Enabled = false; 
                 txtNguoiDung.ReadOnly = true;
-            txtNguoiDung.Enabled = false;
+                txtNguoiDung.Enabled = false;
                 dtNgayNhap.Enabled = false;    
-                cboTrangThai.Enabled = true;
 
-                btnEdit.Enabled = true;
-                btnDelete.Enabled = true;
+                if (cboTrangThai.Text == "Đã hoàn thành" || cboTrangThai.Text == "Đã hủy")
+                {
+                    cboTrangThai.Enabled = false;
+                    btnEdit.Enabled = false;
+                    btnDelete.Enabled = false;
+                }
+                else
+                {
+                    cboTrangThai.Enabled = true;
+                    btnEdit.Enabled = true;
+                    btnDelete.Enabled = true;
+                }
+
                 btnCancel.Enabled = true;
 
                 btnAdd.Enabled = false;
@@ -355,6 +367,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         /// </summary>
         private async void btnEdit_Click(object sender, EventArgs e)
         {
+            if (!btnEdit.Enabled) return;
             if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) || txtMaPhieuNhap.Text == "Tự động sinh") return;
             if (!int.TryParse(txtNguoiDung.Text.Trim(), out int userId))
             {
@@ -390,6 +403,7 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
         /// </summary>
         private async void btnDelete_Click(object sender, EventArgs e)
         {
+            if (!btnDelete.Enabled) return;
             if (string.IsNullOrEmpty(txtMaPhieuNhap.Text) || txtMaPhieuNhap.Text == "Tự động sinh") return;
 
             int receiptId = Convert.ToInt32(txtMaPhieuNhap.Text);
@@ -741,10 +755,11 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                             txtSelTenSP.Text = p.TenSanPham ?? "";
                             txtSelGiaNhap.Text = p.GiaNhap.ToString();
                             
-                            txtSelSoLuong.Enabled = true;
-                            txtSelGiaNhap.Enabled = true;
+                            bool isClosed = (cboTrangThai.Text == "Đã hoàn thành" || cboTrangThai.Text == "Đã hủy");
+                            txtSelSoLuong.Enabled = !isClosed;
+                            txtSelGiaNhap.Enabled = !isClosed;
 
-                            btnAddToCart.Enabled = true; 
+                            btnAddToCart.Enabled = !isClosed; 
                             guna2Button3.Enabled = true; 
 
                             string catName = string.IsNullOrEmpty(p.TenDanhMuc) ? "Không rõ" : p.TenDanhMuc;
@@ -801,14 +816,15 @@ namespace AssignmentApp.GUI.UserControls.Warehouse
                     {
                         isAddingDetail = false;
                         
+                        bool isClosed = (cboTrangThai.Text == "Đã hoàn thành" || cboTrangThai.Text == "Đã hủy");
                         btnAddToCart.Enabled = false; 
-                        guna2Button4.Enabled = true; 
-                        btnRemoveFromCart.Enabled = true; 
+                        guna2Button4.Enabled = !isClosed; 
+                        btnRemoveFromCart.Enabled = !isClosed; 
                         guna2Button3.Enabled = true; 
                         btnBackToReceipt.Enabled = true; 
 
-                        txtSelSoLuong.Enabled = true;
-                        txtSelGiaNhap.Enabled = true;
+                        txtSelSoLuong.Enabled = !isClosed;
+                        txtSelGiaNhap.Enabled = !isClosed;
 
                         txtSelMaSP.Text = item.MaSanPham.ToString();
                         txtSelTenSP.Text = item.TenSanPham;

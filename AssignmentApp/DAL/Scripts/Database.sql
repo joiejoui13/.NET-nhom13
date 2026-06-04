@@ -1,4 +1,4 @@
-﻿USE CKNet;
+USE CKNet;
 GO
 
 
@@ -30,7 +30,8 @@ CREATE TABLE KhachHang (
     SoDienThoai VARCHAR(15),
     Email VARCHAR(100),
     DiaChi NVARCHAR(255),
-    NgayTao DATETIME
+    NgayTao DATETIME,
+    TrangThai NVARCHAR(50) DEFAULT N'Hoạt động'
 );
 
 CREATE TABLE NguoiDung (
@@ -190,17 +191,17 @@ SET IDENTITY_INSERT KhuyenMai OFF;
 
 -- 3. KhachHang
 SET IDENTITY_INSERT KhachHang ON;
-INSERT INTO KhachHang (MaKhachHang, TenKhachHang, SoDienThoai, DiaChi, NgayTao) VALUES
-(1, N'Trường THPT Chu Văn An', '0911222333', N'Tây Hồ, Hà Nội', GETDATE()),
-(2, N'Công ty CP FPT', '0988777666', N'Cầu Giấy, Hà Nội', GETDATE()),
-(3, N'Trần Minh Hoàng', '0900111222', N'Thanh Xuân, Hà Nội', GETDATE()),
-(4, N'Nguyễn Thị Lan Anh', '0933444555', N'Đống Đa, Hà Nội', GETDATE()),
-(5, N'Công ty TNHH Vạn Phát', '0944555666', N'Hoàn Kiếm, Hà Nội', GETDATE()),
-(6, N'Lê Văn Luyện', '0912345678', N'Hai Bà Trưng, Hà Nội', GETDATE()),
-(7, N'Phạm Thu Hương', '0987654321', N'Ba Đình, Hà Nội', GETDATE()),
-(8, N'Trường Đại học Bách Khoa', '0966777888', N'Hai Bà Trưng, Hà Nội', GETDATE()),
-(9, N'Ngân hàng Vietcombank', '0977888999', N'Hoàn Kiếm, Hà Nội', GETDATE()),
-(10, N'Đoàn Văn Hậu', '0922333444', N'Nam Từ Liêm, Hà Nội', GETDATE());
+INSERT INTO KhachHang (MaKhachHang, TenKhachHang, SoDienThoai, DiaChi, NgayTao, TrangThai) VALUES
+(1, N'Trường THPT Chu Văn An', '0911222333', N'Tây Hồ, Hà Nội', GETDATE(), N'Hoạt động'),
+(2, N'Công ty CP FPT', '0988777666', N'Cầu Giấy, Hà Nội', GETDATE(), N'Hoạt động'),
+(3, N'Trần Minh Hoàng', '0900111222', N'Thanh Xuân, Hà Nội', GETDATE(), N'Hoạt động'),
+(4, N'Nguyễn Thị Lan Anh', '0933444555', N'Đống Đa, Hà Nội', GETDATE(), N'Hoạt động'),
+(5, N'Công ty TNHH Vạn Phát', '0944555666', N'Hoàn Kiếm, Hà Nội', GETDATE(), N'Hoạt động'),
+(6, N'Lê Văn Luyện', '0912345678', N'Hai Bà Trưng, Hà Nội', GETDATE(), N'Hoạt động'),
+(7, N'Phạm Thu Hương', '0987654321', N'Ba Đình, Hà Nội', GETDATE(), N'Hoạt động'),
+(8, N'Trường Đại học Bách Khoa', '0966777888', N'Hai Bà Trưng, Hà Nội', GETDATE(), N'Hoạt động'),
+(9, N'Ngân hàng Vietcombank', '0977888999', N'Hoàn Kiếm, Hà Nội', GETDATE(), N'Hoạt động'),
+(10, N'Đoàn Văn Hậu', '0922333444', N'Nam Từ Liêm, Hà Nội', GETDATE(), N'Hoạt động');
 SET IDENTITY_INSERT KhachHang OFF;
 
 -- 4. NguoiDung 

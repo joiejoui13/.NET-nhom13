@@ -164,7 +164,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             txtLyDo.Enabled = !khoa;
             dtpNgayTra.Enabled = false; // Ngày trả hệ thống tự lấy ngày hiện tại nên luôn khóa
             cboTrangThai.Enabled = !khoa;
-            cboLoaiGiaoDich.Enabled = !khoa;
+            cboLoaiGiaoDich.Enabled = !khoa && isAdding;
             
             // Tổng tiền, Khách hàng, Nhân viên là do hệ thống tự tính/tự lấy, người dùng không được gõ
             txtTongTienHoan.ReadOnly = true;
@@ -378,7 +378,7 @@ namespace AssignmentApp.GUI.UserControls.Sales
             {
                 cboTrangThai.Enabled = true;
                 txtLyDo.ReadOnly = false;
-                cboLoaiGiaoDich.Enabled = true;
+                cboLoaiGiaoDich.Enabled = false;
                 btnEdit.Enabled = true; 
                 btnDelete.Enabled = true;
             }
@@ -627,6 +627,8 @@ namespace AssignmentApp.GUI.UserControls.Sales
                     "Vui lòng chuyển sang Tab 'Chọn sản phẩm trả' để tiếp tục.",
                     "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                string savedLoaiGiaoDich = returnObj.LoaiGiaoDich;
+                
                 // Bước 5: Cập nhật lại giao diện
                 NapDanhSachPhieu(); // Tải lại danh sách để phiếu mới hiện lên grid
                 SetTrangThaiBanDau(); // Reset form
@@ -634,6 +636,9 @@ namespace AssignmentApp.GUI.UserControls.Sales
                 // Giữ nguyên phiếu vừa tạo để thao tác tiếp
                 maTraHangHienTai = newMaTraHang;
                 cboTrangThai.Text = "Đang xử lý";
+                cboLoaiGiaoDich.Text = savedLoaiGiaoDich; // Khôi phục Loại giao dịch để Tab 2 dùng
+                txtMaHoaDon.Text = maHD.ToString(); // Khôi phục mã Hóa đơn hiển thị
+                
                 KhoaONhapTab0(false); // Mở khóa các ô nhập
 
                 // Hiển thị tiêu đề phiếu bên Tab 2
